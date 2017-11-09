@@ -10,7 +10,7 @@ import {
     Animated,
   StyleSheet,
   Text,
-  View,
+  View
 } from 'react-native';
 import {Provider} from 'mobx-react/native';
 import stores from './src/store';
