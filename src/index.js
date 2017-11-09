@@ -8,7 +8,7 @@ import {
 
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 class Search extends Component {
     updateHome = params => {
         const { state, dispatch, goBack } = this.props.navigation;
@@ -52,6 +52,7 @@ class Index extends Component {
                     onPress={() => navigate("Search", { title: "Search", parentKey: state.key })}
                 >
                     <Text>去搜索</Text>
+                    <Icon name="rocket" size={30} color="#900" />
                 </TouchableOpacity>
                 <Text>
                     {state.params && state.params.search && `Searched for ${state.params.search}`}
