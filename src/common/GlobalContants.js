@@ -9,7 +9,23 @@ global.gScreen = {
     navBarHeight: __IOS__ ? 64 : 50,
     navBarPaddingTop: __IOS__ ? 20 : 0,
     onePix: 1 / PixelRatio.get(),
-}
+};
+
+//用户登录数据
+global.user = {
+    loginState:'',//登录状态
+    userData:'',//用户数据
+};
+//刷新的时候重新获得用户数据
+storage.load({
+    key: 'loginState',
+}).then(ret => {
+    global.user.loginState = true;
+    global.user.userData = ret;
+}).catch(err => {
+    global.user.loginState = false;
+    global.user.userData = '';
+});
 
 global.gColors = {
     theme: 'rgb(217, 51, 58)',

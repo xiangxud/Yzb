@@ -7,7 +7,7 @@ import {observer, inject} from 'mobx-react/native'
 
 //@inject('app')
 @observer
-export default class Live extends Component {
+export default class Uc extends Component {
     /*onChangeTab = ({i}) => {
         const {app} = this.props
         if (i === 1) {
@@ -29,7 +29,7 @@ export default class Live extends Component {
 
     render() {
         return (
-            <View><Text>直播间首页</Text></View>
+            <View><Text>我的</Text></View>
         )
     }
 }

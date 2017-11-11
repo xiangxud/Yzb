@@ -13,7 +13,7 @@ import {
 } from "react-navigation";
 import { observable, action } from "mobx";
 import {observer, inject} from 'mobx-react/native'
-import Router from './common/Routers'
+import Router from './common/RootNavigator'
 
 @inject('app')
 @observer
