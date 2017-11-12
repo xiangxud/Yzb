@@ -2,9 +2,6 @@ import React, {Component} from 'react';
 import {
     View,
     TextInput,
-    Animated,
-    Easing,
-    Platform,
     Text,
     StyleSheet
 } from 'react-native';
@@ -13,41 +10,11 @@ export default class AnooTextInput extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            animValue: props.inputProps.value ? new Animated.Value(1) : new Animated.Value(0)
-        }
     }
 
     onChange = (text)=> {
-        if (text.text.length === 1) {
-            Animated.timing(
-                this.state.animValue,
-                {
-                    toValue: 1,
-                    duration: 200,
-                    easing: Easing.inOut(Easing.quad)// Make it take a while
-                }
-            ).start();
-        }
-
-        if (text.text.length === 0) {
-            Animated.timing(
-                this.state.animValue,
-                {
-                    toValue: 0,
-                    duration: 200,
-                    easing: Easing.inOut(Easing.quad)// Make it take a while
-                }
-            ).start();
-        }
-
         this.props.onChange(text.text);
-
     };
-
-    componentDidMount() {
-
-    }
 
     renderErrorText() {
         if (this.props.errorText) {
@@ -61,89 +28,46 @@ export default class AnooTextInput extends Component {
     }
 
     render() {
-
-        let positionAnimY, positionAnimX;
-
-        if (Platform.OS === 'ios') {
-            positionAnimY = this.state.animValue.interpolate({
-                inputRange: [0, 1],
-                outputRange: [-5, -35]
-            });
-            positionAnimX = this.state.animValue.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, -12]
-            });
-        }
-        else if (Platform.OS === 'android') {
-            positionAnimY = this.state.animValue.interpolate({
-                inputRange: [0, 1],
-                outputRange: [3, -35]
-            });
-            positionAnimX = this.state.animValue.interpolate({
-                inputRange: [0, 1],
-                outputRange: [5, -5]
-            });
-        }
-
-        const scaleAnim = this.state.animValue.interpolate({
-            inputRange: [0, 1],
-            outputRange: [1, 0.8]
-        });
-
         return (
-            <View
-                style={[styles.inputContainer, {...this.props.style}]}
-            >
-
+            <View style={[styles.inputContainer, {...this.props.style}]}>
+                <Text style={styles.label}>{this.props.label}</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={(text) => this.onChange({text})}
                     underlineColorAndroid={'transparent'}
+                    placeholder={this.props.placeHolder}
+                    placeholderTextColor={'#ccc'}
                     {...this.props.inputProps}
                 />
-                <Animated.Text
-                    style={[styles.text,
-                        {
-                            transform: [{translateY: positionAnimY},
-                                {translateX: positionAnimX},
-                                {scale: scaleAnim}
-                            ]
-                        }
-                    ]
-                    }
-                >
-                    {this.props.placeHolder}
-                </Animated.Text>
-                {this.renderErrorText()}
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    text: {
-        color: '#ffffff',
-        opacity: 0.5,
-        backgroundColor: 'transparent',
-
-        fontSize: 18,
-        fontWeight: 'bold',
-        position: 'absolute',
-        top: 10,
-        letterSpacing: 1
+    inputContainer: {
+        height:50,
+        borderBottomWidth:StyleSheet.hairlineWidth,
+        borderBottomColor:'#888',
+        flexDirection:'row'
+    },
+    label: {
+        width:70,
+        alignSelf:'center',
+        color: '#000',
+        fontSize: 16,
+        paddingLeft:10,
+        letterSpacing: 1,
     },
     input: {
-        borderColor: 'rgba(255, 255, 255, 0.5)',
-        borderBottomWidth: 1,
-        width: 350,
+        flex: 1,
         fontSize: 18,
-        color: '#fff',
+        color: '#000',
         letterSpacing: 5,
-        lineHeight: 18
+        lineHeight: 18,
+        paddingRight:10,
     },
-    inputContainer: {
-        marginTop: 25
-    },
+
     error: {
         fontFamily: 'OpenSans-Regular',
         backgroundColor: 'transparent',

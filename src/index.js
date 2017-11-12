@@ -1,9 +1,5 @@
 import React, { Component } from "react";
-import {
-    addNavigationHelpers,
-    StackNavigator,
-    NavigationActions
-} from "react-navigation";
+import {View, StatusBar} from 'react-native'
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import RootNavigator from './common/RootNavigator';
@@ -43,7 +39,12 @@ class NavigationStore {
                     state: this.store.navigationState
                 })}
             />*/
-            <RootNavigator />
+            <View style={{flex:1}}>
+                <StatusBar backgroundColor={'rgba(0,156,136,1)'}/>
+                {
+                    <RootNavigator />
+                }
+            </View>
         );
     }
 }

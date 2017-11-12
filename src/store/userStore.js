@@ -1,6 +1,6 @@
-import {observable, action, computed} from 'mobx'
+import {observable, action, computed, useStrict} from 'mobx'
 import { persist } from 'mobx-persist'
-
+useStrict(true);
 class UserStore {
     @persist('object') @observable user = {
         fullName: '',
@@ -71,6 +71,16 @@ class UserStore {
                 password: this.user.password,
             })
         }).catch((error)=>console.error('Error (Exception) calling login '+error+' for user: '+JSON.stringify(this.user)))
+    }
+
+    @action logout(){
+        try {
+            this.user.fullName = null;
+            this.user.token = null;
+            return true;
+        }catch(ms){
+            return false;
+        }
     }
 }
 

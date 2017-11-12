@@ -18,8 +18,7 @@ export default class Welcome extends Component {
             console.log(`user hydrated ${JSON.stringify(userStore.user)}`);
             const { dispatch } = this.props.navigation;
             if (userStore.user.token) {
-                alert(userStore.user.token)
-                userStore.setUserField('token', null)
+                alert('TOKEN:' + userStore.user.token)
                 let resetAction = NavigationActions.reset({
                     index: 0,
                     actions: [
@@ -41,12 +40,9 @@ export default class Welcome extends Component {
         });
         console.log(`user token is: ${userStore.user.token}`);
     }
-
     static navigationOptions = {
         header: null
     };
-
-
     render() {
 
         return (<View style={styles.container}><Text>欢迎使用养殖宝</Text></View>)

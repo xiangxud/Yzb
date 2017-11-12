@@ -16,9 +16,6 @@ const TabNavigation = TabNavigator({
         navigationOptions:{
             headerTitle: '智能养殖',
             tabBarLabel:'智能养殖',
-            headerTitleStyle:{
-                alignSelf:'center'
-            },
             tabBarIcon: ({tintColor}) => (<Icon name='home' color={tintColor} size={24}/>)
         }
     },
@@ -26,9 +23,6 @@ const TabNavigation = TabNavigator({
         screen: Live,
         navigationOptions:{
             title: '直播间',
-            headerTitleStyle:{
-                alignSelf:'center'
-            },
             tabBarIcon: ({tintColor}) => (<Icon name='video-camera' color={tintColor} size={24}/>)
         }
     },
@@ -37,9 +31,6 @@ const TabNavigation = TabNavigator({
         navigationOptions:{
             headerTitle: '养殖头条',
             tabBarLabel:'头条',
-            headerTitleStyle:{
-                alignSelf:'center'
-            },
             tabBarIcon: ({tintColor}) => (<Icon name='fire' color={tintColor} size={24}/>)
         }
     },
@@ -48,9 +39,6 @@ const TabNavigation = TabNavigator({
         navigationOptions:{
             headerTitle: '个人中心',
             tabBarLabel:'我的',
-            headerTitleStyle:{
-                alignSelf:'center'
-            },
             tabBarIcon: ({tintColor}) => (<Icon name='user' color={tintColor} size={24}/>)
         }
     },
@@ -98,7 +86,7 @@ const RootNavigator = StackNavigator({
     initialRouteName: 'Welcome', // 默认显示界面!global.user.loginState?'Login':'Main'
     navigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
         headerStyle:{elevation: 0,shadowOpacity: 0,height:48,backgroundColor:"#2196f3"},
-        headerTitleStyle:{color:'#fff',fontSize:16}, //alignSelf:'center'  文字居中
+        headerTitleStyle:{color:'#fff',fontSize:16,alignSelf:'center'}, //alignSelf:'center'  文字居中
         headerBackTitleStyle:{color:'#fff',fontSize:12},
         // headerTintColor:{},
         gesturesEnabled:true,//是否支持滑动返回收拾，iOS默认支持，安卓默认关闭
