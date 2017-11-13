@@ -18,7 +18,7 @@ export default class Welcome extends Component {
             console.log(`user hydrated ${JSON.stringify(userStore.user)}`);
             const { dispatch } = this.props.navigation;
             if (userStore.user.token) {
-                alert('TOKEN:' + userStore.user.token)
+                //alert('TOKEN:' + userStore.user.token)
                 let resetAction = NavigationActions.reset({
                     index: 0,
                     actions: [

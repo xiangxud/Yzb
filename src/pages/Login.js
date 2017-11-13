@@ -37,65 +37,70 @@ export default class LoginScreen extends Component {
         this.setState({step: step, stepTitle: stepTitle});
     }
 
-    _operate = () => {
-        if (this.state.step === 1) {
-            //登录
-            this.setState({showSpinner: true});
-            this.props.userStore.login().then((resp)=>{
-                console.log(`resp is ${JSON.stringify(resp)}`);
-                this.setState({showSpinner: false});
-                let bodyObj = JSON.parse(resp._bodyText);
-                if (resp.status !== 200) {
-                    console.log('Error calling login '+resp._bodyText+' for user: '+JSON.stringify(this.props.userStore.user));
+    _login = () => {
+        this.loginRequest = requestAnimationFrame(() => {
+            if (this.state.step === 1) {
+                //登录
+                this.setState({showSpinner: true});
+                this.props.userStore.login().then((resp) => {
+                    console.log(`resp is ${JSON.stringify(resp)}`);
+                    this.setState({showSpinner: false});
+                    let bodyObj = JSON.parse(resp._bodyText);
+                    if (resp.status !== 200) {
+                        console.log('Error calling login ' + resp._bodyText + ' for user: ' + JSON.stringify(this.props.userStore.user));
 
-                    if (bodyObj.error === 'No such user') {
-                        this.setState({loginErrors: {email:bodyObj.error}})
+                        if (bodyObj.error === 'No such user') {
+                            this.setState({loginErrors: {email: bodyObj.error}})
+                        }
+                        else {
+                            console.log(`Unknown error ${bodyObj.error}`);
+                        }
+
                     }
                     else {
-                        console.log(`Unknown error ${bodyObj.error}`);
+                        this.props.userStore.setUserField('token', bodyObj.token);
+                        let resetAction = NavigationActions.reset({
+                            index: 0,
+                            actions: [
+                                NavigationActions.navigate({routeName: 'Main', params: {token: ''}})
+                            ]
+                        });
+                        this.props.navigation.dispatch(resetAction);
                     }
-
-                }
-                else {
-                    this.props.userStore.setUserField('token', bodyObj.token);
+                })
+            }
+            else if (this.state.step === 2) {
+                //注册
+                this.setState({showSpinner: true});
+                this.props.userStore.register().then(() => {
+                    this.setState({showSpinner: false});
                     let resetAction = NavigationActions.reset({
                         index: 0,
                         actions: [
-                            NavigationActions.navigate({routeName: 'Main', params: { token: '' }})
+                            NavigationActions.navigate({routeName: 'Main', params: {token: ''}})
                         ]
                     });
                     this.props.navigation.dispatch(resetAction);
-                }
-            })
-        }
-        else if (this.state.step === 2) {
-            //注册
-            this.setState({showSpinner: true});
-            this.props.userStore.register().then(()=>{
-                this.setState({showSpinner: false});
-                let resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({routeName: 'Main', params: { token: '' }})
-                    ]
                 });
-                this.props.navigation.dispatch(resetAction);
-            });
-        }
-        else if (this.state.step === 3) {
-            //找回密码
-            this.setState({showSpinner: true});
-            this.props.userStore.register().then(()=>{
-                this.setState({showSpinner: false});
-                let resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({routeName: 'Main', params: { token: '' }})
-                    ]
+            }
+            else if (this.state.step === 3) {
+                //找回密码
+                this.setState({showSpinner: true});
+                this.props.userStore.register().then(() => {
+                    this.setState({showSpinner: false});
+                    let resetAction = NavigationActions.reset({
+                        index: 0,
+                        actions: [
+                            NavigationActions.navigate({routeName: 'Main', params: {token: ''}})
+                        ]
+                    });
+                    this.props.navigation.dispatch(resetAction);
                 });
-                this.props.navigation.dispatch(resetAction);
-            });
-        }
+            }
+        })
+    }
+    componentWillUnmount() {
+        this.loginRequest && cancelAnimationFrame(this.loginRequest)
     }
 
     renderBackArrow() {
@@ -219,9 +224,9 @@ export default class LoginScreen extends Component {
                     isVisible={this.state.showSpinner}
                     size={100}
                     type={'ThreeBounce'}
-                    color={'red'}/>
+                    color={'#888'}/>
                 {this.renderForm()}
-                <TouchableOpacity onPress={() => { this._operate() }} style={styles.roundedButton}>
+                <TouchableOpacity onPress={() => { this._login() }} style={styles.roundedButton}>
                     <Text style={styles.buttonText}>{this.state.stepTitle}</Text>
                 </TouchableOpacity>
                 <View style={{marginLeft:10, marginRight:10, flexDirection:'row'}}>

@@ -8,6 +8,9 @@ import {observer, inject} from 'mobx-react/native'
 //@inject('app')
 @observer
 export default class Info extends Component {
+    static navigationOptions = {
+        headerTitle: '新闻中心'
+    }
     render() {
         return (
             <View><Text>养殖头条首页</Text></View>

@@ -2,9 +2,14 @@
  * Created by TomChow on 17/11/8.
  */
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity,
-    StyleSheet
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    Alert
 } from 'react-native'
+import {NavigationActions} from 'react-navigation';
 import {observer, inject} from 'mobx-react/native'
 
 @inject('userStore')
@@ -29,26 +34,45 @@ export default class Uc extends Component {
         )
     }*/
     _onLogout = () =>{
-        const {userStore, navigator} = this.props;
-        // if(userStore.logout()){
-        //     alert('注销成功');
-        // }else{
-        //     alert('Error');
-        // }
+        Alert.alert(
+            '您确认要注销登录吗？',
+            '注销后将退出系统，您需要重新登录后才能正常访问。',
+            [
+                {text: '暂不注销', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: '确认退出登录', onPress: () => {
+                    const {userStore} = this.props;
+                    if(userStore.logout()){
+                        let resetAction = NavigationActions.reset({
+                            index: 0,
+                            actions: [
+                                NavigationActions.navigate({routeName: 'Login', params: { token: null }})
+                            ]
+                        });
+                        this.props.navigation.dispatch(resetAction);
+                    }else{
+                        alert('Error');
+                    }
+                }},
+            ],
+            { cancelable: false }
+        )
     }
     render() {
         return (
             <View>
-                <Text>{this.props.userStore.user.token}</Text>
-                <TouchableOpacity onPress={()=>{this.go()}}>
-                    <Text>报错方便刷新...</Text>
+                <Text>TOKEN:{this.props.userStore.user.token}</Text>
+                <Text>MOBILE:{this.props.userStore.user.email}</Text>
+                <TouchableOpacity
+                    activeOpacity={0.75}
+                    style={styles.registerBtn}
+                    onPress = {()=>this._onLogout()}>
+                    <Text style={{fontSize: 16, color: 'red'}}>注销登陆</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     activeOpacity={0.75}
                     style={styles.registerBtn}
-                    onPress = {this._onLogout()}
-                >
-                    <Text style={{fontSize: 16, color: 'red'}}>注销登陆</Text>
+                    onPress = {()=>this.error()}>
+                    <Text style={{fontSize: 16, color: 'red'}}>SYSTEM ERROR...</Text>
                 </TouchableOpacity>
             </View>
         )

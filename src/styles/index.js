@@ -4,7 +4,8 @@ const CommonStyles = {
     },
 
     container: {
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#F5F5F5',
+        flex:1,
     },
 }
 
