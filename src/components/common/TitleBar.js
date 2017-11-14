@@ -1,39 +1,35 @@
 /**
  * Created by TomChow on 17/11/12.
  */
-import React, { Component } from 'react'
+import React from 'react'
 import {
     Text,
     View,
     StyleSheet,
     TouchableHighlight,
 } from 'react-native';
+
+import { observer } from 'mobx-react/native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class TitleBar extends Component {
-    constructor(props){
-        super(props);
-    }
-    onMorePress = () =>{
-        this.props.onMorePress.bind(this);
-    }
-    render() {
+const TitleBar = observer(({title, icon, iconColor, showMore, morePress})=> {
         return (
             <View style={styles.titleWrap}>
-                <Icon name={this.props.icon? this.props.icon: 'institution'}
-                      color={this.props.iconColor? this.props.iconColor: '#F1745E'} size={16} />
-                <Text style={styles.titleText}>{this.props.title}</Text>
+                <Icon name={icon? icon: 'institution'}
+                      color={iconColor? iconColor: '#F1745E'} size={16} />
+                <Text style={styles.titleText}>{title}</Text>
                 {
-                    this.props.showMore === true ?
-                    <TouchableHighlight style={styles.more} onPress={()=> this.props.onMorePress.bind(this)}>
+                    showMore ?
+                    <TouchableHighlight style={styles.more} onPress={()=> morePress()}>
                         <Text>更多</Text>
                     </TouchableHighlight>
                     : null
                 }
             </View>
         )
-    }
-}
+});
+
+export default TitleBar
 
 const styles = StyleSheet.create({
     titleWrap:{
@@ -53,6 +49,6 @@ const styles = StyleSheet.create({
         flex:1,
     },
     more:{
-        marginRight:10
+        padding:10
     }
 });

@@ -37,6 +37,7 @@ export default class ImmRemindStore {
                 } else {
                     this.reminds.splice(this.reminds.length, 0, ...feeds);
                 }
+                alert(this.page)
             })
         } catch (error) {
             if (error.msg) {
