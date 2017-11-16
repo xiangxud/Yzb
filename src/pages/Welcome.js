@@ -16,7 +16,6 @@ export default class Welcome extends Component {
 
         hydrate('user', userStore).then(() => {
             userStore.hydrate = true;
-            tools.showToast('LOGIN='+JSON.stringify(userStore.loginUser));
             const { dispatch } = this.props.navigation;
             if (userStore.token.access_token) {
                 let resetAction = NavigationActions.reset({

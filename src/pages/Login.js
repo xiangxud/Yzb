@@ -265,7 +265,7 @@ export default class LoginScreen extends Component {
                     type={'ThreeBounce'}
                     color={'#888'}/>
                 {this.renderForm()}
-                <TouchableOpacity onPress={() => { this._login() }} style={styles.roundedButton}>
+                <TouchableOpacity disabled={this.state.showSpinner} onPress={() => { this._login() }} style={styles.roundedButton}>
                     <Text style={styles.buttonText}>{this.state.stepTitle}</Text>
                 </TouchableOpacity>
                 <View style={{marginLeft:10, marginRight:10, flexDirection:'row'}}>
