@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 0,
         left: 0,
-        backgroundColor: gColors.theme
+        backgroundColor: 'green'
     },
     netInfoPrompt: {
         color: 'white',

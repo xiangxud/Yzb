@@ -1,24 +1,24 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import { AsyncStorage } from 'react-native';
 import {NavigationActions} from 'react-navigation';
-import { inject } from 'mobx-react/native';
-import { create } from 'mobx-persist';
+import { inject, observer } from 'mobx-react/native';
+import hydrate from "../common/hydrate";
 //import SplashScreen from 'react-native-splash-screen'
 
 @inject('userStore')
+@observer
 export default class Welcome extends Component {
     constructor(props) {
         super(props);
         this.state = {};
 
         const {userStore} = this.props;
-        const hydrate = create({ storage: AsyncStorage });
+
         hydrate('user', userStore).then(() => {
-            console.log(`user hydrated ${JSON.stringify(userStore.user)}`);
+            userStore.hydrate = true;
+            tools.showToast('LOGIN='+JSON.stringify(userStore.loginUser));
             const { dispatch } = this.props.navigation;
-            if (userStore.user.token) {
-                //alert('TOKEN:' + userStore.user.token)
+            if (userStore.token.access_token) {
                 let resetAction = NavigationActions.reset({
                     index: 0,
                     actions: [
@@ -38,15 +38,14 @@ export default class Welcome extends Component {
             }
             //SplashScreen.hide();
         });
-        console.log(`user token is: ${userStore.user.token}`);
+
+        console.log(`user token is: ${userStore.token}`);
     }
     static navigationOptions = {
         header: null
     };
     render() {
-
         return (<View style={styles.container}><Text>欢迎使用养殖宝</Text></View>)
-
     }
 }
 

@@ -7,12 +7,14 @@ import {
     View,} from 'react-native';
 //import LinearGradient from 'react-native-linear-gradient';
 import {NavigationActions} from 'react-navigation';
-import { inject } from 'mobx-react/native'
+import { inject, observer } from 'mobx-react/native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Spinner from 'react-native-spinkit';
 import AnooTextInput from '../components/AnooTextInput';
+const dismissKeyboard = require('dismissKeyboard');
 
 @inject('userStore')
+@observer
 export default class LoginScreen extends Component {
     constructor(props) {
         super(props);
@@ -20,59 +22,76 @@ export default class LoginScreen extends Component {
             step: 1,
             stepTitle: '登录',
             loginErrors: {},
-            showSpinner: false
+            showSpinner: false,
         }
-        this.onInputChange = this.onInputChange.bind(this);
-        this.onChangeStep = this.onChangeStep.bind(this);
     }
 
     static navigationOptions = {
         header: null
     }
 
-    onInputChange(field, text) {
-        this.props.userStore.setUserField(field, text);
-    }
-    onChangeStep(step, stepTitle){
+    onChangeStep = (step, stepTitle) => {
         this.setState({step: step, stepTitle: stepTitle});
     }
-
+    onTextChange = (v) =>{
+        const {userStore} = this.props;
+        userStore.setLoginPhone(v)
+    }
     _login = () => {
         this.loginRequest = requestAnimationFrame(() => {
+
+            dismissKeyboard();
+
+            const { userStore, navigation }= this.props;
+
             if (this.state.step === 1) {
                 //登录
+                if(userStore.validateErrorLoginPhone){
+                    tools.showToast(userStore.validateErrorLoginPhone);
+                    return;
+                }else if(userStore.validateErrorLoginPassword){
+                    tools.showToast(userStore.validateErrorLoginPassword);
+                    return;
+                }
+
                 this.setState({showSpinner: true});
-                this.props.userStore.login().then((resp) => {
-                    console.log(`resp is ${JSON.stringify(resp)}`);
+                userStore.login((status, resp)=> {
                     this.setState({showSpinner: false});
-                    let bodyObj = JSON.parse(resp._bodyText);
-                    if (resp.status !== 200) {
-                        console.log('Error calling login ' + resp._bodyText + ' for user: ' + JSON.stringify(this.props.userStore.user));
-
-                        if (bodyObj.error === 'No such user') {
-                            this.setState({loginErrors: {email: bodyObj.error}})
-                        }
-                        else {
-                            console.log(`Unknown error ${bodyObj.error}`);
-                        }
-
-                    }
-                    else {
-                        this.props.userStore.setUserField('token', bodyObj.token);
-                        let resetAction = NavigationActions.reset({
-                            index: 0,
-                            actions: [
-                                NavigationActions.navigate({routeName: 'Main', params: {token: ''}})
-                            ]
+                    if(!status){
+                        tools.showToast(resp)
+                    }else {
+                        userStore.fetchLoginUser().then((data) => {
+                            userStore.setLoginUser(data)
+                            let resetAction = NavigationActions.reset({
+                                index: 0,
+                                actions: [
+                                    NavigationActions.navigate({routeName: 'Main', params: {token: resp.access_token}})
+                                ]
+                            });
+                            navigation.dispatch(resetAction);
+                        }).catch((err) => {
+                            tools.showToast('bbb'+JSON.stringify(err))
                         });
-                        this.props.navigation.dispatch(resetAction);
                     }
                 })
             }
             else if (this.state.step === 2) {
+                if(userStore.validateErrorLoginPhone){
+                    tools.showToast(userStore.validateErrorLoginPhone);
+                    return;
+                }else if(userStore.validateErrorRegisterPassword){
+                    tools.showToast(userStore.validateErrorRegisterPassword);
+                    return;
+                }else if(userStore.validateErrorRegisterPasswordRepeat){
+                    tools.showToast(userStore.validateErrorRegisterPasswordRepeat);
+                    return;
+                }else if(userStore.validateErrorRegisterValidateCode){
+                    tools.showToast(userStore.validateErrorRegisterValidateCode);
+                    return;
+                }
                 //注册
                 this.setState({showSpinner: true});
-                this.props.userStore.register().then(() => {
+                userStore.register().then(() => {
                     this.setState({showSpinner: false});
                     let resetAction = NavigationActions.reset({
                         index: 0,
@@ -80,13 +99,13 @@ export default class LoginScreen extends Component {
                             NavigationActions.navigate({routeName: 'Main', params: {token: ''}})
                         ]
                     });
-                    this.props.navigation.dispatch(resetAction);
+                    navigation.dispatch(resetAction);
                 });
             }
             else if (this.state.step === 3) {
                 //找回密码
                 this.setState({showSpinner: true});
-                this.props.userStore.register().then(() => {
+                userStore.register().then(() => {
                     this.setState({showSpinner: false});
                     let resetAction = NavigationActions.reset({
                         index: 0,
@@ -94,7 +113,7 @@ export default class LoginScreen extends Component {
                             NavigationActions.navigate({routeName: 'Main', params: {token: ''}})
                         ]
                     });
-                    this.props.navigation.dispatch(resetAction);
+                    navigation.dispatch(resetAction);
                 });
             }
         })
@@ -124,17 +143,17 @@ export default class LoginScreen extends Component {
                             keyboardType: 'phone-pad',
                             autoCapitalize: 'none',
                             autoCorrect: false,
-                            autoFocus: true
+                            maxLength: 11
                         }}
-                        errorText={this.state.loginErrors.email}
-                        maxLength={11}
-                        onChange={(text)=>this.onInputChange('email', text)}/>
+                        onChange={(text)=> userStore.setLoginPhone(text)}/>
                     <AnooTextInput
                         label = {'密码'}
                         placeHolder={'请输入登陆密码'}
-                        inputProps={{secureTextEntry: true}}
-                        errorText={this.state.loginErrors.password}
-                        onChange={(text)=>this.onInputChange('password', text)}/>
+                        inputProps={{
+                            secureTextEntry: true,
+                            maxLength: 16
+                        }}
+                        onChange={(text)=> userStore.setLoginPassword(text)}/>
                 </View>
             );
         }
@@ -151,14 +170,16 @@ export default class LoginScreen extends Component {
                             autoFocus: false
                         }}
                         maxLength={11}
-                        onChange={(text)=>this.onInputChange('email', text)}/>
+                        onChange={(text)=>userStore.setLoginPhone(text)}/>
                     <View>
                         <AnooTextInput
                             label={'验证码'}
                             placeHolder={'请输入6位验证码'}
-                            inputProps={{value: '123456', maxLength:6}}
-                            errorText={this.state.loginErrors.password}
-                            onChange={(text)=>{}}/>
+                            inputProps={{
+                                value: '123456',
+                                maxLength:6
+                            }}
+                            onChange={(text)=>userStore.setRegisterValidateCode(text)}/>
                         <TouchableOpacity style={styles.btnGetCode}>
                             <Text style={{color:'#fff'}}>获取验证码</Text>
                         </TouchableOpacity>
@@ -166,13 +187,21 @@ export default class LoginScreen extends Component {
                     <AnooTextInput
                         label={'登陆密码'}
                         placeHolder={'登录密码(6-20位)'}
-                        inputProps={{secureTextEntry: true, value: '123456'}}
-                        errorText={this.state.loginErrors.password}
-                        onChange={(text)=>this.onInputChange('password', text)}/>
+                        inputProps={{
+                            secureTextEntry: true,
+                            maxLength:16,
+                            value: '123456'
+                        }}
+                        onChange={(text)=>userStore.setRegisterPassword(text)}/>
                     <AnooTextInput
-                        label={'推荐人'}
-                        placeHolder={'请输入推荐人手机号，选填'}
-                        onChange={(text)=>{}}/>
+                        label={'重复密码'}
+                        placeHolder={'请输入上面相同的密码'}
+                        inputProps={{
+                            secureTextEntry: true,
+                            maxLength:16,
+                            value: '123456'
+                        }}
+                        onChange={(text)=>userStore.setRegisterPasswordRepeat(text)}/>
                 </View>
             )
         }
@@ -186,28 +215,38 @@ export default class LoginScreen extends Component {
                             keyboardType: 'phone-pad',
                             autoCapitalize: 'none',
                             autoCorrect: false,
-                            autoFocus: true
+                            autoFocus: false
                         }}
                         maxLength={11}
-                        onChange={(text)=>this.onInputChange('email', text)}/>
+                        onChange={(text)=>userStore.setLoginPhone(text)}/>
                     <View>
                         <AnooTextInput
                             label={'验证码'}
                             placeHolder={'请输入6位验证码'}
                             inputProps={{value: '123456', maxLength:6}}
-                            errorText={this.state.loginErrors.password}
-                            onChange={(text)=>{}}/>
+                            onChange={(text)=>userStore.setRegisterValidateCode(text)}/>
                         <TouchableOpacity style={styles.btnGetCode}>
                             <Text style={{color:'#fff'}}>获取验证码</Text>
                         </TouchableOpacity>
-
                     </View>
                     <AnooTextInput
                         label={'登陆密码'}
                         placeHolder={'登录密码(6-20位)'}
-                        inputProps={{secureTextEntry: true, value: userStore.user.password}}
-                        errorText={this.state.loginErrors.password}
-                        onChange={(text)=>this.onInputChange('password', text)}/>
+                        inputProps={{
+                            secureTextEntry: true,
+                            maxLength:6,
+                            value: '123456'
+                        }}
+                        onChange={(text)=>userStore.setRegisterPassword(text)}/>
+                    <AnooTextInput
+                        label={'重复密码'}
+                        placeHolder={'请输入上面相同的密码'}
+                        inputProps={{
+                            secureTextEntry: true,
+                            maxLength:6,
+                            value: '123456'
+                        }}
+                        onChange={(text)=>userStore.setRegisterPasswordRepeat(text)}/>
                 </View>
             )
         }
@@ -230,12 +269,16 @@ export default class LoginScreen extends Component {
                     <Text style={styles.buttonText}>{this.state.stepTitle}</Text>
                 </TouchableOpacity>
                 <View style={{marginLeft:10, marginRight:10, flexDirection:'row'}}>
-                    <TouchableOpacity onPress={() => { this.onChangeStep(2, '注册') }} style={{alignItems:'flex-start', flex:1,}}>
-                        <Text style={{}}>没有账号？去注册</Text>
+                    {this.state.step!==2?
+                    <TouchableOpacity visible={false} onPress={() => { this.onChangeStep(2, '注册') }} style={{alignItems:'flex-start', flex:1,}}>
+                        <Text>没有账号？现在注册</Text>
                     </TouchableOpacity>
+                    : null }
+                    {this.state.step!==3?
                     <TouchableOpacity onPress={() => { this.onChangeStep(3, '找回密码') }} style={{alignItems:'flex-end', flex:1,}}>
                         <Text style={{}}>忘记密码？</Text>
                     </TouchableOpacity>
+                        : null }
                 </View>
             </View>
         );

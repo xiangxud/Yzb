@@ -16,17 +16,6 @@ export default class AnooTextInput extends Component {
         this.props.onChange(text.text);
     };
 
-    renderErrorText() {
-        if (this.props.errorText) {
-            console.log(`rendering error text ${this.props.errorText}`);
-            return (
-                <Text style={styles.error}>
-                    {this.props.errorText}
-                </Text>
-            )
-        }
-    }
-
     render() {
         return (
             <View style={[styles.inputContainer, {...this.props.style}]}>

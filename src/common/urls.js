@@ -1,9 +1,9 @@
 // 接口服务器地址
- const apiPath = 'http://103.254.113.11:9191/api/'; // 开发服务器（外网）
+ const apiPath = 'http://120.24.89.243/imm/api/'; // 开发服务器（外网）
 // const apiPath = 'http://103.254.113.10:9090/api/'; // 生产服务器（外网）
 
 // web服务器地址
- const webPath = 'http://103.254.113.11:9191/web/'; // 开发服务器（外网）
+ const webPath = 'http://120.24.89.243/imm/yzb/'; // 开发服务器（外网）
 //const webPath = 'http://103.254.113.10:9090/web/'; // 生产服务器（外网）
 //
 // 其他
@@ -91,9 +91,9 @@ const urls = {
         //注册
         USER_REGISTER: apiPath + "user/register",
         //登录
-        USER_LOGIN: apiPath + "user/login",
+        USER_LOGIN: apiPath + "authorizat/post",
         //获取用户信息
-        USER_GETLOGINUSER: apiPath + 'user/getLoginUser',
+        USER_GETLOGINUSER: apiPath + 'uc/get',
         //获取指定用户信息
         USER_GETUSER: apiPath + 'user/getUser',
         //重置密码

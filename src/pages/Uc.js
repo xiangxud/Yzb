@@ -60,8 +60,8 @@ export default class Uc extends Component {
     render() {
         return (
             <View>
-                <Text>TOKEN:{this.props.userStore.user.token}</Text>
-                <Text>MOBILE:{this.props.userStore.user.email}</Text>
+                <Text style={{borderBottomWidth:3, borderBottomColor:'red'}}>{JSON.stringify(this.props.userStore.token)}</Text>
+                <Text style={{borderBottomWidth:3, borderBottomColor:'red'}}>{JSON.stringify(this.props.userStore.loginUser)}</Text>
                 <TouchableOpacity
                     activeOpacity={0.75}
                     style={styles.registerBtn}
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     registerBtn: {
-        width: gScreen.width * 0.4,
+        width: 200,
         marginTop: 20,
         height: 40,
         borderRadius: 20,
