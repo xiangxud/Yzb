@@ -75,7 +75,7 @@ const TabNavigation = TabNavigator({
 const RootNavigator = StackNavigator({
     Welcome: {screen: Welcome },
     Main: { screen: TabNavigation },
-    InfoDetail: { screen: InfoDetail },
+    InfoDetail:{screen: InfoDetail,},
     Login:{
         screen: Login,
         navigationOptions:{

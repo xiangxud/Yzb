@@ -101,7 +101,7 @@ export default class HomePage extends Component {
                          ignore={this.exec}/>
                     :null}
                 <Report fields={fields} morePress={this.remindMore}/>
-                <Toutiao list={news} newsPress={this.newsPress} page={news_page} loadMore={this.fetchMore} isFetching={isFetching}/>
+                <Toutiao list={news} page={news_page} loadMore={this.fetchMore} isFetching={isFetching} navigation={this.props.navigation} />
             </ScrollView>
         )
     }

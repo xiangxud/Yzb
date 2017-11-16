@@ -13,11 +13,15 @@ import {observer} from 'mobx-react/native'
 import TitleBar from '../common/TitleBar'
 import loading from '../common/Loading'
 
-const Toutiao = observer(({list, newsPress, page, loadMore, isFetching})=>{
+const Toutiao = observer(({list, newsPress, page, loadMore, isFetching,navigation})=>{
+    openNewInfo = newsPress==null || newsPress == undefined ? (info) =>{
+        navigation.navigate("InfoDetail",{ key : info.key , title:info.title });
+    } : newsPress;
+
     renderRow = (info) =>{
         return (
         <TouchableNativeFeedback
-            onPress={()=>{newsPress(info.key)}}
+            onPress={()=>{openNewInfo(info)}}
             background={TouchableNativeFeedback.SelectableBackground()}>
             <View style={{justifyContent:'center', padding:10, borderBottomWidth:StyleSheet.hairlineWidth, borderBottomColor:'#ccc'}}>
                 <Text style={{fontSize:18}}>
