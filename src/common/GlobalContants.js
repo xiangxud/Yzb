@@ -2,6 +2,8 @@
  * Created by TomChow on 2017/10/25.
  */
 import { Dimensions, Platform, PixelRatio } from 'react-native'
+import config from "./config";
+import urls from "./urls";
 
 global.gScreen = {
     width: Dimensions.get('window').width,
