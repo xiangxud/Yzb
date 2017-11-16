@@ -91,7 +91,7 @@ const urls = {
         //注册
         USER_REGISTER: apiPath + "user/register",
         //登录
-        USER_LOGIN: apiPath + "authorizat/post",
+        USER_LOGIN: apiPath + "auth/login",
         //获取用户信息
         USER_GETLOGINUSER: apiPath + 'uc/get',
         //获取指定用户信息

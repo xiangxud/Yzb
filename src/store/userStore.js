@@ -113,8 +113,8 @@ class UserStore {
     _login(phone, password) {
         return new Promise(function (resolve, reject) {
             request.postJson(urls.apis.USER_LOGIN, {
-                Identity: phone,
-                Password: password
+                phone: phone,
+                password: password
             }).then((data) => {
                 resolve(data);
             }).catch((error)=>{
