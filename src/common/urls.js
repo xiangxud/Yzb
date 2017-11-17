@@ -56,7 +56,7 @@ const urls = {
         //获取资讯栏目
         INFORMATION_CATEGORY: apiPath + 'info/getInformationCategories',
         //资讯列表
-        INFORMATION_LIST: apiPath + 'info/getInformationList',
+        INFORMATION_LIST: apiPath + 'info/getInfoPagers',
 
 
         // 我的收藏 ----------------------------------------------------------------------

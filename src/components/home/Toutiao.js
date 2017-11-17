@@ -47,9 +47,10 @@ const Toutiao = observer(({list, newsPress, page, loadMore, isFetching,navigatio
                 data={list.slice()}
                 renderItem={({ item }) => renderRow(item) }
                 ListFooterComponent={loading(isFetching, styles.loading)}
-                onEndReachedThreshold={1}
-                keyExtractor={this._keyExtractor}
+                keyExtractor={ this._keyExtractor }
+                onEndReachedThreshold={0.5}
                 onEndReached={() => {
+                    alert(page)
                     if (page > 0) {
                         loadMore()
                     }

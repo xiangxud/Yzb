@@ -4,10 +4,11 @@
 import React, { Component } from 'react'
 import {
     Text,
-    ScrollView,
+    FlatList,
     View,
     StyleSheet,
     TouchableHighlight,
+    TouchableNativeFeedback,
 } from 'react-native';
 import {observer, inject} from 'mobx-react/native';
 
@@ -17,7 +18,8 @@ import SwiperBanner from '../components/home/SwiperBanner';
 import MySties from '../components/home/MySties';
 import Reminds from "../components/home/Reminds";
 import Report from "../components/home/Report";
-import Toutiao from "../components/home/Toutiao";
+import TitleBar from '../components/common/TitleBar'
+import loading from '../components/common/Loading'
 
 @inject('homeStore')
 @observer
@@ -39,17 +41,19 @@ export default class HomePage extends Component {
     exec = (key) =>{
         alert('ok-'+key)
     }
-    newsPress =(id) =>{
-        alert(id)
+    newsPress =(info) =>{
+        const {navigation} = this.props;
+        navigation.navigate("InfoDetail",{ key : info.key , title:info.title })
     }
     fetchMore =()=>{
         //alert('get more news')
+        homeStore.fetchNextInfos();
     }
-    render() {
+    renderListHeader(){
         const {homeStore} = this.props;
         const {isFetching, reminds, fields, news, news_page} = homeStore;
         return (
-            <ScrollView style={CommonStyles.container}>
+            <View>
                 <View style={{height:120, backgroundColor:'#ffc'}}>
                     <SwiperBanner />
                 </View>
@@ -87,20 +91,64 @@ export default class HomePage extends Component {
                 </View>
                 <MySties/>
                 {!isFetching && reminds ?
-                <Reminds reminds={reminds}
-                         morePress={this.remindMore}
-                         detailPress={this.detailPress}
-                         exec={this.exec}
-                         ignore={this.exec}/>
+                    <Reminds reminds={reminds}
+                             morePress={this.remindMore}
+                             detailPress={this.detailPress}
+                             exec={this.exec}
+                             ignore={this.exec}/>
                     :null}
                 <Report fields={fields} morePress={this.remindMore}/>
-                <Toutiao list={news} page={news_page} loadMore={this.fetchMore} isFetching={isFetching} navigation={this.props.navigation} />
-            </ScrollView>
+                <TitleBar icon={'newspaper-o'}
+                          iconColor={'red'}
+                          title={'养殖头条'}
+                          showMore = {true}
+                          onMorePress={()=>{this.remindMore('news')}} />
+            </View>
+        )
+    }
+    _keyExtractor = (item, index) => index;
+
+    renderRow = (info) =>{
+        return (
+            <TouchableNativeFeedback
+                onPress={()=>{this.newsPress(info)}}
+                background={TouchableNativeFeedback.SelectableBackground()}>
+                <View style={styles.newsItem}>
+                    <Text style={styles.newsItemTitle}>
+                        {info.title}
+                    </Text>
+                    <Text style={styles.newsItemDesc}>
+                        {info.from} {info.publishdate} {info.comment_count}评论
+                    </Text>
+                </View>
+            </TouchableNativeFeedback>)
+    }
+    render() {
+        const {homeStore} = this.props;
+        const {isFetching, reminds, fields, news, news_page} = homeStore;
+        return (
+                <FlatList
+                    style={styles.container}
+                    data={news.slice()}
+                    renderItem={({ item }) => this.renderRow(item) }
+                    ListHeaderComponent={this.renderListHeader()}
+                    ListFooterComponent={loading(isFetching, styles.loading)}
+                    keyExtractor={ this._keyExtractor }
+                    onEndReachedThreshold={0.5}
+                    onEndReached={() => {
+                        if (news_page > 0) {
+                            this.fetchMore()
+                        }
+                    }}
+                />
         )
     }
 }
 
 const styles = StyleSheet.create({
+    container:{
+        flex:1,
+    },
     homeBigButton:{
         flex: 1,
     },
@@ -108,5 +156,21 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         height:80
+    },
+    newsItem:{
+        backgroundColor:'#fff',
+        justifyContent:'center',
+        padding:10,
+        borderBottomWidth:StyleSheet.hairlineWidth,
+        borderBottomColor:'#ccc'
+    },
+    newsItemTitle:{
+        fontSize:20
+    },
+    newsItemDesc:{
+        fontSize:12, color:'#ccc'
+    },
+    loading:{
+        margin:32,
     }
 });

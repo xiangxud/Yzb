@@ -20,17 +20,18 @@ class HomeStore {
     @observable errorMsg = '';
     @observable isFetching = false;
     @observable isNoMore = true;
-    constructor(){
+
+    constructor() {
         this.isFetching = true;
     }
 
-    @action fetchHomeData = async() => {
+    @action fetchHomeData = async () => {
         if (this.isFetching) {
             this.news_page = 1
         }
         const params = {}
         request.getJson(urls.apis.HOME_ALL, params).then((res) => {
-            const {fields, reminds, news} = res
+            const {fields, reminds, news} = res;
             runInAction(() => {
                 this.isFetching = false
                 this.errorMsg = ''
@@ -47,17 +48,21 @@ class HomeStore {
         })
     }
 
-    @action fetchNextInfomations = async() =>{
-        if(this.isFetching){
-            return;
-        }else{
-            request.getJson(urls.apis.INFORMATION_LIST, {page: this.news_page})
-        }
+    @action fetchNextInfos = async () => {
+        this.isFetching = true;
+        this.news_page = this.news_page + 1;
+        request.getJson(urls.apis.INFORMATION_LIST, {page: this.news_page}).then((res) => {
+            runInAction(() => {
+                this.isFetching = false;
+                this.news.splice(this.news.length, 0, ...res);
+                //alert(JSON.stringify(res))
+            });
+        }).catch((error) => {
+            this.isFetching = false;
+            tools.showToast(JSON.stringify(error))
+        });
     }
 
-    @action pageIncrease = () =>{
-        this.news_page++
-    }
     @computed
     get isLoadMore() {
         return this.news_page !== 1
