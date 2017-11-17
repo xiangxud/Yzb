@@ -47,7 +47,7 @@ const urls = {
 
         //首页-------------------------------------------------------------------------
         //首页统一数据
-        HOME_ALL: apiPath + 'home/getHomeData',
+        HOME_ALL: apiPath + 'public/getHomeData',
         //首页头条资讯列表
         HOME_INFORMATION_LIST: apiPath + 'home/getInformationList',
 

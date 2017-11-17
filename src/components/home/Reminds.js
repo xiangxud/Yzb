@@ -34,7 +34,7 @@ const Reminds = observer(({reminds, morePress, detailPress, exec, ignore})=> {
                         }}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{flex: 1, fontSize: 18, color: '#333'}}>
-                                    {val.title}
+                                    {val.program_name}
                                     <Text style={{color: '#ccc', fontSize: 14, marginLeft: 5}}>{val.remind_date}</Text>
                                 </Text>
                                 <TouchableOpacity onPress={() => exec(val.id)}>

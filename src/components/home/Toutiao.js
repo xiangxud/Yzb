@@ -18,6 +18,8 @@ const Toutiao = observer(({list, newsPress, page, loadMore, isFetching,navigatio
         navigation.navigate("InfoDetail",{ key : info.key , title:info.title });
     } : newsPress;
 
+    _keyExtractor = (item, index) => index;
+
     renderRow = (info) =>{
         return (
         <TouchableNativeFeedback
@@ -28,7 +30,7 @@ const Toutiao = observer(({list, newsPress, page, loadMore, isFetching,navigatio
                     {info.title}
                 </Text>
                 <Text style={{fontSize:12, color:'#ccc'}}>
-                    {info.come_from} {info.publishdate} {info.comment_count}评论
+                    {info.from} {info.publishdate} {info.comment_count}评论
                 </Text>
             </View>
         </TouchableNativeFeedback>)
@@ -46,6 +48,7 @@ const Toutiao = observer(({list, newsPress, page, loadMore, isFetching,navigatio
                 renderItem={({ item }) => renderRow(item) }
                 ListFooterComponent={loading(isFetching, styles.loading)}
                 onEndReachedThreshold={1}
+                keyExtractor={this._keyExtractor}
                 onEndReached={() => {
                     if (page > 0) {
                         loadMore()

@@ -1,6 +1,8 @@
+import {AsyncStorage} from 'react-native'
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
 import validate from 'mobx-form-validate';
 import { persist } from 'mobx-persist'
+import hydrate from "../common/hydrate";
 import _ from "lodash";
 useStrict(true);
 
@@ -82,7 +84,6 @@ class UserStore {
                 password: this.loginPassword,
             })
         }).then((resp)=>{
-            console.log(`resp is ${JSON.stringify(resp)}`);
             if (resp.status !== 200) {
                 console.error('Error calling register '+resp._bodyText);
             }
@@ -224,3 +225,7 @@ class UserStore {
 
 const userStore = new UserStore();
 export default userStore
+hydrate('user', userStore).then(() => {
+    userStore.hydrated = true;
+    //console.log('user hydrated', userStore)
+});

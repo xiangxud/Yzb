@@ -2,11 +2,9 @@
  * Created by TomChow on 2017/11/13.
  */
 import {observable, computed, action, runInAction, useStrict} from 'mobx'
-import {get} from '../common/HttpTool'
 
 useStrict(true);
-
-export default class HomeStore {
+class HomeStore {
     @observable fields = {
         out: 0, //出栏
         in: 0, //入栏
@@ -24,18 +22,15 @@ export default class HomeStore {
     @observable isNoMore = true;
     constructor(){
         this.isFetching = true;
-        this.fetchHomeData();
     }
 
-    @action fetchHomeData = async() =>{
-        try {
-            if (this.isFetching) {
-                this.news_page = 1
-            }
-            const url = 'http://www.yinway.cn/homeData.js'
-            const params = {}
-            const responseData = await get({url, params, timeout: 30}).then(res => res.json())
-            const {fields, reminds, news} = responseData
+    @action fetchHomeData = async() => {
+        if (this.isFetching) {
+            this.news_page = 1
+        }
+        const params = {}
+        request.getJson(urls.apis.HOME_ALL, params).then((res) => {
+            const {fields, reminds, news} = res
             runInAction(() => {
                 this.isFetching = false
                 this.errorMsg = ''
@@ -46,15 +41,17 @@ export default class HomeStore {
                 } else {
                     this.reminds.splice(this.reminds.length, 0, ...reminds);
                 }
-                //alert(this.reminds.length)
-            })
-        } catch (error) {
-            if (error.msg) {
-                this.errorMsg = error.msg
-            } else {
-                this.errorMsg = error
-            }
-            alert(this.errorMsg)
+            });
+        }).catch((error) => {
+            tools.showToast(JSON.stringify(error))
+        })
+    }
+
+    @action fetchNextInfomations = async() =>{
+        if(this.isFetching){
+            return;
+        }else{
+            request.getJson(urls.apis.INFORMATION_LIST, {page: this.news_page})
         }
     }
 
@@ -66,3 +63,6 @@ export default class HomeStore {
         return this.news_page !== 1
     }
 }
+
+homeStore = new HomeStore()
+export default homeStore

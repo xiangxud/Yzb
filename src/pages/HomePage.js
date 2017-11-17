@@ -8,36 +8,28 @@ import {
     View,
     StyleSheet,
     TouchableHighlight,
-    ToastAndroid,
 } from 'react-native';
-import {observer} from 'mobx-react/native';
+import {observer, inject} from 'mobx-react/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CommonStyles from '../styles';
 import SwiperBanner from '../components/home/SwiperBanner';
-import HomeStore from '../store/homeStore';
 import MySties from '../components/home/MySties';
 import Reminds from "../components/home/Reminds";
 import Report from "../components/home/Report";
 import Toutiao from "../components/home/Toutiao";
 
+@inject('homeStore')
 @observer
 export default class HomePage extends Component {
 
-    homeStore = new HomeStore()
+    componentDidMount(){
+        const { homeStore } = this.props;
+        //if(!homeStore.isFetching)
+            homeStore.fetchHomeData()
 
-    componentWillReact() {
-        const {errorMsg} = HomeStore
-        errorMsg && ToastAndroid.show(errorMsg, ToastAndroid.SHORT)
     }
 
-    componentWillReceiveProps(nextProps) {
-        const {isConnected} = nextProps
-        const {isNoResult} = this.homeStore
-        if (isConnected && isNoResult) {
-            this.homeStore.fetchHomeData()
-        }
-    }
     remindMore=(t)=>{
         alert(t)
     }
@@ -51,17 +43,18 @@ export default class HomePage extends Component {
         alert(id)
     }
     fetchMore =()=>{
-        alert('get more news')
+        //alert('get more news')
     }
     render() {
-        const {isFetching, reminds, fields, news, news_page} = this.homeStore;
+        const {homeStore} = this.props;
+        const {isFetching, reminds, fields, news, news_page} = homeStore;
         return (
             <ScrollView style={CommonStyles.container}>
                 <View style={{height:120, backgroundColor:'#ffc'}}>
                     <SwiperBanner />
                 </View>
                 <View style={{marginTop:10, marginBottom:10, backgroundColor:'#fff', height:80, flexDirection:'row'}}>
-                    <TouchableHighlight onPress={()=> this.props.navigation.navigate('InfoDetail') } style={styles.homeBigButton}>
+                    <TouchableHighlight onPress={()=> this.props.navigation.navigate('BHStart') } style={styles.homeBigButton}>
                         <View style={styles.homeBigButtonInner}>
                             <Icon name='medkit' color={'#8bc34a'} size={34} />
                             <Text>动物诊疗</Text>

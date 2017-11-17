@@ -8,6 +8,7 @@ import Info from '../pages/Info';
 import InfoDetail from '../pages/info/InfoDetail';
 import Uc from '../pages/Uc';
 import Login from '../pages/Login'
+import BHStart from '../pages/bohai/BHStart'
 
 // see here for options: https://reactnavigation.org/docs/navigators/tab
 const TabNavigation = TabNavigator({
@@ -73,15 +74,11 @@ const TabNavigation = TabNavigator({
 
 // add your router below
 const RootNavigator = StackNavigator({
-    Welcome: {screen: Welcome },
-    Main: { screen: TabNavigation },
-    InfoDetail:{screen: InfoDetail,},
-    Login:{
-        screen: Login,
-        navigationOptions:{
-            header:null,
-        }
-    },
+    Welcome:{ screen: Welcome },
+    Main:{ screen: TabNavigation },
+    InfoDetail:{ screen: InfoDetail },
+    Login:{ screen: Login },
+    BHStart:{ screen: BHStart }
 }, {
     initialRouteName: 'Welcome', // 默认显示界面!global.user.loginState?'Login':'Main'
     navigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)

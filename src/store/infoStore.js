@@ -3,6 +3,10 @@
  */
 import {observable} from 'mobx'
 
-export default class Account {
+class InfoStore {
     @observable name = ''
+
 }
+
+infoStore = new InfoStore();
+export default infoStore
