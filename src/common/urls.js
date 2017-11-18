@@ -102,6 +102,8 @@ const urls = {
         USER_SETUSERBASEINFO: apiPath + "user/setUserBaseInfo",
         //签到
         USER_SIGNIN: apiPath + "user/signIn",
+        //cms
+        CMS_Publish:apiPath + "cms/Publish"
     },
     // 获取图片完整路径
     getImage(filePath, width, height){
