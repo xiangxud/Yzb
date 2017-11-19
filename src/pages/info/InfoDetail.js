@@ -34,7 +34,7 @@ export default class InfoDetail extends Component {
     constructor(props){
         super(props);
 
-        proxy.publish(this.props.code,this.props.control.Data.Model.Txt);
+        proxy.getArticle(this.props.code,this.getArticle,this.onFailed);
     }
     static defaultProps = {
         control:new Control(),
@@ -44,6 +44,16 @@ export default class InfoDetail extends Component {
         headerTitle: navigation.state.params.title,
         headerRight: <View></View>
     });
+
+    @action
+    getArticle = (o) => {
+        this.props.control.Data.Count = o.hits > 9 ? '...' : o.hits.toString();
+    };
+    @action
+    onFailed = (mess) => {
+        tools.showToast(mess);
+    };
+
     @action
     onPress = (e)=>{
         this.props.control.Data.ShowModel = true;
@@ -77,7 +87,7 @@ export default class InfoDetail extends Component {
                 <Icon name="star-o" size={25} color="#008AF5"></Icon>
                 <Icon name="share-square-o" size={25} color="#008AF5"></Icon>
                 <View style={style.label}>
-                    <Text style={style.word}>5</Text>
+                    <Text style={style.word}>{this.props.control.Data.Count}</Text>
                 </View>
             </View>
         </View>);

@@ -18,7 +18,7 @@ export default class SwiperBanner extends Component {
                     showsButtons={false}
                     paginationStyle={{bottom:5}}
                     activeDotColor={'#009688'}
-                    autoplay={true}>
+                    autoplay={false}>
                 <View style={styles.slide1}>
                     <Text style={styles.text}>养殖宝来了</Text>
                 </View>

@@ -1,5 +1,5 @@
 // 接口服务器地址
- const apiPath = 'http://120.24.89.243/imm/api/'; // 开发服务器（外网）
+const apiPath = 'http://120.24.89.243/imm/api/'; // 开发服务器（外网）
 // const apiPath = 'http://103.254.113.10:9090/api/'; // 生产服务器（外网）
 
 // web服务器地址
@@ -103,7 +103,10 @@ const urls = {
         //签到
         USER_SIGNIN: apiPath + "user/signIn",
         //cms
-        CMS_Publish:apiPath + "cms/Publish"
+        //回复
+        CMS_Publish:apiPath + "info/Publish",
+        //获取文章信息
+        CMS_GetArticle:apiPath + "info/GetArticle"
     },
     // 获取图片完整路径
     getImage(filePath, width, height){
