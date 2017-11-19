@@ -4,6 +4,7 @@ import validate from 'mobx-form-validate';
 import { persist } from 'mobx-persist'
 import hydrate from "../common/hydrate";
 import _ from "lodash";
+
 useStrict(true);
 
 class UserStore {
