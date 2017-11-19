@@ -7,10 +7,14 @@ import {
     View,
     StyleSheet,
     TouchableHighlight,
-    Image
+    Image,
+    Dimensions
 } from 'react-native';
+import {observer, inject} from 'mobx-react/native'
 import Swiper from 'react-native-swiper';
-
+var {height, width} = Dimensions.get('window');
+@inject('homeStore')
+@observer
 export default class SwiperBanner extends Component {
     render() {
         return (
@@ -20,7 +24,7 @@ export default class SwiperBanner extends Component {
                     activeDotColor={'#009688'}
                     autoplay={true}>
                 <View style={styles.slide1}>
-                    <Text style={styles.text}>养殖宝来了</Text>
+                    <Image source={require('../../resource/banner_home_1.jpg')} style={{width: width, height:120,}} />
                 </View>
                 <View style={styles.slide2}>
                     <Text style={styles.text}>Beautiful</Text>
