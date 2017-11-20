@@ -51,7 +51,7 @@ export default class HomePage extends Component {
     }
     renderListHeader(){
         const {homeStore} = this.props;
-        const {isFetching, reminds, fields, news, news_page} = homeStore;
+        const {isFetching, reminds, fields, sties} = homeStore;
         return (
             <View>
                 <View style={{height:120, backgroundColor:'#ffc'}}>
@@ -89,7 +89,7 @@ export default class HomePage extends Component {
                         </View>
                     </TouchableHighlight>
                 </View>
-                <MySties/>
+                <MySties sties={sties}/>
                 {!isFetching && reminds ?
                     <Reminds reminds={reminds}
                              morePress={this.remindMore}
@@ -125,7 +125,7 @@ export default class HomePage extends Component {
     }
     render() {
         const {homeStore} = this.props;
-        const {isFetching, reminds, fields, news, news_page} = homeStore;
+        const {isFetching, news, news_page} = homeStore;
         return (
                 <FlatList
                     style={styles.container}
@@ -134,6 +134,8 @@ export default class HomePage extends Component {
                     ListHeaderComponent={this.renderListHeader()}
                     ListFooterComponent={loading(isFetching, styles.loading)}
                     keyExtractor={ this._keyExtractor }
+                    onRefresh={()=>{homeStore.fetchHomeData()}}
+                    refreshing = {isFetching}
                     onEndReachedThreshold={0.5}
                     onEndReached={() => {
                         if (news_page > 0) {

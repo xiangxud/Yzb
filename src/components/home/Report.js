@@ -22,21 +22,21 @@ const Report = observer(({fields, morePress})=> {
             <View style={{flexDirection: 'row'}}>
                 <View style={styles.reportItems}>
                     <Text>本月出栏</Text>
-                    <Text><Text style={styles.report}>{fields.out}</Text>头</Text>
+                    <Text><Text style={styles.report}>{fields.ani_out}</Text>头</Text>
                 </View>
                 <View style={styles.reportItems}>
                     <Text>本月入栏</Text>
-                    <Text><Text style={styles.report}>{fields.in}</Text>头</Text>
+                    <Text><Text style={styles.report}>{fields.ani_in}</Text>头</Text>
                 </View>
                 <View style={styles.reportItems}>
                     <Text>当前养殖量</Text>
-                    <Text><Text style={styles.report}>{fields.now}</Text>头</Text>
+                    <Text><Text style={styles.report}>{fields.ani_nowcount}</Text>头</Text>
                 </View>
             </View>
             <View style={{flexDirection: 'row'}}>
                 <View style={styles.reportItems}>
                     <Text>本月死淘</Text>
-                    <Text><Text style={styles.report}>{fields.dead}</Text>头</Text>
+                    <Text><Text style={styles.report}>{fields.ani_dead}</Text>头</Text>
                 </View>
                 <View style={styles.reportItems}>
                     <Text>本月免疫量</Text>

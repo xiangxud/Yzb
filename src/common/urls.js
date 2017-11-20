@@ -3,7 +3,7 @@ const apiPath = 'http://120.24.89.243/imm/api/'; // 开发服务器（外网）
 // const apiPath = 'http://103.254.113.10:9090/api/'; // 生产服务器（外网）
 
 // web服务器地址
- const webPath = 'http://120.24.89.243/imm/yzb/'; // 开发服务器（外网）
+ const webPath = 'http://120.24.89.243/imm/'; // 开发服务器（外网）
 //const webPath = 'http://103.254.113.10:9090/web/'; // 生产服务器（外网）
 //
 // 其他

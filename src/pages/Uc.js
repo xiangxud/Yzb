@@ -3,36 +3,17 @@
  */
 import React, {Component} from 'react'
 import {
-    View,
     Text,
-    TouchableOpacity,
     StyleSheet,
     Alert
 } from 'react-native'
 import {NavigationActions} from 'react-navigation';
 import {observer, inject} from 'mobx-react/native'
-
+import {View,ScrollView,TouchableOpacity} from "react-native";
+import UserHead from '../components/uc/UserHead'
 @inject('userStore')
 @observer
 export default class Uc extends Component {
-    /*onChangeTab = ({i}) => {
-        const {app} = this.props
-        if (i === 1) {
-            app.updateBarStyle('default')
-        } else {
-            app.updateBarStyle('light-content')
-        }
-    }
-
-    renderTabBar = () => {
-        return (
-            <TabBar
-                tabNames={tabTitles}
-                tabIconNames={tabIcons}
-                selectedTabIconNames={tabSelectedIcon}
-            />
-        )
-    }*/
     _onLogout = () =>{
         Alert.alert(
             '您确认要注销登录吗？',
@@ -74,6 +55,12 @@ export default class Uc extends Component {
                     onPress = {()=>this.error()}>
                     <Text style={{fontSize: 16, color: 'red'}}>SYSTEM ERROR...</Text>
                 </TouchableOpacity>
+
+
+                        <ScrollView>
+                            <UserHead />
+
+                        </ScrollView>
             </View>
         )
     }
@@ -102,5 +89,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'center'
-    }
+    },
 })

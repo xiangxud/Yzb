@@ -12,7 +12,8 @@ class HomeStore {
         dead: 0, //死淘
         month_imm: 0, //本月免疫
     };
-
+    @observable sties = [];
+    @observable currentSty = {};
     @observable reminds = [];
     @observable news = [];
 
@@ -31,14 +32,18 @@ class HomeStore {
         }
         const params = {}
         request.getJson(urls.apis.HOME_ALL, params).then((res) => {
-            const {fields, reminds, news} = res;
+            const {fields, sties, reminds, news} = res;
             runInAction(() => {
                 this.isFetching = false
                 this.errorMsg = ''
                 if (this.news_page === 1) {
                     this.fields = fields;
+                    this.sties = sties;
                     this.reminds.replace(reminds);
                     this.news.replace(news);
+                    if(sties && sties.length>0){
+                        this.setCurrentSty(sties[0]);
+                    }
                 } else {
                     this.reminds.splice(this.reminds.length, 0, ...reminds);
                 }
@@ -61,6 +66,10 @@ class HomeStore {
             this.isFetching = false;
             tools.showToast(JSON.stringify(error))
         });
+    }
+    //设置当前选中的栋舍
+    @action setCurrentSty(sty){
+        this.currentSty = sty;
     }
 
     @computed
