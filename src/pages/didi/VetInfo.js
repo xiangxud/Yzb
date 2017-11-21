@@ -12,66 +12,21 @@ import {
 } from 'react-native';
 //import Icon from 'react-native-vector-icons/FontAwesome';
 import {Container, Content} from "../../components";
-import {observer, inject} from 'mobx-react/native'
-import {MapView, Marker, Polyline, MultiPoint} from 'react-native-amap3d'
 
-@inject('didiStore')
-@observer
 export default class VetInfo extends Component {
     static navigationOptions = ({navigation})=>({
         headerTitle: '呼叫兽医',
         headerRight: <View></View>
     });
 
-    componentDidMount(){
-        didiStore.fetchVets()
-    }
-
-    _onItemPress = (point) => {
-        didiStore.setCurrent(point);
-    }
-
     render() {
-        const {vets, current, isFetching} = didiStore;
+        const {vet} = this.props;
         return (
             <Container>
-                <Content white delay={isFetching}>
-                    <View style={{flex:1,}}>
-                        {!isFetching ?
-                            <MapView
-                                locationEnabled={true}
-                                showsLocationButton={true}
-                                rotateEnabled={false}
-                                zoomLevel={8}
-                                style={StyleSheet.absoluteFill}>
-                                <MultiPoint
-                                    image='point'
-                                    points={vets.slice()}
-                                    onItemPress={(point) => this._onItemPress(point)}
-                                />
-                            </MapView>
-                        : null}
+                <Content white>
+                    <View style={{backgroundColor:'#fff', padding:15}}>
+                        <Text>医生信息</Text>
                     </View>
-                    {didiStore.current.name ?
-                        <View style={styles.userProfile}>
-                            <Image style={styles.head} source={{uri: current.head_photo}}></Image>
-                            <View style={styles.profile}>
-                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                    <Text style={{fontSize: 18}}>{current.name}</Text>
-                                    <Text style={{fontSize: 14, color: '#ccc', marginLeft: 5}}>手机{current.phone}</Text>
-                                </View>
-                                <Text style={{marginTop: 5}}>简介：{current.remark}</Text>
-                            </View>
-                            <TouchableHighlight style={styles.detailButton} onPress={() => {
-                                alert('hi')
-                            }}>
-                                <Text style={{color: '#fff'}}>详情</Text>
-                            </TouchableHighlight>
-                        </View> :
-                        <View style={styles.noCurrent}>
-                            <Text>请点击地图标记选择兽医</Text>
-                        </View>
-                    }
                 </Content>
             </Container>
         )

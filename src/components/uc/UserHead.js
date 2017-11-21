@@ -35,7 +35,7 @@ export default class MyPhoto extends Component {
         const {loginUser} = this.props.userStore;
         // alert(JSON.stringify(loginUser))
         return (
-            <View style={styles.myCover} onStartShouldSetResponder={() => Actions.myInfo()}>
+            <View style={styles.myCover}>
                 <TouchableOpacity activeOpacity={1} onPress={() => this.cameraAction()}>
                     <Image style={styles.myPhoto} source={loginUser.photo ? {uri: urls.getImage(loginUser.photo, 300, 300)} : defaultPhoto}/>
                 </TouchableOpacity>

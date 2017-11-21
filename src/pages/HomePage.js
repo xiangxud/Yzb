@@ -29,7 +29,6 @@ export default class HomePage extends Component {
         const { homeStore } = this.props;
         //if(!homeStore.isFetching)
             homeStore.fetchHomeData()
-
     }
 
     remindMore=(t)=>{

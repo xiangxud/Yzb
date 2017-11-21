@@ -13,69 +13,35 @@ import
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {observer,inject} from 'mobx-react/native';
 import {action,observable} from 'mobx';
-import proxy from '../info/cmsProxy'
 
-class Control {
-    @observable
-    Data = {
-        Count:"5",
-        ShowModel:false,
-        Model:{
-            Total:200,
-            InputCount:0,
-            Publish:false,
-            Txt:''
-        }
-    };
-}
-
+@inject('infoStore')
 @observer
 export default class InfoDetail extends Component {
     constructor(props){
         super(props);
-
-        proxy.getArticle(this.props.code,this.getArticle,this.onFailed);
     }
     static defaultProps = {
-        control:new Control(),
-        code:'6z3glfahK6BrRzhlmKHsgPUUQnJtG5Ay'
+        control: {},
+        code: '6z3glfahK6BrRzhlmKHsgPUUQnJtG5Ay'
     }
     static navigationOptions = ({navigation})=>({
         headerTitle: navigation.state.params.title,
         headerRight: <View></View>
     });
 
-    @action
-    getArticle = (o) => {
-        this.props.control.Data.Count = o.hits > 9 ? '...' : o.hits.toString();
-    };
-    @action
-    onFailed = (mess) => {
-        tools.showToast(mess);
-    };
+    componentDidMount(){
+        var url = "http://192.168.0.101/RP.Imm.WebUI/api/info/GetArticle";//urls.apis.CMS_GetArticle
+        request.getJson(url,{ code: this.props.code }).then((res)=>{
+            infoStore.getArticle(res);
+        }).catch((err)=>{
+            tools.showToast("网络请求失败，请检查网络设置");
+        });
+    }
 
-    @action
-    onPress = (e)=>{
-        this.props.control.Data.ShowModel = true;
-    };
-    @action
-    onClose = (e) => {
-        this.props.control.Data.ShowModel = false;
-    };
-    @action
-    onChangTxt = (e) =>{
-        let txt = e.nativeEvent.text;
-        this.props.control.Data.Model.InputCount=txt.length;
-        this.props.control.Data.Model.Publish=txt.length > 0;
-        this.props.control.Data.Model.Txt = txt;
-    };
-    @action
-    onSubmit = (e) => {
-    };
     renderView = () => {
         return (<View style={style.bottom}>
             <TextInput
-                onFocus={this.onPress}
+                onFocus={infoStore.toogleModel}
                 underlineColorAndroid='transparent'
                 placeholder='说说你的看法'
                 returnKeyType="search"
@@ -87,14 +53,14 @@ export default class InfoDetail extends Component {
                 <Icon name="star-o" size={25} color="#008AF5"></Icon>
                 <Icon name="share-square-o" size={25} color="#008AF5"></Icon>
                 <View style={style.label}>
-                    <Text style={style.word}>{this.props.control.Data.Count}</Text>
+                    <Text style={style.word}>{infoStore.comment_text_total_count}</Text>
                 </View>
             </View>
         </View>);
     };
     renderReply = () => {
-        return (<Modal animationType={'none'} transparent={true} visible={true} onRequestClose={this.onClose}>
-                    <TouchableOpacity style={{flex:1}} onPress={this.onClose}>
+        return (<Modal animationType={'none'} transparent={true} visible={true} onRequestClose={infoStore.toogleModel}>
+                    <TouchableOpacity style={{flex:1}} onPress={infoStore.toogleModel}>
                         <View style={{flex:1,backgroundColor:'rgba(0,0,0,0.5)'}}>
                             <View style={{ flex:2,alignItems:'stretch',flexDirection:'row'}}>
                             </View>
@@ -104,7 +70,7 @@ export default class InfoDetail extends Component {
                                     placeholder='说说你的看法'
                                     returnKeyType="search"
                                     placeholderTextColor="#969696"
-                                    onChange={this.onChangTxt}
+                                    onChange={infoStore.onChangText}
                                     numberOfLines={5}
                                     multiline={true}
                                     autoFocus={true}
@@ -112,10 +78,10 @@ export default class InfoDetail extends Component {
                             </View>
                             <View style={{height:50 ,flexDirection:'row',justifyContent:'space-around',alignItems:'center',backgroundColor:'white'}}>
                                 <View style={{width:200,flexDirection:'row',alignItems:'center'}}>
-                                    <Text style={{}}>{this.props.control.Data.Model.InputCount}</Text><Text style={{color:'red'}}>/{this.props.control.Data.Model.Total}</Text>
+                                    <Text style={{}}>{infoStore.comment_input_count}</Text><Text style={{color:'red'}}>/{infoStore.comment_text_total_count}</Text>
                                 </View>
                                 <View style={{width:30}}></View>
-                                <Button title="发布" disabled={!this.props.control.Data.Model.Publish} onPress={this.onSubmit}></Button>
+                                <Button title="发布" disabled={!infoStore.allow_comment} onPress={infoStore.postComment}></Button>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -130,7 +96,7 @@ export default class InfoDetail extends Component {
                     </WebView>
                 </View>
                 {
-                    !this.props.control.Data.ShowModel ? this.renderView() : this.renderReply()
+                    !infoStore.showModel ? this.renderView() : this.renderReply()
                 }
             </View>
         );

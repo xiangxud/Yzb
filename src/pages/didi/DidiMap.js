@@ -63,7 +63,8 @@ export default class Didi extends Component {
                                 <Text style={{marginTop: 5}}>简介：{current.remark}</Text>
                             </View>
                             <TouchableHighlight style={styles.detailButton} onPress={() => {
-                                alert('hi')
+                                const {navigation} = this.props;
+                                navigation.navigate("VetInfo",{ vet: current })
                             }}>
                                 <Text style={{color: '#fff'}}>详情</Text>
                             </TouchableHighlight>
