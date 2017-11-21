@@ -61,6 +61,7 @@
 		0C84E2077A1F4AB6A9446ADA /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 39DCC3EA8E3840FB94F1F59A /* rubicon-icon-font.ttf */; };
 		39B84FAD9C8D45C6853360C2 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7750C580C0984A7B9554F1B2 /* SimpleLineIcons.ttf */; };
 		60ACB548DD644A65BEB8D0A0 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4E0B72D929844DC59FE45FA9 /* Zocial.ttf */; };
+		9B90FEE20A7347908043E863 /* libAMap3D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74A9DBCF3AFB485AB36F0E68 /* libAMap3D.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -315,6 +316,8 @@
 		39DCC3EA8E3840FB94F1F59A /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		7750C580C0984A7B9554F1B2 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		4E0B72D929844DC59FE45FA9 /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1A40797073DD474983462F96 /* AMap3D.xcodeproj */ = {isa = PBXFileReference; name = "AMap3D.xcodeproj"; path = "../node_modules/react-native-amap3d/ios/AMap3D.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		74A9DBCF3AFB485AB36F0E68 /* libAMap3D.a */ = {isa = PBXFileReference; name = "libAMap3D.a"; path = "libAMap3D.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -345,6 +348,7 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				CEEE96EDD3E042AD9FB5DEAD /* libRNSpinkit.a in Frameworks */,
 				57D3D322378E4C00A113AADE /* libRNVectorIcons.a in Frameworks */,
+				9B90FEE20A7347908043E863 /* libAMap3D.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -515,6 +519,7 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				C6DC64865C54441F8891B2DA /* RNSpinkit.xcodeproj */,
 				507DBBB2012C4995801DD144 /* RNVectorIcons.xcodeproj */,
+				1A40797073DD474983462F96 /* AMap3D.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1119,11 +1124,13 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
+					"$(SRCROOT)\..\node_modules\react-native-amap3d\ios/**",
 				);
 			};
 			name = Debug;
@@ -1146,11 +1153,13 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
+					"$(SRCROOT)\..\node_modules\react-native-amap3d\ios/**",
 				);
 			};
 			name = Release;
@@ -1174,6 +1183,7 @@
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
+					"$(SRCROOT)\..\node_modules\react-native-amap3d\ios/**",
 				);
 			};
 			name = Debug;
@@ -1196,6 +1206,7 @@
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
+					"$(SRCROOT)\..\node_modules\react-native-amap3d\ios/**",
 				);
 			};
 			name = Release;
@@ -1227,11 +1238,13 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
+					"$(SRCROOT)\..\node_modules\react-native-amap3d\ios/**",
 				);
 			};
 			name = Debug;
@@ -1263,11 +1276,13 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
+					"$(SRCROOT)\..\node_modules\react-native-amap3d\ios/**",
 				);
 			};
 			name = Release;
@@ -1294,6 +1309,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
 			name = Debug;
@@ -1318,6 +1334,7 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);

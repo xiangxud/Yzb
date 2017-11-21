@@ -3,7 +3,7 @@
  */
 import React, {Component} from 'react'
 import { View } from 'react-native'
-import {WebView} from '../components/common'
+import {WebView} from '../components/index'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {observer, inject} from 'mobx-react/native'
 

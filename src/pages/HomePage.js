@@ -64,7 +64,7 @@ export default class HomePage extends Component {
                             <Text>动物诊疗</Text>
                         </View>
                     </TouchableHighlight>
-                    <TouchableHighlight onPress={()=> this.props.navigation.navigate('InfoDetail') } style={styles.homeBigButton}>
+                    <TouchableHighlight onPress={()=> this.props.navigation.navigate('Didi') } style={styles.homeBigButton}>
                         <View style={styles.homeBigButtonInner}>
                             <Icon name='user-md' color={'#50AAF0'} size={34} />
                             <Text>滴滴兽医</Text>

@@ -3568,6 +3568,10 @@ react-devtools-core@^2.5.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
+react-native-amap3d@^0.8.0:
+  version "0.8.0"
+  resolved "http://registry.npm.taobao.org/react-native-amap3d/download/react-native-amap3d-0.8.0.tgz#d260dfa5de16e4e7df67354e3ddf789c4771ecd5"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/react-native-dismiss-keyboard/download/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
