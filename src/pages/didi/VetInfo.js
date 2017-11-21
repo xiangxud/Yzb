@@ -17,9 +17,9 @@ import {MapView, Marker, Polyline, MultiPoint} from 'react-native-amap3d'
 
 @inject('didiStore')
 @observer
-export default class Didi extends Component {
+export default class VetInfo extends Component {
     static navigationOptions = ({navigation})=>({
-        headerTitle: '滴滴兽医',
+        headerTitle: '呼叫兽医',
         headerRight: <View></View>
     });
 

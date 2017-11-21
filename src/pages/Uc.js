@@ -40,7 +40,7 @@ export default class Uc extends Component {
     }
     render() {
         return (
-            <View>
+            <ScrollView>
                 <Text style={{borderBottomWidth:3, borderBottomColor:'red'}}>{JSON.stringify(this.props.userStore.token)}</Text>
                 <Text style={{borderBottomWidth:3, borderBottomColor:'red'}}>{JSON.stringify(this.props.userStore.loginUser)}</Text>
                 <TouchableOpacity
@@ -55,13 +55,8 @@ export default class Uc extends Component {
                     onPress = {()=>this.error()}>
                     <Text style={{fontSize: 16, color: 'red'}}>SYSTEM ERROR...</Text>
                 </TouchableOpacity>
-
-
-                        <ScrollView>
-                            <UserHead />
-
-                        </ScrollView>
-            </View>
+                <UserHead />
+            </ScrollView>
         )
     }
 }
