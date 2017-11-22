@@ -24,33 +24,59 @@ export default class Didi extends Component {
     });
 
     componentDidMount(){
-        didiStore.fetchVets()
+        this._getPosition();
+        //didiStore.fetchVets();
     }
 
     _onItemPress = (point) => {
         didiStore.setCurrent(point);
     }
 
+    _getPosition = () => {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                didiStore.setMyPosition(position.coords);
+                alert(JSON.stringify(position))
+            },
+            (error) => alert(JSON.stringify(error)),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+        );
+        watchID = navigator.geolocation.watchPosition((position) => {
+            didiStore.setMyPosition(position.coords);
+            var lastPosition = JSON.stringify(position);
+            alert(JSON.stringify('watch'+lastPosition))
+        });
+    }
+
     render() {
-        const {vets, current, isFetching} = didiStore;
+        const {vets, current, isFetching, position} = didiStore;
         return (
             <Container>
                 <Content white delay={isFetching}>
                     <View style={{flex:1,}}>
-                        {!isFetching ?
-                            <MapView
-                                locationEnabled={true}
-                                showsLocationButton={true}
-                                rotateEnabled={false}
-                                zoomLevel={8}
-                                style={StyleSheet.absoluteFill}>
-                                <MultiPoint
-                                    image='point'
-                                    points={vets.slice()}
-                                    onItemPress={(point) => this._onItemPress(point)}
-                                />
-                            </MapView>
-                        : null}
+                        <MapView
+                            locationEnabled={true}
+                            showsLocationButton={false}
+                            rotateEnabled={false}
+                            showsCompass={true}
+                            zoomLevel={8}
+                            coordinate={{
+                                latitude: position.latitude,
+                                longitude: position.longitude,
+                            }}
+                            onLocation={({nativeEvent}) => {
+                                //alert(`${nativeEvent.latitude}, ${nativeEvent.longitude}`)
+                                //alert(JSON.stringify(nativeEvent))
+                                }
+                            }
+                            style={StyleSheet.absoluteFill}
+                        >
+                            <MultiPoint
+                                image='point'
+                                points={vets.slice()}
+                                onItemPress={(point) => this._onItemPress(point)}
+                            />
+                        </MapView>
                     </View>
                     {didiStore.current.name ?
                         <View style={styles.userProfile}>

@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 //import Icon from 'react-native-vector-icons/FontAwesome';
 import {Container, Content} from "../../components";
+import ScrollTabView from 'react-native-scrollable-tab-view'
 
 export default class VetInfo extends Component {
     static navigationOptions = ({navigation})=>({
@@ -20,13 +21,18 @@ export default class VetInfo extends Component {
     });
 
     render() {
-        const {vet} = this.props;
+        const { vet } = this.props.navigation.state.params;
         return (
             <Container>
                 <Content white>
                     <View style={{backgroundColor:'#fff', padding:15}}>
-                        <Text>医生信息</Text>
+                        <Text>医生信息 {vet.name}</Text>
                     </View>
+                    <ScrollableTabView>
+                        <ReactPage tabLabel="React" />
+                        <FlowPage tabLabel="Flow" />
+                        <JestPage tabLabel="Jest" />
+                    </ScrollableTabView>
                 </Content>
             </Container>
         )

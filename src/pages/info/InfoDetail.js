@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
-import
-{
+import {
     View,
     Text ,
     Button,
@@ -20,23 +19,22 @@ export default class InfoDetail extends Component {
     constructor(props){
         super(props);
     }
-    static defaultProps = {
-        control: {},
-        code: '6z3glfahK6BrRzhlmKHsgPUUQnJtG5Ay'
-    }
+
     static navigationOptions = ({navigation})=>({
         headerTitle: navigation.state.params.title,
         headerRight: <View></View>
     });
 
-    componentDidMount(){
-        var url = "http://192.168.0.101/RP.Imm.WebUI/api/info/GetArticle";//urls.apis.CMS_GetArticle
-        request.getJson(url,{ code: this.props.code }).then((res)=>{
-            infoStore.getArticle(res);
-        }).catch((err)=>{
-            tools.showToast("网络请求失败，请检查网络设置");
-        });
-    }
+    // 先禁用评论功能
+    // componentDidMount(){
+    //     const {navigation} = this.props;
+    //     var url = "http://192.168.0.101/RP.Imm.WebUI/api/info/GetArticle";//urls.apis.CMS_GetArticle
+    //     request.getJson(url,{ code: navigation.state.params.id }).then((res)=>{
+    //         infoStore.getArticle(res);
+    //     }).catch((err)=>{
+    //         tools.showToast("网络请求失败，请检查网络设置");
+    //     });
+    // }
 
     renderView = () => {
         return (<View style={style.bottom}>
@@ -88,7 +86,8 @@ export default class InfoDetail extends Component {
                 </Modal>);
     };
     render() {
-        let r = 'https://m.ringpu.com/ringpu/html_php/advice_and_college/d.php?code=' + this.props.code;
+        const {navigation} = this.props;
+        let r = 'https://m.ringpu.com/ringpu/html_php/advice_and_college/d.php?code=' + navigation.state.params.id;
         return (
             <View style={style.main}>
                 <View style={style.vbc}>
@@ -96,7 +95,7 @@ export default class InfoDetail extends Component {
                     </WebView>
                 </View>
                 {
-                    !infoStore.showModel ? this.renderView() : this.renderReply()
+                    //!infoStore.showModel ? this.renderView() : this.renderReply()
                 }
             </View>
         );

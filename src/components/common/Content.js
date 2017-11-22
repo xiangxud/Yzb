@@ -39,13 +39,11 @@ export default class Content extends PureComponent {
 	componentDidMount() {
 		let {isLoading} = this.state;
 		if (isLoading) {
-
             this.timer = setTimeout(() => {
                 this.setState({
                     isLoading: false
                 })
             }, config.loadingDelayTime)
-
 		}
 	}
 

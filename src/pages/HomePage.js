@@ -42,7 +42,7 @@ export default class HomePage extends Component {
     }
     newsPress =(info) =>{
         const {navigation} = this.props;
-        navigation.navigate("InfoDetail",{ key : info.key , title:info.title })
+        navigation.navigate("InfoDetail",{ id : '6z3glfahK6BrRzhlmKHsgPUUQnJtG5Ay' , title:info.title })
     }
     fetchMore =()=>{
         //alert('get more news')
