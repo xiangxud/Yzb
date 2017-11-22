@@ -6,7 +6,7 @@ const config = {
     versionName: "2.0.0",
 
     // 页面加载延迟时间
-    loadingDelayTime: 5000,
+    loadingDelayTime: 500,
 };
 
 export default config;

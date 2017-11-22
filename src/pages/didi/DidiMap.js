@@ -36,15 +36,15 @@ export default class Didi extends Component {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 didiStore.setMyPosition(position.coords);
-                alert(JSON.stringify(position))
+                //alert(JSON.stringify(position))
             },
             (error) => alert(JSON.stringify(error)),
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
         );
         watchID = navigator.geolocation.watchPosition((position) => {
             didiStore.setMyPosition(position.coords);
-            var lastPosition = JSON.stringify(position);
-            alert(JSON.stringify('watch'+lastPosition))
+            //var lastPosition = JSON.stringify(position);
+            //alert(JSON.stringify('watch'+lastPosition))
         });
     }
 
@@ -86,7 +86,7 @@ export default class Didi extends Component {
                                     <Text style={{fontSize: 18}}>{current.name}</Text>
                                     <Text style={{fontSize: 14, color: '#ccc', marginLeft: 5}}>手机{current.phone}</Text>
                                 </View>
-                                <Text style={{marginTop: 5}}>简介：{current.remark}</Text>
+                                <Text style={{marginTop: 5}}>专长：{current.goodat}</Text>
                             </View>
                             <TouchableHighlight style={styles.detailButton} onPress={() => {
                                 const {navigation} = this.props;
@@ -96,7 +96,11 @@ export default class Didi extends Component {
                             </TouchableHighlight>
                         </View> :
                         <View style={styles.noCurrent}>
-                            <Text>请点击地图标记选择兽医</Text>
+                            {isFetching ?
+                                <Text style={{fontSize: 16, color: 'red',}}>正在查找您附近的医生，请稍后...</Text>
+                                :
+                                <Text>请点击地图标记选择兽医</Text>
+                            }
                         </View>
                     }
                 </Content>

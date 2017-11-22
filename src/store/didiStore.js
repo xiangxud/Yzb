@@ -30,7 +30,7 @@ class DidiStore {
     }
     @action setMyPosition(po){
         this.position = po;
-        if(po.accuracy > 0){
+        if(po.accuracy > 0 && this.vets.length === 0){
             this.fetchVets();
         }
     }

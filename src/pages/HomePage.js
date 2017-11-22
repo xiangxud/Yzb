@@ -13,7 +13,6 @@ import {
 import {observer, inject} from 'mobx-react/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import CommonStyles from '../styles';
 import SwiperBanner from '../components/home/SwiperBanner';
 import MySties from '../components/home/MySties';
 import Reminds from "../components/home/Reminds";
@@ -24,11 +23,11 @@ import loading from '../components/common/Loading'
 @inject('homeStore')
 @observer
 export default class HomePage extends Component {
-
+    static navigationOptions = ({navigation})=>({
+        headerTitle: '智能养殖',
+    });
     componentDidMount(){
-        const { homeStore } = this.props;
-        //if(!homeStore.isFetching)
-            homeStore.fetchHomeData()
+        homeStore.fetchHomeData()
     }
 
     remindMore=(t)=>{
@@ -45,11 +44,9 @@ export default class HomePage extends Component {
         navigation.navigate("InfoDetail",{ id : '6z3glfahK6BrRzhlmKHsgPUUQnJtG5Ay' , title:info.title })
     }
     fetchMore =()=>{
-        //alert('get more news')
         homeStore.fetchNextInfos();
     }
     renderListHeader(){
-        const {homeStore} = this.props;
         const {isFetching, reminds, fields, sties} = homeStore;
         return (
             <View>
@@ -69,7 +66,7 @@ export default class HomePage extends Component {
                             <Text>滴滴兽医</Text>
                         </View>
                     </TouchableHighlight>
-                    <TouchableHighlight onPress={()=> this.props.navigation.navigate('InfoDetail') } style={styles.homeBigButton}>
+                    <TouchableHighlight onPress={()=> this.props.navigation.navigate('Main.Live') } style={styles.homeBigButton}>
                         <View style={styles.homeBigButtonInner}>
                             <Icon name='video-camera' color={'#F1745E'} size={34} />
                             <Text>直播间</Text>
