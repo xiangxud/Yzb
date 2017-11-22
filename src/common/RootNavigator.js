@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Welcome from '../pages/Welcome';
 import HomePage from '../pages/HomePage';
 import Live from '../pages/Live';
-import Info from '../pages/Info';
+import Info from '../pages/HotBreed';
 import InfoDetail from '../pages/info/InfoDetail';
 import Uc from '../pages/Uc';
 import Login from '../pages/Login';

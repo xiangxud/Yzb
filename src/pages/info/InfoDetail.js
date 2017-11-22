@@ -87,7 +87,7 @@ export default class InfoDetail extends Component {
     };
     render() {
         const {navigation} = this.props;
-        let r = 'https://m.ringpu.com/ringpu/html_php/advice_and_college/d.php?code=' + navigation.state.params.id;
+        let r = 'https://m.ringpu.com/ringpu/html_php/advice_and_college/d.php?code=' + navigation.state.params.code;
         return (
             <View style={style.main}>
                 <View style={style.vbc}>

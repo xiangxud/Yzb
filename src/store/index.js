@@ -3,11 +3,13 @@ import userStore from './userStore'
 import homeStore from './homeStore'
 import infoStore from './infoStore'
 import didiStore from './didiStore'
+import hotBreedStore from './hotBreedStore'
 
 export default {
     app: new App(),
     userStore,
     homeStore,
     infoStore,
-    didiStore
+    didiStore,
+    hotBreedStore
 }
