@@ -16,9 +16,6 @@ class Config
 {
     bgColor='';
     icoName='search';
-    @action
-    onChanged = (e)=>{
-    };
 }
 
 @observer
@@ -27,7 +24,6 @@ export default class IcoText extends Component{
         super(props);
         this.config.bgColor = this.props.bgColor;
         this.config.icoName = this.props.icoName;
-        this.config.onChanged = this.props.onChanged;
     }
     @observable
     config = new Config();
@@ -45,7 +41,7 @@ export default class IcoText extends Component{
             </View>
             <View style={{flex:1,flexDirection:'row',alignItems:'stretch'}}>
                 <TextInput style={style.text}
-                           onChange={this.config.onChanged}
+                           onChange={(e)=>this.props.onChanged(e.nativeEvent.text)}
                            underlineColorAndroid='transparent'
                            placeholderTextColor="#aaaaaa">
                 </TextInput>

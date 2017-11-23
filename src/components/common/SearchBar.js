@@ -24,7 +24,7 @@ export default class SearchBar extends Component{
                 </TouchableHighlight>
             </View>
             <Text style={style.word}>{this.props.Title}</Text>
-            <IcoText style={{flex:1,marginLeft:5}} icoName="search" bgColor="#ffffff"></IcoText>
+            <IcoText style={{flex:1,marginLeft:5}} icoName="search" bgColor="#ffffff" onChanged={this.props.onChanged}></IcoText>
         </View>);
     }
 }

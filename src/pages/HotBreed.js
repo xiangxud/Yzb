@@ -18,12 +18,32 @@ import BreedList from '../components/common/BreedList';
 @observer
 export default class HotBreed extends Component{
     static navigationOptions = ({navigation})=>({
-        header:(<SearchBar goBack={navigation.goBack} navigate={navigation.navigate} Title="养殖头条"></SearchBar>)
+        header:(<SearchBar goBack={navigation.goBack} navigate={navigation.navigate} onChanged={
+            (txt)=> navigation.state.params.onChanged(txt)
+        } Title="养殖头条"></SearchBar>)
     });
     constructor(props){
         const {navigation} = props;
         super(props);
     }
+
+    componentDidMount() {
+        this.timer = setTimeout(() => {
+            this.props.navigation.setParams({
+                onChanged : this.onSearchTxtChanged.bind(this)
+            });
+        }, 2000);
+    }
+
+    componentWillUnMount() {
+        this.timer && clearTimeout(this.timer);
+    }
+
+    onSearchTxtChanged(txt){
+        const {hotBreedStore} = this.props;
+        hotBreedStore.onFilter(txt);
+    }
+
     componentWillMount()
     {
         this.onItemPress.bind(this);

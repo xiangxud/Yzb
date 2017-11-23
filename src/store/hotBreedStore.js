@@ -31,6 +31,7 @@ class breedItemCollection {
     pageIndex=1;
 
     pageSize=8;
+    searchTxt="";
 
     @action
     onLoad(){
@@ -46,8 +47,14 @@ class breedItemCollection {
     };
 
     @action
+    onFilter(txt){
+        this.searchTxt=txt;
+        this.onLoad();
+    }
+
+    @action
     onLoadFromApi(index,callback,falied){
-        request.postJson(urls.apis.CMS_PostArticleList,{pageIndex: index,pageSize:this.pageSize,Type:this.datatype}).then((data) => {
+        request.postJson(urls.apis.CMS_PostArticleList,{pageIndex: index,pageSize:this.pageSize,Type:this.datatype,txt:this.searchTxt}).then((data) => {
             callback(data);
         }).catch((err) => {
             falied();
@@ -86,8 +93,7 @@ class breedItemCollection {
     }
 }
 
-class hotBreedStore
-{
+class hotBreedStore {
     labels = ["肉蛋行情","原材料价格","疫病流行咨询"];
 
     @observable
@@ -96,15 +102,35 @@ class hotBreedStore
     @action
     onChanged(label){
         this.currentLabel=label;
-        if( label ==  this.labels[0] && this.data0.source.length==0){
-            this.data0.onLoad();
+        let data = this.onGetCurrentCollection();
+        if( data != null && data.length == 0 )
+        {
+            data.onLoad();
         }
-        if( label ==  this.labels[1] && this.data2.source.length==0){
-            this.data1.onLoad();
+    }
+
+
+    @action
+    onFilter(txt){
+        let data = this.onGetCurrentCollection();
+        if(data==null) {
+            return;
         }
-        if( label ==  this.labels[2] && this.data2.source.length==0){
-            this.data2.onLoad();
+        data.onFilter(txt);
+    }
+
+    @action
+    onGetCurrentCollection(){
+        if( this.currentLabel ==  this.labels[0]){
+            return this.data0;
         }
+        if( this.currentLabel ==  this.labels[1]){
+            return     this.data1;
+        }
+        if( this.currentLabel ==  this.labels[2]){
+            return    this.data2;
+        }
+        return null;
     }
 
     @observable
