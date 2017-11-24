@@ -25,6 +25,9 @@ const Sty = ({sty, getSty, isCurrent}) =>{
 @inject('homeStore')
 @observer
 export default class MySties extends Component {
+    constructor(props){
+        super(props);
+    }
     getSty = (sty) =>{
         homeStore.setCurrentSty(sty);
     }
@@ -48,6 +51,13 @@ export default class MySties extends Component {
                         </View>
                         <View style={{height:200, backgroundColor:'#f9f3f9', marginTop:1}}>
 
+                        <View style={{height:199, backgroundColor:'#f9f3f9', marginTop:1}}>
+                            <Text onPress={()=>this.props.onStyPress(homeStore.currentSty)} style={{
+                                height:60,
+                                backgroundColor:'yellow',
+                                width:60,
+                                textAlignVertical:'center'
+                            }}>详情</Text>
                         </View>
                     </View>
                 </View>

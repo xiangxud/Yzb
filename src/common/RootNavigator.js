@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Welcome from '../pages/Welcome';
 import HomePage from '../pages/HomePage';
 import Live from '../pages/Live';
-import Info from '../pages/Info';
+import Info from '../pages/HotBreed';
 import InfoDetail from '../pages/info/InfoDetail';
 import Uc from '../pages/Uc';
 import Login from '../pages/Login';
@@ -13,6 +13,7 @@ import Didi from '../pages/didi/DidiMap';
 import VetInfo from '../pages/didi/VetInfo';
 import Web from '../pages/Web';
 import About from '../pages/uc/About';
+import Sty from '../pages/sty';
 
 // see here for options: https://reactnavigation.org/docs/navigators/tab
 const TabNavigation = TabNavigator({
@@ -82,6 +83,7 @@ const RootNavigator = StackNavigator({
     Main:{ screen: TabNavigation },
     InfoDetail:{ screen: InfoDetail },
     Login:{ screen: Login },
+    Sty:{screen:Sty},
     BHStart:{ screen: BHStart },
     Web:{ screen: Web },
     Didi:{ screen: Didi },

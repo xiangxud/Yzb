@@ -46,6 +46,10 @@ export default class HomePage extends Component {
     fetchMore =()=>{
         homeStore.fetchNextInfos();
     }
+    onStyPress(sty){
+        const {navigation} = this.props;
+        navigation.navigate("Sty",{ code : sty.id });
+    }
     renderListHeader(){
         const {isFetching, reminds, fields, sties} = homeStore;
         return (
@@ -85,7 +89,7 @@ export default class HomePage extends Component {
                         </View>
                     </TouchableHighlight>
                 </View>
-                <MySties sties={sties}/>
+                <MySties sties={sties} onStyPress={(sty) => { this.onStyPress(sty) }} />
                 {!isFetching && reminds ?
                     <Reminds reminds={reminds}
                              morePress={this.remindMore}
