@@ -50,8 +50,6 @@ export default class MySties extends Component {
                             <Text>{homeStore.currentSty.genus}</Text>
                         </View>
                         <View style={{height:200, backgroundColor:'#f9f3f9', marginTop:1}}>
-
-                        <View style={{height:199, backgroundColor:'#f9f3f9', marginTop:1}}>
                             <Text onPress={()=>this.props.onStyPress(homeStore.currentSty)} style={{
                                 height:60,
                                 backgroundColor:'yellow',
@@ -62,6 +60,7 @@ export default class MySties extends Component {
                     </View>
                 </View>
             </View>
+        </View>
         );
     }
 }
