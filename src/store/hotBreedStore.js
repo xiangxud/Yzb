@@ -103,7 +103,7 @@ class hotBreedStore {
     onChanged(label){
         this.currentLabel=label;
         let data = this.onGetCurrentCollection();
-        if( data != null && data.length == 0 )
+        if( data != null && data.source.length == 0 )
         {
             data.onLoad();
         }
