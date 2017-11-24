@@ -10,7 +10,10 @@ import {
 import {NavigationActions} from 'react-navigation';
 import {observer, inject} from 'mobx-react/native'
 import {View,ScrollView,TouchableOpacity} from "react-native";
-import UserHead from '../components/uc/UserHead'
+import {Container, Content} from '../components';
+import UserHead from '../components/uc/UserHead';
+import MyList from '../components/uc/MyList';
+
 @inject('userStore')
 @observer
 export default class Uc extends Component {
@@ -41,21 +44,27 @@ export default class Uc extends Component {
     render() {
         return (
             <ScrollView>
-                <Text style={{borderBottomWidth:3, borderBottomColor:'red'}}>{JSON.stringify(this.props.userStore.token)}</Text>
-                <Text style={{borderBottomWidth:3, borderBottomColor:'red'}}>{JSON.stringify(this.props.userStore.loginUser)}</Text>
-                <TouchableOpacity
-                    activeOpacity={0.75}
-                    style={styles.registerBtn}
-                    onPress = {()=>this._onLogout()}>
-                    <Text style={{fontSize: 16, color: 'red'}}>注销登陆</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    activeOpacity={0.75}
-                    style={styles.registerBtn}
-                    onPress = {()=>this.error()}>
-                    <Text style={{fontSize: 16, color: 'red'}}>SYSTEM ERROR...</Text>
-                </TouchableOpacity>
-                <UserHead />
+                <Container>
+                    <Content gray>
+                        <UserHead />
+                        <MyList navigation={this.props.navigation} />
+                        <TouchableOpacity
+                            activeOpacity={0.75}
+                            style={styles.registerBtn}
+                            onPress = {()=>this._onLogout()}>
+                            <Text style={{fontSize: 16, color: 'red'}}>注销登陆</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            activeOpacity={0.75}
+                            style={styles.registerBtn}
+                            onPress = {()=>this.error()}>
+                            <Text style={{fontSize: 16, color: 'red'}}>SYSTEM ERROR...</Text>
+                        </TouchableOpacity>
+
+                        <Text style={{borderBottomWidth:3, borderBottomColor:'red'}}>{JSON.stringify(this.props.userStore.token)}</Text>
+                        <Text style={{borderBottomWidth:3, borderBottomColor:'red'}}>{JSON.stringify(this.props.userStore.loginUser)}</Text>
+                    </Content>
+                </Container>
             </ScrollView>
         )
     }

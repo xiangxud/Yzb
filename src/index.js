@@ -1,48 +1,58 @@
 import React, { Component } from "react";
-import {View, StatusBar} from 'react-native'
+import {
+    View,
+    StatusBar,
+    BackHandler
+} from 'react-native'
 import { observable, action } from "mobx";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react/native";
+//import { addNavigationHelpers } from 'react-navigation';
 import RootNavigator from './common/RootNavigator';
 
-class NavigationStore {
-    @observable.ref navigationState = {
-        index: 0,
-        routes: [
-            {
-                key: "Login",
-                routeName: "Login",
-                params: { title: "Login" }
-            }
-        ]
-    };
-
-    @action dispatch = (action, stackNavState = true) => {
-        const previousNavState = stackNavState ? this.navigationState : null;
-        return (this.navigationState = RootNavigator.router.getStateForAction(
-            action,
-            previousNavState
-        ));
-    };
-}
+let routes = [];
+let lastBackPressed = null;
 
 @observer class YzbApp extends Component {
     constructor(props, context) {
         super(props, context);
-        this.store = new NavigationStore();
     }
 
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
+        lastBackPressed = null;
+    }
+
+    onBackAndroid() {
+        if (routes.length === 1) { // 根界面
+            if (lastBackPressed && lastBackPressed + 2000 >= Date.now()) {
+                return false;
+            }
+            lastBackPressed = Date.now();
+            tools.showToast('再点击一次退出应用');
+            return true;
+        }
+    }
     render() {
         return (
             /*<RootNavigator
                 navigation={addNavigationHelpers({
-                    dispatch: this.store.dispatch,
-                    state: this.store.navigationState
+                    dispatch: navigationStore.dispatch,
+                    state: navigationStore.navigationState
                 })}
             />*/
             <View style={{flex:1}}>
                 <StatusBar backgroundColor={'rgba(0,156,136,1)'}/>
                 {
-                    <RootNavigator />
+                    <RootNavigator onNavigationStateChange={(prevNav, nav, action) => {
+                        console.log('prevNav=',prevNav);
+                        console.log('nav=',nav);
+                        console.log('action=',action);
+                        routes = nav.routes;
+                    }} />
                 }
             </View>
         );

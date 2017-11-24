@@ -11,13 +11,13 @@ const styles = StyleSheet.create({
     separatorArea: {
         alignSelf: 'stretch',
         height: 10,
-        backgroundColor: "#fff",
+        //backgroundColor: "#fff",
     },
     VSeparatorArea: {
         flexDirection: 'row',
         alignSelf: 'stretch',
         width: 10,
-        backgroundColor: "#fff",
+        //backgroundColor: "#fff",
     }
 });
 

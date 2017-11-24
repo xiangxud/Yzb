@@ -41,12 +41,12 @@ export default class MySties extends Component {
                         <Sty key={key} sty={val} getSty={this.getSty} isCurrent={currentSty.id===val.id}/>
                     ))}
                 </ScrollView>
-                <View>
+                <View style={{}}>
                     <View style={{flex:1, height:300, backgroundColor:'#efc'}}>
                         <View style={{height:100, backgroundColor:'#fae4ac'}}>
                             <Text>{homeStore.currentSty.genus}</Text>
                         </View>
-                        <View style={{height:199, backgroundColor:'#f9f3f9', marginTop:1}}>
+                        <View style={{height:200, backgroundColor:'#f9f3f9', marginTop:1}}>
 
                         </View>
                     </View>

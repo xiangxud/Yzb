@@ -33,42 +33,42 @@ export default class MyPhoto extends Component {
 
     render() {
         const {loginUser} = this.props.userStore;
-        // alert(JSON.stringify(loginUser))
         return (
             <View style={styles.myCover}>
                 <TouchableOpacity activeOpacity={1} onPress={() => this.cameraAction()}>
-                    <Image style={styles.myPhoto} source={loginUser.photo ? {uri: urls.getImage(loginUser.photo, 300, 300)} : defaultPhoto}/>
+                    <Image style={styles.myPhoto} source={loginUser.FaceUrl ? {uri: loginUser.FaceUrl} : defaultPhoto}/>
                 </TouchableOpacity>
                 <View style={styles.myInfo}>
-                    <Text style={styles.myName}>本尊：{loginUser.Name}</Text>
-
-                    <Text style={styles.myName}>等级：100</Text>
+                    <Text style={[styles.myName, {fontSize:18}]}>会员：{loginUser.Contacts}</Text>
+                    <Text style={[styles.myName, styles.gray]}>手机：{loginUser.Mobile}</Text>
+                    <Text style={[styles.myName, styles.gray]}>{loginUser.Name}</Text>
                 </View>
             </View>
         )
     }
-
-
 }
 
 const styles =  {
     myCover: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#E3E7F3',
+        backgroundColor: '#fff',
         padding: 15,
         marginTop: 15,
-        marginBottom: 30
+        marginBottom: 20
     },
     myPhoto: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
+        width: 70,
+        height: 70,
+        borderRadius: 35,
     },
     myInfo: {
         marginLeft: 15
     },
     myName: {
         fontSize: 16,
+    },
+    gray:{
+        color:'#777'
     }
 };
