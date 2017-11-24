@@ -60,7 +60,6 @@ export default class MySties extends Component {
                     </View>
                 </View>
             </View>
-        </View>
         );
     }
 }

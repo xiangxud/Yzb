@@ -13,7 +13,7 @@ import Didi from '../pages/didi/DidiMap';
 import VetInfo from '../pages/didi/VetInfo';
 import Web from '../pages/Web';
 import About from '../pages/uc/About';
-import Sty from '../pages/sty';
+//import Sty from '../pages/sty';
 
 // see here for options: https://reactnavigation.org/docs/navigators/tab
 const TabNavigation = TabNavigator({
@@ -83,7 +83,7 @@ const RootNavigator = StackNavigator({
     Main:{ screen: TabNavigation },
     InfoDetail:{ screen: InfoDetail },
     Login:{ screen: Login },
-    Sty:{screen:Sty},
+    //Sty:{screen:Sty},
     BHStart:{ screen: BHStart },
     Web:{ screen: Web },
     Didi:{ screen: Didi },
