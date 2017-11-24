@@ -23,7 +23,6 @@ export default class HotBreed extends Component{
         } Title="养殖头条"></SearchBar>)
     });
     constructor(props){
-        const {navigation} = props;
         super(props);
     }
 
