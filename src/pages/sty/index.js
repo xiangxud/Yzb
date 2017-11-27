@@ -10,26 +10,27 @@ import
     StyleSheet
 } from 'react-native';
 import {observer,inject} from 'mobx-react/native';
+import StyBar from '../../components/common/StyBar';
 
-@inject('styleStore')
+@inject('styStore')
 @observer
 export default class Sty extends Component{
-    constructor(props){
-        const {navigation} = props;
-        super(props);
-    }
-
-    componentDidMount() {
-        this.timer = setTimeout(() => {
-            // this.props.navigation.setParams({
-            //     //onChanged : this.onSearchTxtChanged.bind(this)
-            // });
-        }, 2000);
-    }
-
-    componentWillUnMount() {
-        this.timer && clearTimeout(this.timer);
-    }
+    static navigationOptions = ({navigation})=>{header:(<StyBar iniCode={'008'}></StyBar>)};
+    static navigationOptions = ({navigation})=>({
+        header:(<StyBar goBack={navigation.goBack} navigate={navigation.navigate} iniCode="008" Title="栋舍"></StyBar>)
+    });
+    // componentDidMount() {
+    //     this.timer = setTimeout(() => {
+    //         const {styStore} = this.props;
+    //         this.props.navigation.setParams({
+    //              styList : styStore.list
+    //         });
+    //     }, 2000);
+    // }
+    //
+    // componentWillUnMount() {
+    //     this.timer && clearTimeout(this.timer);
+    // }
 
     componentWillMount()
     {
@@ -37,7 +38,7 @@ export default class Sty extends Component{
     }
 
     render(){
-        const {styleStore} = this.props;
+
         return (<View></View>);
     }
 }
