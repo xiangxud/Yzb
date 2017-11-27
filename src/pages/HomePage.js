@@ -146,7 +146,7 @@ let list = [
                     ListFooterComponent={loading(isFetching, styles.loading)}
                     keyExtractor={ this._keyExtractor }
                     onRefresh={()=>{homeStore.fetchHomeData()}}
-                    refreshing = {isFetching}
+                    refreshing = {false}
                     onEndReachedThreshold={0.5}
                     onEndReached={() => {
                         if (news_page > 0) {

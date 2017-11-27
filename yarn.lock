@@ -3036,6 +3036,10 @@ mobx@^3.3.1:
   version "3.3.1"
   resolved "http://registry.npm.taobao.org/mobx/download/mobx-3.3.1.tgz#c38fc1a287a0dda3f5d4b85efe1137fedd9dcdf0"
 
+moment@2.x.x:
+  version "2.19.2"
+  resolved "http://registry.npm.taobao.org/moment/download/moment-2.19.2.tgz#8a7f774c95a64550b4c7ebd496683908f9419dbe"
+
 morgan@~1.6.1:
   version "1.6.1"
   resolved "http://registry.npm.taobao.org/morgan/download/morgan-1.6.1.tgz#5fd818398c6819cba28a7cd6664f292fe1c0bbf2"
@@ -3572,6 +3576,12 @@ react-native-amap3d@^0.8.0:
   version "0.8.0"
   resolved "http://registry.npm.taobao.org/react-native-amap3d/download/react-native-amap3d-0.8.0.tgz#d260dfa5de16e4e7df67354e3ddf789c4771ecd5"
 
+react-native-datepicker@^1.6.0:
+  version "1.6.0"
+  resolved "http://registry.npm.taobao.org/react-native-datepicker/download/react-native-datepicker-1.6.0.tgz#3a40dc9b112023c49d60ba2a0789d440b7e3d97c"
+  dependencies:
+    moment "2.x.x"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/react-native-dismiss-keyboard/download/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
@@ -3601,6 +3611,17 @@ react-native-easy-grid@0.1.15:
   dependencies:
     lodash "^4.11.1"
 
+react-native-iphone-x-helper@^1.0.1:
+  version "1.0.1"
+  resolved "http://registry.npm.taobao.org/react-native-iphone-x-helper/download/react-native-iphone-x-helper-1.0.1.tgz#950dbdaca66f458689a7e9697c5beb9bd53f98f2"
+
+react-native-keyboard-aware-scroll-view@^0.4.1:
+  version "0.4.1"
+  resolved "http://registry.npm.taobao.org/react-native-keyboard-aware-scroll-view/download/react-native-keyboard-aware-scroll-view-0.4.1.tgz#bda86cbe3cdf60c572a95e7e0fbac635bc9ce66d"
+  dependencies:
+    prop-types "^15.6.0"
+    react-native-iphone-x-helper "^1.0.1"
+
 "react-native-keyboard-aware-scroll-view@https://github.com/GeekyAnts/react-native-keyboard-aware-scroll-view":
   version "0.2.9"
   resolved "https://github.com/GeekyAnts/react-native-keyboard-aware-scroll-view#f4805f254d6cc8e3329f5fb224944401f66655db"
@@ -3608,6 +3629,10 @@ react-native-easy-grid@0.1.15:
     create-react-class "^15.6.0"
     prop-types "^15.5.10"
     react-timer-mixin "^0.13.3"
+
+react-native-modal-dropdown@^0.5.0:
+  version "0.5.0"
+  resolved "http://registry.npm.taobao.org/react-native-modal-dropdown/download/react-native-modal-dropdown-0.5.0.tgz#f6c4cd4d077792e56902b43b14d83959f5f40f46"
 
 react-native-scrollable-tab-view@^0.8.0:
   version "0.8.0"

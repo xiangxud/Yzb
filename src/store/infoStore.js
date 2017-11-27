@@ -1,52 +1,145 @@
-/**
- * Created by TomChow on 2017/10/25.
- */
+import {AsyncStorage} from 'react-native'
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
+import { persist } from 'mobx-persist'
+import _ from "lodash";
+useStrict(true);
 
-class InfoStore {
+class breedItem{
+    code="";
+    title="";
+    publised= new Date();
+    source="";
+    comments=0;
+    publishFormate="";
+}
 
-    @observable count = "5";
-    @observable showModel = false;
-    @observable comment_text_total_count = 200;
-    @observable comment_input_count = 0;
-    @observable allow_comment = false;
-    @observable comment = '';
-    @observable info = {};
+class breedItemCollection {
+    constructor(type){
+        this.datatype=type;
+    }
 
-    @action
-    getArticle = (info) => {
-        this.count = info.hits > 9 ? '...' : info.hits.toString();
-        this.info = info;
-    };
+    @observable
+    source=[];
 
-    @action
-    onFailed = (mess) => {
-        tools.showToast(mess);
-    };
+    @observable
+    end=true;
 
-    @action
-    toogleModel = () => {
-        this.showModel = !this.showModel;
-    };
+    @observable
+    datatype="";
 
-    @action
-    onChangText = (e) => {
-        let txt = e.nativeEvent.text;
-        this.comment_input_count = txt.length;
-        this.allow_comment = txt.length > 0;
-        this.comment = txt;
-    };
+    @observable
+    pageIndex=1;
+
+    pageSize=8;
+    searchTxt="";
 
     @action
-    postComment = (code, content, sucess, failed) => {
-        request.postJson(urls.apis.CMS_Publish, {code: code, content: content}).then((data) => {
-            sucess(data)
-        }).catch((err) => {
-            //err.Message
-            failed("网络请求失败，请检查网络设置")
+    onLoad(){
+        this.source=[];
+        this.end = false;
+        this.pageIndex = 1;
+        this.onLoadFromApi(this.pageIndex,(items)=>{
+            this.onParse(items);
+            this.onCloseEnd();
+        },()=>{
+            this.onCloseEnd();
         });
+    };
+
+    @action
+    onFilter(txt){
+        this.searchTxt=txt;
+        this.onLoad();
+    }
+
+    @action
+    onLoadFromApi(index,callback,falied){
+        request.postJson(urls.apis.CMS_ARTICLE_LIST,{pageIndex: index,pageSize:this.pageSize,Type:this.datatype,txt:this.searchTxt}).then((data) => {
+            callback(data);
+        }).catch((err) => {
+            falied();
+        });
+    }
+
+    @action
+    onParse(list)
+    {
+        list.forEach((e) => {
+            let item = new breedItem();
+            item.code = e.code;
+            item.title=e.title;
+            item.publised=e.create_date;
+            item.source=e.copy_from;
+            item.publishFormate=e.formate;
+            this.source.push(item);
+        })
+    }
+
+    @action
+    onMore(){
+        this.end = false;
+        this.onLoadFromApi(this.pageIndex+1,(items)=>{
+            this.onParse(items);
+            this.pageIndex++;
+            this.onCloseEnd();
+        },()=>{
+            this.onCloseEnd();
+        });
+    }
+
+    @action
+    onCloseEnd(){
+        this.end = true;
     }
 }
 
-infoStore = new InfoStore();
-export default infoStore
+class hotBreedStore {
+    labels = ["肉蛋行情","原材料价格","疫病流行咨询"];
+
+    @observable
+    currentLabel="肉蛋行情";
+
+    @action
+    onChanged(label){
+        this.currentLabel=label;
+        let data = this.onGetCurrentCollection();
+        if( data != null && data.source.length == 0 )
+        {
+            data.onLoad();
+        }
+    }
+
+
+    @action
+    onFilter(txt){
+        let data = this.onGetCurrentCollection();
+        if(data==null) {
+            return;
+        }
+        data.onFilter(txt);
+    }
+
+    @action
+    onGetCurrentCollection(){
+        if( this.currentLabel ==  this.labels[0]){
+            return this.data0;
+        }
+        if( this.currentLabel ==  this.labels[1]){
+            return     this.data1;
+        }
+        if( this.currentLabel ==  this.labels[2]){
+            return    this.data2;
+        }
+        return null;
+    }
+
+    @observable
+    data0 = new breedItemCollection(this.labels[0]);
+    @observable
+    data1 = new breedItemCollection(this.labels[1]);
+    @observable
+    data2 = new breedItemCollection(this.labels[2]);
+}
+hotBreedStore = new hotBreedStore();
+
+export default hotBreedStore;

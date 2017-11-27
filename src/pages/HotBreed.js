@@ -10,9 +10,10 @@ import
     StyleSheet
 } from 'react-native';
 import {observer,inject} from 'mobx-react/native';
-import SearchBar from '../components/common/SearchBar';
-import TabHead from '../components/common/tabHead';
-import BreedList from '../components/common/BreedList';
+import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
+
+import SearchBar from '../components/info/SearchBar';
+import BreedList from '../components/info/BreedList';
 
 @inject('hotBreedStore')
 @observer
@@ -73,16 +74,27 @@ export default class HotBreed extends Component{
     render(){
         const {hotBreedStore} = this.props;
         return <View style={{flex:1}}>
-            <View style={style.tab}>
-                <TabHead items={[...hotBreedStore.labels]} onChanged={(label)=>{
-                    const {hotBreedStore} = this.props;
-                    hotBreedStore.onChanged(label);
-                }}>
-                </TabHead>
-            </View>
-                {
-                    this.renderList()
-                }
+            <ScrollableTabView
+                style={{height:29}}
+                tabStyle={{height:30}}
+                tabBarTextStyle={{color:'#15856e',}}
+                initialPage={0}
+                tabBarUnderlineStyle={{backgroundColor:'#15856e'}}
+                renderTabBar={() => <ScrollableTabBar />}
+            >
+                <BreedList tabLabel={hotBreedStore.labels[0]}
+                           source={hotBreedStore.data0}
+                           onItemPress={(c,t) => this.onItemPress(c,t)}>
+                </BreedList>
+                <BreedList tabLabel={hotBreedStore.labels[1]}
+                           source={hotBreedStore.data1}
+                           onItemPress={(c,t) => this.onItemPress(c,t)}>
+                </BreedList>
+                <BreedList tabLabel={hotBreedStore.labels[2]}
+                           source={hotBreedStore.data2}
+                           onItemPress={(c,t) => this.onItemPress(c,t)}>
+                </BreedList>
+            </ScrollableTabView>
         </View>
     }
 }

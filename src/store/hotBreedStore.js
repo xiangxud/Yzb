@@ -54,7 +54,7 @@ class breedItemCollection {
 
     @action
     onLoadFromApi(index,callback,falied){
-        request.postJson(urls.apis.CMS_PostArticleList,{pageIndex: index,pageSize:this.pageSize,Type:this.datatype,txt:this.searchTxt}).then((data) => {
+        request.postJson(urls.apis.CMS_ARTICLE_LIST,{pageIndex: index,pageSize:this.pageSize,Type:this.datatype,txt:this.searchTxt}).then((data) => {
             callback(data);
         }).catch((err) => {
             falied();

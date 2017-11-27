@@ -10,7 +10,7 @@ import
     TouchableHighlight
 } from 'react-native';
 import FontIcon from 'react-native-vector-icons/FontAwesome';
-import IcoText from '../common/IcoText';
+import IcoText from './IcoText';
 
 export default class SearchBar extends Component{
     constructor(props){
