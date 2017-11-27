@@ -13,56 +13,57 @@ import {action,observable} from 'mobx'
 import ModalDropdown from 'react-native-modal-dropdown';
 import FontIcon from 'react-native-vector-icons/FontAwesome';
 
-@observer
-export default class StyBar extends Component{
-    constructor(props){
-        super(props);
-    };
-
-    list = [
-        {"code": "001", "title": '生猪-东-01'},
-        {"code": "002", "title": '生猪-东-02'},
-        {"code": "003", "title": '生猪-东-03'},
-        {"code": "004", "title": '生猪-东-04'},
-        {"code": "005", "title": '生猪-东-05'},
-        {"code": "006", "title": '生猪-东-06'},
-        {"code": "007", "title": '生猪-东-07'},
-        {"code": "008", "title": '生猪-东-08'},
-        {"code": "009", "title": '生猪-东-09'}];
-
-    componentDidMount(){
-        this.onSelect(this.props.iniCode);
-    }
-
+class styBarStore{
     @observable
     displayTxt="";
 
+    styList=[];
+
+    @action
+    ini(list,code){
+        this.styList=list;
+        this.onSelect(code);
+    }
+
+    @action
+    onSelect(code){
+        if(code==undefined || code=="" || code == null){
+            return;
+        }
+        if( this.styList == null || this.styList == undefined){
+            return;
+        }
+        this.styList.forEach((o)=>{
+            if(o.code == code){
+                this.displayTxt=o.title;
+            }
+        });
+    }
+
     @action
     onChanged(index,value){
-        debugger;
         if( value == null || value == undefined)
         {
             return;
         }
         this.displayTxt=value.title;
     }
+}
 
-    @action
-    onSelect(code){
-        debugger;
-        if(code==undefined || code=="" || code == null){
-            return;
-        }
-        if( this.list == null || this.list == undefined)
-        {
-            return;
-        }
-        this.list.forEach((o)=>{
-           if(o.code == code){
-               this.displayTxt=o.title;
-           }
-        });
+
+@observer
+export default class StyBar extends Component{
+
+    constructor(props){
+        super(props);
+    };
+
+    componentDidMount(){
+        this.store.ini(this.props.styList,this.props.iniCode);
     }
+
+    @observable
+    store = new styBarStore();
 
     _renderRow(rowData, rowID, highlighted) {
         let evenRow = rowID % 2;
@@ -78,7 +79,7 @@ export default class StyBar extends Component{
         );
     };
     _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
-        if (rowID == this.list.length - 1) return;
+        if (rowID == this.store.styList.length - 1) return;
         let key = `spr_${rowID}`;
         return (<View style={dropDownSty.separator} key={key} />);
     };
@@ -91,13 +92,13 @@ export default class StyBar extends Component{
                         <FontIcon name="chevron-left" size={20} color="#ffffff"></FontIcon>
                     </TouchableHighlight>
                 </View>
-                    <ModalDropdown
+                <ModalDropdown
                         style={dropDownSty.main}
                         textStyle={dropDownSty.text}
                         dropdownStyle={dropDownSty.dropdown}
-                        options={this.list}
-                        defaultValue={this.displayTxt}
-                        onSelect={this.onChanged.bind(this)}
+                        options={this.store.styList}
+                        defaultValue={this.store.displayTxt}
+                        onSelect={this.store.onChanged.bind(this.store)}
                         renderRow=
                                        {
                                            this._renderRow.bind(this)
@@ -111,11 +112,18 @@ export default class StyBar extends Component{
                                        }
                     >
                         <View style={dropDownSty.button}>
-                            <Text style={dropDownSty.text}>{this.displayTxt}</Text>
+                            <Text style={dropDownSty.text}>{this.store.displayTxt}</Text>
                             <FontIcon name="chevron-down" size={18} color='#ffffff' />
                         </View>
                     </ModalDropdown>
-                <View>
+                <View style={style.right}>
+                    <View>
+                        <FontIcon name="envelope" size={20} color='#ffffff' />
+                        <FontIcon name="circle" size={15} color='#f50716' style={style.warning} />
+                    </View>
+                    <View style={style.ico}>
+                        <FontIcon name="cog" size={20} color='#ffffff' />
+                    </View>
                 </View>
             </View>)
     }
@@ -127,7 +135,7 @@ const dropDownSty = StyleSheet.create({
         width: 150,
         right: 8,
         borderWidth: 0,
-        borderRadius: 3
+        borderRadius: 3,
     },
     text: {
         marginVertical: 10,
@@ -176,20 +184,25 @@ const style = StyleSheet.create({
         alignItems:'stretch',
         justifyContent:'space-between',
         paddingLeft:10,
-        paddingRight:30,
-        paddingTop:7
+        paddingRight:10,
+        paddingTop:7,
     },
     chevron:{
         width:20,
         flexDirection:'row',
         alignItems:'center',
     },
-    word:{
-        width:80,
-        textAlignVertical:'center',
-        fontSize:16,
-        color:'#ffffff',
-        textAlign:'right',
-        marginRight:6,
-    }
+    right:{
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'flex-end',
+    },
+    ico:{
+        marginLeft:15
+    },
+    warning : {
+        position:'absolute',
+        left:12,
+        top:-3
+    },
 });
