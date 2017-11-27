@@ -14,6 +14,82 @@ import VetInfo from '../pages/didi/VetInfo';
 import Web from '../pages/Web';
 //import About from '../pages/uc/About';
 import Sty from '../pages/sty';
+import imm from '../pages/sty/imm';
+import monitor from '../pages/sty/monitor';
+import environmental from '../pages/sty/environmental';
+import report from '../pages/sty/report';
+
+
+const StyTabNavigation = TabNavigator({
+    StyTab:{
+        screen:Sty,
+        navigationOptions:{
+            headerTitle: '概况',
+            tabBarLabel:'概况',
+            tabBarIcon: ({tintColor}) => (<Icon name='home' color={tintColor} size={24}/>)
+        }
+    },
+    ImmTab:{
+        screen:imm,
+        navigationOptions:{
+            headerTitle: '免疫',
+            tabBarLabel:'免疫',
+            tabBarIcon: ({tintColor}) => (<Icon name='stethoscope' color={tintColor} size={24}/>)
+        }
+    },
+    MonitorTab:{
+        screen:monitor,
+        navigationOptions:{
+            headerTitle: '监控',
+            tabBarLabel:'监控',
+            tabBarIcon: ({tintColor}) => (<Icon name='desktop' color={tintColor} size={24}/>)
+        }
+    },
+    EnvironmentalTab:{
+        screen:environmental,
+        navigationOptions:{
+            headerTitle: '环控',
+            tabBarLabel:'环控',
+            tabBarIcon: ({tintColor}) => (<Icon name='dashboard' color={tintColor} size={24}/>)
+        }
+    },
+    ReportTab:{
+        screen:report,
+        navigationOptions:{
+            headerTitle: '报表',
+            tabBarLabel:'报表',
+            tabBarIcon: ({tintColor}) => (<Icon name='bar-chart' color={tintColor} size={24}/>)
+        }
+    }
+},{
+    initialRouteName:'StyTab',
+    animationEnabled: false,
+    tabBarPosition: 'bottom',
+    swipeEnabled: false,
+    backBehavior: 'none',
+    tabBarOptions: {
+        style: {
+            height:49,
+            paddingTop:0,
+            backgroundColor:'#f1f9f7'
+        },
+        labelStyle:{
+            marginTop:0,
+            paddingTop:0
+        },
+        iconStyle:{
+            marginTop:0,
+            paddingTop:0,
+        },
+        activeBackgroundColor:'white',
+        activeTintColor:'#009688',
+        inactiveBackgroundColor:'white',
+        inactiveTintColor:'#aaa',
+        showLabel:true,
+        showIcon:true,
+        indicatorStyle:{height:0}
+    }
+});
 
 // see here for options: https://reactnavigation.org/docs/navigators/tab
 const TabNavigation = TabNavigator({
@@ -83,7 +159,7 @@ const RootNavigator = StackNavigator({
     Main:{ screen: TabNavigation },
     InfoDetail:{ screen: InfoDetail },
     Login:{ screen: Login },
-    Sty:{screen:Sty},
+    Sty:{screen:StyTabNavigation},
     BHStart:{ screen: BHStart },
     Web:{ screen: Web },
     Didi:{ screen: Didi },
@@ -103,4 +179,6 @@ const RootNavigator = StackNavigator({
     onTransitionStart: (Start)=>{console.log('导航栏切换开始');},  // 回调
     onTransitionEnd: ()=>{ console.log('导航栏切换结束'); }  // 回调
 });
+
+
 export default RootNavigator
