@@ -21,11 +21,12 @@ export default class Sty extends Component{
                         navigate={navigation.navigate}
                         iniCode={navigation.state.params.code}
                         Title={navigation.state.params.title}
-                        styList={navigation.state.params.list}></StyBar>)
+                        styList={navigation.state.params.list}
+                        onMessPress={()=>{}}
+                        onSettingPress={()=>{}}></StyBar>)
     });
 
     render(){
-
         return (<View></View>);
     }
 }

@@ -117,7 +117,7 @@ export default class StyBar extends Component{
                         </View>
                     </ModalDropdown>
                 <View style={style.right}>
-                    <View>
+                    <View onPress={this.props.onMessPress}>
                         <FontIcon name="envelope" size={20} color='#ffffff' />
                         <FontIcon name="circle" size={15} color='#f50716' style={style.warning} />
                     </View>
