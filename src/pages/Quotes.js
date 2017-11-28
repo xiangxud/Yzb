@@ -10,14 +10,42 @@ import {
     FlatList,
     TouchableNativeFeedback
 } from 'react-native'
+
+import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
 import {observer, inject} from 'mobx-react/native'
 import {Container, Content} from '../components';
 import {Icon} from 'native-base'
 import {Loading} from '../components'
 
-//@inject('app')
+class QuoteStore{
+
+    @observable page = 1;
+    @observable infos = [];
+    @observable isFetching = true;
+    @observable more = true;
+    @action
+    mapInfo(list){
+        if(this.page === 1){
+            this.infos.replace(list)
+        }else{
+            this.infos.splice(this.infos.length, 0, ...list);
+        }
+        this.isFetching = false;
+        list.length<15 ? this.more = false : this.page++;
+    }
+
+    @action
+    setLoading=()=>{
+        this.isFetching = true;
+    }
+}
+
+quoteStore = new QuoteStore();
+
+
 @observer
 export default class Info extends Component {
+
     static navigationOptions = {
         headerTitle: '行情动态',
         headerRight: <View />
@@ -32,8 +60,22 @@ export default class Info extends Component {
 
                         </View>*/
     componentDidMount(){
-
+        this.fetchData();
     }
+
+    fetchData = () =>{
+        request.getJson(urls.apis.CMS_ARTICLE_QUOTES, {page: quoteStore.page}).then((res)=>{
+            quoteStore.mapInfo(res);
+        }).catch((err)=>{
+            tools.showToast(JSON.stringify(err));
+        });
+    }
+
+    newsPress =(info) =>{
+        const {navigation} = this.props;
+        navigation.navigate("InfoDetail",{ code : info.code , title: info.title })
+    }
+
     renderRow = (info) =>{
         return (
             <TouchableNativeFeedback
@@ -44,35 +86,30 @@ export default class Info extends Component {
                         {info.title}
                     </Text>
                     <Text style={styles.newsItemDesc}>
-                        {info.from} {info.publishdate} {info.comment_count}评论
+                        {info.copy_from} {info.formate}
                     </Text>
                 </View>
             </TouchableNativeFeedback>)
     }
 
     render() {
+        const {infos, isFetching, more} = quoteStore;
         return (
-            <ScrollView>
-                <Container>
-                    <Content gray>
-                        <FlatList
-                            style={styles.container}
-                            data={news.slice()}
-                            renderItem={({ item }) => this.renderRow(item) }
+            <FlatList
+                style={styles.container}
+                data={infos.slice()}
+                renderItem={({ item }) => this.renderRow(item) }
 
-                            ListFooterComponent={()=><Loading isShow={isFetching}/>}
-                            keyExtractor={ this._keyExtractor }
-                            refreshing = {false}
-                            onEndReachedThreshold={0.5}
-                            onEndReached={() => {
-                                if (news_page > 0) {
-                                    this.fetchMore()
-                                }
-                            }}
-                        />
-                    </Content>
-                </Container>
-            </ScrollView>
+                ListFooterComponent={()=>{return <Loading isShow={isFetching}/>}}
+                refreshing = {isFetching}
+                onEndReachedThreshold={0.1}
+                onEndReached={() => {
+                    if (more > 0) {
+                        this.fetchData()
+                    }
+                }}
+                keyExtractor={(item,key) => key}
+            />
         )
     }
 }
