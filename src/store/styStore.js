@@ -4,8 +4,11 @@ import { persist } from 'mobx-persist'
 import _ from "lodash";
 useStrict(true);
 
-class ImmCollection
+class ImmCollectionStore
 {
+    constructor(){
+        this.onIni();
+    }
     @observable
     End:true;
     @observable
@@ -57,15 +60,30 @@ class ImmCollection
         }];
         this.count = this.list.length;
         this.End = true;
-
     }
+}
+
+class WaringStore {
+    constructor(){
+        this.breed="种猪";
+        this.count=20;
+        this.temperature="";
+        this.humidity="30ml";
+        this.co2="";
+    }
+    breed="";//种属
+    count="";//数量
+    temperature="";//温度
+    humidity="";//湿度
+    co2="";//二氧化碳
 }
 
 class styStore {
     constructor(){
-        this.immCollection = new ImmCollection();
-        let h = this.immCollection.onIni.bind(this.immCollection);
-        h();
+        //1、imm collection
+        this.immCollection = new ImmCollectionStore();
+        //2、预警信息
+        this.waring = new WaringStore();
     }
 
     //code
@@ -81,17 +99,17 @@ class styStore {
         //温度
         temperature:0,
         temperatureWaring:'',
-
         //湿度
         humidity:0,
         humidityWaring:'',
-
         //二氧化碳
         co2:'',
         co2Waring:''
     }
     //免疫
-    immCollection:{}
+    immCollection:{};
+    //预警信息
+    waringStore:{};
 }
 styStore = new styStore();
 

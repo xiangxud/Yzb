@@ -11,7 +11,9 @@ import
 } from 'react-native';
 import {observer,inject} from 'mobx-react/native';
 import StyBar from '../../components/sty/StyBar';
+import Waring from '../../components/sty/Waring';
 import ImmList from '../../components/sty/ImmList';
+
 
 @inject('styStore')
 @observer
@@ -34,7 +36,10 @@ export default class Sty extends Component{
     render(){
         const {styStore} = this.props;
         return (<View style={style.main}>
-            <ImmList title="免疫提醒" collection={styStore.immCollection}>
+            <Waring style={style.waring} waring={styStore.waring}>
+
+            </Waring>
+            <ImmList style={style.imm} title="免疫提醒" collection={styStore.immCollection}>
             </ImmList>
         </View>);
     }
@@ -47,6 +52,12 @@ const style = StyleSheet.create({
         alignItems:'stretch'
     },
     main:{
-        flex:1
+        flex:1,
+        alignItems:'stretch'
+    },
+    imm:{
+    },
+    waring:{
+
     }
 });
