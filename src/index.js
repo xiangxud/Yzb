@@ -32,7 +32,7 @@ let lastBackPressed = null;
                 return false;
             }
             lastBackPressed = Date.now();
-            tools.showToast('再点击一次退出应用');
+            tools.showToast('再按击一次退出养殖宝');
             return true;
         }
     }
