@@ -86,7 +86,7 @@ const urls = {
         //获取文章信息
         //CMS_ARTICLE:apiPath + "info/GetArticle",
         //获取文章列表
-        CMS_ARTICLE_LIST:apiPath + "info/PostArticle",
+        CMS_ARTICLE_LIST:apiPath + "info/fetchInfos",
 
 
         //用户------------------------------------------------------------------------

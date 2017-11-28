@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Welcome from '../pages/Welcome';
 import HomePage from '../pages/HomePage';
 import Live from '../pages/Live';
-import Info from '../pages/HotBreed';
+import Info from '../pages/Info';
 import InfoDetail from '../pages/info/InfoDetail';
 import Uc from '../pages/Uc';
 import Login from '../pages/Login';
@@ -19,6 +19,7 @@ import imm from '../pages/sty/imm';
 import monitor from '../pages/sty/monitor';
 import environmental from '../pages/sty/environmental';
 import report from '../pages/sty/report';
+import Quotes from '../pages/Quotes';
 
 
 const StyTabNavigation = TabNavigator({
@@ -105,7 +106,7 @@ const TabNavigation = TabNavigator({
     LiveTab: {
         screen: Live,
         navigationOptions:{
-            title: '直播间',
+            title: '直播',
             tabBarIcon: ({tintColor}) => (<Icon name='video-camera' color={tintColor} size={24}/>)
         }
     },
@@ -167,6 +168,7 @@ const RootNavigator = StackNavigator({
     VetInfo:{ screen: VetInfo },
     About:{ screen: About },
     MyInfo:{ screen: MyInfo },
+    Quotes:{ screen: Quotes },
 }, {
     initialRouteName: 'Welcome', // 默认显示界面!global.user.loginState?'Login':'Main'
     navigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
