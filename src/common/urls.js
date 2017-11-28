@@ -1,7 +1,7 @@
 // 接口服务器地址
-//const apiPath = 'http://120.24.89.243/imm/api/'; // 开发服务器（外网）
+const apiPath = 'http://120.24.89.243/imm/api/'; // 开发服务器（外网）
 // const apiPath = 'http://103.254.113.10:9090/api/'; // 生产服务器（外网）
-const apiPath = 'http://192.168.0.103/RP.Imm.WebUI/api/';
+// const apiPath = 'http://192.168.0.103/RP.Imm.WebUI/api/';
 
 // web服务器地址
  const webPath = 'http://120.24.89.243/imm/'; // 开发服务器（外网）
@@ -72,12 +72,6 @@ const urls = {
         COLLECTION_DELETE_COLLECTION: apiPath + 'user/deleteMyCollection',
 
 
-        //获取用户信息
-        USER_DETAIL: apiPath + 'user/accountInfo',
-        //修改用户信息
-        USER_UPDATEUSERINFO: apiPath + 'user/updateUserInfo',
-        //搜索用户
-        USER_SEARCH: apiPath + 'user/searchUser',
 
 
         //搜索------------------------------------------------------------------------
@@ -86,7 +80,17 @@ const urls = {
         SEARCH_DOCTOR: apiPath + 'search/searchDoctor',
         SEARCH_INFORMATION: apiPath + 'search/searchInformation',
 
-        // 注册登录(老)
+        //文章------------------------------------------------------------------------
+        //回复
+        CMS_POST_COMMENT:apiPath + "info/Publish",
+        //获取文章信息
+        //CMS_ARTICLE:apiPath + "info/GetArticle",
+        //获取文章列表
+        CMS_ARTICLE_LIST:apiPath + "info/PostArticle",
+
+
+        //用户------------------------------------------------------------------------
+
         //验证手机号
         USER_CHECKPHONEREGISTERED: apiPath + 'user/checkPhoneRegistered',
         //发送验证码
@@ -107,13 +111,15 @@ const urls = {
         USER_SETUSERBASEINFO: apiPath + "user/setUserBaseInfo",
         //签到
         USER_SIGNIN: apiPath + "user/signIn",
-        //cms
-        //回复
-        CMS_Publish:apiPath + "info/Publish",
-        //获取文章信息
-        CMS_GetArticle:apiPath + "info/GetArticle",
-        //获取文章信息
-        CMS_PostArticleList:apiPath + "info/PostArticle"
+
+        //获取用户信息
+        USER_DETAIL: apiPath + 'user/accountInfo',
+        //修改用户信息
+        USER_UPDATEUSERINFO: apiPath + 'user/updateUserInfo',
+        //搜索用户
+        USER_SEARCH: apiPath + 'user/searchUser',
+
+
     },
     // 获取图片完整路径
     getImage(filePath, width, height){

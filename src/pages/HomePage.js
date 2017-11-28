@@ -41,7 +41,7 @@ export default class HomePage extends Component {
     }
     newsPress =(info) =>{
         const {navigation} = this.props;
-        navigation.navigate("InfoDetail",{ id : '6z3glfahK6BrRzhlmKHsgPUUQnJtG5Ay' , title:info.title })
+        navigation.navigate("InfoDetail",{ code : info.code , title:info.title })
     }
     fetchMore =()=>{
         homeStore.fetchNextInfos();
@@ -146,7 +146,7 @@ let list = [
                     ListFooterComponent={loading(isFetching, styles.loading)}
                     keyExtractor={ this._keyExtractor }
                     onRefresh={()=>{homeStore.fetchHomeData()}}
-                    refreshing = {isFetching}
+                    refreshing = {false}
                     onEndReachedThreshold={0.5}
                     onEndReached={() => {
                         if (news_page > 0) {

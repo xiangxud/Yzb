@@ -10,7 +10,7 @@ import
     StyleSheet
 } from 'react-native';
 import {observer,inject} from 'mobx-react/native';
-import StyBar from '../../components/common/StyBar';
+import StyBar from '../../components/sty/StyBar';
 
 @inject('styStore')
 @observer

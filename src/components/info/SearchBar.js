@@ -9,8 +9,8 @@ import
     StyleSheet,
     TouchableHighlight
 } from 'react-native';
-import FontIcon from 'react-native-vector-icons/FontAwesome';
-import IcoText from '../common/IcoText';
+
+import IcoText from './IcoText';
 
 export default class SearchBar extends Component{
     constructor(props){
@@ -18,11 +18,6 @@ export default class SearchBar extends Component{
     }
     render(){
         return (<View style={style.bar}>
-            <View style={style.chevron} >
-                <TouchableHighlight onPress={this.props.goBack}>
-                    <FontIcon name="chevron-left" size={20} color="#ffffff"></FontIcon>
-                </TouchableHighlight>
-            </View>
             <Text style={style.word}>{this.props.Title}</Text>
             <IcoText style={{flex:1,marginLeft:5}} icoName="search" bgColor="#ffffff" onChanged={this.props.onChanged}></IcoText>
         </View>);
@@ -39,11 +34,6 @@ const style = StyleSheet.create({
         paddingRight:30,
         paddingTop:7,
         paddingBottom:7
-    },
-    chevron:{
-        width:20,
-        flexDirection:'row',
-        alignItems:'center',
     },
     word:{
         width:80,
