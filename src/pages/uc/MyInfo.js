@@ -146,7 +146,7 @@ export default class MyInfo extends Component {
                     <View style={{height: 120, justifyContent: 'center', alignItems: 'center'}}>
                         <TouchableOpacity activeOpacity={1} onPress={this.cameraAction}>
                             <Image style={styles.myPhoto}
-                                   source={loginUser.photo ? {uri: urls.getImage(loginUser.photo, 300, 300)} : defaultPhoto}/>
+                                   source={loginUser.photo ? {uri: loginUser.photo} : defaultPhoto}/>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.row}>
@@ -155,9 +155,21 @@ export default class MyInfo extends Component {
                             style={{textAlign: 'right', flex: 1, padding: 0}}
                             underlineColorAndroid='transparent'
                             maxLength={12}
-                            placeholder={loginUser.nickname || loginUser.username}
+                            placeholder={loginUser.nick || loginUser.name}
                             onChangeText={(value) => {
-                                this.setState({nickname: value})
+                                this.setState({nick: value})
+                            }}
+                        />
+                    </View>
+                    <View style={styles.row}>
+                        <Text>手机</Text>
+                        <TextInput
+                            style={{textAlign: 'right', flex: 1, padding: 0}}
+                            underlineColorAndroid='transparent'
+                            maxLength={120}
+                            placeholder={loginUser.phone || ''}
+                            onChangeText={(value) => {
+                                this.setState({phone: value})
                             }}
                         />
                     </View>
@@ -186,30 +198,19 @@ export default class MyInfo extends Component {
                             }}
                         />
                     </View>
-                    {
-                        loginUser.sex === 1 ? null :
-                            <View style={styles.row}>
-                                <Text>我的状态</Text>
-                                <TouchableOpacity
-                                    activeOpacity={1}
-                                    onPress={this.changeSex.bind(this, 2)}
-                                >
-                                    <Text>{this.state.crowdname}</Text>
-                                </TouchableOpacity>
-                            </View>
-                    }
                     <View style={styles.row}>
-                        <Text>个性签名</Text>
+                        <Text>公司名称</Text>
                         <TextInput
                             style={{textAlign: 'right', flex: 1, padding: 0}}
                             underlineColorAndroid='transparent'
                             maxLength={120}
-                            placeholder={loginUser.signname || ''}
+                            placeholder={loginUser.company || ''}
                             onChangeText={(value) => {
-                                this.setState({signname: value})
+                                this.setState({company: value})
                             }}
                         />
                     </View>
+
                     <View style={{
                         backgroundColor: '#E3E7F3',
                         paddingTop: 10,

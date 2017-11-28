@@ -102,7 +102,7 @@ const urls = {
         //登录
         USER_LOGIN: apiPath + "auth/login",
         //获取用户信息
-        USER_GETLOGINUSER: apiPath + 'uc/get',
+        USER_GETLOGINUSER: apiPath + 'public/myinfo',
         //获取指定用户信息
         USER_GETUSER: apiPath + 'user/getUser',
         //重置密码

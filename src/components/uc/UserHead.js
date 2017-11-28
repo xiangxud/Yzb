@@ -36,12 +36,12 @@ export default class MyPhoto extends Component {
         return (
             <View style={styles.myCover}>
                 <TouchableOpacity activeOpacity={1} onPress={() => this.cameraAction()}>
-                    <Image style={styles.myPhoto} source={loginUser.FaceUrl ? {uri: loginUser.FaceUrl} : defaultPhoto}/>
+                    <Image style={styles.myPhoto} source={loginUser.photo ? {uri: loginUser.photo} : defaultPhoto}/>
                 </TouchableOpacity>
                 <View style={styles.myInfo}>
-                    <Text style={[styles.myName, {fontSize:18}]}>会员：{loginUser.Contacts}</Text>
-                    <Text style={[styles.myName, styles.gray]}>手机：{loginUser.Mobile}</Text>
-                    <Text style={[styles.myName, styles.gray]}>{loginUser.Name}</Text>
+                    <Text style={[styles.myName, {fontSize:18, color:'#15856e'}]}>{loginUser.name}</Text>
+                    <Text style={[styles.myName, styles.gray]}>手机：{loginUser.phone}</Text>
+                    <Text style={[styles.myName, styles.gray]}>公司：{loginUser.company}</Text>
                 </View>
             </View>
         )
