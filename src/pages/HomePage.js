@@ -59,7 +59,8 @@ let list = [
     {"code": "007", "title": '生猪-东-a7'},
     {"code": "47cc7c31-f14d-4e0e-a37d-c0e078bfa9f4", "title": '生猪-东-a8'},
     {"code": "009", "title": '生猪-东-a9'}];
-        navigation.navigate("Sty",{ code : sty.id , list : list });
+//sty.id
+        navigation.navigate("Sty",{ code : "47cc7c31-f14d-4e0e-a37d-c0e078bfa9f4" , list : list });
     }
     renderListHeader(){
         const {isFetching, reminds, fields, sties} = homeStore;
