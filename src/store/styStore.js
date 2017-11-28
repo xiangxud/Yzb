@@ -4,7 +4,70 @@ import { persist } from 'mobx-persist'
 import _ from "lodash";
 useStrict(true);
 
+class ImmCollection
+{
+    @observable
+    End:true;
+    @observable
+    count:0;
+    @observable
+    list:[];
+
+    @action
+    onIni(){
+        this.End = true;
+        this.list = [];
+        this.count = 0;
+    }
+
+    @action
+    onLoad(){
+        this.list = [{
+            id:'8E0DF754-91F4-4557-BF47-005C9E4E9B0D',
+            vaccineTitle:'疫苗鸡球虫病',
+            vaccineType:'活疫苗',
+            vaccineMethod:'胸肌注射',
+            dose:'200ml x 200',
+            immuneTime:'2017-07-21',
+            status:'未完成'
+        },{
+            id:'B8BDBF1B-9AA7-491F-AE9A-01FEBF6C0C0B',
+            vaccineTitle:'猪支原体肺炎灭活疫苗（DJ-166株）',
+            vaccineType:'活疫苗',
+            vaccineMethod:'胸肌注射',
+            dose:'200ml x 200',
+            immuneTime:'2017-07-21',
+            status:'未完成'
+        },{
+            id:'B8BDBF1B-9AA7-491F-AE9A-01FEBF6C0C0B',
+            vaccineTitle:'猪支原体肺炎灭活疫苗（DJ-166株）',
+            vaccineType:'活疫苗',
+            vaccineMethod:'胸肌注射',
+            dose:'200ml x 200',
+            immuneTime:'2017-07-21',
+            status:'未完成'
+        },{
+            id:'B8BDBF1B-9AA7-491F-AE9A-01FEBF6C0C0B',
+            vaccineTitle:'猪支原体肺炎灭活疫苗（DJ-166株）',
+            vaccineType:'活疫苗',
+            vaccineMethod:'胸肌注射',
+            dose:'200ml x 200',
+            immuneTime:'2017-07-21',
+            status:'未完成'
+        }];
+        this.count = this.list.length;
+        this.End = true;
+
+    }
+}
+
 class styStore {
+    constructor(){
+        this.immCollection = new ImmCollection();
+        let h = this.immCollection.onIni.bind(this.immCollection);
+        h();
+    }
+
     //code
     code="";
     //栋舍名称
@@ -27,12 +90,8 @@ class styStore {
         co2:'',
         co2Waring:''
     }
-
     //免疫
-    immCollection:{
-        count:0,
-        list:[],
-    }
+    immCollection:{}
 }
 styStore = new styStore();
 

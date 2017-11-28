@@ -9,61 +9,7 @@ import
 } from 'react-native';
 import {observer} from 'mobx-react/native';
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx';
-//import Icon from 'react-native-vector-icons/FontAwesome';
 import { Icon } from 'native-base'
-
-class Collection
-{
-    @observable
-    End:true;
-    @observable
-    count:0;
-    @observable
-    list:[];
-
-    @action
-    onIni(){
-    }
-
-    @action
-    onLoad(){
-        this.list = [{
-            id:'8E0DF754-91F4-4557-BF47-005C9E4E9B0D',
-            vaccineTitle:'疫苗鸡球虫病',
-            vaccineType:'活疫苗',
-            vaccineMethod:'胸肌注射',
-            dose:'200ml x 200',
-            immuneTime:'2017-07-21',
-            status:'未完成'
-        },{
-            id:'B8BDBF1B-9AA7-491F-AE9A-01FEBF6C0C0B',
-            vaccineTitle:'猪支原体肺炎灭活疫苗（DJ-166株）',
-            vaccineType:'活疫苗',
-            vaccineMethod:'胸肌注射',
-            dose:'200ml x 200',
-            immuneTime:'2017-07-21',
-            status:'未完成'
-        },{
-            id:'B8BDBF1B-9AA7-491F-AE9A-01FEBF6C0C0B',
-            vaccineTitle:'猪支原体肺炎灭活疫苗（DJ-166株）',
-            vaccineType:'活疫苗',
-            vaccineMethod:'胸肌注射',
-            dose:'200ml x 200',
-            immuneTime:'2017-07-21',
-            status:'未完成'
-        },{
-            id:'B8BDBF1B-9AA7-491F-AE9A-01FEBF6C0C0B',
-            vaccineTitle:'猪支原体肺炎灭活疫苗（DJ-166株）',
-            vaccineType:'活疫苗',
-            vaccineMethod:'胸肌注射',
-            dose:'200ml x 200',
-            immuneTime:'2017-07-21',
-            status:'未完成'
-        }];
-        this.count = this.list.length;
-        this.End = true;
-    }
-}
 
 @observer
 export default class ImmList extends Component{
@@ -71,14 +17,14 @@ export default class ImmList extends Component{
         super(props);
     }
 
-    @observable
-    collection = new Collection();
+    //@observable
+    //collection = new Collection();
 
     componentWillMount()
     {
+        //this.collection.onIni();
+        //this.collection.onLoad();
     }
-
-
 
     renderRow = (info) =>{
         return (
@@ -100,31 +46,39 @@ export default class ImmList extends Component{
             </TouchableNativeFeedback>)
     }
 
+    _separator=()=>{
+        return <View style={{ height: 1, backgroundColor: '#e2e2e2' }}/>;
+    }
+    _renderFooter(){
+        return <View />
+    }
     render(){
         return <View style={style.list}>
             <View style={style.header}>
                 <View style={style.title}>
                     <Icon name="list-box" style={{fontSize:22,color:'#e51c23'}}></Icon>
                     <Text style={style.word}>{this.props.title}</Text>
-                    <Text style={style.count}>({this.collection.count})</Text>
+                    <Text style={style.count}>({this.props.collection.count})</Text>
                 </View>
                 <View style={style.more}>
                     <Text>更多</Text>
                 </View>
             </View>
-            <FlatList data={this.collection.list}
+                <FlatList data={this.props.collection.list}
                           renderItem={this.renderRow}
                           onEndReachedThreshold={0.5}
-                          refreshing={!this.collection.End}
+                          ItemSeparatorComponent={this._separator}
+                          ListFooterComponent={this._renderFooter}
+                          refreshing={!this.props.collection.End}
                           onEndReached={()=>{
-                              this.collection.onLoad();
+                              this.props.collection.onLoad();
                               return true;
                           }}
                           onRefresh={()=>{
-                              //this.props.source.onLoad();
+                              this.props.collection.onLoad();
                               return true;
                           }} keyExtractor={(item,key) => key}>
-            </FlatList>
+                </FlatList>
         </View>
     }
 };
@@ -136,7 +90,7 @@ const style = StyleSheet.create({
     },
     header:{
         flexDirection:'row',
-        height:30,
+        height:40,
         alignItems:'center',
         borderBottomWidth:StyleSheet.hairlineWidth,
         borderBottomColor:'#888'
@@ -171,8 +125,6 @@ const style = StyleSheet.create({
     },
     frist:{
         flex:1,
-        color:'#101010',
-        fontSize:14,
         flexDirection:'row',
         alignItems:'center',
         paddingRight:0

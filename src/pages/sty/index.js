@@ -27,9 +27,14 @@ export default class Sty extends Component{
                         onSettingPress={()=>{}}></StyBar>)
     }};
 
+    constructor(props){
+        super(props);
+    }
+
     render(){
+        const {styStore} = this.props;
         return (<View style={style.main}>
-            <ImmList title="免疫提醒">
+            <ImmList title="免疫提醒" collection={styStore.immCollection}>
             </ImmList>
         </View>);
     }
@@ -41,4 +46,7 @@ const style = StyleSheet.create({
         flexDirection:'row',
         alignItems:'stretch'
     },
+    main:{
+        flex:1
+    }
 });
