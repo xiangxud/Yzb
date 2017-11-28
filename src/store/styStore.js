@@ -7,76 +7,96 @@ useStrict(true);
 class ImmCollectionStore
 {
     constructor(){
-        this.onIni();
+        //this.onIni();
     }
     @observable
-    End:true;
+    End=true;
     @observable
-    count:0;
+    count=0;
     @observable
-    list:[];
+    list=[];
+
+    // @action
+    // onIni(){
+    //     this.End = true;
+    //     this.list = [];
+    //     this.count = 0;
+    //     this.onLoad();
+    // }
 
     @action
-    onIni(){
+    onParse(data){
+        this.list = data;
+        this.count = data.length;
         this.End = true;
-        this.list = [];
-        this.count = 0;
-        this.onLoad();
     }
+
 
     @action
     onLoad(){
-        this.list = [{
-            id:'8E0DF754-91F4-4557-BF47-005C9E4E9B0D',
-            vaccineTitle:'疫苗鸡球虫病',
-            vaccineType:'活疫苗',
-            vaccineMethod:'胸肌注射',
-            dose:'200ml x 200',
-            immuneTime:'2017-07-21',
-            status:'未完成'
-        },{
-            id:'B8BDBF1B-9AA7-491F-AE9A-01FEBF6C0C0B',
-            vaccineTitle:'猪支原体肺炎灭活疫苗（DJ-166株）',
-            vaccineType:'活疫苗',
-            vaccineMethod:'胸肌注射',
-            dose:'200ml x 200',
-            immuneTime:'2017-07-21',
-            status:'未完成'
-        },{
-            id:'B8BDBF1B-9AA7-491F-AE9A-01FEBF6C0C0B',
-            vaccineTitle:'猪支原体肺炎灭活疫苗（DJ-166株）',
-            vaccineType:'活疫苗',
-            vaccineMethod:'胸肌注射',
-            dose:'200ml x 200',
-            immuneTime:'2017-07-21',
-            status:'未完成'
-        },{
-            id:'B8BDBF1B-9AA7-491F-AE9A-01FEBF6C0C0B',
-            vaccineTitle:'猪支原体肺炎灭活疫苗（DJ-166株）',
-            vaccineType:'活疫苗',
-            vaccineMethod:'胸肌注射',
-            dose:'200ml x 200',
-            immuneTime:'2017-07-21',
-            status:'未完成'
-        }];
-        this.count = this.list.length;
-        this.End = true;
+        // this.list = [{
+        //     id:'8E0DF754-91F4-4557-BF47-005C9E4E9B0D',
+        //     vaccineTitle:'疫苗鸡球虫病',
+        //     vaccineType:'活疫苗',
+        //     vaccineMethod:'胸肌注射',
+        //     dose:'200ml x 200',
+        //     immuneTime:'2017-07-21',
+        //     status:'未完成'
+        // },{
+        //     id:'B8BDBF1B-9AA7-491F-AE9A-01FEBF6C0C0B',
+        //     vaccineTitle:'猪支原体肺炎灭活疫苗（DJ-166株）',
+        //     vaccineType:'活疫苗',
+        //     vaccineMethod:'胸肌注射',
+        //     dose:'200ml x 200',
+        //     immuneTime:'2017-07-21',
+        //     status:'未完成'
+        // },{
+        //     id:'B8BDBF1B-9AA7-491F-AE9A-01FEBF6C0C0B',
+        //     vaccineTitle:'猪支原体肺炎灭活疫苗（DJ-166株）',
+        //     vaccineType:'活疫苗',
+        //     vaccineMethod:'胸肌注射',
+        //     dose:'200ml x 200',
+        //     immuneTime:'2017-07-21',
+        //     status:'未完成'
+        // },{
+        //     id:'B8BDBF1B-9AA7-491F-AE9A-01FEBF6C0C0B',
+        //     vaccineTitle:'猪支原体肺炎灭活疫苗（DJ-166株）',
+        //     vaccineType:'活疫苗',
+        //     vaccineMethod:'胸肌注射',
+        //     dose:'200ml x 200',
+        //     immuneTime:'2017-07-21',
+        //     status:'未完成'
+        // }];
+        // this.count = this.list.length;
+        // this.End = true;
     }
 }
 
 class WaringStore {
     constructor(){
-        this.breed="种猪";
-        this.count=20;
-        this.temperature="";
-        this.humidity="30ml";
-        this.co2="";
     }
-    breed="";//种属
+    @observable
+    genus="";//种属
+    @observable
     count="";//数量
+    @observable
     temperature="";//温度
+    @observable
     humidity="";//湿度
+    @observable
     co2="";//二氧化碳
+
+    @action
+    onParse(data,parent){
+
+        debugger;
+
+        this.genus = parent.genus;
+        this.count = parent.count;
+        this.temperature = data.TemWar;
+        this.humidity = data.HumWar;
+        this.co2=data.O2cWar;
+    }
 }
 
 class MoitorStore{
@@ -86,49 +106,109 @@ class MoitorStore{
         this.camera=['001摄像头','002摄像头','003摄像头','004摄像头','005摄像头'];
     }
     @observable
-    name:'';
+    name='';
     @observable
-    timer:'';
+    timer='';
     @observable
-    camera:[];
+    camera=[];
+}
+
+class  EnvironmentalStore{
+    constructor(){
+        this.temperature="";
+        this.humidity="";
+        this.o2c="";
+    }
+    @action
+    onParse(data){
+        this.temperature=data.Temperature;
+        this.humidity=data.Humidity;
+        this.o2c = data.O2c;
+    }
+    @observable
+    temperature="";//温度
+    @observable
+    humidity="";//湿度
+    @observable
+    o2c="";//二氧化碳
 }
 
 class styStore {
     constructor(){
-        //1、imm collection
-        this.immCollection = new ImmCollectionStore();
-        //2、预警信息
-        this.waring = new WaringStore();
-        //3、监控信息
-        this.moitor = new MoitorStore();
+        // //1、imm collection
+        // this.immCollection = new ImmCollectionStore();
+        // //2、预警信息
+        // this.waring = new WaringStore();
+        // //3、监控信息
+        // this.moitor = new MoitorStore();
+        // //环控
+        // this.environmental=new EnvironmentalStore();
     }
 
-    //code
+    @observable
     code="";
-    //栋舍名称
+
+    @observable
     title="";
-    //数量
+
+    @observable
     count=0;
-    //种属
+
+    @observable
     genus="";
+
+    @observable
+    day="";
+
+    @observable
+    unit="";
+
     //环控数据
-    environmental:{
-        //温度
-        temperature:0,
-        temperatureWaring:'',
-        //湿度
-        humidity:0,
-        humidityWaring:'',
-        //二氧化碳
-        co2:'',
-        co2Waring:''
+    @observable
+    environmental=new EnvironmentalStore();
+
+    @observable
+    immCollection=new ImmCollectionStore();
+
+    @observable
+    waring=new WaringStore();
+
+    @observable
+    moitor=new MoitorStore();
+
+    @action
+    onIni( id ){
+        this.onLoadFromApi(id,(data)=>{
+
+            debugger;
+
+            this.code = data.Id;
+            this.title = data.Name;
+            this.genus=data.Genus;
+            this.count = data.Total;
+            this.day = data.Day;
+            this.unit=data.Unit;
+            //this.immCollection=data.Imm;
+            if(data.Env && data.Env != null){
+                this.environmental.onParse(data.Env);//环控数据
+                this.waring.onParse(data.Env,this);
+            }
+            if(data.Imm && data.Imm != null){
+                debugger;
+                this.immCollection.onParse(data.Imm);
+            }
+        },(err)=>{
+            debugger;
+        });
     }
-    //免疫
-    immCollection:{};
-    //预警信息
-    waring:{};
-    //监控信息
-    moitor:{};
+    @action
+    onLoadFromApi(id, callback, falied){
+        request.getJson(urls.apis.STYBASIC,{id:id}).then((data) => {
+            callback(data);
+        }).catch((err) => {
+            falied(err);
+        });
+    }
 }
 styStore = new styStore();
 

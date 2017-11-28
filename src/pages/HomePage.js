@@ -48,19 +48,16 @@ export default class HomePage extends Component {
     }
     onStyPress(sty){
         const {navigation} = this.props;
+        let { sties } = homeStore;
+        let list=[];
+        sties.forEach((item)=>{
+            list.push({
+                code:item.id,
+                title:item.name
+            });
+        });
 
-let list = [
-    {"code": "001", "title": '生猪-东-a1'},
-    {"code": "002", "title": '生猪-东-a2'},
-    {"code": "003", "title": '生猪-东-a3'},
-    {"code": "004", "title": '生猪-东-a4'},
-    {"code": "005", "title": '生猪-东-a5'},
-    {"code": "006", "title": '生猪-东-a6'},
-    {"code": "007", "title": '生猪-东-a7'},
-    {"code": "47cc7c31-f14d-4e0e-a37d-c0e078bfa9f4", "title": '生猪-东-a8'},
-    {"code": "009", "title": '生猪-东-a9'}];
-//sty.id
-        navigation.navigate("Sty",{ code : "47cc7c31-f14d-4e0e-a37d-c0e078bfa9f4" , list : list });
+        navigation.navigate("Sty",{ code : sty.id , list : list });
     }
     renderListHeader(){
         const {isFetching, reminds, fields, sties} = homeStore;

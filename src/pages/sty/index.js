@@ -30,6 +30,12 @@ export default class Sty extends Component{
                         onSettingPress={()=>{}}></StyBar>)
     }};
 
+    componentWillMount(){
+        debugger;
+        const {styStore,navigation} = this.props;
+        styStore.onIni(navigation.state.params.code);
+    }
+
     constructor(props){
         super(props);
     }

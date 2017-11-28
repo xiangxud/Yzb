@@ -27,15 +27,15 @@ export default class ImmList extends Component{
                 <View style={style.row}>
                     <View style={style.frist}>
                         <Text style={style.immTitle} numberOfLines={1}>
-                            {info.item.vaccineTitle}
+                            {info.item.VaccineName}
                         </Text>
                         <Text style={style.immTime} numberOfLines={1}>
-                            2017-09-09
+                            {info.item.ImmuneTime}
                         </Text>
                     </View>
                     <View style={style.second}>
-                        <Text style={style.block}>{info.item.vaccineMethod}</Text>
-                        <Text style={style.block}>{info.item.dose}</Text>
+                        <Text style={style.block}>{info.item.VaccineMethod}</Text>
+                        <Text style={style.block}>{info.item.Dose}</Text>
                     </View>
                 </View>
             </TouchableNativeFeedback>)

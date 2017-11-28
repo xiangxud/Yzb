@@ -1,7 +1,7 @@
 // 接口服务器地址
 const apiPath = 'http://120.24.89.243/imm/api/'; // 开发服务器（外网）
 // const apiPath = 'http://103.254.113.10:9090/api/'; // 生产服务器（外网）
-// const apiPath = 'http://192.168.0.103/RP.Imm.WebUI/api/';
+//const apiPath = 'http://192.168.0.103/RP.Imm.WebUI/api/';
 
 // web服务器地址
  const webPath = 'http://120.24.89.243/imm/'; // 开发服务器（外网）
@@ -118,8 +118,8 @@ const urls = {
         USER_UPDATEUSERINFO: apiPath + 'user/updateUserInfo',
         //搜索用户
         USER_SEARCH: apiPath + 'user/searchUser',
-
-
+        //栋舍首页
+        STYBASIC: apiPath + 'sty/GetStyHome'
     },
     // 获取图片完整路径
     getImage(filePath, width, height){
