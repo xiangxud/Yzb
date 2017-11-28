@@ -86,8 +86,8 @@ const urls = {
         //获取文章信息
         //CMS_ARTICLE:apiPath + "info/GetArticle",
         //获取文章列表
-        CMS_ARTICLE_LIST:apiPath + "info/PostArticle",
-
+        CMS_ARTICLE_LIST:apiPath + "info/fetchInfos",
+        CMS_ARTICLE_QUOTES:apiPath + 'info/getQuotes',
 
         //用户------------------------------------------------------------------------
 
@@ -102,7 +102,7 @@ const urls = {
         //登录
         USER_LOGIN: apiPath + "auth/login",
         //获取用户信息
-        USER_GETLOGINUSER: apiPath + 'uc/get',
+        USER_GETLOGINUSER: apiPath + 'public/myinfo',
         //获取指定用户信息
         USER_GETUSER: apiPath + 'user/getUser',
         //重置密码

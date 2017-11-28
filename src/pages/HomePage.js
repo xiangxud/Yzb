@@ -18,7 +18,7 @@ import MySties from '../components/home/MySties';
 import Reminds from "../components/home/Reminds";
 import Report from "../components/home/Report";
 import TitleBar from '../components/common/TitleBar'
-import loading from '../components/common/Loading'
+import {Loading} from '../components'
 
 @inject('homeStore')
 @observer
@@ -41,7 +41,7 @@ export default class HomePage extends Component {
     }
     newsPress =(info) =>{
         const {navigation} = this.props;
-        navigation.navigate("InfoDetail",{ code : info.code , title:info.title })
+        navigation.navigate("InfoDetail",{ code : info.code , title: info.title })
     }
     fetchMore =()=>{
         homeStore.fetchNextInfos();
@@ -88,13 +88,7 @@ let list = [
                             <Text>直播间</Text>
                         </View>
                     </TouchableHighlight>
-                    <TouchableHighlight onPress={()=> {}} style={styles.homeBigButton}>
-                        <View style={styles.homeBigButtonInner}>
-                            <Icon name='shopping-cart' color={'#888'} size={34} />
-                            <Text>商城</Text>
-                        </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight onPress={()=> this.props.navigation.navigate('InfoDetail') } style={styles.homeBigButton}>
+                    <TouchableHighlight onPress={()=> this.props.navigation.navigate('Quotes') } style={styles.homeBigButton}>
                         <View style={styles.homeBigButtonInner}>
                             <Icon name='line-chart' color={'#009688'} size={34} />
                             <Text>行情</Text>
@@ -130,7 +124,7 @@ let list = [
                         {info.title}
                     </Text>
                     <Text style={styles.newsItemDesc}>
-                        {info.from} {info.publishdate} {info.comment_count}评论
+                        {info.copy_from} {info.formate}
                     </Text>
                 </View>
             </TouchableNativeFeedback>)
@@ -144,10 +138,10 @@ let list = [
                     data={news.slice()}
                     renderItem={({ item }) => this.renderRow(item) }
                     ListHeaderComponent={this.renderListHeader()}
-                    ListFooterComponent={loading(isFetching, styles.loading)}
+                    ListFooterComponent={<Loading isShow={isFetching}/>}
                     keyExtractor={ this._keyExtractor }
                     onRefresh={()=>{homeStore.fetchHomeData()}}
-                    refreshing = {false}
+                    refreshing = {isFetching}
                     onEndReachedThreshold={0.5}
                     onEndReached={() => {
                         if (news_page > 0) {

@@ -42,27 +42,19 @@ export default class Uc extends Component {
         )
     }
     render() {
+        const {loginUser} = this.props.userStore;
         return (
             <ScrollView>
                 <Container>
                     <Content gray>
                         <UserHead />
-                        <MyList navigation={this.props.navigation} />
-                        <TouchableOpacity
-                            activeOpacity={0.75}
-                            style={styles.registerBtn}
-                            onPress = {()=>this._onLogout()}>
-                            <Text style={{fontSize: 16, color: 'red'}}>注销登陆</Text>
-                        </TouchableOpacity>
+                        <MyList navigation={this.props.navigation} user={loginUser} />
                         <TouchableOpacity
                             activeOpacity={0.75}
                             style={styles.registerBtn}
                             onPress = {()=>this.error()}>
                             <Text style={{fontSize: 16, color: 'red'}}>SYSTEM ERROR...</Text>
                         </TouchableOpacity>
-
-                        <Text style={{borderBottomWidth:3, borderBottomColor:'red'}}>{JSON.stringify(this.props.userStore.token)}</Text>
-                        <Text style={{borderBottomWidth:3, borderBottomColor:'red'}}>{JSON.stringify(this.props.userStore.loginUser)}</Text>
                     </Content>
                 </Container>
             </ScrollView>

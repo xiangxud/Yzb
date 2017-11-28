@@ -1,7 +1,5 @@
-import {AsyncStorage} from 'react-native'
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
-import { persist } from 'mobx-persist'
-import _ from "lodash";
+
 useStrict(true);
 
 class breedItem{
@@ -15,7 +13,7 @@ class breedItem{
 
 class breedItemCollection {
     constructor(type){
-        this.datatype=type;
+        this.datatype = type;
     }
 
     @observable
@@ -38,7 +36,7 @@ class breedItemCollection {
         this.source=[];
         this.end = false;
         this.pageIndex = 1;
-        this.onLoadFromApi(this.pageIndex,(items)=>{
+        this.onLoadFromApi(this.pageIndex, (items)=>{
             this.onParse(items);
             this.onCloseEnd();
         },()=>{
@@ -48,16 +46,17 @@ class breedItemCollection {
 
     @action
     onFilter(txt){
-        this.searchTxt=txt;
+        this.searchTxt = txt;
         this.onLoad();
     }
 
     @action
-    onLoadFromApi(index,callback,falied){
-        request.postJson(urls.apis.CMS_ARTICLE_LIST,{pageIndex: index,pageSize:this.pageSize,Type:this.datatype,txt:this.searchTxt}).then((data) => {
+    onLoadFromApi(index, callback, falied){
+        request.getJson(urls.apis.CMS_ARTICLE_LIST,{page: index, size: this.pageSize, type: this.datatype, txt:this.searchTxt}).then((data) => {
             callback(data);
         }).catch((err) => {
-            falied();
+            alert(JSON.stringify(err))
+            falied(err);
         });
     }
 
@@ -67,10 +66,10 @@ class breedItemCollection {
         list.forEach((e) => {
             let item = new breedItem();
             item.code = e.code;
-            item.title=e.title;
-            item.publised=e.create_date;
-            item.source=e.copy_from;
-            item.publishFormate=e.formate;
+            item.title = e.title;
+            item.publised = e.create_date;
+            item.source = e.copy_from;
+            item.publishFormate = e.formate;
             this.source.push(item);
         })
     }
@@ -93,9 +92,8 @@ class breedItemCollection {
     }
 }
 
-class hotBreedStore {
+class InfoStore {
     labels = ["肉蛋行情","原材料价格","疫病流行咨询"];
-
     @observable
     currentLabel="肉蛋行情";
 
@@ -125,10 +123,10 @@ class hotBreedStore {
             return this.data0;
         }
         if( this.currentLabel ==  this.labels[1]){
-            return     this.data1;
+            return this.data1;
         }
         if( this.currentLabel ==  this.labels[2]){
-            return    this.data2;
+            return this.data2;
         }
         return null;
     }
@@ -140,6 +138,6 @@ class hotBreedStore {
     @observable
     data2 = new breedItemCollection(this.labels[2]);
 }
-hotBreedStore = new hotBreedStore();
 
-export default hotBreedStore;
+infoStore = new InfoStore();
+export default infoStore;
