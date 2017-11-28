@@ -42,12 +42,13 @@ export default class Uc extends Component {
         )
     }
     render() {
+        const {loginUser} = this.props.userStore;
         return (
             <ScrollView>
                 <Container>
                     <Content gray>
                         <UserHead />
-                        <MyList navigation={this.props.navigation} />
+                        <MyList navigation={this.props.navigation} user={loginUser} />
                         <TouchableOpacity
                             activeOpacity={0.75}
                             style={styles.registerBtn}
