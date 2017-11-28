@@ -13,7 +13,7 @@ import {observer,inject} from 'mobx-react/native';
 import StyBar from '../../components/sty/StyBar';
 import Waring from '../../components/sty/Waring';
 import ImmList from '../../components/sty/ImmList';
-
+import Monitor from '../../components/sty/Monitor';
 
 @inject('styStore')
 @observer
@@ -37,8 +37,9 @@ export default class Sty extends Component{
         const {styStore} = this.props;
         return (<View style={style.main}>
             <Waring style={style.waring} waring={styStore.waring}>
-
             </Waring>
+            <Monitor style={style.mon} monitor={styStore.moitor} backgroundColor="#615e61">
+            </Monitor>
             <ImmList style={style.imm} title="免疫提醒" collection={styStore.immCollection}>
             </ImmList>
         </View>);
@@ -53,11 +54,14 @@ const style = StyleSheet.create({
     },
     main:{
         flex:1,
-        alignItems:'stretch'
+        alignItems:'stretch',
+        backgroundColor:'#ffffff'
     },
     imm:{
     },
     waring:{
-
+    },
+    mon:{
+        backgroundColor:'#f3f3f3'
     }
 });

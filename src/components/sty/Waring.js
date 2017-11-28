@@ -84,7 +84,6 @@ const style = StyleSheet.create({
         height:30,
         flexDirection:'row',
         alignItems:'center',
-        backgroundColor:'#ffffff'
     },
     base:{
         flexDirection:'row',

@@ -78,12 +78,28 @@ class WaringStore {
     co2="";//二氧化碳
 }
 
+class MoitorStore{
+    constructor(){
+        this.name='005摄像头';
+        this.timer='2017-09-09 14时35分69秒2983S';
+        this.camera=['001摄像头','002摄像头','003摄像头','004摄像头','005摄像头'];
+    }
+    @observable
+    name:'';
+    @observable
+    timer:'';
+    @observable
+    camera:[];
+}
+
 class styStore {
     constructor(){
         //1、imm collection
         this.immCollection = new ImmCollectionStore();
         //2、预警信息
         this.waring = new WaringStore();
+        //3、监控信息
+        this.moitor = new MoitorStore();
     }
 
     //code
@@ -109,7 +125,9 @@ class styStore {
     //免疫
     immCollection:{};
     //预警信息
-    waringStore:{};
+    waring:{};
+    //监控信息
+    moitor:{};
 }
 styStore = new styStore();
 
