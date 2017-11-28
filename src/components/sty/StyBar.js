@@ -20,7 +20,7 @@ class styBarStore{
     styList=[];
 
     @action
-    ini(list,code){
+    onIni(list,code){
         this.styList=list;
         this.onSelect(code);
     }
@@ -50,16 +50,14 @@ class styBarStore{
     }
 }
 
-
 @observer
 export default class StyBar extends Component{
-
     constructor(props){
         super(props);
+        this.store.onIni(this.props.styList,this.props.iniCode);
     };
 
     componentDidMount(){
-        this.store.ini(this.props.styList,this.props.iniCode);
     }
 
     @observable
@@ -83,7 +81,6 @@ export default class StyBar extends Component{
         let key = `spr_${rowID}`;
         return (<View style={dropDownSty.separator} key={key} />);
     };
-
     render(){
         return (
             <View style={style.bar}>
@@ -109,8 +106,7 @@ export default class StyBar extends Component{
                                            {
                                                this._renderSeparator(sectionID, rowID, adjacentRowHighlighted)
                                            }
-                                       }
-                    >
+                                       }>
                         <View style={dropDownSty.button}>
                             <Text style={dropDownSty.text}>{this.store.displayTxt}</Text>
                             <FontIcon name="chevron-down" size={18} color='#ffffff' />
