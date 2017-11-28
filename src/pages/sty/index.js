@@ -7,7 +7,8 @@ import
     TextInput,
     WebView,
     TouchableOpacity,
-    StyleSheet
+    StyleSheet,
+    ScrollView
 } from 'react-native';
 import {observer,inject} from 'mobx-react/native';
 import StyBar from '../../components/sty/StyBar';
@@ -35,14 +36,17 @@ export default class Sty extends Component{
 
     render(){
         const {styStore} = this.props;
-        return (<View style={style.main}>
-            <Waring style={style.waring} waring={styStore.waring}>
-            </Waring>
-            <Monitor style={style.mon} monitor={styStore.moitor} backgroundColor="#615e61">
-            </Monitor>
-            <ImmList style={style.imm} title="免疫提醒" collection={styStore.immCollection}>
-            </ImmList>
-        </View>);
+        return (
+            <ScrollView style={{flex:1}}>
+                <View style={style.main}>
+                    <Waring style={style.waring} waring={styStore.waring}>
+                    </Waring>
+                    <Monitor style={style.mon} monitor={styStore.moitor} backgroundColor="#615e61">
+                    </Monitor>
+                    <ImmList style={style.imm} title="免疫提醒" collection={styStore.immCollection}>
+                    </ImmList>
+                </View>
+            </ScrollView>);
     }
 }
 

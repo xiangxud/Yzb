@@ -21,6 +21,7 @@ class ImmCollectionStore
         this.End = true;
         this.list = [];
         this.count = 0;
+        this.onLoad();
     }
 
     @action

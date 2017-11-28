@@ -5,7 +5,7 @@ import
     Text,
     StyleSheet,
     FlatList,
-    TouchableNativeFeedback
+    TouchableNativeFeedback,
 } from 'react-native';
 import {observer} from 'mobx-react/native';
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx';
@@ -17,13 +17,8 @@ export default class ImmList extends Component{
         super(props);
     }
 
-    //@observable
-    //collection = new Collection();
-
     componentWillMount()
     {
-        //this.collection.onIni();
-        //this.collection.onLoad();
     }
 
     renderRow = (info) =>{
@@ -71,10 +66,6 @@ export default class ImmList extends Component{
                           ListFooterComponent={this._renderFooter}
                           refreshing={!this.props.collection.End}
                           onEndReached={()=>{
-                              this.props.collection.onLoad();
-                              return true;
-                          }}
-                          onRefresh={()=>{
                               this.props.collection.onLoad();
                               return true;
                           }} keyExtractor={(item,key) => key}>
