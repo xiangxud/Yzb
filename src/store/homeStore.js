@@ -22,6 +22,8 @@ class HomeStore {
     @observable isFetching = false;
     @observable isNoMore = true;
 
+    @observable farm={};//养殖场id
+
     constructor() {
         this.isFetching = true;
     }
@@ -32,13 +34,14 @@ class HomeStore {
         }
         const params = {}
         request.getJson(urls.apis.HOME_ALL, params).then((res) => {
-            const {fields, sties, reminds, news} = res;
+            const {fields, sties, reminds, news,farm} = res;
             runInAction(() => {
                 this.isFetching = false
                 this.errorMsg = ''
                 if (this.news_page === 1) {
                     this.fields = fields;
                     this.sties = sties;
+                    this.farm=farm;
                     this.reminds.replace(reminds);
                     this.news.replace(news);
                     if(sties && sties.length>0){

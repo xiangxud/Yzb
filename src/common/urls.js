@@ -135,6 +135,9 @@ const urls = {
         //渤海监测------------------------------------------------------------
         BH_FARMS: apiPath + 'bh/getfarms',
 
+        STYBASIC: apiPath + 'sty/GetStyHome',
+        //字典列表
+        DICTIONARY:apiPath + 'Dictionary/Get'
     },
     // 获取图片完整路径
     getImage(filePath, width, height){
