@@ -38,7 +38,7 @@ export default class MySties extends Component {
                 <TitleBar icon={'bank'} iconColor={'red'} title={'我的栋舍'} />
                 <ScrollView horizontal={true} style={styles.stiesContainer}>
                     <View style={[styles.styBox, styles.addSty]}>
-                        <Text style={{fontSize:18,}}>添加栋舍</Text>
+                        <Text style={{fontSize:18,}} onPress={this.props.onAddSty}>添加栋舍</Text>
                     </View>
                     {sties.map((val, key) => (
                         <Sty key={key} sty={val} getSty={this.getSty} isCurrent={currentSty.id===val.id}/>

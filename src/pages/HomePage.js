@@ -59,6 +59,13 @@ export default class HomePage extends Component {
 
         navigation.navigate("Sty",{ code : sty.id , list : list });
     }
+    onAddSty(){
+        alert('1');
+        debugger;
+        const {navigation} = this.props;
+
+    }
+
     renderListHeader(){
         const {isFetching, reminds, fields, sties} = homeStore;
         return (
@@ -92,7 +99,7 @@ export default class HomePage extends Component {
                         </View>
                     </TouchableHighlight>
                 </View>
-                <MySties sties={sties} onStyPress={(sty) => { this.onStyPress(sty) }} />
+                <MySties sties={sties} onStyPress={(sty) => { this.onStyPress(sty) }} onAddSty={this.onAddSty.bind(this)} />
                 {!isFetching && reminds ?
                     <Reminds reminds={reminds}
                              morePress={this.remindMore}

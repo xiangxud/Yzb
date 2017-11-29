@@ -58,7 +58,6 @@ export default class Waring extends Component{
                 return (<View style={style.item}><Text>二氧化碳未见异常</Text></View>);
             }
         };
-debugger;
         return (<View style={style.main}>
             <Text style={style.base}>{waring.genus}{waring.count},</Text>
             {humidityWaring(waring.humidity)}

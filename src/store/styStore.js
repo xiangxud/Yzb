@@ -88,9 +88,6 @@ class WaringStore {
 
     @action
     onParse(data,parent){
-
-        debugger;
-
         this.genus = parent.genus;
         this.count = parent.count;
         this.temperature = data.TemWar;
@@ -179,9 +176,6 @@ class styStore {
     @action
     onIni( id ){
         this.onLoadFromApi(id,(data)=>{
-
-            debugger;
-
             this.code = data.Id;
             this.title = data.Name;
             this.genus=data.Genus;
@@ -194,11 +188,10 @@ class styStore {
                 this.waring.onParse(data.Env,this);
             }
             if(data.Imm && data.Imm != null){
-                debugger;
                 this.immCollection.onParse(data.Imm);
             }
         },(err)=>{
-            debugger;
+            alert("获取栋舍详情失败");
         });
     }
     @action
