@@ -10,6 +10,7 @@ const apiPath = 'http://120.24.89.243/imm/api/'; // 开发服务器（外网）
 // 其他
 // const apiPath = 'http://192.168.0.103:2000/'; // 周明刚
 // const webPath = 'http://192.168.0.204:3000/'; // 王启志
+const bohaiApi = 'http://120.24.89.243:8092/api/'
 
 
 
@@ -119,7 +120,21 @@ const urls = {
         //搜索用户
         USER_SEARCH: apiPath + 'user/searchUser',
         //栋舍首页
-        STYBASIC: apiPath + 'sty/GetStyHome'
+        STYBASIC: apiPath + 'sty/GetStyHome',
+
+
+
+
+
+
+
+
+
+
+
+        //渤海监测------------------------------------------------------------
+        BH_FARMS: apiPath + 'bh/getfarms',
+
     },
     // 获取图片完整路径
     getImage(filePath, width, height){

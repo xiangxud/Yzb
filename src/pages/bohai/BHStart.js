@@ -5,13 +5,12 @@ import React, {Component} from 'react'
 import {
     ScrollView,
     View,
-    Text,
     StyleSheet,
     Image,
     TouchableOpacity,
 } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {observer, inject} from 'mobx-react/native'
+import {List, ListItem, Button, Separator, Text,} from 'native-base';
+import {observer, inject} from 'mobx-react/native';
 
 @observer
 export default class BHStart extends Component {
@@ -24,6 +23,7 @@ export default class BHStart extends Component {
     });
 
     render() {
+        const { navigation } = this.props;
         return (
             <ScrollView>
                 <View style={styles.container}>
@@ -39,18 +39,22 @@ export default class BHStart extends Component {
                             <Text>        应天津市市场和质量监督管理委员会要求和检测工作的发展需要，天津渤海农牧产业联合研究院有限公司（由天津瑞普生物技术股份有限公司投资）于2016年6月成立，主要从事动物疫病诊断检测和药物分析检测。渤海农牧作为具有独立法人资格的第三方检测机构，能够独立行文、独立开展业务、独立检测，具备独立的财务制度。</Text>
                         </Text>
                     </View>
-                    <Text style={{margin:10}}>提交申请单</Text>
-                    <View style={styles.items}>
-                        <TouchableOpacity onPress={()=>this.error()}>
-                            <Text>家禽</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>this.error()}>
-                            <Text>家畜</Text>
-                        </TouchableOpacity>
+                    <Separator bordered>
+                        <Text>提交申请单</Text>
+                    </Separator>
+                    <View>
+                        <List style={{backgroundColor:'#fff'}}>
+                            <ListItem onPress={()=>navigation.navigate('BHApply', {type: 1})}>
+                                <Text>家禽</Text>
+                            </ListItem>
+                            <ListItem onPress={()=>navigation.navigate('BHApply', {type: 2})}>
+                                <Text>家畜</Text>
+                            </ListItem>
+                        </List>
                     </View>
-                    <TouchableOpacity onPress={()=>this.error()}>
-                        <Text>检测说明</Text>
-                    </TouchableOpacity>
+                    <Button style={{backgroundColor:'red', }} block onPress={()=>this.error()}>
+                        <Text style={{color:'white'}}>测试按钮，方便开发</Text>
+                    </Button>
                 </View>
             </ScrollView>
         )

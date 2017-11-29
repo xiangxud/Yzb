@@ -13,24 +13,19 @@ import {
 
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
 import {observer, inject} from 'mobx-react/native'
+import {Container, Content, Loading} from '../../../components';
 import {Icon} from 'native-base'
-import {Loading} from '../components'
+import Search from 'react-native-search-box';
 
-class QuoteStore{
-
+class FarmStore{
     @observable page = 1;
-    @observable infos = [];
+    @observable farms = [];
     @observable isFetching = true;
     @observable more = true;
     @action
     mapInfo(list){
-        if(this.page === 1){
-            this.infos.replace(list)
-        }else{
-            this.infos.splice(this.infos.length, 0, ...list);
-        }
+        this.farms.replace(list)
         this.isFetching = false;
-        list.length<15 ? this.more = false : this.page++;
     }
 
     @action
@@ -38,41 +33,41 @@ class QuoteStore{
         this.isFetching = true;
     }
 }
+farmStore = new FarmStore();
 
-quoteStore = new QuoteStore();
-
-
+@inject('bohaiStore')
 @observer
-export default class Quotes extends Component {
+export default class Info extends Component {
 
-    static navigationOptions = {
-        headerTitle: '行情动态',
-        headerRight: <View />
-    }
-    /*
-    * <View style={styles.header}>
-                            <Text style={styles.headerText}>
-                                <Icon name={'ios-locate-outline'} style={{fontSize:18}}/> 天津11月28日行情
-                            </Text>
-                        </View>
-                        <View>
+    static navigationOptions = ({navigation})=>({
+        headerTitle: '选择养殖场',
+        headerRight: <Text onPress={navigation.state.params? navigation.state.params.openAdd: null} style={{padding:5, color:'#fff'}}>
+            添加
+        </Text>,
+    });
 
-                        </View>*/
     componentDidMount(){
-        this.fetchData();
+        this.props.navigation.setParams({
+            openAdd: this.openAddFarm
+        })
     }
 
-    fetchData = () =>{
-        request.getJson(urls.apis.CMS_ARTICLE_QUOTES, {page: quoteStore.page}).then((res)=>{
-            quoteStore.mapInfo(res);
+    openAddFarm = () =>{
+        alert('添加养殖场');
+    }
+
+    fetchData = (kw) =>{
+        request.getJson(urls.apis.BH_FARMS, {kw: kw}).then((res)=>{
+            farmStore.mapInfo(res);
         }).catch((err)=>{
             tools.showToast(JSON.stringify(err));
         });
     }
 
-    newsPress =(info) =>{
+    newsPress = (info) =>{
         const {navigation} = this.props;
-        navigation.navigate("InfoDetail",{ code : info.code , title: info.title })
+        bohaiStore.set('farmName', info);
+        navigation.goBack();
     }
 
     renderRow = (info) =>{
@@ -82,31 +77,33 @@ export default class Quotes extends Component {
                 background={TouchableNativeFeedback.SelectableBackground()}>
                 <View style={styles.newsItem}>
                     <Text style={styles.newsItemTitle}>
-                        {info.title}
-                    </Text>
-                    <Text style={styles.newsItemDesc}>
-                        {info.copy_from} {info.formate}
+                        {info}
                     </Text>
                 </View>
             </TouchableNativeFeedback>)
     }
+    _onSearch = (text) => {
+        return new Promise((resolve, reject) => {
+            this.fetchData(text)
+        });
+    }
 
+    renderHeader = () =>{
+        return <Search backgroundColor={'#bdbdbd'}
+                       placeholder='搜索养殖场'
+                       cancelTitle='取消'
+                       onSearch={this._onSearch}/>
+    }
     render() {
-        const {infos, isFetching, more} = quoteStore;
+        const {farms, isFetching} = farmStore;
         return (
             <FlatList
                 style={styles.container}
-                data={infos.slice()}
+                data={farms.slice()}
                 renderItem={({ item }) => this.renderRow(item) }
-
-                ListFooterComponent={()=>{return <Loading isShow={isFetching}/>}}
+                ListHeaderComponent={()=> this.renderHeader()}
                 refreshing = {isFetching}
                 onEndReachedThreshold={0.1}
-                onEndReached={() => {
-                    if (more > 0) {
-                        this.fetchData()
-                    }
-                }}
                 keyExtractor={(item,key) => key}
             />
         )
