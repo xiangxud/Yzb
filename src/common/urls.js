@@ -127,17 +127,19 @@ const urls = {
 
 
 
-
-
-
-
-
-        //渤海监测------------------------------------------------------------
+        //渤海监测-----------------------------------------------------------
+        //获取所有养殖场（搜索）
         BH_FARMS: apiPath + 'bh/getfarms',
 
-        STYBASIC: apiPath + 'sty/GetStyHome',
+
+
+
+
+        //免疫宝-------------------------------------------------------------
+        //栋舍信息
+        IMM_STYBASIC: apiPath + 'sty/GetStyHome',
         //字典列表
-        DICTIONARY:apiPath + 'Dictionary/Get'
+        IMM_DICTIONARY:apiPath + 'Dictionary/Get'
     },
     // 获取图片完整路径
     getImage(filePath, width, height){
