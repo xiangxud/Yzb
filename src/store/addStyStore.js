@@ -5,20 +5,36 @@ import _ from "lodash";
 useStrict(true);
 
 class addStyStore {
+    @observable
+    farm={};
 
     @observable
-    farmId="";
-
-    @observable
-    farmName="";
+    genus=[];//种属列表
 
     @action
-    onIni( id ){
-        // this.onLoadFromApi(id,(data)=>{
-        // },(err)=>{
-        //     alert("获取栋舍详情失败");
-        // });
+    onIni( farm ){
+        this.farm=farm;
+
+        this.getDictionaryFromApi((data)=>{
+            this.genus = data;
+        },(err)=>{
+            alert(err);
+        })
     }
+
+    @action
+    getDictionaryFromApi(callback,falied){
+        debugger;
+        request.getJson(urls.apis.DICTIONARY,{classification:this.farm.Breed}).then((data) => {
+            debugger;
+            callback(data);
+        }).catch((err) => {
+            falied(err);
+        });
+    }
+
+
+
 }
 
 addStyStore = new addStyStore();

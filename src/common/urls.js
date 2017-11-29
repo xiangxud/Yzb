@@ -119,7 +119,9 @@ const urls = {
         //搜索用户
         USER_SEARCH: apiPath + 'user/searchUser',
         //栋舍首页
-        STYBASIC: apiPath + 'sty/GetStyHome'
+        STYBASIC: apiPath + 'sty/GetStyHome',
+        //字典列表
+        DICTIONARY:apiPath + 'Dictionary/Get'
     },
     // 获取图片完整路径
     getImage(filePath, width, height){

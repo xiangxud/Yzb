@@ -21,7 +21,7 @@ export default class Add extends Component{
 
     componentWillMount(){
         const {addStyStore,navigation} = this.props;
-        addStyStore.onIni(navigation.state.params.farmId);
+        addStyStore.onIni(navigation.state.params.farm);
     }
 
     constructor(props){

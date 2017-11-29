@@ -22,7 +22,7 @@ class HomeStore {
     @observable isFetching = false;
     @observable isNoMore = true;
 
-    @observable farmId='';//养殖场id
+    @observable farm={};//养殖场id
 
     constructor() {
         this.isFetching = true;
@@ -41,7 +41,7 @@ class HomeStore {
                 if (this.news_page === 1) {
                     this.fields = fields;
                     this.sties = sties;
-                    this.farmId=farm.Id;
+                    this.farm=farm;
                     this.reminds.replace(reminds);
                     this.news.replace(news);
                     if(sties && sties.length>0){

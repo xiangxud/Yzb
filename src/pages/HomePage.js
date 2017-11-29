@@ -62,7 +62,7 @@ export default class HomePage extends Component {
     onAddSty(){
         const {navigation} = this.props;
 
-        navigation.navigate("AddSty",{ farmId : homeStore.farmId });
+        navigation.navigate("AddSty",{ farm : homeStore.farm });
     }
 
     renderListHeader(){
