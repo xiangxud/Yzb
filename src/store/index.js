@@ -5,6 +5,7 @@ import homeStore from './homeStore'
 import infoStore from './infoStore'
 import didiStore from './didiStore'
 import styStore from './styStore'
+import addStyStore from './addStyStore'
 
 export default {
     app: new App(),
@@ -12,5 +13,6 @@ export default {
     homeStore,
     infoStore,
     didiStore,
-    styStore
+    styStore,
+    addStyStore
 }

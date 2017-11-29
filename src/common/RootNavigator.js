@@ -20,7 +20,7 @@ import monitor from '../pages/sty/monitor';
 import environmental from '../pages/sty/environmental';
 import report from '../pages/sty/report';
 import Quotes from '../pages/Quotes';
-
+import addSty from '../pages/sty/add';
 
 const StyTabNavigation = TabNavigator({
     StyTab:{
@@ -162,6 +162,7 @@ const RootNavigator = StackNavigator({
     InfoDetail:{ screen: InfoDetail },
     Login:{ screen: Login },
     Sty:{screen:StyTabNavigation},
+    AddSty:{screen:addSty},
     BHStart:{ screen: BHStart },
     Web:{ screen: Web },
     Didi:{ screen: Didi },
