@@ -15,10 +15,10 @@ class Livestock{
 class BohaiStore {
     @observable step = 1;
     @observable data = {
-        phoneNo : '',
-        animalType : '',
-        farmName : '',
-        drugTesting : '否',
+        phoneNo : '18307722503',
+        animalType : '家禽',
+        farmName : '上海第一养殖场',
+        drugTesting : '是',
         poultryTotalCount : 0,
         poultrySingleCount : 0,
         poultryMonthCount : 0,
@@ -45,20 +45,50 @@ class BohaiStore {
         salesPhoneNo : '',
     };
 
+    @observable modalBreedsVisible = false;
+    @observable modalGenerationsVisible = false;
+
     @action set = (field, value) => {
-        this.data[field] = value;
+        let t = typeof this.data[field];
+        if(t === 'number'){
+            let num = Number(value);
+            if(!isNaN(num)){
+                this.data[field] = num;
+            }
+        }else if(t === 'boolean'){
+
+        }else if(t === 'undefined'){
+
+        }else{
+            this.data[field] = value;
+        }
     }
 
-    @action nextStep = () =>{
+    @action nextStep(){
         this.step<5 && this.step++;
     }
 
-    @action prevStep = () =>{
+    @action prevStep(){
         this.step>1 && this.step--;
     }
     @action changeDrugTesting() {
         this.data.drugTesting = (this.data.drugTesting === '是') ? '否' : '是';
     }
+    @action switchBreedsModal(){
+        this.modalBreedsVisible = !this.modalBreedsVisible;
+    }
+    @action chooseBreeds(v) {
+        let index = this.data.poultryBreeds.indexOf(v);
+        if (index > -1) {
+            this.data.poultryBreeds.splice(index, 1);
+        }else{
+            this.data.poultryBreeds.push(v);
+        }
+    }
+
+
+
+
     @computed get isDrug(){
         return this.data.drugTesting === '是';
     }

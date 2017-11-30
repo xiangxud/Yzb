@@ -9,7 +9,7 @@ import {
     Image,
     TouchableOpacity,
 } from 'react-native'
-import {List, ListItem, Button, Separator, Text,} from 'native-base';
+import {Container, Content, List, ListItem, Button, Separator, Text,} from 'native-base';
 import {observer, inject} from 'mobx-react/native';
 
 @observer
@@ -25,8 +25,8 @@ export default class BHStart extends Component {
     render() {
         const { navigation } = this.props;
         return (
-            <ScrollView>
-                <View style={styles.container}>
+            <Container>
+                <Content style={styles.container}>
                     <View style={styles.topBox}>
                         <View style={styles.topBoxLine}>
                             <Image source={require('../../resource/bohai_logo.png')} style={{width: 40, height: 40}}/>
@@ -40,7 +40,7 @@ export default class BHStart extends Component {
                         </Text>
                     </View>
                     <Separator bordered>
-                        <Text>提交申请单</Text>
+                        <Text style={{fontSize:14}}>提交申请单</Text>
                     </Separator>
                     <View>
                         <List style={{backgroundColor:'#fff'}}>
@@ -55,8 +55,8 @@ export default class BHStart extends Component {
                     <Button style={{backgroundColor:'red', }} block onPress={()=>this.error()}>
                         <Text style={{color:'white'}}>测试按钮，方便开发</Text>
                     </Button>
-                </View>
-            </ScrollView>
+                </Content>
+            </Container>
         )
     }
 }
