@@ -8,12 +8,29 @@ class addStyStore {
     @observable
     farm={};
 
-    @observable
     genus=[];//种属列表
+
+    @observable
+    sty={
+        genus:'',
+        name:''
+    }
+
+    @action
+    onChangedGenus(genus)
+    {
+        this.sty.genus=genus;
+    }
+    @action
+    onChangedName(name){
+        this.sty.name = name;
+    }
 
     @action
     onIni( farm ){
         this.farm=farm;
+
+        debugger;
 
         this.getDictionaryFromApi((data)=>{
             this.genus = data;
