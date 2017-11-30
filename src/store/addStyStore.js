@@ -13,17 +13,16 @@ class addStyStore {
     @observable
     sty={
         genus:'',
-        name:''
+        name:'',
+        day:null,
+        batchNumber:'',
+        number:null,
+        addDate:null
     }
 
     @action
-    onChangedGenus(genus)
-    {
-        this.sty.genus=genus;
-    }
-    @action
-    onChangedName(name){
-        this.sty.name = name;
+    onChangedSty(uo){
+        Object.assign(this.sty,this.sty,uo);
     }
 
     @action
@@ -42,7 +41,7 @@ class addStyStore {
     @action
     getDictionaryFromApi(callback,falied){
         debugger;
-        request.getJson(urls.apis.DICTIONARY,{classification:this.farm.Breed}).then((data) => {
+        request.getJson(urls.apis.IMM_DICTIONARY,{classification:this.farm.Breed}).then((data) => {
             debugger;
             callback(data);
         }).catch((err) => {

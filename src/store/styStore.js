@@ -196,7 +196,7 @@ class styStore {
     }
     @action
     onLoadFromApi(id, callback, falied){
-        request.getJson(urls.apis.STYBASIC,{id:id}).then((data) => {
+        request.getJson(urls.apis.IMM_STYBASIC,{id:id}).then((data) => {
             callback(data);
         }).catch((err) => {
             falied(err);
