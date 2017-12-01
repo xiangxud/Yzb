@@ -19,7 +19,7 @@ const style = StyleSheet.create({
 });
 
 const ReadOnlyInput = observer(function ReadOnlyInput({label, value}){
-    debugger;
+    //debugger;
         return (
             <Item fixedLabel style={style.rightPadding}>
                 <Label>{label}</Label>
@@ -29,7 +29,7 @@ const ReadOnlyInput = observer(function ReadOnlyInput({label, value}){
 });
 
 const ValidateInput = observer(function ValidateInput({label, data , name , placeholder,onChange,...props}){
-    debugger;
+    //debugger;
     let errNode = camelCase( 'validateError',name );
     if(data["submited"] && data[errNode] && data[errNode] != null && data[errNode]!=""){
         return (
@@ -107,7 +107,7 @@ class ValidateInputDate extends Component{
     }
 
     render(){
-        debugger;
+        //debugger;
         let { data,label,name,placeholder } = this.props;
         let errNode = camelCase( 'validateError',name );
         if(data["submited"] && data[errNode] && data[errNode] != null && data[errNode]!=""){

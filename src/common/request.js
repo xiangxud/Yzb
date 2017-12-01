@@ -99,14 +99,10 @@ const request = {
                 let paramsArray = []
                 Object.keys(params).forEach(key => paramsArray.push(key + '=' + encodeURIComponent(params[key])))
                 body = paramsArray.join('&');
-                headers = {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                };
+                headers["Content-Type"] = "application/x-www-form-urlencoded";
             } else if (typeof params == 'object' && params instanceof FormData) {
                 body = params;
-                headers = {
-                    'Content-Type': 'multipart/form-data',
-                };
+                headers["Content-Type"] = 'multipart/form-data';
             }
             else {
                 body = params;
@@ -125,11 +121,13 @@ const request = {
                         resolve(responseData.data)
                     }
                     else{
+                        debugger;
                         reject(responseData.message)
                     }
                 })
                 .catch((error) => {
                     //tools.showToast('服务器异常，请重试!');
+                    debugger;
                     reject(error);
                 }).done();
         })
