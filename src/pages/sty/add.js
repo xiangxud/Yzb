@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
-import { Container, Header, Content, Form,Item, Input,List,ListItem,Text,Separator,Icon,Label,ActionSheet,Root,Toast} from 'native-base';
+import { Container, Header, Content, Form,Separator,Icon,Root,ListItem,Text,Toast} from 'native-base';
 import {observer,inject} from 'mobx-react/native';
 import FootBar from '../../components/sty/FootBar'
 import {ValidateInput,ValidateInputDate,ValidateChooseItem,ReadOnlyInput} from '../../components/common/native-base-validate'
-import {observable} from "mobx";
 
 @inject('addStyStore')
 @observer
@@ -15,43 +14,6 @@ export default class Add extends Component{
     constructor(props){
         super(props);
     }
-
-    //@observable
-    //options=[];
-
-    // showActionSheet(){
-    //     const {addStyStore} = this.props;
-    //     let genus = [];
-    //     addStyStore.genus.forEach((o)=>{
-    //         genus.push(o.Code);
-    //     });
-    //     ActionSheet.show(
-    //         {
-    //             options: genus,
-    //             title: "请选择种属"
-    //         },
-    //         (index) => {
-    //             addStyStore.onChangedSty({genus:genus[index]});
-    //         }
-    //     )
-    // }
-    // async showDatePicker(){
-    //     const {addStyStore} = this.props;
-    //     try {
-    //         const {action, year, month, day}=await DatePickerAndroid.open({
-    //             date:
-    //                 (!addStyStore.sty.addDate ||
-    //                 addStyStore.sty.addDate==null ||
-    //                 addStyStore.sty.addDate == "") ? new Date() : new Date(addStyStore.sty.addDate)
-    //         });
-    //         if (action !== DatePickerAndroid.dismissedAction) {
-    //             addStyStore.onChangedSty({ addDate : year + "-" + (month+1).toString() + '-' + day });
-    //         }
-    //     } catch ({code, message}) {
-    //         console.warn('Cannot open date picker', message);
-    //     }
-    // }
-
     getGenus(){
         const {addStyStore} = this.props;
         let options = [];
@@ -115,13 +77,6 @@ export default class Add extends Component{
 }
 
 const style = StyleSheet.create({
-    rightPadding:{
-        paddingRight:18
-    },
-    ico:{
-        width:18,
-        color:'#b1b1b1'
-    },
     titleIco:{
         color:'#009688',
         paddingRight:5

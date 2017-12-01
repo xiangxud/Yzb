@@ -33,7 +33,7 @@ const ValidateInput = observer(function ValidateInput({label, data , name , plac
     let errNode = camelCase( 'validateError',name );
     if(data["submited"] && data[errNode] && data[errNode] != null && data[errNode]!=""){
         return (
-            <Item error fixedLabel style={style.rightPadding} {...props}>
+            <Item error fixedLabel {...props}>
                 <Label>{label}</Label>
                 <Input placeholder={placeholder} value={data[name]} onChangeText={onChange} placeholderTextColor='#b1b1b1' />
                 <Icon name='close-circle' />
@@ -50,8 +50,6 @@ const ValidateInput = observer(function ValidateInput({label, data , name , plac
 });
 
 const ValidateChooseItem = observer(function ValidateChooseItem({label, data , name ,getOptions,optionslabel, placeholder,onChange,...props}){
-    debugger;
-
     let showActionSheet = () => {
         let options = getOptions();
         ActionSheet.show(
@@ -114,7 +112,7 @@ class ValidateInputDate extends Component{
         let errNode = camelCase( 'validateError',name );
         if(data["submited"] && data[errNode] && data[errNode] != null && data[errNode]!=""){
             return (
-                <Item error fixedLabel style={style.rightPadding}>
+                <Item error fixedLabel>
                     <Label>{label}</Label>
                     <Input placeholderTextColor='#b1b1b1' editable={false} placeholder={placeholder} value={data[name]} />
                     <Icon name='close-circle' />
