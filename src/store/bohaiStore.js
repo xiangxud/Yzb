@@ -5,15 +5,21 @@ import {observable, computed, action, runInAction, useStrict} from 'mobx'
 import validate from 'mobx-form-validate';
 useStrict(true);
 
-class Poultry{
-
-}
-class Livestock{
-
+class CheckItem{
+    @observable samplingSystemNo= ''
+    @observable testTypeName= [];
+    @observable testTypeDetailNames= [];
+    @observable farmName= '';
+    @observable sendAge= 0;
+    @observable morbidityAge= 0;
+    @observable sendSamplingCount= 0;
 }
 
 class BohaiStore {
     @observable step = 1;
+    @observable breeds = [];
+    @observable poultry_genders = ['祖代','父母代肉鸡','父母代蛋鸡','商品代肉鸡','商品代肉鸡'];
+    @observable livestock_genders = [];
     @observable data = {
         phoneNo : '18307722503',
         animalType : '家禽',
@@ -22,8 +28,8 @@ class BohaiStore {
         poultryTotalCount : 0,
         poultrySingleCount : 0,
         poultryMonthCount : 0,
-        poultryBreeds : [],
-        poultryGenerations : '',
+        poultryBreeds : ['京灰'],
+        poultryGenerations : '祖代',
         livestockTotalCount : 0,
         livestockYearCount : 0,
         livestockBreeds : [],
@@ -63,7 +69,25 @@ class BohaiStore {
             this.data[field] = value;
         }
     }
+    @action setItem = (obj, field, value) => {
+        let t = typeof obj[field];
+        if(t === 'number'){
+            let num = Number(value);
+            if(!isNaN(num)){
+                obj[field] = num;
+            }
+        }else if(t === 'boolean'){
 
+        }else if(t === 'undefined'){
+
+        }else{
+            obj[field] = value;
+        }
+    }
+
+    @action setBreeds = (brees) => {
+        this.breeds = brees;
+    }
     @action nextStep(){
         this.step<5 && this.step++;
     }
@@ -86,7 +110,15 @@ class BohaiStore {
         }
     }
 
-
+    //添加检测项目
+    @action addTestItem(){
+        this.data.testingSamplingList.push(new CheckItem());
+        tools.showToast('已添加新项目');
+    }
+    @action deleteTestItem(item){
+        this.data.testingSamplingList.splice(this.data.testingSamplingList.indexOf(item), 1);
+        tools.showToast('已删除项目');
+    }
 
 
     @computed get isDrug(){

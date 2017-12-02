@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 import {Container, Content, List, ListItem, Button, Separator, Text,} from 'native-base';
 import {observer, inject} from 'mobx-react/native';
+import Example from "./Example";
 
 @observer
 export default class BHStart extends Component {
@@ -55,6 +56,7 @@ export default class BHStart extends Component {
                     <Button style={{backgroundColor:'red', }} block onPress={()=>this.error()}>
                         <Text style={{color:'white'}}>测试按钮，方便开发</Text>
                     </Button>
+                    <Example/>
                 </Content>
             </Container>
         )

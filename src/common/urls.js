@@ -130,6 +130,7 @@ const urls = {
         //渤海监测-----------------------------------------------------------
         //获取所有养殖场（搜索）
         BH_FARMS: apiPath + 'bh/getfarms',
+        BH_BREEDS: apiPath + 'bh/getPoultryBreeds',
 
 
 

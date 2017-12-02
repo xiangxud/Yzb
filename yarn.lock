@@ -3487,7 +3487,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0:
+prop-types@^15.5.10, prop-types@^15.5.6, prop-types@^15.5.8, prop-types@^15.6.0:
   version "15.6.0"
   resolved "http://registry.npm.taobao.org/prop-types/download/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -3580,6 +3580,12 @@ react-native-amap3d@^0.8.0:
   version "0.8.0"
   resolved "http://registry.npm.taobao.org/react-native-amap3d/download/react-native-amap3d-0.8.0.tgz#d260dfa5de16e4e7df67354e3ddf789c4771ecd5"
 
+react-native-button@^2.1.0:
+  version "2.1.0"
+  resolved "http://registry.npm.taobao.org/react-native-button/download/react-native-button-2.1.0.tgz#a39e23292922afeea4f7be141dd43e18f1b51876"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-datepicker@^1.6.0:
   version "1.6.0"
   resolved "http://registry.npm.taobao.org/react-native-datepicker/download/react-native-datepicker-1.6.0.tgz#3a40dc9b112023c49d60ba2a0789d440b7e3d97c"
@@ -3638,6 +3644,13 @@ react-native-modal-dropdown@^0.5.0:
   version "0.5.0"
   resolved "http://registry.npm.taobao.org/react-native-modal-dropdown/download/react-native-modal-dropdown-0.5.0.tgz#f6c4cd4d077792e56902b43b14d83959f5f40f46"
 
+react-native-modalbox@^1.4.2:
+  version "1.4.2"
+  resolved "http://registry.npm.taobao.org/react-native-modalbox/download/react-native-modalbox-1.4.2.tgz#818c9354c9b13327ec807c6436e8516b3b419478"
+  dependencies:
+    create-react-class "^15.6.0"
+    prop-types "^15.5.10"
+
 react-native-qrcode@^0.2.6:
   version "0.2.6"
   resolved "http://registry.npm.taobao.org/react-native-qrcode/download/react-native-qrcode-0.2.6.tgz#dd92f151c118860092af9fa5bc0995f2f9dddb16"
@@ -3659,6 +3672,12 @@ react-native-search-box@^0.0.13:
   resolved "http://registry.npm.taobao.org/react-native-search-box/download/react-native-search-box-0.0.13.tgz#75b5d21ecfb5d5dc12e26fac85b1225b48070f90"
   dependencies:
     prop-types "^15.5.10"
+
+react-native-slider@^0.11.0:
+  version "0.11.0"
+  resolved "http://registry.npm.taobao.org/react-native-slider/download/react-native-slider-0.11.0.tgz#b68a0bc43c8422b24cd57947cc5ac2bcdb58fadc"
+  dependencies:
+    prop-types "^15.5.6"
 
 react-native-spinkit@^1.1.1:
   version "1.1.1"

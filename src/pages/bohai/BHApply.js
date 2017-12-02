@@ -10,23 +10,34 @@ import {
     Image,
     TouchableOpacity,
 } from 'react-native'
-import {Container, Content, Footer, FooterTab, Button} from 'native-base';
+import {Container, Content, Footer, FooterTab, Button, List, ListItem, CheckBox,Body,} from 'native-base';
+import Modal from 'react-native-modalbox';
 import {observer, inject} from 'mobx-react/native';
 import StepBar from '../../components/bohai/StepBar';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import Step1 from '../../components/bohai/Step1';
 import Step2 from '../../components/bohai/Step2';
+import Step3 from '../../components/bohai/Step3';
 
 @inject('bohaiStore')
 @observer
 export default class BHApply extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            hideFooter: false,
+        }
     }
     static navigationOptions = ({navigation})=>({
         headerTitle: '渤海监测',
         headerRight: <View></View>
     });
+
+    componentDidMount () {
+        request.getJson(urls.apis.BH_BREEDS, null).then((res)=>{
+            bohaiStore.setBreeds(res);
+        }).catch((err)=>{});
+    }
 
     onPrev=()=>{
         bohaiStore.prevStep();
@@ -42,7 +53,13 @@ export default class BHApply extends Component {
                 bohaiStore.nextStep();
             }
         }else if(step === 2){
-
+            if(data.poultryBreeds.length===0){
+                tools.showToast('请选择品种');
+            }else if(!data.poultryGenerations){
+                tools.showToast('请选择送检代次');
+            }else{
+                bohaiStore.nextStep();
+            }
         }
     }
 
@@ -57,7 +74,13 @@ export default class BHApply extends Component {
                         : null
                     }
                     {step === 2?
-                        <Step2 store={bohaiStore} navigation={this.props.navigation}/>
+                        <Step2 store={bohaiStore}
+                               openBreed={()=>this.refs.modal1.open()}
+                               openGender={()=>this.refs.modal2.open()}/>
+                        : null
+                    }
+                    {step === 3?
+                        <Step3 store={bohaiStore}/>
                         : null
                     }
                 </Content>
@@ -81,7 +104,59 @@ export default class BHApply extends Component {
                         </Grid>
                     </FooterTab>
                 </Footer>
+                <Modal
+                    coverScreen={true}
+                    style={[styles.modal, styles.modal1]}
+                    ref={"modal1"}
+                    position={"center"}>
+                    <ScrollView>
+                        <Content>
+                            <List>
+                                {bohaiStore.breeds.map((val, key) => (
+                                    <ListItem onPress={() => bohaiStore.chooseBreeds(val)} key={key}>
+                                        <CheckBox onPress={() => bohaiStore.chooseBreeds(val)} checked={bohaiStore.data.poultryBreeds.indexOf(val) > -1}/>
+                                        <Body>
+                                            <Text> {val}</Text>
+                                        </Body>
+                                    </ListItem>
+                                ))}
+                            </List>
+                            <Button onPress={()=>this.refs.modal1.close()} block>
+                                <Text>保存</Text>
+                            </Button>
+                        </Content>
+                    </ScrollView>
+                </Modal>
+                <Modal
+                    coverScreen={true}
+                    style={styles.modal}
+                    ref={"modal2"}
+                    position={"center"}>
+                    <ScrollView>
+                        <Content>
+                            <List>
+                                {bohaiStore.poultry_genders.map((val, key) => (
+                                    <ListItem onPress={() => {
+                                        bohaiStore.set('poultryGenerations', val);
+                                        this.refs.modal2.close()
+                                    }} key={key}>
+                                        <Text> {val}</Text>
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Content>
+                    </ScrollView>
+                </Modal>
             </Container>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    modal:{
+
+    },
+    modal1:{
+        //height:350,
+    }
+});
