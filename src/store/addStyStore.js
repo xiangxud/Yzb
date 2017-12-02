@@ -33,14 +33,14 @@ class addStyStore {
 
     @action
     onChangedSty(uo){
-        debugger;
+        //debugger;
         Object.assign(this.sty,this.sty,uo);
     }
 
     @action
     onIni(farm){
         this.farm=farm;
-        debugger;
+        //debugger;
         this.getDictionaryFromApi((data)=>{
             this.genus = data;
         },(err)=>{
@@ -50,17 +50,34 @@ class addStyStore {
 
     @action
     getDictionaryFromApi(callback,falied){
-        debugger;
+        //debugger;
         request.getJson(urls.apis.IMM_DICTIONARY,{classification:this.farm.Breed}).then((data) => {
-            debugger;
+            //debugger;
             callback(data);
         }).catch((err) => {
             falied(err);
         });
     }
 
-
-
+    @action
+    onCommit( callback,falied ) {
+        debugger;
+        request.postJson(urls.apis.IMM_STYADD,{
+            FarmName:this.farm.Name,
+            Id:'00000000-0000-0000-0000-000000000000',
+            Name:this.sty.name,
+            Genus:this.sty.genus,
+            IniPetDay:this.sty.day,
+            IniPetCount:this.sty.number,
+            IniPetDate:this.sty.addDate,
+            BatchNumber:this.sty.batchNumber
+        }).then((data)=>{
+            callback(data);
+        }).catch((err)=>{
+            debugger;
+            falied(err);
+        });
+    }
 }
 
 addStyStore = new addStyStore();

@@ -140,7 +140,9 @@ const urls = {
         //栋舍信息
         IMM_STYBASIC: apiPath + 'sty/GetStyHome',
         //字典列表
-        IMM_DICTIONARY:apiPath + 'Dictionary/Get'
+        IMM_DICTIONARY:apiPath + 'Dictionary/Get',
+        //栋舍创建
+        IMM_STYADD:apiPath + 'sty/Post'
     },
     // 获取图片完整路径
     getImage(filePath, width, height){

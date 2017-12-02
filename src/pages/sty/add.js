@@ -17,7 +17,7 @@ export default class Add extends Component{
     getGenus(){
         const {addStyStore} = this.props;
         let options = [];
-        debugger;
+        //debugger;
         addStyStore.genus.forEach((o)=>{
             options.push(o.Code);
         });
@@ -42,10 +42,24 @@ export default class Add extends Component{
         if(!addStyStore.sty.isValid){
             Toast.show({
                 text: '数据项存在错误，请更正',
-                position: 'bottom',
+                position: 'top',
                 buttonText: '确定'
             });
+            return ;
         }
+        addStyStore.onCommit((data)=>{
+            Toast.show({
+                text: '保存成功',
+                position: 'bottom',
+                buttonText: '确定'
+            })
+        },(err)=>{
+            Toast.show({
+                text: '产生错误:'+err,
+                position: 'bottom',
+                buttonText: '确定'
+            })
+        });
     }
     onUpdateData(u){
         const {addStyStore} = this.props;
