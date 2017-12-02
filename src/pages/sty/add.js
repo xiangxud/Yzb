@@ -36,29 +36,58 @@ export default class Add extends Component{
         });
     }
 
+    autoClose( callback ){
+        setTimeout(()=>{
+            Toast.toastInstance._root.closeToast();
+            if(callback){
+                callback();
+            }
+        },800);
+    }
+    onStyPress(data){
+        debugger;
+        const {navigation} = this.props;
+        let { Stys,StyId } = data;
+        let list=[];
+        Stys.forEach((item)=>{
+            debugger;
+            list.push({
+                code:item.value,
+                title:item.title
+            });
+        });
+
+        navigation.navigate("Sty",{ code : StyId , list : list });
+    }
     next(){
         this.onUpdateData({ submited:true });
         const {addStyStore} = this.props;
         if(!addStyStore.sty.isValid){
+
             Toast.show({
+                type:'warning',
                 text: '数据项存在错误，请更正',
-                position: 'top',
-                buttonText: '确定'
+                position: 'top'
             });
+            this.autoClose();
             return ;
         }
         addStyStore.onCommit((data)=>{
             Toast.show({
+                type:'success',
                 text: '保存成功',
-                position: 'bottom',
-                buttonText: '确定'
+                position: 'top'
             })
+            this.autoClose(()=>{
+                this.onStyPress(data)
+            });
         },(err)=>{
             Toast.show({
+                type:'danger',
                 text: '产生错误:'+err,
-                position: 'bottom',
-                buttonText: '确定'
+                position: 'top'
             })
+            this.autoClose();
         });
     }
     onUpdateData(u){
@@ -70,7 +99,7 @@ export default class Add extends Component{
         return (
             <Root>
             <Container style={{backgroundColor:'#ffffff'}}>
-                <Content>
+                <Form>
                     <ListItem itemDivider>
                         <Icon style={style.titleIco} name="ios-book" active></Icon><Text>第1步.添加一个栋舍</Text>
                     </ListItem>
@@ -81,10 +110,9 @@ export default class Add extends Component{
                     <ValidateInput label="入栏批次" data={addStyStore.sty} name="batchNumber" placeholder="动物批次" onChange={(e)=>{this.onUpdateData({batchNumber:e})}} />
                     <ValidateInput label="进栏数量" data={addStyStore.sty} name="number" placeholder="进栏数量" onChange={(e)=>{this.onUpdateData({number:e})}} />
                     <ValidateInputDate label="进栏日期" data={addStyStore.sty} name="addDate" placeholder="进栏日期" onChange={(e)=>{this.onUpdateData({addDate:e})}} />
-                </Content>
-                <FootBar buttons={this.buttons}></FootBar>
+                </Form>
             </Container>
-
+                <FootBar buttons={this.buttons}></FootBar>
             </Root>
         );
     }

@@ -6,11 +6,12 @@ import {DatePickerAndroid, StyleSheet} from "react-native";
 
 const style = StyleSheet.create({
     rightPadding:{
-        paddingRight:18
+        paddingRight:28
     },
     ico:{
-        width:18,
-        color:'#b1b1b1'
+        width:28,
+        color:'#b1b1b1',
+        fontSize:14
     },
     titleIco:{
         color:'#009688',
