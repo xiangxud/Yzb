@@ -10,6 +10,7 @@ import
     StyleSheet,
     ScrollView
 } from 'react-native';
+import { Container,Content,Root } from 'native-base';
 import {observer,inject} from 'mobx-react/native';
 import StyBar from '../../components/sty/StyBar';
 import Waring from '../../components/sty/Waring';
@@ -42,16 +43,21 @@ export default class Sty extends Component{
     render(){
         const {styStore} = this.props;
         return (
-            <ScrollView style={{flex:1}}>
-                <View style={style.main}>
-                    <Waring style={style.waring} waring={styStore.waring}>
-                    </Waring>
-                    <Monitor style={style.mon} monitor={styStore.moitor} backgroundColor="#615e61">
-                    </Monitor>
-                    <ImmList style={style.imm} title="免疫提醒" collection={styStore.immCollection}>
-                    </ImmList>
-                </View>
-            </ScrollView>);
+            <Root>
+                <Container>
+                    <Content>
+                        <View style={style.main}>
+                            <Waring style={style.waring} waring={styStore.waring}>
+                            </Waring>
+                            <Monitor style={style.mon} monitor={styStore.moitor} backgroundColor="#615e61">
+                            </Monitor>
+                            <ImmList style={style.imm} title="免疫提醒" collection={styStore.immCollection}>
+                            </ImmList>
+                        </View>
+                    </Content>
+                </Container>
+            </Root>
+        );
     }
 }
 
