@@ -34,4 +34,16 @@ Date.prototype.Format = function (fmt) {
     for (var k in o)
         if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
+};
+//字符串转日期
+String.prototype.ToDate = function(){
+    var fullDate = this.toString().split("-");
+
+    if( fullDate.length != 3 ){
+        return null;
+    }
+    if( fullDate[2].length > 2 ){
+        fullDate[2] = fullDate[2].substring(0,2);
+    }
+    return new Date(fullDate[0], fullDate[1]-1, fullDate[2], 0, 0, 0);
 }

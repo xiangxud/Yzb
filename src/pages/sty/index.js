@@ -64,11 +64,17 @@ const style = StyleSheet.create({
     main:{
         flex:1,
         alignItems:'stretch',
-        backgroundColor:'#ffffff'
+        backgroundColor:'#ffffff',
+        paddingLeft:2,
+        paddingRight:2
     },
     imm:{
+        marginLeft :2,
+        marginRight:2
     },
     waring:{
+        marginLeft :5,
+        marginRight:5
     },
     mon:{
         backgroundColor:'#f3f3f3'

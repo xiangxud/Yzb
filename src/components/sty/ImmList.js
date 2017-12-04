@@ -2,43 +2,51 @@ import React, {Component} from 'react';
 import
 {
     View,
-    Text,
     StyleSheet,
     FlatList,
     TouchableNativeFeedback,
 } from 'react-native';
+import { SwipeRow,Button,Text,Icon } from 'native-base';
 import {observer} from 'mobx-react/native';
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx';
-import { Icon } from 'native-base'
 
 @observer
 export default class ImmList extends Component{
     constructor(props){
         super(props);
     }
+    componentWillMount(){
 
-    componentWillMount()
-    {
     }
-
     renderRow = (info) =>{
         return (
-            <TouchableNativeFeedback onPress={() => {}}>
-                <View style={style.row}>
-                    <View style={style.frist}>
-                        <Text style={style.immTitle} numberOfLines={1}>
-                            {info.item.VaccineName}
-                        </Text>
-                        <Text style={style.immTime} numberOfLines={1}>
-                            {info.item.ImmuneTime}
-                        </Text>
-                    </View>
-                    <View style={style.second}>
-                        <Text style={style.block}>{info.item.VaccineMethod}</Text>
-                        <Text style={style.block}>{info.item.Dose}</Text>
-                    </View>
-                </View>
-            </TouchableNativeFeedback>)
+            <SwipeRow rightOpenValue={-150}
+                      style={{flex:1,paddingTop:0,paddingBottom:0}}
+                      list={{}}
+                      right={
+                          <View style={style.actions}>
+                              <Button info style={style.action}><Text>执行</Text></Button>
+                              <Button info style={style.action}><Text>忽略</Text></Button>
+                          </View>
+                      }
+                      body={
+                          <View style={style.row}>
+                              <View style={style.frist}>
+                                  <Text style={style.immTitle} numberOfLines={1}>
+                                      {info.item.VaccineName}
+                                  </Text>
+                                  <Text style={style.immTime} numberOfLines={1}>
+                                      {info.item.ImmuneTime.ToDate().Format("yyyy-MM-dd")}
+                                  </Text>
+                              </View>
+                              <View style={style.second}>
+                                  <Text style={style.block}>{info.item.VaccineMethod}</Text>
+                                  <Text style={style.block}>{info.item.Dose}</Text>
+                              </View>
+                          </View>
+                      }
+            >
+            </SwipeRow>)
     }
 
     _separator=()=>{
@@ -109,10 +117,7 @@ const style = StyleSheet.create({
 
     row:{
         flex:1,
-        paddingTop:3,
-        paddingBottom:3,
-        borderBottomWidth:StyleSheet.hairlineWidth,
-        borderBottomColor:'#888',
+        height:50
     },
     frist:{
         flex:1,
@@ -129,7 +134,7 @@ const style = StyleSheet.create({
       color:'#ababab',
       fontSize:12,
       marginLeft:3,
-        flex:1
+        width:100
     },
     second:{
         flex:1,
@@ -142,5 +147,13 @@ const style = StyleSheet.create({
         fontSize:12,
         textAlignVertical:'center',
         marginRight:8
+    },
+    actions:{
+        flexDirection:'row',
+        height:55,
+        alignItems:'stretch'
+    },
+    action:{
+        height:55
     }
 });

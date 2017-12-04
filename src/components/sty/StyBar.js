@@ -89,6 +89,10 @@ export default class StyBar extends Component{
                         <FontIcon name="chevron-left" size={20} color="#ffffff"></FontIcon>
                     </TouchableHighlight>
                 </View>
+
+
+
+
                 <ModalDropdown
                         style={dropDownSty.main}
                         textStyle={dropDownSty.text}
