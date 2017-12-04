@@ -26,7 +26,7 @@ class styBarStore{
     onIni(list,code){
         this.styList=[];
         list.forEach((item)=>{
-            this.styList.push({code:item.code,text:item.title,icon:'analytics',iconColor:'#ffffff'});
+            this.styList.push({code:item.code, text: item.title, icon: "home", iconColor: "#2c8ef4"});
         });
         this.cancelIndex = this.styList.length - 1;
         this.onSelect(code);
@@ -68,10 +68,28 @@ export default class StyBar extends Component{
                 title:'请选择',
                 options: this.store.styList,
                 destructiveButtonIndex:0,
-                cancelButtonIndex:this.store.cancelIndex,
             },
             (index) => {
-                this.store.onSelect(this.store.styList[index].code);
+                if( index >=0 && index <=  this.store.styList.length-1){
+                    this.store.onSelect(this.store.styList[index].code);
+                }
+            }
+        )
+    }
+
+    onMenu(){
+
+        let forms=
+            [{ name:"editSty", text: "编辑", icon: "american-football", iconColor: "#2c8ef4" },
+            { name:"settingSty",text: "设置", icon: "analytics", iconColor: "#f42ced" }];
+
+        ActionSheet.show(
+            {
+                title:'操作',
+                options: forms,
+                destructiveButtonIndex:0,
+            },
+            (index) => {
             }
         )
     }
@@ -93,13 +111,16 @@ export default class StyBar extends Component{
                 </TouchableNativeFeedback>
 
                 <View style={style.right}>
-                    <View onPress={this.props.onMessPress}>
+                    <View onPress={this.props.onMessPress} style={{ marginRight:15 }}>
                         <FontIcon name="envelope" size={20} color='#ffffff' />
                         <FontIcon name="circle" size={15} color='#f50716' style={style.warning} />
                     </View>
-                    <View style={style.ico}>
+
+
+                    <TouchableNativeFeedback style={style.ico} onPress={this.onMenu.bind(this)}>
                         <FontIcon name="cog" size={20} color='#ffffff' />
-                    </View>
+                    </TouchableNativeFeedback>
+
                 </View>
             </View>)
     }
@@ -132,7 +153,7 @@ const style = StyleSheet.create({
         justifyContent:'flex-end',
     },
     ico:{
-        marginLeft:15
+        marginLeft:30
     },
     warning : {
         position:'absolute',
