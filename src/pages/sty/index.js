@@ -20,15 +20,21 @@ import Monitor from '../../components/sty/Monitor';
 @inject('styStore')
 @observer
 export default class Sty extends Component{
-    static navigationOptions = ({navigation})=>{header:(<StyBar iniCode={'008'}></StyBar>)};
     static navigationOptions = ({navigation})=> {
         return         {header:(<StyBar goBack={navigation.goBack}
-                        navigate={navigation.navigate}
-                        iniCode={navigation.state.params.code}
-                        Title={navigation.state.params.title}
-                        styList={navigation.state.params.list}
-                        onMessPress={()=>{}}
-                        onSettingPress={()=>{}}></StyBar>)
+                                        navigate={navigation.navigate}
+                                        iniCode={navigation.state.params.code}
+                                        Title={navigation.state.params.title}
+                                        styList={navigation.state.params.list}
+                                        onMessPress={()=>{}}
+                                        onSettingPress={()=>{
+                                        }}
+                                        onEditPress={()=>{
+                                            debugger;
+                                            navigation.navigate("EditSty",{
+                                                code:navigation.state.params.code,
+                                                farm:navigation.state.params.farm})
+                                        }}></StyBar>)
     }};
 
     componentWillMount(){

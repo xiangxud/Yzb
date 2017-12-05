@@ -5,7 +5,8 @@ import
     StyleSheet,
     FlatList,
     TouchableNativeFeedback,
-    TouchableHighlight
+    TouchableHighlight,
+    TouchableOpacity
 } from 'react-native';
 import { Text,Button,ActionSheet} from 'native-base';
 
@@ -79,9 +80,25 @@ export default class StyBar extends Component{
 
     onMenu(){
 
-        let forms=
-            [{ name:"editSty", text: "编辑", icon: "american-football", iconColor: "#2c8ef4" },
-            { name:"settingSty",text: "设置", icon: "analytics", iconColor: "#f42ced" }];
+        let editSty = {
+            name:"EditSty",
+            text: "编辑",
+            icon: "american-football",
+            iconColor: "#2c8ef4",
+            action:()=>{
+                this.props.onEditPress();
+            }
+        };
+        let settingSty = {
+            name:"SettingSty",
+            text: "设置",
+            icon: "analytics",
+            iconColor: "#f42ced",
+            action:()=>{
+                this.props.onSettingPress();
+            }
+        }
+        let forms=[editSty,settingSty];
 
         ActionSheet.show(
             {
@@ -90,6 +107,12 @@ export default class StyBar extends Component{
                 destructiveButtonIndex:0,
             },
             (index) => {
+                if( index < 0 || index >= forms.length ){
+                    return;
+                }
+
+                let action = forms[index].action.bind(this);
+                action();
             }
         )
     }
@@ -117,9 +140,9 @@ export default class StyBar extends Component{
                     </View>
 
 
-                    <TouchableNativeFeedback style={style.ico} onPress={this.onMenu.bind(this)}>
+                    <TouchableOpacity  style={style.ico} onPress={this.onMenu.bind(this)}>
                         <FontIcon name="cog" size={20} color='#ffffff' />
-                    </TouchableNativeFeedback>
+                    </TouchableOpacity >
 
                 </View>
             </View>)
@@ -153,7 +176,6 @@ const style = StyleSheet.create({
         justifyContent:'flex-end',
     },
     ico:{
-        marginLeft:30
     },
     warning : {
         position:'absolute',

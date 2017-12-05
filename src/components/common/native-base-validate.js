@@ -59,7 +59,9 @@ const ValidateChooseItem = observer(function ValidateChooseItem({label, data , n
                 title: optionslabel
             },
             (index) => {
-                onChange(options[index]);
+                if( index >= 0 && index < options.length ){
+                    onChange(options[index]);
+                }
             }
         )
     }

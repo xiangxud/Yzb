@@ -56,12 +56,11 @@ export default class HomePage extends Component {
                 title:item.name
             });
         });
-
-        navigation.navigate("Sty",{ code : sty.id , list : list });
+        navigation.navigate("Sty",{ code : sty.id , list : list , farm : homeStore.farm });
     }
+
     onAddSty(){
         const {navigation} = this.props;
-//debugger;
         navigation.navigate("AddSty",{ farm : homeStore.farm });
     }
 

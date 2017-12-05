@@ -1,11 +1,12 @@
 import {AsyncStorage} from 'react-native'
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
 import validate from 'mobx-form-validate';
+import camelCase from 'camelcase';
 
 import _ from "lodash";
 useStrict(true);
 
-class addStyStore {
+class editStyStore {
     @observable
     farm={};
 
@@ -18,10 +19,10 @@ class addStyStore {
         @observable
         genus:'',
         @observable
-        @validate(/\S+$/, '栋舍名称必填')
+            @validate(/\S+$/, '栋舍名称必填')
         name:'',
         @observable
-        @validate(/\d+$/, '日龄必填且为数值')
+            @validate(/\d+$/, '日龄必填且为数值')
         day:null,
         @observable
         batchNumber:'',
@@ -35,19 +36,7 @@ class addStyStore {
 
     @action
     onChangedSty(uo){
-        //debugger;
         Object.assign(this.sty,this.sty,uo);
-    }
-
-    @action
-    onIni(farm){
-        this.farm=farm;
-        //debugger;
-        this.getDictionaryFromApi((data)=>{
-            this.genus = data;
-        },(err)=>{
-            alert(err);
-        })
     }
 
     @action
@@ -63,7 +52,7 @@ class addStyStore {
     @action
     onFillSty(data){
         this.sty.code=data.Id,
-        this.sty.genus=data.Genus;
+            this.sty.genus=data.Genus;
         this.sty.name=data.Name;
         this.sty.day=data.Day.toString();
         this.sty.number=data.Total.toString();
@@ -73,12 +62,17 @@ class addStyStore {
 
     @action
     getStyFromApi(code,callback,falied) {
-        debugger;
         request.getJson(urls.apis.IMM_GET_STY_BASE,{id:code}).then(data=>{
             callback(data);
         }).catch(err => {
             falied(err);
         });
+    }
+
+    @action
+    onInvalid(){
+        if( !this.sty.isValid ){
+        }
     }
 
     @action
@@ -99,34 +93,25 @@ class addStyStore {
         });
     }
 
-    @action
-    getDictionaryFromApi(callback,falied){
-        request.getJson(urls.apis.IMM_DICTIONARY,{classification:this.farm.Breed}).then((data) => {
-            callback(data);
-        }).catch((err) => {
-            falied(err);
-        });
+    onValidMess(){
+        let mess = [];
+        for(var key in this.sty){
+            let info = this.getFiledValidMess(key);
+            if( info && info != null && info != "" ){
+                mess.push(info);
+            }
+        }
+        return mess;
     }
 
-    @action
-    onCommit( callback,falied ) {
-        request.postJson(urls.apis.IMM_STYADD,{
-            FarmName:this.farm.Name,
-            Id:'00000000-0000-0000-0000-000000000000',
-            Name:this.sty.name,
-            Genus:this.sty.genus,
-            IniPetDay:this.sty.day,
-            IniPetCount:this.sty.number,
-            IniPetDate:this.sty.addDate,
-            BatchNumber:this.sty.batchNumber
-        }).then((data)=>{
-            callback(data);
-        }).catch((err)=>{
-            debugger;
-            falied(err);
-        });
+    getFiledValidMess(name){
+        let errNode = camelCase( 'validateError',name )
+        if(this.sty[errNode] && this.sty[errNode] != null && this.sty[errNode]!=""){
+            return this.sty[errNode];
+        }
+        return "";
     }
 }
 
-addStyStore = new addStyStore();
-export default addStyStore;
+editStyStore = new editStyStore();
+export default editStyStore;
