@@ -131,6 +131,10 @@ const urls = {
         //获取所有养殖场（搜索）
         BH_FARMS: apiPath + 'bh/getfarms',
         BH_BREEDS: apiPath + 'bh/getPoultryBreeds',
+        BH_TEST_TYPES: apiPath + 'bh/getTestTypeDetails',
+        BH_APPROVE_USERS: apiPath + 'bh/getApprovers',
+        BH_IS_SALES: apiPath + 'bh/isSales',
+        BH_POST_SHEET: apiPath + 'bh/postSheet',
 
 
 

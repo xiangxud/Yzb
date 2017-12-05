@@ -12,27 +12,27 @@ import {
     Alert,
 } from 'react-native';
 import {observer} from 'mobx-react/native'
-import {Container, Content, Header, List, ListItem, Form, Item, Input, Label, Title, Body,
-    Picker, Icon, Button, CheckBox, Footer} from 'native-base';
+import { Icon } from 'native-base';
 import CheckItem from './CheckItem';
 
 @observer
 class Step3 extends Component {
-
-    chooseBig(){
-        alert('选择大项目')
+    chooseBig = (item) => {
+        this.props.chooseBig(item);
     }
 
-    chooseSub(){
-        alert('选择小项目')
+    chooseSub = (item) => {
+        //alert('选择小项目')
+        this.props.chooseSub(item);
     }
 
-    choosePart(){
-        alert('选择样品部位')
+    choosePart = (item) => {
+        //alert('选择样品部位')
+        this.props.choosePart(item);
     }
-    remove=(item)=>{
+    removeItem=(item)=>{
         Alert.alert(
-            '您确认要删除该检测项目吗？',
+            '删除检测项目？',
             '删除后不可恢复，您仍可以手工添加该项目',
             [
                 {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
@@ -49,10 +49,10 @@ class Step3 extends Component {
                        index={i}
                        item={item}
                        store={bohaiStore}
-                       chooseBig={()=>this.chooseBig()}
-                       chooseSub={()=>this.chooseSub()}
-                       choosePart={()=>this.choosePart()}
-                       remove={(item)=>this.remove(item)}/>
+                       chooseBig={this.chooseBig}
+                       chooseSub={this.chooseSub}
+                       choosePart={this.choosePart}
+                       remove={this.removeItem}/>
         )
     }
     render() {

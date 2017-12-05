@@ -18,16 +18,12 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import Step1 from '../../components/bohai/Step1';
 import Step2 from '../../components/bohai/Step2';
 import Step3 from '../../components/bohai/Step3';
+import Step4 from '../../components/bohai/Step4';
+import Step5 from '../../components/bohai/Step5';
 
 @inject('bohaiStore')
 @observer
 export default class BHApply extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            hideFooter: false,
-        }
-    }
     static navigationOptions = ({navigation})=>({
         headerTitle: '渤海监测',
         headerRight: <View></View>
@@ -36,7 +32,10 @@ export default class BHApply extends Component {
     componentDidMount () {
         request.getJson(urls.apis.BH_BREEDS, null).then((res)=>{
             bohaiStore.setBreeds(res);
-        }).catch((err)=>{});
+        }).catch((err)=>{tools.showToast('获取品种失败')});
+        request.getJson(urls.apis.BH_TEST_TYPES, null).then((res)=>{
+            bohaiStore.setTestItems(res);
+        }).catch((err)=>tools.showToast('获取检测项目失败'));
     }
 
     onPrev=()=>{
@@ -50,15 +49,84 @@ export default class BHApply extends Component {
             }else if(!data.farmName){
                 tools.showToast('请选择养殖场');
             }else{
-                bohaiStore.nextStep();
+                request.getJson(urls.apis.BH_IS_SALES, {phone: data.phoneNo}).then((res)=>{
+                    if(res===true){
+                        bohaiStore.nextStep();
+                    }else{
+                        tools.showToast('手机号不属于瑞普用户');
+                    }
+                }).catch((err)=>{
+                    tools.showToast(err.message)
+                });
             }
         }else if(step === 2){
-            if(data.poultryBreeds.length===0){
+            if(data.poultryTotalCount===0){
+                tools.showToast('请输入全场养殖量')
+            }else if(data.poultrySingleCount===0){
+                tools.showToast('请输入单舍养殖量')
+            }else if(data.poultryMonthCount===0){
+                tools.showToast('请输入公司养殖量')
+            }else if(data.poultryBreeds.length===0){
                 tools.showToast('请选择品种');
             }else if(!data.poultryGenerations){
                 tools.showToast('请选择送检代次');
             }else{
                 bohaiStore.nextStep();
+            }
+        }else if(step === 3){
+            if(data.testingSamplingList.length===0){
+                tools.showToast('请添加检测项目');
+            }else{
+                let ok = true;
+                for(var index = 0; index < data.testingSamplingList.length; index++){
+                    if(data.testingSamplingList[index].samplingSystemNo===''){
+                        tools.showToast('请选择检测大类');
+                        ok = false;
+                        break;
+                    }else if(data.testingSamplingList[index].testTypeName.length===0){
+                        tools.showToast('请选择检测项目');
+                        ok = false;
+                        break;
+                    }else if(data.testingSamplingList[index].testTypeDetailNames.length===0){
+                        tools.showToast('请选择样品');
+                        ok = false;
+                        break;
+                    }else if(data.testingSamplingList[index].sendSamplingCount===0){
+                        tools.showToast('请输入样品数量');
+                        ok = false;
+                        break;
+                    }
+                }
+                if(ok) {
+                    bohaiStore.nextStep();
+                }
+            }
+        }else if(step === 4){
+            if(data.morbidity === 0){
+                tools.showToast('请输入发病率');
+            }else if(data.mortality === 0){
+                tools.showToast('请输入死亡率');
+            }else if(!data.vaccineName){
+                tools.showToast('请输入疫苗名称及厂家');
+            }else if(!data.immuneProcedure){
+                tools.showToast('请输入免疫程序描述');
+            }else if(!data.preliminaryDiagnosis){
+                tools.showToast('请输入初步诊断');
+            }else{
+                bohaiStore.nextStep();
+            }
+        }else if(step === 5){
+            if(data.consultantPhoneNo===''){
+                tools.showToast('请选择健康咨询顾问')
+            }else if(data.salesPhoneNo===''){
+                tools.showToast('请选择销售审批人')
+            }else{
+                //提交到数据库
+                request.postJson(urls.apis.BH_POST_SHEET, data).then((res)=>{
+                    alert(JSON.stringify(res));
+                }).catch((err)=>{
+                    tools.showToast(err.message);
+                })
             }
         }
     }
@@ -80,7 +148,65 @@ export default class BHApply extends Component {
                         : null
                     }
                     {step === 3?
-                        <Step3 store={bohaiStore}/>
+                        <Step3 store={bohaiStore}
+                               chooseBig={(item)=>{
+                                   bohaiStore.setCurrentCheckItem(item);
+                                   this.refs.modal_big.open()
+                               }}
+                               chooseSub={(item)=>{
+                                   if(!item.samplingSystemNo){
+                                       tools.showToast('请先选择检测大类');
+                                   }else {
+                                       bohaiStore.setCurrentCheckItem(item);
+                                       let o = bohaiStore.poultry_test_items.find((x)=>{
+                                           return x.name === item.samplingSystemNo
+                                       });
+                                       bohaiStore.setCurrentTestItemOrg(o);
+                                       this.refs.modal_sub.open();
+                                   }
+                               }}
+                               choosePart={(item) => {
+                                   if (!item.testTypeName.length === 0) {
+                                       tools.showToast('请先选择监测项目');
+                                   } else {
+                                       bohaiStore.setCurrentCheckItem(item);
+                                       let o = bohaiStore.poultry_test_items.find((x) => {
+                                           return x.name === item.samplingSystemNo
+                                       });
+                                       let samplePartPicker = [];
+                                       o.details.forEach((v) => {
+                                           item.testTypeName.forEach((p) => {
+                                               if (v.detailName === p) {
+                                                   v.samplingTypeName.forEach((s) => {
+                                                       samplePartPicker.indexOf(s) < 0 && samplePartPicker.push(s);
+                                                   });
+                                               }
+                                           })
+                                       });
+                                       bohaiStore.setSamplingPicker(samplePartPicker);
+                                       bohaiStore.setCurrentTestItemOrg(o);
+
+                                       this.refs.modal_part.open()
+                                   }
+                               }
+                               }
+                                   />
+                        : null
+                    }
+                    {step === 4?
+                        <Step4 store={bohaiStore}/>
+                        : null
+                    }
+                    {step === 5?
+                        <Step5 store={bohaiStore}
+                               navigation={this.props.navigation}
+                               chooseUser={(t)=> {
+                                   if(t===1)
+                                       this.refs.modal_consultant.open();
+                                   else
+                                       this.refs.modal_sales.open();
+                                }}
+                            />
                         : null
                     }
                 </Content>
@@ -121,7 +247,7 @@ export default class BHApply extends Component {
                                     </ListItem>
                                 ))}
                             </List>
-                            <Button onPress={()=>this.refs.modal1.close()} block>
+                            <Button onPress={()=>this.refs.modal1.close()} block info>
                                 <Text>保存</Text>
                             </Button>
                         </Content>
@@ -141,6 +267,125 @@ export default class BHApply extends Component {
                                         this.refs.modal2.close()
                                     }} key={key}>
                                         <Text> {val}</Text>
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Content>
+                    </ScrollView>
+                </Modal>
+                <Modal
+                    coverScreen={true}
+                    style={styles.modal}
+                    ref={"modal_big"}
+                    position={"center"}
+                    onClosed={()=>bohaiStore.clearCurrentTestItem()}>
+                    <ScrollView>
+                        <Content>
+                            <List>
+                                {bohaiStore.poultry_test_items.map((val, key) => (
+                                    <ListItem onPress={() => {
+                                        bohaiStore.setItem(bohaiStore.currentTestItem, 'samplingSystemNo', val.name);
+                                        this.refs.modal_big.close()
+                                    }} key={key}>
+                                        <Text> {val.name}</Text>
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Content>
+                    </ScrollView>
+                </Modal>
+                <Modal
+                    coverScreen={true}
+                    style={styles.modal}
+                    ref={"modal_sub"}
+                    position={"center"}
+                    onClosed={()=>bohaiStore.clearCurrentTestItem()}>
+                    <ScrollView>
+                        <Content>
+                            <List>
+                                {bohaiStore.currentTestItemOrg && bohaiStore.currentTestItemOrg.details && bohaiStore.currentTestItemOrg.details.map((val, key) => (
+                                    <ListItem onPress={() => {
+                                        bohaiStore.setArray(bohaiStore.currentTestItem, 'testTypeName', val.detailName);
+                                    }} key={key}>
+                                        <CheckBox onPress={() => bohaiStore.setArray(bohaiStore.currentTestItem, 'testTypeName', val.detailName)}
+                                                  checked={bohaiStore.currentTestItem.testTypeName && bohaiStore.currentTestItem.testTypeName.indexOf(val.detailName) > -1}/>
+                                        <Body>
+                                            <Text> {val.detailName}</Text>
+                                        </Body>
+                                    </ListItem>
+                                ))}
+                            </List>
+                            <Button onPress={()=>this.refs.modal_sub.close()} block info>
+                                <Text>保存</Text>
+                            </Button>
+                        </Content>
+                    </ScrollView>
+                </Modal>
+                <Modal
+                    coverScreen={true}
+                    style={styles.modal}
+                    ref={"modal_part"}
+                    position={"center"}
+                    onClosed={()=>bohaiStore.clearCurrentTestItem()}>
+                    <ScrollView>
+                        <Content>
+                            <List>
+                                {bohaiStore.currentSamplingPicker.map((val, key) => (
+                                    <ListItem onPress={() => {
+                                        bohaiStore.setArray(bohaiStore.currentTestItem, 'testTypeDetailNames', val);
+                                    }} key={key}>
+                                        <CheckBox onPress={() => bohaiStore.setArray(bohaiStore.currentTestItem, 'testTypeDetailNames', val)}
+                                                  checked={bohaiStore.currentTestItem.testTypeDetailNames && bohaiStore.currentTestItem.testTypeDetailNames.indexOf(val) > -1}/>
+                                        <Body>
+                                            <Text> {val}</Text>
+                                        </Body>
+                                    </ListItem>
+                                ))}
+                            </List>
+                            <Button onPress={()=>this.refs.modal_part.close()} block info>
+                                <Text>保存</Text>
+                            </Button>
+                        </Content>
+                    </ScrollView>
+                </Modal>
+                <Modal
+                    coverScreen={true}
+                    style={styles.modal}
+                    ref={"modal_consultant"}
+                    position={"center"}>
+                    <ScrollView>
+                        <Content>
+                            <List>
+                                {bohaiStore.approvers &&
+                                bohaiStore.approvers.consultant &&
+                                bohaiStore.approvers.consultant.map((val, key) => (
+                                    <ListItem onPress={() => {
+                                        bohaiStore.set('consultantPhoneNo', val.consultantPhoneNo);
+                                        this.refs.modal_consultant.close()
+                                    }} key={key}>
+                                        <Text>{val.consultantName}</Text>
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Content>
+                    </ScrollView>
+                </Modal>
+                <Modal
+                    coverScreen={true}
+                    style={styles.modal}
+                    ref={"modal_sales"}
+                    position={"center"}>
+                    <ScrollView>
+                        <Content>
+                            <List>
+                                {bohaiStore.approvers &&
+                                bohaiStore.approvers.salse &&
+                                bohaiStore.approvers.salse.map((val, key) => (
+                                    <ListItem onPress={() => {
+                                        bohaiStore.set('salesPhoneNo', val.salesPhoneNo);
+                                        this.refs.modal_sales.close()
+                                    }} key={key}>
+                                        <Text>{val.salseName}</Text>
                                     </ListItem>
                                 ))}
                             </List>

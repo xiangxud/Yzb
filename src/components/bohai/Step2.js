@@ -51,7 +51,7 @@ class Step2 extends Component {
                         <Input placeholder="饲养品种" editable={false} value={store.poultryBreeds} multiline={true}/>
                         <Icon name={'ios-arrow-forward'} style={styles.arrow}/>
                     </Item>
-                    <Item fixedLabel last onPress={() => this.props.openGender()} multiline={true}>
+                    <Item fixedLabel last onPress={() => this.props.openGender()}>
                         <Label>送检代次<Text style={styles.required}>*</Text></Label>
                         <Input placeholder="送检代次" editable={false} value={store.data.poultryGenerations}/>
                         <Icon name={'ios-arrow-forward'} style={styles.arrow}/>

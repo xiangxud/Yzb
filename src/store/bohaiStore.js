@@ -5,26 +5,36 @@ import {observable, computed, action, runInAction, useStrict} from 'mobx'
 import validate from 'mobx-form-validate';
 useStrict(true);
 
-class CheckItem{
-    @observable samplingSystemNo= ''
-    @observable testTypeName= [];
-    @observable testTypeDetailNames= [];
-    @observable farmName= '';
-    @observable sendAge= 0;
-    @observable morbidityAge= 0;
-    @observable sendSamplingCount= 0;
+class TestItem {
+    @observable samplingSystemNo = ''
+    @observable testTypeName = [];
+    @observable testTypeDetailNames = [];
+    @observable farmName = '';
+    @observable sendAge = 0;
+    @observable morbidityAge = 0;
+    @observable sendSamplingCount = 0;
 }
 
 class BohaiStore {
     @observable step = 1;
     @observable breeds = [];
+
+    @observable poultry_test_items = [];
+    @observable livestock_test_items = [];
+
+    @observable currentTestItem = {};
+    @observable currentTestItemOrg = {};
+    @observable currentSamplingPicker = [];
+    //审批人信息
+    @observable approvers = {};
+
     @observable poultry_genders = ['祖代','父母代肉鸡','父母代蛋鸡','商品代肉鸡','商品代肉鸡'];
     @observable livestock_genders = [];
     @observable data = {
         phoneNo : '18307722503',
         animalType : '家禽',
-        farmName : '上海第一养殖场',
-        drugTesting : '是',
+        farmName : '',
+        drugTesting : '否',
         poultryTotalCount : 0,
         poultrySingleCount : 0,
         poultryMonthCount : 0,
@@ -54,6 +64,9 @@ class BohaiStore {
     @observable modalBreedsVisible = false;
     @observable modalGenerationsVisible = false;
 
+    // constructor(){
+    //     this.addTestItem();
+    // }
     @action set = (field, value) => {
         let t = typeof this.data[field];
         if(t === 'number'){
@@ -82,11 +95,40 @@ class BohaiStore {
 
         }else{
             obj[field] = value;
+            if(this.currentTestItem){
+                this.currentTestItem[field] = value;
+            }
         }
+    }
+    @action setCurrentCheckItem(item){
+        this.currentTestItem = item;
+    }
+    @action clearCurrentTestItem(){
+        this.currentTestItem = {};
+    }
+    @action setCurrentTestItemOrg(item){
+        this.currentTestItemOrg = item;
+    }
+    @action setArray = (obj, field, value) => {
+        if(obj[field].indexOf(value)>-1){
+            obj[field].splice(obj[field].indexOf(value), 1);
+        }else{
+            obj[field].push(value);
+        }
+        if(this.currentTestItem){
+            this.currentTestItem[field] = obj[field];
+        }
+    }
+    @action setSamplingPicker(arr){
+        this.currentSamplingPicker = arr;
     }
 
     @action setBreeds = (brees) => {
         this.breeds = brees;
+    }
+    @action setTestItems = (items) =>{
+        this.poultry_test_items = items.poultry_items;
+        this.livestock_test_items = items.livestock_items;
     }
     @action nextStep(){
         this.step<5 && this.step++;
@@ -110,9 +152,13 @@ class BohaiStore {
         }
     }
 
+    //设置审批人信息
+    @action setApprovers(o){
+        this.approvers = o;
+    }
     //添加检测项目
     @action addTestItem(){
-        this.data.testingSamplingList.push(new CheckItem());
+        this.data.testingSamplingList.push(new TestItem());
         tools.showToast('已添加新项目');
     }
     @action deleteTestItem(item){
