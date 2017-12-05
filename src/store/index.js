@@ -6,6 +6,7 @@ import infoStore from './infoStore'
 import didiStore from './didiStore'
 import styStore from './styStore'
 import addStyStore from './addStyStore'
+import editStyStore from './editStyStore'
 import bohaiStore from './bohaiStore'
 
 export default {
@@ -16,5 +17,6 @@ export default {
     didiStore,
     styStore,
     addStyStore,
+    editStyStore,
     bohaiStore,
 }

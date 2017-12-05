@@ -146,7 +146,11 @@ const urls = {
         //字典列表
         IMM_DICTIONARY:apiPath + 'Dictionary/Get',
         //栋舍创建
-        IMM_STYADD:apiPath + 'sty/Post'
+        IMM_STYADD:apiPath + 'sty/Post',
+        //获取栋舍详情
+        IMM_GET_STY_BASE:apiPath + 'Sty/Get',
+        //栋舍提交
+        IMM_POST_STY:apiPath + 'sty/modify'
     },
     // 获取图片完整路径
     getImage(filePath, width, height){

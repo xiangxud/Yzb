@@ -24,6 +24,7 @@ import BHApply from '../pages/bohai/BHApply';
 import ChooseFarm from '../pages/bohai/modal/ChooseFarm'
 
 import addSty from '../pages/sty/add';
+import editSty from '../pages/sty/edit';
 
 const StyTabNavigation = TabNavigator({
     StyTab:{
@@ -166,6 +167,7 @@ const RootNavigator = StackNavigator({
     Login:{ screen: Login },
     Sty:{screen:StyTabNavigation},
     AddSty:{screen:addSty},
+    EditSty:{screen:editSty},
     BHStart:{ screen: BHStart },
     BHApply:{ screen: BHApply },
     Web:{ screen: Web },

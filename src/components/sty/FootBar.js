@@ -3,7 +3,8 @@
  */
 import React, {Component} from 'react'
 import {
-    StyleSheet
+    StyleSheet,
+    TouchableOpacity
 } from 'react-native'
 import {Container, Content, Footer, FooterTab, Button,Text} from 'native-base';
 import {observer, inject} from 'mobx-react/native';
