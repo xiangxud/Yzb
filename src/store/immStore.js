@@ -13,6 +13,9 @@ class alarmCollection{
     list=[];
 
     @observable
+    showId='';
+
+    @observable
     end=true
 }
 
@@ -28,6 +31,12 @@ class immStore {
 
     @observable
     collection = new alarmCollection();
+
+    @action
+    onChanged(id){
+        debugger;
+        this.collection.showId=id;
+    }
 
     @action
     fillList(rows){

@@ -56,7 +56,7 @@ export default class imm extends Component{
                             <Text>所有免疫</Text>
                         </Right>
                     </ListItem>
-                    <AlarmClock onLoad={this.onLoadList.bind(this)} collection={immStore.collection}></AlarmClock>
+                    <AlarmClock onLoad={this.onLoadList.bind(this)} collection={immStore.collection} showId={immStore.collection.showId} onChangedShowPanl={immStore.onChanged.bind(immStore)}></AlarmClock>
                 </List>
             </Content>
         </Container>);
