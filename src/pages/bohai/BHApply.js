@@ -10,7 +10,7 @@ import {
     Image,
     TouchableOpacity,
 } from 'react-native'
-import {Container, Content, Footer, FooterTab, Button, List, ListItem, CheckBox,Body,} from 'native-base';
+import {Container, Content, Footer, FooterTab, Button, List, ListItem, CheckBox,Body, Icon, Right} from 'native-base';
 import Modal from 'react-native-modalbox';
 import {observer, inject} from 'mobx-react/native';
 import StepBar from '../../components/bohai/StepBar';
@@ -30,12 +30,17 @@ export default class BHApply extends Component {
     });
 
     componentDidMount () {
-        request.getJson(urls.apis.BH_BREEDS, null).then((res)=>{
-            bohaiStore.setBreeds(res);
-        }).catch((err)=>{tools.showToast('获取品种失败')});
-        request.getJson(urls.apis.BH_TEST_TYPES, null).then((res)=>{
-            bohaiStore.setTestItems(res);
-        }).catch((err)=>tools.showToast('获取检测项目失败'));
+        var timer = setTimeout(()=>{
+            request.getJson(urls.apis.BH_BREEDS, null).then((res)=>{
+                bohaiStore.setBreeds(res);
+            }).catch((err)=>{tools.showToast('获取品种失败')});
+            request.getJson(urls.apis.BH_TEST_TYPES, null).then((res)=>{
+                bohaiStore.setTestItems(res);
+            }).catch((err)=>tools.showToast('获取检测项目失败'));
+        }, 800);
+    }
+    componentWillUnmount(){
+        this.timer && clearTimeout(this.timer);
     }
 
     onPrev=()=>{
@@ -132,7 +137,7 @@ export default class BHApply extends Component {
     }
 
     render() {
-        const {step} = bohaiStore;
+        const {step, data, currentTestItemIndex} = bohaiStore;
         return (
             <Container>
                 <Content>
@@ -149,33 +154,33 @@ export default class BHApply extends Component {
                     }
                     {step === 3?
                         <Step3 store={bohaiStore}
-                               chooseBig={(item)=>{
-                                   bohaiStore.setCurrentCheckItem(item);
+                               chooseBig={(index)=>{
+                                   bohaiStore.setCurrentCheckItem(index);
                                    this.refs.modal_big.open()
                                }}
-                               chooseSub={(item)=>{
-                                   if(!item.samplingSystemNo){
+                               chooseSub={(index)=>{
+                                   if(!data.testingSamplingList[index].samplingSystemNo){
                                        tools.showToast('请先选择检测大类');
                                    }else {
-                                       bohaiStore.setCurrentCheckItem(item);
+                                       bohaiStore.setCurrentCheckItem(index);
                                        let o = bohaiStore.poultry_test_items.find((x)=>{
-                                           return x.name === item.samplingSystemNo
+                                           return x.name === data.testingSamplingList[index].samplingSystemNo
                                        });
-                                       bohaiStore.setCurrentTestItemOrg(o);
+                                       bohaiStore.setCurrentBigItemOrg(o);
                                        this.refs.modal_sub.open();
                                    }
                                }}
-                               choosePart={(item) => {
-                                   if (!item.testTypeName.length === 0) {
+                               choosePart={(index) => {
+                                   if (!data.testingSamplingList[index].testTypeName.length === 0) {
                                        tools.showToast('请先选择监测项目');
                                    } else {
-                                       bohaiStore.setCurrentCheckItem(item);
+                                       bohaiStore.setCurrentCheckItem(index);
                                        let o = bohaiStore.poultry_test_items.find((x) => {
-                                           return x.name === item.samplingSystemNo
+                                           return x.name === data.testingSamplingList[index].samplingSystemNo
                                        });
                                        let samplePartPicker = [];
                                        o.details.forEach((v) => {
-                                           item.testTypeName.forEach((p) => {
+                                           data.testingSamplingList[index].testTypeName.forEach((p) => {
                                                if (v.detailName === p) {
                                                    v.samplingTypeName.forEach((s) => {
                                                        samplePartPicker.indexOf(s) < 0 && samplePartPicker.push(s);
@@ -184,8 +189,7 @@ export default class BHApply extends Component {
                                            })
                                        });
                                        bohaiStore.setSamplingPicker(samplePartPicker);
-                                       bohaiStore.setCurrentTestItemOrg(o);
-
+                                       bohaiStore.setCurrentBigItemOrg(o);
                                        this.refs.modal_part.open()
                                    }
                                }
@@ -278,13 +282,15 @@ export default class BHApply extends Component {
                     style={styles.modal}
                     ref={"modal_big"}
                     position={"center"}
-                    onClosed={()=>bohaiStore.clearCurrentTestItem()}>
+                    onClosed={()=>bohaiStore.setCurrentCheckItem(-1)}>
                     <ScrollView>
                         <Content>
                             <List>
                                 {bohaiStore.poultry_test_items.map((val, key) => (
                                     <ListItem onPress={() => {
-                                        bohaiStore.setItem(bohaiStore.currentTestItem, 'samplingSystemNo', val.name);
+                                        bohaiStore.setItem(currentTestItemIndex, 'samplingSystemNo', val.name);
+                                        bohaiStore.setTestItemArray('testTypeName', null);
+                                        bohaiStore.setTestItemArray('testTypeDetailNames', null);
                                         this.refs.modal_big.close()
                                     }} key={key}>
                                         <Text> {val.name}</Text>
@@ -299,23 +305,34 @@ export default class BHApply extends Component {
                     style={styles.modal}
                     ref={"modal_sub"}
                     position={"center"}
-                    onClosed={()=>bohaiStore.clearCurrentTestItem()}>
+                    onClosed={()=>bohaiStore.setCurrentCheckItem(-1)}>
                     <ScrollView>
                         <Content>
                             <List>
-                                {bohaiStore.currentTestItemOrg && bohaiStore.currentTestItemOrg.details && bohaiStore.currentTestItemOrg.details.map((val, key) => (
+                                {
+                                    bohaiStore.currentTestItemOrg &&
+                                    bohaiStore.currentTestItemOrg.details &&
+                                    bohaiStore.currentTestItemOrg.details.map((val, key) => (
                                     <ListItem onPress={() => {
-                                        bohaiStore.setArray(bohaiStore.currentTestItem, 'testTypeName', val.detailName);
+                                        bohaiStore.setTestItemArray('testTypeName', val.detailName)
                                     }} key={key}>
-                                        <CheckBox onPress={() => bohaiStore.setArray(bohaiStore.currentTestItem, 'testTypeName', val.detailName)}
-                                                  checked={bohaiStore.currentTestItem.testTypeName && bohaiStore.currentTestItem.testTypeName.indexOf(val.detailName) > -1}/>
                                         <Body>
                                             <Text> {val.detailName}</Text>
                                         </Body>
+                                        {
+                                            bohaiStore.isTestItemDetailChecked(val.detailName)?
+                                            <Right>
+                                                <Icon name="ios-checkmark" />
+                                            </Right>
+                                            :null
+                                        }
                                     </ListItem>
                                 ))}
                             </List>
-                            <Button onPress={()=>this.refs.modal_sub.close()} block info>
+                            <Button onPress={()=> {
+                                bohaiStore.setTestItemArray('testTypeDetailNames', null);
+                                this.refs.modal_sub.close()
+                            }} block info>
                                 <Text>保存</Text>
                             </Button>
                         </Content>
@@ -326,23 +343,30 @@ export default class BHApply extends Component {
                     style={styles.modal}
                     ref={"modal_part"}
                     position={"center"}
-                    onClosed={()=>bohaiStore.clearCurrentTestItem()}>
+                    onClosed={()=>bohaiStore.setCurrentCheckItem(-1)}>
                     <ScrollView>
                         <Content>
                             <List>
                                 {bohaiStore.currentSamplingPicker.map((val, key) => (
                                     <ListItem onPress={() => {
-                                        bohaiStore.setArray(bohaiStore.currentTestItem, 'testTypeDetailNames', val);
+                                        bohaiStore.setTestItemArray('testTypeDetailNames', val);
                                     }} key={key}>
-                                        <CheckBox onPress={() => bohaiStore.setArray(bohaiStore.currentTestItem, 'testTypeDetailNames', val)}
-                                                  checked={bohaiStore.currentTestItem.testTypeDetailNames && bohaiStore.currentTestItem.testTypeDetailNames.indexOf(val) > -1}/>
                                         <Body>
                                             <Text> {val}</Text>
                                         </Body>
+                                        {
+                                            bohaiStore.isSamplingPartChecked(val)?
+                                            <Right>
+                                                <Icon name="ios-checkmark" />
+                                            </Right>
+                                            :null
+                                        }
                                     </ListItem>
                                 ))}
                             </List>
-                            <Button onPress={()=>this.refs.modal_part.close()} block info>
+                            <Button onPress={()=>{
+                                this.refs.modal_part.close()
+                            }} block info>
                                 <Text>保存</Text>
                             </Button>
                         </Content>

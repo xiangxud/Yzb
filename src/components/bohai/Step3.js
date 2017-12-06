@@ -11,33 +11,34 @@ import {
     TouchableOpacity,
     Alert,
 } from 'react-native';
-import {observer} from 'mobx-react/native'
+import {observer, inject} from 'mobx-react/native'
 import { Icon } from 'native-base';
 import CheckItem from './CheckItem';
 
+//@inject('bohaiStore')
 @observer
 class Step3 extends Component {
-    chooseBig = (item) => {
-        this.props.chooseBig(item);
+    chooseBig = (index) => {
+        this.props.chooseBig(index);
     }
 
-    chooseSub = (item) => {
+    chooseSub = (index) => {
         //alert('选择小项目')
-        this.props.chooseSub(item);
+        this.props.chooseSub(index);
     }
 
-    choosePart = (item) => {
+    choosePart = (index) => {
         //alert('选择样品部位')
-        this.props.choosePart(item);
+        this.props.choosePart(index);
     }
-    removeItem=(item)=>{
+    removeItem=(index)=>{
         Alert.alert(
             '删除检测项目？',
             '删除后不可恢复，您仍可以手工添加该项目',
             [
                 {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                 {text: '确认删除', onPress: () => {
-                    bohaiStore.deleteTestItem(item);
+                    bohaiStore.deleteTestItem(index);
                 }},
             ],
             { cancelable: true }

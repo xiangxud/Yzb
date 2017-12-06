@@ -22,7 +22,7 @@ class BohaiStore {
     @observable poultry_test_items = [];
     @observable livestock_test_items = [];
 
-    @observable currentTestItem = {};
+    @observable currentTestItemIndex = 0;
     @observable currentTestItemOrg = {};
     @observable currentSamplingPicker = [];
     //审批人信息
@@ -33,20 +33,32 @@ class BohaiStore {
     @observable data = {
         phoneNo : '18307722503',
         animalType : '家禽',
-        farmName : '',
+        farmName : '上海爱森一场',
         drugTesting : '否',
-        poultryTotalCount : 0,
-        poultrySingleCount : 0,
-        poultryMonthCount : 0,
+        poultryTotalCount : 1,
+        poultrySingleCount : 1,
+        poultryMonthCount : 1,
         poultryBreeds : ['京灰'],
         poultryGenerations : '祖代',
-        livestockTotalCount : 0,
-        livestockYearCount : 0,
+        livestockTotalCount : 1,
+        livestockYearCount : 1,
         livestockBreeds : [],
         livestockGenders : [],
         livestockParity : '',
         testingSamplingList : [],
-        pigSerumRecordList : [],
+        pigSerumRecordList : [{
+            no: '1',
+            pigStage: '保育猪N',
+            stillbirth: '无',
+            abortion: '无',
+            mummy: '无',
+            nonpregnant: '无',
+            highfever: '有',
+            respiratoryDisease: '有',
+            nervous: '无',
+            mechanical: '无',
+            othersymptom: '咳嗽，喘气',
+        }],
         morbidity : 0,
         mortality : 0,
         clinicalSymptoms : '',
@@ -82,42 +94,44 @@ class BohaiStore {
             this.data[field] = value;
         }
     }
-    @action setItem = (obj, field, value) => {
-        let t = typeof obj[field];
+    @action setItem = (index, field, value) => {
+        let t = typeof this.data.testingSamplingList[index][field];
         if(t === 'number'){
             let num = Number(value);
             if(!isNaN(num)){
-                obj[field] = num;
+                this.data.testingSamplingList[index][field] = num;
             }
         }else if(t === 'boolean'){
 
         }else if(t === 'undefined'){
 
         }else{
-            obj[field] = value;
-            if(this.currentTestItem){
-                this.currentTestItem[field] = value;
-            }
+            this.data.testingSamplingList[index][field] = value;
         }
     }
-    @action setCurrentCheckItem(item){
-        this.currentTestItem = item;
-    }
-    @action clearCurrentTestItem(){
-        this.currentTestItem = {};
-    }
-    @action setCurrentTestItemOrg(item){
-        this.currentTestItemOrg = item;
-    }
-    @action setArray = (obj, field, value) => {
-        if(obj[field].indexOf(value)>-1){
-            obj[field].splice(obj[field].indexOf(value), 1);
+    //替换数组所有元素
+    @action setTestItemArray = (field, value) => {
+        if(this.currentTestItemIndex < 0){
+            return;
+        }
+        let exists_index = this.data.testingSamplingList[this.currentTestItemIndex][field].indexOf(value);
+        if(value === null){
+            //清空元素
+            this.data.testingSamplingList[this.currentTestItemIndex][field].splice(0, this.data.testingSamplingList[this.currentTestItemIndex][field].length);
+            return;
+        }
+        if(exists_index>-1){
+            this.data.testingSamplingList[this.currentTestItemIndex][field].splice(exists_index, 1);
         }else{
-            obj[field].push(value);
+            this.data.testingSamplingList[this.currentTestItemIndex][field].push(value);
         }
-        if(this.currentTestItem){
-            this.currentTestItem[field] = obj[field];
-        }
+    }
+    @action setCurrentCheckItem(index){
+        this.currentTestItemIndex = index;
+    }
+    //设置当前操作的监测大类，在弹出窗口时需要过滤出当前大项目下面的子项目及其样品部位
+    @action setCurrentBigItemOrg(item){
+        this.currentTestItemOrg = item;
     }
     @action setSamplingPicker(arr){
         this.currentSamplingPicker = arr;
@@ -159,11 +173,9 @@ class BohaiStore {
     //添加检测项目
     @action addTestItem(){
         this.data.testingSamplingList.push(new TestItem());
-        tools.showToast('已添加新项目');
     }
-    @action deleteTestItem(item){
-        this.data.testingSamplingList.splice(this.data.testingSamplingList.indexOf(item), 1);
-        tools.showToast('已删除项目');
+    @action deleteTestItem(index){
+        this.data.testingSamplingList.splice(index, 1);
     }
 
 
@@ -176,6 +188,16 @@ class BohaiStore {
         }else{
             return null;
         }
+    }
+    isTestItemDetailChecked(v){
+        return this.currentTestItemIndex > -1 &&
+            this.data.testingSamplingList[this.currentTestItemIndex].testTypeName &&
+            this.data.testingSamplingList[this.currentTestItemIndex].testTypeName.indexOf(v) > -1
+    }
+    isSamplingPartChecked = (v) =>{
+        return this.currentTestItemIndex > -1 &&
+            this.data.testingSamplingList[this.currentTestItemIndex].testTypeDetailNames &&
+            this.data.testingSamplingList[this.currentTestItemIndex].testTypeDetailNames.indexOf(v) > -1
     }
 }
 

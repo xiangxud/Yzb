@@ -96,10 +96,12 @@ const request = {
 
         if (params) {
             if (typeof params == 'object' && params.constructor == Object) {
-                let paramsArray = []
-                Object.keys(params).forEach(key => paramsArray.push(key + '=' + encodeURIComponent(params[key])))
-                body = paramsArray.join('&');
-                headers["Content-Type"] = "application/x-www-form-urlencoded";
+                // let paramsArray = []
+                // Object.keys(params).forEach(key => paramsArray.push(key + '=' + encodeURIComponent(params[key])))
+                // body = paramsArray.join('&');
+                // headers["Content-Type"] = "application/x-www-form-urlencoded";
+                headers['Content-Type'] = 'application/json';
+                body = JSON.stringify(params);
             } else if (typeof params == 'object' && params instanceof FormData) {
                 body = params;
                 headers["Content-Type"] = 'multipart/form-data';
