@@ -7,7 +7,6 @@ useStrict(true);
 class ImmCollectionStore
 {
     constructor(){
-        //this.onIni();
     }
     @observable
     End=true;
@@ -16,14 +15,6 @@ class ImmCollectionStore
     @observable
     list=[];
 
-    // @action
-    // onIni(){
-    //     this.End = true;
-    //     this.list = [];
-    //     this.count = 0;
-    //     this.onLoad();
-    // }
-
     @action
     onParse(data){
         this.list = data;
@@ -31,44 +22,8 @@ class ImmCollectionStore
         this.End = true;
     }
 
-
     @action
     onLoad(){
-        // this.list = [{
-        //     id:'8E0DF754-91F4-4557-BF47-005C9E4E9B0D',
-        //     vaccineTitle:'疫苗鸡球虫病',
-        //     vaccineType:'活疫苗',
-        //     vaccineMethod:'胸肌注射',
-        //     dose:'200ml x 200',
-        //     immuneTime:'2017-07-21',
-        //     status:'未完成'
-        // },{
-        //     id:'B8BDBF1B-9AA7-491F-AE9A-01FEBF6C0C0B',
-        //     vaccineTitle:'猪支原体肺炎灭活疫苗（DJ-166株）',
-        //     vaccineType:'活疫苗',
-        //     vaccineMethod:'胸肌注射',
-        //     dose:'200ml x 200',
-        //     immuneTime:'2017-07-21',
-        //     status:'未完成'
-        // },{
-        //     id:'B8BDBF1B-9AA7-491F-AE9A-01FEBF6C0C0B',
-        //     vaccineTitle:'猪支原体肺炎灭活疫苗（DJ-166株）',
-        //     vaccineType:'活疫苗',
-        //     vaccineMethod:'胸肌注射',
-        //     dose:'200ml x 200',
-        //     immuneTime:'2017-07-21',
-        //     status:'未完成'
-        // },{
-        //     id:'B8BDBF1B-9AA7-491F-AE9A-01FEBF6C0C0B',
-        //     vaccineTitle:'猪支原体肺炎灭活疫苗（DJ-166株）',
-        //     vaccineType:'活疫苗',
-        //     vaccineMethod:'胸肌注射',
-        //     dose:'200ml x 200',
-        //     immuneTime:'2017-07-21',
-        //     status:'未完成'
-        // }];
-        // this.count = this.list.length;
-        // this.End = true;
     }
 }
 
@@ -132,14 +87,6 @@ class  EnvironmentalStore{
 
 class styStore {
     constructor(){
-        // //1、imm collection
-        // this.immCollection = new ImmCollectionStore();
-        // //2、预警信息
-        // this.waring = new WaringStore();
-        // //3、监控信息
-        // this.moitor = new MoitorStore();
-        // //环控
-        // this.environmental=new EnvironmentalStore();
     }
 
     @observable

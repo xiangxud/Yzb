@@ -150,7 +150,9 @@ const urls = {
         //获取栋舍详情
         IMM_GET_STY_BASE:apiPath + 'Sty/Get',
         //栋舍提交
-        IMM_POST_STY:apiPath + 'sty/modify'
+        IMM_POST_STY:apiPath + 'sty/modify',
+        //获取免疫提醒
+        IMM_GET_DETAIL:apiPath + 'ImmPlan/PostQuery'
     },
     // 获取图片完整路径
     getImage(filePath, width, height){
