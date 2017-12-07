@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import
 {
     View,
+
     StyleSheet,
     FlatList,
     TouchableNativeFeedback,
@@ -29,7 +30,6 @@ class AlarmClockRow extends Component{
         if(this.props.showId != item.Id){
             return null;
         }
-        debugger;
         return (<View style={style.plan}>
             <List>
                 <ListItem style={style.planItem}>
@@ -102,6 +102,7 @@ class AlarmClockRow extends Component{
 
     render(){
         let {item} = this.props;
+        //onPressIn={()=>{ this.props.onChangedShowPanl(item.Id) }}
         return (
             <View style={{  alignItems:'stretch' }}>
                 <SwipeRow rightOpenValue={-150}
@@ -115,7 +116,7 @@ class AlarmClockRow extends Component{
                           }
                           body={
                               <View>
-                                  <TouchableOpacity onPress={()=>{ this.props.onChangedShowPanl(item.Id) }} onPressIn={()=>{ this.props.onChangedShowPanl(item.Id) }}>
+                                  <TouchableOpacity onPressIn={()=>{ this.props.onChangedShowPanl(item.Id) }}>
                                       <View style={style.row}>
                                           {
                                               this.renderDate(item.ImmuneTime.ToDate().Format("yyyy-MM-dd"))
@@ -155,21 +156,32 @@ export default class AlarmClock extends Component{
         return <View style={{ height: 1, backgroundColor: '#bbbbbb' }}/>;
     }
     _renderFooter(){
-        return <View />
+        return <View></View>
+    }
+    _renderHeader(){
+        return <View></View>
     }
 
     render(){
-        return <FlatList data={this.props.collection.list}
-                      renderItem={this.renderRow.bind(this)}
-                      onEndReachedThreshold={0.5}
-                      ItemSeparatorComponent={this._separator}
-                      ListFooterComponent={this._renderFooter}
-                      refreshing={!this.props.collection.End}
-                      onEndReached={()=>{
-                          this.props.onLoad();
-                          return true;
-                      }} keyExtractor={(item,key) => key}>
-            </FlatList>
+        return <FlatList
+            data={this.props.collection.list}
+            renderItem={this.renderRow.bind(this)}
+            onEndReachedThreshold={0.01}
+            ListHeaderComponent={this._renderHeader}
+            ItemSeparatorComponent={this._separator}
+            ListFooterComponent={this._renderFooter}
+            refreshing={!this.props.end}
+            onRefresh={()=>{
+                // debugger;
+                // this.props.onLoad();
+            }}
+            onEndReached={(number)=>{
+                // debugger;
+                // this.props.onMore();
+                // return true;
+            }}
+            keyExtractor={(item,key) => key}>
+        </FlatList>
     }
 };
 

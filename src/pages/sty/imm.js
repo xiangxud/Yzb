@@ -24,7 +24,7 @@ export default class imm extends Component{
 
     onLoadList() {
         const {immStore} = this.props;
-        immStore.onLoad(()=>{}, (mess) => {
+        immStore.onLoad(null, (mess) => {
             Toast.show({
                 type:'warning',
                 text: mess,
@@ -32,6 +32,18 @@ export default class imm extends Component{
             });
             this.autoClose();
         } )
+    }
+
+    onMoreList(){
+        const {immStore} = this.props;
+        immStore.onMore(()=>{}, (mess) => {
+            Toast.show({
+                type:'warning',
+                text: mess,
+                position: 'top'
+            });
+            this.autoClose();
+        })
     }
 
     autoClose( callback ){
@@ -56,7 +68,14 @@ export default class imm extends Component{
                             <Text>所有免疫</Text>
                         </Right>
                     </ListItem>
-                    <AlarmClock onLoad={this.onLoadList.bind(this)} collection={immStore.collection} showId={immStore.collection.showId} onChangedShowPanl={immStore.onChanged.bind(immStore)}></AlarmClock>
+                    <AlarmClock
+                        onLoad={this.onLoadList.bind(this)}
+                        onMore={this.onMoreList.bind(this)}
+                        end={immStore.collection.end}
+                        collection={immStore.collection}
+                        showId={immStore.collection.showId}
+                        onChangedShowPanl={immStore.onChanged.bind(immStore)}>
+                    </AlarmClock>
                 </List>
             </Content>
         </Container>);

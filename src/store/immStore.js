@@ -17,14 +17,15 @@ class alarmCollection{
 
     @observable
     end=true
+
 }
 
 class immStore {
     queryConfig = {
         PageIndex:1,
         PageSize:10,
-        StartDate:'2017-12-06',
-        EntDate:'2017-12-08',
+        StartDate:null,
+        EntDate:null,
         PlanState:0,
         Config:true
     }
@@ -39,20 +40,46 @@ class immStore {
     }
 
     @action
-    fillList(rows){
-        this.collection.list = rows;
+    clear(){
+        this.collection.list=[];
     }
 
     @action
-    onLoad(callback,falied){
+    fillList(rows){
+        this.collection.list = rows;
         debugger;
+        this.closeEnd();
+    }
+
+    @action
+    addList(rows){
+        rows.forEach(item=>{
+            this.collection.list.push(item);
+        });
+        debugger;
+        this.closeEnd();
+    }
+
+    @action
+    closeEnd(){
         this.collection.end = true;
-        this.getDataFromApi(data=>{
-            this.collection.end = false;
-            this.fillList(data);
+    }
+
+    @action
+    openEnd(){
+        this.collection.end = false;
+    }
+
+    @action
+    onMore(callback,falied){
+        debugger;
+        this.openEnd();
+        this.queryConfig.PageIndex = this.queryConfig.PageIndex + 1;
+        this.getDataFromApi(this.queryConfig,data=>{
+            this.addList(data);
             callback();
         },(err)=>{
-            this.collection.end = false;
+            this.closeEnd();
             if( falied ){
                 falied(err);
             }
@@ -60,8 +87,27 @@ class immStore {
     }
 
     @action
-    getDataFromApi(callback,falied){
-        request.postJson(urls.apis.IMM_GET_DETAIL,this.queryConfig).then(data=>{
+    onLoad(callback,falied){
+        debugger;
+        this.openEnd();
+        this.queryConfig.PageIndex=1;
+        this.clear();
+        this.getDataFromApi(this.queryConfig,data=>{
+            this.fillList(data);
+            if( callback && callback != null ) {
+                callback()
+            };
+        },(err)=>{
+            this.closeEnd();
+            if( falied && falied != null ) {
+                falied()
+            };
+        });
+    }
+
+    @action
+    getDataFromApi(config,callback,falied){
+        request.postJson(urls.apis.IMM_GET_DETAIL,config).then(data=>{
             if(callback){
                 callback(data.Rows);
             }
