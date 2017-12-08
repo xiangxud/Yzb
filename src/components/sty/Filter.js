@@ -19,12 +19,27 @@ export default class filter extends Component{
         let {immFilterStore} = this.props;
         immFilterStore.update(obj);
     }
+    onCancel()
+    {
+        let {immFilterStore,onCancel} = this.props;
+        if(onCancel)
+        {
+            onCancel();
+        }
+    }
+    onApply()
+    {
+        let {immFilterStore,onApply} = this.props;
+        if(onApply)
+        {
+            onApply(immFilterStore);
+        }
+    }
     render(){
         let {immFilterStore} = this.props;
-        let options=[{title:'未执行',value:0},{title:'已执行',value:1},{title:'全部',value:-1}];
-        let buttons=[{title:'取消',onPress:()=>{}},{title:'查询',default:true, onPress:()=>{
+        //let options=[{title:'未执行',value:0},{title:'已执行',value:1},{title:'全部',value:-1}];
+        let buttons=[{title:'取消',onPress:()=> this.onCancel()},{title:'查询',default:true,onPress:()=> this.onApply(immFilterStore)}];
 
-         }}];
         return (<Container style={{flex:1,backgroundColor:'#ffffff'}}>
             <Content>
                 <Form>
@@ -36,11 +51,8 @@ export default class filter extends Component{
                     <ListItem itemDivider>
                         <Text>免疫状态</Text>
                     </ListItem>
-                    <ValidateRadioInput data={immFilterStore} name="PlanState" options={options} onChanged={(e)=>this.onUpdateData({PlanState:e})}></ValidateRadioInput>
-                    <ListItem itemDivider>
-                    </ListItem>
+                    <ValidateRadioInput data={immFilterStore} name="PlanState" options={immFilterStore.EnumPlanState} onChanged={(e)=>this.onUpdateData({PlanState:e})}></ValidateRadioInput>
                 </Form>
-
             </Content>
             <FootBar buttons={buttons}></FootBar>
         </Container>);

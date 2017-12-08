@@ -87,8 +87,11 @@ class immStore {
     }
 
     @action
-    onLoad(callback,falied){
+    onLoad(config,callback,falied){
         debugger;
+        if(config){
+            Object.assign(this.queryConfig,this.queryConfig,config);
+        }
         this.openEnd();
         this.queryConfig.PageIndex=1;
         this.clear();

@@ -6,19 +6,27 @@ useStrict(true);
 
 class immFilterStore{
     @observable
-    @validate(/^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/, '开始日期必须为日期格式')
     StartDate=null
-
     @observable
-    @validate(/^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/, '截至日期必须为日期格式')
     EntDate=null
-
     @observable
     PlanState=0
+
+    EnumPlanState=[
+        {title:'未执行',value:0},
+        {title:'已执行',value:1},
+        {title:'忽略',value:2}]
 
     @action
     update(obj){
         Object.assign(this,this,obj);
+    }
+
+    @action
+    read(config){
+        this.StartDate=config.StartDate;
+        this.EntDate=config.EntDate;
+        this.PlanState=config.PlanState;
     }
 }
 

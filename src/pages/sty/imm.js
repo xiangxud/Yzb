@@ -11,6 +11,8 @@ import AlarmClock from '../../components/sty/AlarmClock'
 import Filter from '../../components/sty/Filter'
 
 @inject('immStore')
+@inject('immFilterStore')
+
 @observer
 export default class imm extends Component{
     static navigationOptions = ({navigation})=>({
@@ -18,8 +20,8 @@ export default class imm extends Component{
     });
 
     componentWillMount(){
-        const {immStore,navigation} = this.props;
-
+        const {immStore,immFilterStore} = this.props;
+        immFilterStore.read(immStore.queryConfig);
         this.onLoadList();
     }
 
@@ -27,9 +29,9 @@ export default class imm extends Component{
         super(props);
     }
 
-    onLoadList() {
+    onLoadList(config) {
         const {immStore} = this.props;
-        immStore.onLoad(null, (mess) => {
+        immStore.onLoad(config, (mess) => {
             Toast.show({
                 type:'warning',
                 text: mess,
@@ -68,19 +70,24 @@ export default class imm extends Component{
         this.drawer._root.open()
     };
 
+    onQuery(config){
+        //alert(filterConfig.StartDate);
+
+        this.onLoadList({
+            StartDate:config.StartDate + " 00:00:00",
+            EntDate:config.EntDate + " 23:59:59",
+            PlanState:config.PlanState
+        });
+        this.closeDrawer();
+    }
+
     render(){
         const {immStore} = this.props;
 
-        // const drawerStyles = {
-        //     drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
-        //     main: {paddingLeft: 0}
-        // }
-
         return (
             <Drawer
-                //styles={drawerStyles}
                 ref={(ref) => { this.drawer = ref; }}
-                content={<Filter />}
+                content={<Filter onApply={(e)=>this.onQuery(e)} onCancel={()=>{this.closeDrawer()}} />}
                 openDrawerOffset={0.4}
                 panOpenMask={0.80}
                 onClose={this.closeDrawer.bind(this)}
