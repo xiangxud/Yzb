@@ -13,8 +13,8 @@ import {
 
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
 import {observer, inject} from 'mobx-react/native'
-import {Container, Content, Loading} from '../../../components';
-import {Icon} from 'native-base'
+//import {Container, Content, Loading} from '../../../components';
+//import { Icon } from 'native-base'
 import Search from 'react-native-search-box';
 
 class FarmStore{
@@ -22,15 +22,16 @@ class FarmStore{
     @observable farms = [];
     @observable isFetching = true;
     @observable more = true;
+
     @action
     mapInfo(list){
         this.farms.replace(list)
-        this.isFetching = false;
+        this.setLoading(false);
     }
 
     @action
-    setLoading=()=>{
-        this.isFetching = true;
+    setLoading=(r)=>{
+        this.isFetching = r;
     }
 }
 farmStore = new FarmStore();
@@ -42,7 +43,7 @@ export default class Info extends Component {
     static navigationOptions = ({navigation})=>({
         headerTitle: '选择养殖场',
         headerRight: <Text onPress={navigation.state.params? navigation.state.params.openAdd: null} style={{padding:5, color:'#fff'}}>
-            添加
+
         </Text>,
     });
 
@@ -57,6 +58,12 @@ export default class Info extends Component {
     }
 
     fetchData = (kw) =>{
+        kw = kw.replace(/\s*/g, '');
+        if(kw.length < 2){
+            tools.showToast('请输入至少两个汉字');
+            return;
+        }
+        farmStore.setLoading(true);
         request.getJson(urls.apis.BH_FARMS, {kw: kw}).then((res)=>{
             farmStore.mapInfo(res);
         }).catch((err)=>{
@@ -82,17 +89,12 @@ export default class Info extends Component {
                 </View>
             </TouchableNativeFeedback>)
     }
-    _onSearch = (text) => {
-        return new Promise((resolve, reject) => {
-            this.fetchData(text)
-        });
-    }
 
     renderHeader = () =>{
         return <Search backgroundColor={'#bdbdbd'}
                        placeholder='搜索养殖场'
                        cancelTitle='取消'
-                       onSearch={this._onSearch}/>
+                       onSearch={this.fetchData}/>
     }
     render() {
         const {farms, isFetching} = farmStore;
@@ -102,9 +104,8 @@ export default class Info extends Component {
                 data={farms.slice()}
                 renderItem={({ item }) => this.renderRow(item) }
                 ListHeaderComponent={()=> this.renderHeader()}
-                refreshing = {isFetching}
                 onEndReachedThreshold={0.1}
-                keyExtractor={(item,key) => key}
+                keyExtractor={(item, key) => key}
             />
         )
     }

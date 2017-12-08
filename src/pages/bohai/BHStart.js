@@ -45,10 +45,10 @@ export default class BHStart extends Component {
                     </Separator>
                     <View>
                         <List style={{backgroundColor:'#fff'}}>
-                            <ListItem onPress={()=>navigation.navigate('BHApply', {type: 1})}>
+                            <ListItem onPress={()=>navigation.navigate('BHApply', {type: '家禽'})}>
                                 <Text>家禽</Text>
                             </ListItem>
-                            <ListItem onPress={()=>navigation.navigate('BHApply', {type: 2})}>
+                            <ListItem onPress={()=>navigation.navigate('BHApply', {type: '家畜'})}>
                                 <Text>家畜</Text>
                             </ListItem>
                         </List>
@@ -56,7 +56,6 @@ export default class BHStart extends Component {
                     <Button style={{backgroundColor:'red', }} block onPress={()=>this.error()}>
                         <Text style={{color:'white'}}>测试按钮，方便开发</Text>
                     </Button>
-                    <Example/>
                 </Content>
             </Container>
         )

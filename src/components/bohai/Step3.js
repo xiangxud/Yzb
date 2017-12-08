@@ -67,7 +67,7 @@ class Step3 extends Component {
                     </TouchableOpacity>
                 </View>
                 <View>
-                    {bohaiStore.data.testingSamplingList.map((item, i)=>this.renderItem(item, i))}
+                    {store.data.testingSamplingList.map((item, i)=>this.renderItem(item, i))}
                 </View>
             </View>
         )

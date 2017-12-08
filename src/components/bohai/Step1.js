@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import {observer} from 'mobx-react/native'
 import { Form, Item, Input, Label, Picker, Icon } from 'native-base';
-
 const Step1 = observer((props)=> {
     const { navigation } = props;
     return (

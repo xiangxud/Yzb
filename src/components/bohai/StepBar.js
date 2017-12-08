@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 
 import {observer} from 'mobx-react/native'
-
-const StepBar = observer(({current})=> {
+const livestock = '家畜';
+const StepBar = observer(({current, animalType})=> {
     return (
         <View style={styles.container}>
             <View style={{flexDirection:'row'}}>
@@ -23,11 +23,18 @@ const StepBar = observer(({current})=> {
                 <View style={styles.no}>
                     <Text style={[styles.noText, current===3? styles.currentNoText: null]}>3</Text>
                 </View>
+                {
+                    animalType===livestock?
+                    <View style={styles.no}>
+                        <Text style={[styles.noText, current===4? styles.currentNoText: null]}>4</Text>
+                    </View>
+                    : null
+                }
                 <View style={styles.no}>
-                    <Text style={[styles.noText, current===4? styles.currentNoText: null]}>4</Text>
+                    <Text style={[styles.noText, current===5? styles.currentNoText: null]}>{animalType===livestock?5:4}</Text>
                 </View>
                 <View style={styles.no}>
-                    <Text style={[styles.noText, current===5? styles.currentNoText: null]}>5</Text>
+                    <Text style={[styles.noText, current===6? styles.currentNoText: null]}>{animalType===livestock?6:5}</Text>
                 </View>
             </View>
             <View style={{flexDirection:'row',}}>
@@ -40,11 +47,18 @@ const StepBar = observer(({current})=> {
                 <View style={styles.no}>
                     <Text style={[styles.desc, current===3? styles.currentDesc: null]}>样品及检测项目</Text>
                 </View>
+                {
+                    animalType===livestock?
+                        <View style={styles.no}>
+                            <Text style={[styles.desc, current===4? styles.currentDesc: null]}>猪场血清学调查</Text>
+                        </View>
+                        : null
+                }
                 <View style={styles.no}>
-                    <Text style={[styles.desc, current===4? styles.currentDesc: null]}>疫情及治疗询问</Text>
+                    <Text style={[styles.desc, current===5? styles.currentDesc: null]}>疫情及治疗询问</Text>
                 </View>
                 <View style={styles.no}>
-                    <Text style={[styles.desc, current===5? styles.currentDesc: null]}>审批信息</Text>
+                    <Text style={[styles.desc, current===6? styles.currentDesc: null]}>审批信息</Text>
                 </View>
             </View>
         </View>
