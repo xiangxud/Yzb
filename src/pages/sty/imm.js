@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import
 {
     TouchableOpacity,
-    StyleSheet
+    StyleSheet,
+    View
 } from 'react-native';
 import { Container, Header, Content, List, ListItem, Text, Icon, Left, Body, Right, Switch ,Toast,Drawer } from 'native-base';
 import {observer,inject} from 'mobx-react/native';
@@ -12,6 +13,9 @@ import Filter from '../../components/sty/Filter'
 @inject('immStore')
 @observer
 export default class imm extends Component{
+    static navigationOptions = ({navigation})=>({
+        headerRight: <View />
+    });
 
     componentWillMount(){
         const {immStore,navigation} = this.props;
