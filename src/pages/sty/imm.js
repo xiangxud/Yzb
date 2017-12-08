@@ -62,11 +62,15 @@ export default class imm extends Component{
                 <List>
                     <ListItem itemDivider>
                         <Body>
-                        <Text>今天需要执行的免疫</Text>
+                            <Text>今天需要执行的免疫</Text>
                         </Body>
                         <Right>
-                            <Text>所有免疫</Text>
+                            <TouchableOpacity style={style.right}>
+                                <Text style={style.txt}>筛选</Text>
+                                <Icon name="ios-funnel"></Icon>
+                            </TouchableOpacity>
                         </Right>
+
                     </ListItem>
                     <AlarmClock
                         onLoad={this.onLoadList.bind(this)}
@@ -81,3 +85,14 @@ export default class imm extends Component{
         </Container>);
     }
 }
+
+const style = StyleSheet.create({
+    right:{
+        flexDirection:'row'
+    },
+    txt:{
+        color:'#ff9800',
+        fontSize:14,
+        marginRight:2
+    }
+});
