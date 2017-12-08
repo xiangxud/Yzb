@@ -21,7 +21,6 @@ export default class imm extends Component{
 
     componentWillMount(){
         const {immStore,immFilterStore} = this.props;
-        immFilterStore.read(immStore.queryConfig);
         this.onLoadList();
     }
 
@@ -71,13 +70,7 @@ export default class imm extends Component{
     };
 
     onQuery(config){
-        //alert(filterConfig.StartDate);
-
-        this.onLoadList({
-            StartDate:config.StartDate + " 00:00:00",
-            EntDate:config.EntDate + " 23:59:59",
-            PlanState:config.PlanState
-        });
+        this.onLoadList(config);
         this.closeDrawer();
     }
 
@@ -87,7 +80,7 @@ export default class imm extends Component{
         return (
             <Drawer
                 ref={(ref) => { this.drawer = ref; }}
-                content={<Filter onApply={(e)=>this.onQuery(e)} onCancel={()=>{this.closeDrawer()}} />}
+                content={<Filter source={immStore.FilterConfig} options={immStore.EnumPlanState} onUpdateData={(e)=>{ immStore.OnUpdateConfig(e) }} onApply={(e)=>this.onQuery(e)} onCancel={()=>{this.closeDrawer()}} />}
                 openDrawerOffset={0.4}
                 panOpenMask={0.80}
                 onClose={this.closeDrawer.bind(this)}

@@ -10,18 +10,17 @@ import {ValidateInputDate,ValidateRadioInput} from '../../components/common/nati
 import FootBar from '../sty/FootBar'
 import {inject, observer} from "mobx-react/native";
 
-@inject('immFilterStore')
 export default class filter extends Component{
     constructor(props){
         super(props);
     }
     onUpdateData(obj){
-        let {immFilterStore} = this.props;
-        immFilterStore.update(obj);
+        let {onUpdateData} = this.props;
+        onUpdateData(obj);
     }
     onCancel()
     {
-        let {immFilterStore,onCancel} = this.props;
+        let {onCancel} = this.props;
         if(onCancel)
         {
             onCancel();
@@ -29,16 +28,15 @@ export default class filter extends Component{
     }
     onApply()
     {
-        let {immFilterStore,onApply} = this.props;
+        let {source,onApply} = this.props;
         if(onApply)
         {
-            onApply(immFilterStore);
+            onApply(source);
         }
     }
     render(){
-        let {immFilterStore} = this.props;
-        //let options=[{title:'未执行',value:0},{title:'已执行',value:1},{title:'全部',value:-1}];
-        let buttons=[{title:'取消',onPress:()=> this.onCancel()},{title:'查询',default:true,onPress:()=> this.onApply(immFilterStore)}];
+        let {source,options} = this.props;
+        let buttons=[{title:'取消',onPress:()=> this.onCancel()},{title:'查询',default:true,onPress:()=> this.onApply(source)}];
 
         return (<Container style={{flex:1,backgroundColor:'#ffffff'}}>
             <Content>
@@ -46,12 +44,12 @@ export default class filter extends Component{
                     <ListItem itemDivider>
                         <Text>免疫时间</Text>
                     </ListItem>
-                    <ValidateInputDate label="从" data={immFilterStore} name="StartDate" placeholder="选择日期" onChange={(e)=>{this.onUpdateData({StartDate:e})}} />
-                    <ValidateInputDate label="至" data={immFilterStore} name="EntDate" placeholder="选择日期" onChange={(e)=>{this.onUpdateData({EntDate:e})}} />
+                    <ValidateInputDate label="从" data={source} name="StartDate" placeholder="选择日期" onChange={(e)=>{this.onUpdateData({StartDate:e})}} />
+                    <ValidateInputDate label="至" data={source} name="EntDate" placeholder="选择日期" onChange={(e)=>{this.onUpdateData({EntDate:e})}} />
                     <ListItem itemDivider>
                         <Text>免疫状态</Text>
                     </ListItem>
-                    <ValidateRadioInput data={immFilterStore} name="PlanState" options={immFilterStore.EnumPlanState} onChanged={(e)=>this.onUpdateData({PlanState:e})}></ValidateRadioInput>
+                    <ValidateRadioInput data={source} name="PlanState" options={options} onChanged={(e)=>this.onUpdateData({PlanState:e})}></ValidateRadioInput>
                 </Form>
             </Content>
             <FootBar buttons={buttons}></FootBar>

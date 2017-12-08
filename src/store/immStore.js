@@ -31,6 +31,26 @@ class immStore {
     }
 
     @observable
+    FilterConfig={
+        @observable
+        StartDate:null,
+        @observable
+        EntDate:null,
+        @observable
+        PlanState:0,
+    }
+
+    EnumPlanState=[
+        {title:'未执行',value:0},
+        {title:'已执行',value:1},
+        {title:'忽略',value:2}]
+
+    @action
+    OnUpdateConfig(o){
+        Object.assign(this.FilterConfig,this.FilterConfig,o);
+    }
+
+    @observable
     collection = new alarmCollection();
 
     @action
