@@ -98,8 +98,8 @@ export default class Edit extends Component{
     render(){
         const {editStyStore} = this.props;
         return (
-            <Root>
                 <Container style={{backgroundColor:'#ffffff'}}>
+                    <Content>
                     <Form>
                         <ListItem itemDivider>
                             <Icon style={style.titleIco} name="ios-book" active></Icon><Text>编辑栋舍</Text>
@@ -111,9 +111,9 @@ export default class Edit extends Component{
                         <ValidateInput label="数量" data={editStyStore.sty} name="number" placeholder="进栏数量" onChange={(e)=>{this.onUpdateData({number:e})}} />
                         <ValidateInputDate label="进雏" data={editStyStore.sty} name="addDate" placeholder="进雏" onChange={(e)=>{this.onUpdateData({addDate:e})}} />
                     </Form>
+                        <FootBar buttons={this.buttons}></FootBar>
+                    </Content>
                 </Container>
-                <FootBar buttons={this.buttons}></FootBar>
-            </Root>
         );
     }
 }

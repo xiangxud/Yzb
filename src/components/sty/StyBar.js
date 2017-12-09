@@ -115,6 +115,7 @@ export default class StyBar extends Component{
             icon:"ios-log-out",
             iconColor:"#98FB98",
             action:()=>{
+                this.props.onOutPetPress();
             }
         }
         let addPet = {
