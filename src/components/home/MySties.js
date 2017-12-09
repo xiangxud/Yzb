@@ -21,7 +21,7 @@ const Sty = ({sty, getSty, isCurrent}) =>{
     return (
         <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={()=>{getSty(sty)}}>
             <View style={[styles.styBox, isCurrent? styles.currentSty: {}]}>
-                <Icon name={'ios-keypad-outline'} style={isCurrent?styles.currentText:{}} />
+                <Icon name={'ios-keypad'+(!sty.total?'-outline':'')} style={isCurrent?styles.currentText:{color:'#8b8b8b'}} />
                 <Text style={isCurrent?styles.currentText:{}}>{sty.name.substr(0, 6)}</Text>
             </View>
         </TouchableNativeFeedback>
