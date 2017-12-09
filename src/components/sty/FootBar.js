@@ -16,16 +16,22 @@ export default class FootBar extends Component {
     }
 
     static defaultProps = {
-        buttons:[{ title:'提交' , onPress:()=>{}}]
+        buttons:[{ title:'提交' , default:true, onPress:()=>{}}]
     };
 
 
     renderButtons() {
         list=[];
         return this.props.buttons.map((button) => {
-            return <Button key={button.title} full onPress={button.onPress}>
-                <Text style={!button.style?style.button:button.style}>{button.title}</Text>
-            </Button>;
+            if(button.default){
+                return <Button key={button.title} primary xfull onPress={button.onPress}>
+                    <Text style={!button.style?style.button:button.style}>{button.title}</Text>
+                </Button>;
+            }else{
+                return <Button key={button.title} light full onPress={button.onPress}>
+                    <Text style={!button.style?style.button:button.style}>{button.title}</Text>
+                </Button>;
+            }
         });
     }
 
@@ -44,8 +50,7 @@ export default class FootBar extends Component {
 
 const style = StyleSheet.create({
     button:{
-        fontSize:20,
-        color:'#ffffff',
+        fontSize:16,
         height:25
     }
 });

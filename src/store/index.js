@@ -9,6 +9,7 @@ import immStore from './immStore'
 import addStyStore from './addStyStore'
 import editStyStore from './editStyStore'
 import bohaiStore from './bohaiStore'
+import immFilterStore from './immFilterStore'
 
 export default {
     app: new App(),
@@ -21,4 +22,5 @@ export default {
     editStyStore,
     immStore,
     bohaiStore,
+    immFilterStore
 }

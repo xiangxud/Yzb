@@ -2,19 +2,25 @@ import React, {Component} from 'react';
 import
 {
     TouchableOpacity,
-    StyleSheet
+    StyleSheet,
+    View
 } from 'react-native';
-import { Container, Header, Content, List, ListItem, Text, Icon, Left, Body, Right, Switch ,Toast } from 'native-base';
+import { Container, Header, Content, List, ListItem, Text, Icon, Left, Body, Right, Switch ,Toast,Drawer } from 'native-base';
 import {observer,inject} from 'mobx-react/native';
 import AlarmClock from '../../components/sty/AlarmClock'
+import Filter from '../../components/sty/Filter'
 
 @inject('immStore')
+@inject('immFilterStore')
+
 @observer
 export default class imm extends Component{
+    static navigationOptions = ({navigation})=>({
+        headerRight: <View />
+    });
 
     componentWillMount(){
-        const {immStore,navigation} = this.props;
-
+        const {immStore,immFilterStore} = this.props;
         this.onLoadList();
     }
 
@@ -22,9 +28,9 @@ export default class imm extends Component{
         super(props);
     }
 
-    onLoadList() {
+    onLoadList(config) {
         const {immStore} = this.props;
-        immStore.onLoad(null, (mess) => {
+        immStore.onLoad(config, (mess) => {
             Toast.show({
                 type:'warning',
                 text: mess,
@@ -55,34 +61,59 @@ export default class imm extends Component{
         },800);
     }
 
+
+    closeDrawer = () => {
+        this.drawer._root.close()
+    };
+    openDrawer = () => {
+        this.drawer._root.open()
+    };
+
+    onQuery(config){
+        this.onLoadList(config);
+        this.closeDrawer();
+    }
+
     render(){
         const {immStore} = this.props;
-        return (<Container>
-            <Content>
-                <List>
-                    <ListItem itemDivider>
-                        <Body>
-                            <Text>今天需要执行的免疫</Text>
-                        </Body>
-                        <Right>
-                            <TouchableOpacity style={style.right}>
-                                <Text style={style.txt}>筛选</Text>
-                                <Icon name="ios-funnel"></Icon>
-                            </TouchableOpacity>
-                        </Right>
 
-                    </ListItem>
-                    <AlarmClock
-                        onLoad={this.onLoadList.bind(this)}
-                        onMore={this.onMoreList.bind(this)}
-                        end={immStore.collection.end}
-                        collection={immStore.collection}
-                        showId={immStore.collection.showId}
-                        onChangedShowPanl={immStore.onChanged.bind(immStore)}>
-                    </AlarmClock>
-                </List>
-            </Content>
-        </Container>);
+        return (
+            <Drawer
+                ref={(ref) => { this.drawer = ref; }}
+                content={<Filter source={immStore.FilterConfig} options={immStore.EnumPlanState} onUpdateData={(e)=>{ immStore.OnUpdateConfig(e) }} onApply={(e)=>this.onQuery(e)} onCancel={()=>{this.closeDrawer()}} />}
+                openDrawerOffset={0.4}
+                panOpenMask={0.80}
+                onClose={this.closeDrawer.bind(this)}
+                onOpen={this.openDrawer.bind(this)}
+                captureGestures="open"
+                side="right">
+                <Container>
+                    <Content>
+                        <List>
+                            <ListItem itemDivider>
+                                <Body>
+                                <Text>今天需要执行的免疫</Text>
+                                </Body>
+                                <Right>
+                                    <TouchableOpacity style={style.right} onPress={()=>{this.openDrawer()}}>
+                                        <Text style={style.txt}>筛选</Text>
+                                        <Icon name="ios-funnel"></Icon>
+                                    </TouchableOpacity>
+                                </Right>
+                            </ListItem>
+                            <AlarmClock
+                                onLoad={this.onLoadList.bind(this)}
+                                onMore={this.onMoreList.bind(this)}
+                                end={immStore.collection.end}
+                                collection={immStore.collection}
+                                showId={immStore.collection.showId}
+                                onChangedShowPanl={immStore.onChanged.bind(immStore)}>
+                            </AlarmClock>
+                        </List>
+                    </Content>
+                </Container>
+            </Drawer>
+        );
     }
 }
 
