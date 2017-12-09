@@ -137,6 +137,7 @@ const urls = {
         BH_POST_SHEET: apiPath + 'bh/postSheet',
         BH_GET_SHEETS: apiPath + 'bh/getSheets',
         BH_GET_SHEET: apiPath + 'bh/getSheet',
+        BH_GET_TESTING_REPORTS: apiPath + 'bh/getReports',
 
 
 

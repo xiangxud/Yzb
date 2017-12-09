@@ -45,7 +45,7 @@ export default class MyInfo extends Component {
         headerTitle: '我的信息',
         headerRight:(
             <Text onPress={navigation.state.params?navigation.state.params.commitPress:null} style={{padding:5, color:'#fff'}}>
-                保存
+
             </Text>
         )
     });
