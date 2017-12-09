@@ -53,14 +53,24 @@ const ValidateInput = observer(function ValidateInput({label, data , name , plac
 });
 
 const ValidateChooseItem = observer(function ValidateChooseItem({label, data , name ,getOptions,optionslabel, placeholder,onChange,...props}){
-    let showActionSheet = () => {
+    let onPress =() => {
+        debugger;
         let options = getOptions();
+
+        let instance = ActionSheet.actionsheetInstance;
+
+        debugger;
+
         ActionSheet.show(
             {
                 options: options,
-                title: optionslabel
+                title: optionslabel,
+                cancelButtonIndex:-1
             },
             (index) => {
+
+                debugger;
+
                 if( index >= 0 && index < options.length ){
                     onChange(options[index]);
                 }
@@ -70,7 +80,7 @@ const ValidateChooseItem = observer(function ValidateChooseItem({label, data , n
     let errNode = camelCase( 'validateError',name );
     if(data["submited"] && data[errNode] && data[errNode] != null && data[errNode]!=""){
         return (
-            <Item onPress={showActionSheet} fixedLabel {...props}>
+            <Item onPress={onPress} fixedLabel {...props}>
                 <Label>{label}</Label>
                 <Input editable={false} value={data[name]} placeholder={placeholder} placeholderTextColor='#b1b1b1' />
                 <Icon style={style.ico} active name="ios-arrow-forward" />
@@ -79,7 +89,7 @@ const ValidateChooseItem = observer(function ValidateChooseItem({label, data , n
         )
     }else {
         return (
-            <Item onPress={showActionSheet} fixedLabel {...props}>
+            <Item onPress={onPress} fixedLabel {...props}>
                 <Label>{label}</Label>
                 <Input editable={false} value={data[name]} placeholder={placeholder} placeholderTextColor='#b1b1b1' />
                 <Icon style={style.ico} active name="ios-arrow-forward" />

@@ -53,7 +53,6 @@ class styBarStore{
 export default class StyBar extends Component{
     constructor(props){
         super(props);
-        debugger;
         this.store.onIni(this.props.styList,this.props.iniCode);
     };
 
@@ -69,6 +68,7 @@ export default class StyBar extends Component{
                 title:'请选择',
                 options: this.store.styList,
                 destructiveButtonIndex:0,
+                cancelButtonIndex:-1
             },
             (index) => {
                 if( index >=0 && index <=  this.store.styList.length-1){
@@ -105,6 +105,7 @@ export default class StyBar extends Component{
                 title:'操作',
                 options: forms,
                 destructiveButtonIndex:0,
+                cancelButtonIndex:-1
             },
             (index) => {
                 if( index < 0 || index >= forms.length ){

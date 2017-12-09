@@ -93,8 +93,8 @@ export default class Add extends Component{
     render(){
         const {addStyStore} = this.props;
         return (
-            <Root>
             <Container style={{backgroundColor:'#ffffff'}}>
+                <Content>
                 <Form>
                     <ListItem itemDivider>
                         <Icon style={style.titleIco} name="ios-book" active></Icon><Text>第1步.添加一个栋舍</Text>
@@ -107,9 +107,9 @@ export default class Add extends Component{
                     <ValidateInput label="进栏数量" data={addStyStore.sty} name="number" placeholder="进栏数量" onChange={(e)=>{this.onUpdateData({number:e})}} />
                     <ValidateInputDate label="进栏日期" data={addStyStore.sty} name="addDate" placeholder="进栏日期" onChange={(e)=>{this.onUpdateData({addDate:e})}} />
                 </Form>
-            </Container>
+                </Content>
                 <FootBar buttons={this.buttons}></FootBar>
-            </Root>
+            </Container>
         );
     }
 }
