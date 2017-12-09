@@ -29,7 +29,6 @@ export default class Edit extends Component{
     componentWillMount(){
         const {editStyStore,navigation} = this.props;
         //1、初始化数据
-        debugger;
         editStyStore.onEditIni(navigation.state.params.code, navigation.state.params.farm);
         //2、底部菜单
         this.buttons.push({
@@ -56,10 +55,6 @@ export default class Edit extends Component{
                 title:item.title
             });
         });
-
-        debugger;
-        debugger;
-
         navigation.navigate("Sty",{ code : Id , list : list , farm : navigation.state.params.farm });
     }
     next(){
@@ -97,9 +92,7 @@ export default class Edit extends Component{
     onUpdateData(u){
         const {editStyStore} = this.props;
         editStyStore.onChangedSty(u,data=>{
-            debugger;
         },err=>{
-            debugger;
         });
     }
     render(){

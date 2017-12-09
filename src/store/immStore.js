@@ -59,7 +59,6 @@ class immStore {
     @action
     fillList(rows){
         this.collection.list = rows;
-        debugger;
         this.closeEnd();
     }
 
@@ -68,7 +67,6 @@ class immStore {
         rows.forEach(item=>{
             this.collection.list.push(item);
         });
-        debugger;
         this.closeEnd();
     }
 
@@ -84,7 +82,6 @@ class immStore {
 
     @action
     onMore(callback,falied){
-        debugger;
         this.openEnd();
         this.queryConfig.PageIndex = this.queryConfig.PageIndex + 1;
         this.getDataFromApi(this.queryConfig,data=>{
@@ -100,7 +97,6 @@ class immStore {
 
     @action
     onLoad(config,callback,falied){
-        debugger;
         if(config){
             Object.assign(this.queryConfig,this.queryConfig,config);
         }

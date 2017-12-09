@@ -123,13 +123,11 @@ const request = {
                         resolve(responseData.data)
                     }
                     else{
-                        debugger;
                         reject(responseData.message)
                     }
                 })
                 .catch((error) => {
                     //tools.showToast('服务器异常，请重试!');
-                    debugger;
                     reject(error);
                 }).done();
         })

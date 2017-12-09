@@ -17,7 +17,6 @@ export default class Add extends Component{
     getGenus(){
         const {addStyStore} = this.props;
         let options = [];
-        //debugger;
         addStyStore.genus.forEach((o)=>{
             options.push(o.Code);
         });
@@ -45,12 +44,10 @@ export default class Add extends Component{
         },800);
     }
     onStyPress(data){
-        debugger;
         const {navigation} = this.props;
         let { Stys,StyId } = data;
         let list=[];
         Stys.forEach((item)=>{
-            debugger;
             list.push({
                 code:item.value,
                 title:item.title

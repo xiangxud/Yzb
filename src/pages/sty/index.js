@@ -30,7 +30,6 @@ export default class Sty extends Component{
                                         onSettingPress={()=>{
                                         }}
                                         onEditPress={()=>{
-                                            debugger;
                                             navigation.navigate("EditSty",{
                                                 code:navigation.state.params.code,
                                                 farm:navigation.state.params.farm})

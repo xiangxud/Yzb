@@ -35,14 +35,12 @@ class addStyStore {
 
     @action
     onChangedSty(uo){
-        //debugger;
         Object.assign(this.sty,this.sty,uo);
     }
 
     @action
     onIni(farm){
         this.farm=farm;
-        //debugger;
         this.getDictionaryFromApi((data)=>{
             this.genus = data;
         },(err)=>{
@@ -73,7 +71,6 @@ class addStyStore {
 
     @action
     getStyFromApi(code,callback,falied) {
-        debugger;
         request.getJson(urls.apis.IMM_GET_STY_BASE,{id:code}).then(data=>{
             callback(data);
         }).catch(err => {
@@ -122,7 +119,6 @@ class addStyStore {
         }).then((data)=>{
             callback(data);
         }).catch((err)=>{
-            debugger;
             falied(err);
         });
     }

@@ -179,11 +179,9 @@ export default class AlarmClock extends Component{
             ListFooterComponent={this._renderFooter}
             refreshing={!this.props.end}
             onRefresh={()=>{
-                // debugger;
                 // this.props.onLoad();
             }}
             onEndReached={(number)=>{
-                // debugger;
                 // this.props.onMore();
                 // return true;
             }}
