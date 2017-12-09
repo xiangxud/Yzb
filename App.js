@@ -16,6 +16,7 @@ import {Provider} from 'mobx-react/native';
 import stores from './src/store';
 import NetInfoDecorator from './src/common/NetInfoDecorator';
 import YzbApp from './src/index';
+import { Root} from 'native-base';
 
 if (!__DEV__) {
     global.console = {
@@ -56,6 +57,7 @@ export default class App extends Component<{}> {
             outputRange: [-30, __IOS__ ? 20 : 0]
         });
         return (
+            <Root>
             <View style={{flex: 1}}>
                 <Provider {...stores}>
                     <YzbApp />
@@ -64,6 +66,7 @@ export default class App extends Component<{}> {
                     <Text style={styles.netInfoPrompt}>网络异常，请检查网络稍后重试~</Text>
                 </Animated.View>
             </View>
+            </Root>
         )
     }
 }

@@ -29,8 +29,12 @@ export default class Sty extends Component{
                                         onMessPress={()=>{}}
                                         onSettingPress={()=>{
                                         }}
+                                        onOutPetPress={()=>{
+                                            navigation.navigate("OutPet",{
+                                                code:navigation.state.params.code,
+                                                farm:navigation.state.params.farm})
+                                        }}
                                         onEditPress={()=>{
-                                            debugger;
                                             navigation.navigate("EditSty",{
                                                 code:navigation.state.params.code,
                                                 farm:navigation.state.params.farm})

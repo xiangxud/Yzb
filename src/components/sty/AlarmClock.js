@@ -19,6 +19,9 @@ class AlarmClockRow extends Component{
         super(props);
     }
 
+    @observable
+    showPlan=false;
+
     renderDate(date){
         return (
             <Text style={style.immTime} numberOfLines={1}>
@@ -27,7 +30,7 @@ class AlarmClockRow extends Component{
     };
 
     renderPlan(item){
-        if(this.props.showId != item.Id){
+        if(!this.showPlan){
             return null;
         }
         return (<View style={style.plan}>
@@ -100,9 +103,13 @@ class AlarmClockRow extends Component{
         </View>);
     }
 
+    @action
+    flipPlan(){
+        this.showPlan=!this.showPlan;
+    }
+
     render(){
         let {item} = this.props;
-        //onPressIn={()=>{ this.props.onChangedShowPanl(item.Id) }}
         return (
             <View style={{  alignItems:'stretch' }}>
                 <SwipeRow rightOpenValue={-150}
@@ -116,7 +123,7 @@ class AlarmClockRow extends Component{
                           }
                           body={
                               <View>
-                                  <TouchableOpacity onPressIn={()=>{ this.props.onChangedShowPanl(item.Id) }}>
+                                  <TouchableOpacity onPressIn={()=>{ this.flipPlan() }}>
                                       <View style={style.row}>
                                           {
                                               this.renderDate(item.ImmuneTime.ToDate().Format("yyyy-MM-dd"))
@@ -149,7 +156,7 @@ export default class AlarmClock extends Component{
     }
 
     renderRow(info){
-        return(<AlarmClockRow item={info.item} showId={this.props.showId} onChangedShowPanl={this.props.onChangedShowPanl}></AlarmClockRow>);
+        return(<AlarmClockRow item={info.item}></AlarmClockRow>);
     }
 
     _separator=()=>{
@@ -172,11 +179,9 @@ export default class AlarmClock extends Component{
             ListFooterComponent={this._renderFooter}
             refreshing={!this.props.end}
             onRefresh={()=>{
-                // debugger;
                 // this.props.onLoad();
             }}
             onEndReached={(number)=>{
-                // debugger;
                 // this.props.onMore();
                 // return true;
             }}

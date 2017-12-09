@@ -11,8 +11,6 @@ import AlarmClock from '../../components/sty/AlarmClock'
 import Filter from '../../components/sty/Filter'
 
 @inject('immStore')
-@inject('immFilterStore')
-
 @observer
 export default class imm extends Component{
     static navigationOptions = ({navigation})=>({
@@ -105,9 +103,7 @@ export default class imm extends Component{
                                 onLoad={this.onLoadList.bind(this)}
                                 onMore={this.onMoreList.bind(this)}
                                 end={immStore.collection.end}
-                                collection={immStore.collection}
-                                showId={immStore.collection.showId}
-                                onChangedShowPanl={immStore.onChanged.bind(immStore)}>
+                                collection={immStore.collection}>
                             </AlarmClock>
                         </List>
                     </Content>

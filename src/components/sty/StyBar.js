@@ -53,7 +53,6 @@ class styBarStore{
 export default class StyBar extends Component{
     constructor(props){
         super(props);
-        debugger;
         this.store.onIni(this.props.styList,this.props.iniCode);
     };
 
@@ -69,6 +68,7 @@ export default class StyBar extends Component{
                 title:'请选择',
                 options: this.store.styList,
                 destructiveButtonIndex:0,
+                cancelButtonIndex:-1
             },
             (index) => {
                 if( index >=0 && index <=  this.store.styList.length-1){
@@ -80,37 +80,66 @@ export default class StyBar extends Component{
 
     onMenu(){
 
-        let editSty = {
-            name:"EditSty",
-            text: "编辑",
-            icon: "american-football",
-            iconColor: "#2c8ef4",
-            action:()=>{
-                this.props.onEditPress();
-            }
-        };
+
         let settingSty = {
             name:"SettingSty",
             text: "设置",
-            icon: "analytics",
+            icon: "ios-build",
             iconColor: "#f42ced",
             action:()=>{
                 this.props.onSettingPress();
             }
         }
-        let forms=[editSty,settingSty];
 
+        let delSty={
+            name:"DeleteSty",
+            text:"删除该栋舍",
+            icon:"ios-trash",
+            iconColor: "#FF0000",
+            action:()=>{
+            }
+        }
+
+        let editSty = {
+            name:"EditSty",
+            text: "编辑",
+            icon: "ios-create",
+            iconColor: "#2c8ef4",
+            action:()=>{
+                this.props.onEditPress();
+            }
+        };
+        let outPet = {
+            name:"OutPet",
+            text:"出栏",
+            icon:"ios-log-out",
+            iconColor:"#98FB98",
+            action:()=>{
+                this.props.onOutPetPress();
+            }
+        }
+        let addPet = {
+            name:"OutPet",
+            text:"入栏",
+            icon:"ios-log-in",
+            iconColor:"#49179b",
+            action:()=>{
+            }
+        }
+
+
+        let forms=[settingSty,delSty,editSty,outPet,addPet];
         ActionSheet.show(
             {
                 title:'操作',
                 options: forms,
                 destructiveButtonIndex:0,
+                cancelButtonIndex:-1
             },
             (index) => {
                 if( index < 0 || index >= forms.length ){
                     return;
                 }
-
                 let action = forms[index].action.bind(this);
                 action();
             }

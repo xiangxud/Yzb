@@ -29,7 +29,6 @@ export default class Edit extends Component{
     componentWillMount(){
         const {editStyStore,navigation} = this.props;
         //1、初始化数据
-        debugger;
         editStyStore.onEditIni(navigation.state.params.code, navigation.state.params.farm);
         //2、底部菜单
         this.buttons.push({
@@ -56,10 +55,6 @@ export default class Edit extends Component{
                 title:item.title
             });
         });
-
-        debugger;
-        debugger;
-
         navigation.navigate("Sty",{ code : Id , list : list , farm : navigation.state.params.farm });
     }
     next(){
@@ -97,16 +92,14 @@ export default class Edit extends Component{
     onUpdateData(u){
         const {editStyStore} = this.props;
         editStyStore.onChangedSty(u,data=>{
-            debugger;
         },err=>{
-            debugger;
         });
     }
     render(){
         const {editStyStore} = this.props;
         return (
-            <Root>
                 <Container style={{backgroundColor:'#ffffff'}}>
+                    <Content>
                     <Form>
                         <ListItem itemDivider>
                             <Icon style={style.titleIco} name="ios-book" active></Icon><Text>编辑栋舍</Text>
@@ -118,9 +111,9 @@ export default class Edit extends Component{
                         <ValidateInput label="数量" data={editStyStore.sty} name="number" placeholder="进栏数量" onChange={(e)=>{this.onUpdateData({number:e})}} />
                         <ValidateInputDate label="进雏" data={editStyStore.sty} name="addDate" placeholder="进雏" onChange={(e)=>{this.onUpdateData({addDate:e})}} />
                     </Form>
+                        <FootBar buttons={this.buttons}></FootBar>
+                    </Content>
                 </Container>
-                <FootBar buttons={this.buttons}></FootBar>
-            </Root>
         );
     }
 }
