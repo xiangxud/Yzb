@@ -103,9 +103,7 @@ export default class imm extends Component{
                                 onLoad={this.onLoadList.bind(this)}
                                 onMore={this.onMoreList.bind(this)}
                                 end={immStore.collection.end}
-                                collection={immStore.collection}
-                                showId={immStore.collection.showId}
-                                onChangedShowPanl={immStore.onChanged.bind(immStore)}>
+                                collection={immStore.collection}>
                             </AlarmClock>
                         </List>
                     </Content>
