@@ -24,12 +24,12 @@ export default class FootBar extends Component {
         list=[];
         return this.props.buttons.map((button) => {
             if(button.default){
-                return <Button key={button.title} primary xfull onPress={button.onPress}>
-                    <Text style={!button.style?style.button:button.style}>{button.title}</Text>
+                return <Button key={button.title} primary full large onPress={button.onPress}>
+                    <Text style={!button.style? button.style: {}}>{button.title}</Text>
                 </Button>;
             }else{
-                return <Button key={button.title} light full onPress={button.onPress}>
-                    <Text style={!button.style?style.button:button.style}>{button.title}</Text>
+                return <Button key={button.title} light full large onPress={button.onPress}>
+                    <Text style={!button.style? button.style: {}}>{button.title}</Text>
                 </Button>;
             }
         });
@@ -47,10 +47,3 @@ export default class FootBar extends Component {
         )
     }
 }
-
-const style = StyleSheet.create({
-    button:{
-        fontSize:16,
-        height:25
-    }
-});
