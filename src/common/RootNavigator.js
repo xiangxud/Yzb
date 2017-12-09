@@ -9,6 +9,11 @@ import InfoDetail from '../pages/info/InfoDetail';
 import Uc from '../pages/Uc';
 import Login from '../pages/Login';
 import BHStart from '../pages/bohai/BHStart';
+import BHList from '../pages/bohai/BHList';
+import BHApply from '../pages/bohai/BHApply';
+import BHDetail from '../pages/bohai/BHDetail';
+import ChooseFarm from '../pages/bohai/modal/ChooseFarm';
+
 import Didi from '../pages/didi/DidiMap';
 import VetInfo from '../pages/didi/VetInfo';
 import Web from '../pages/Web';
@@ -20,8 +25,7 @@ import monitor from '../pages/sty/monitor';
 import environmental from '../pages/sty/environmental';
 import report from '../pages/sty/report';
 import Quotes from '../pages/Quotes';
-import BHApply from '../pages/bohai/BHApply';
-import ChooseFarm from '../pages/bohai/modal/ChooseFarm'
+
 
 import addSty from '../pages/sty/add';
 import editSty from '../pages/sty/edit';
@@ -170,20 +174,22 @@ const RootNavigator = StackNavigator({
     EditSty:{screen:editSty},
     BHStart:{ screen: BHStart },
     BHApply:{ screen: BHApply },
+    BHList:{ screen: BHList },
     Web:{ screen: Web },
     Didi:{ screen: Didi },
     VetInfo:{ screen: VetInfo },
     About:{ screen: About },
     MyInfo:{ screen: MyInfo },
     Quotes:{ screen: Quotes },
-    ChooseFarm:{ screen: ChooseFarm}
+    ChooseFarm:{ screen: ChooseFarm },
+    BHDetail:{ screen: BHDetail },
 }, {
     initialRouteName: 'Welcome', // 默认显示界面!global.user.loginState?'Login':'Main'
     navigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
         headerStyle:{elevation: 0,shadowOpacity: 0,height:48,backgroundColor:"#009688"},
         headerTitleStyle:{color:'#fff',fontSize:18,alignSelf:'center'}, //alignSelf:'center'  文字居中
         headerBackTitleStyle:{color:'#fff',fontSize:12},
-        // headerTintColor:{},
+        headerTintColor:'#fff',
         gesturesEnabled:true,//是否支持滑动返回收拾，iOS默认支持，安卓默认关闭
     },
     mode: 'card',  // 页面切换模式, 左右是card(相当于iOS中的push效果), 上下是modal(相当于iOS中的modal效果)

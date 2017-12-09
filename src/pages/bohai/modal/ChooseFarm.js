@@ -16,7 +16,7 @@ import {observer, inject} from 'mobx-react/native'
 //import {Container, Content, Loading} from '../../../components';
 //import { Icon } from 'native-base'
 import Search from 'react-native-search-box';
-
+import Selector from '../../../components/bohai/Selector';
 class FarmStore{
     @observable page = 1;
     @observable farms = [];
@@ -78,16 +78,17 @@ export default class Info extends Component {
     }
 
     renderRow = (info) =>{
-        return (
-            <TouchableNativeFeedback
-                onPress={()=>{this.newsPress(info)}}
-                background={TouchableNativeFeedback.SelectableBackground()}>
-                <View style={styles.newsItem}>
-                    <Text style={styles.newsItemTitle}>
-                        {info}
-                    </Text>
-                </View>
-            </TouchableNativeFeedback>)
+        // return (
+        //     <TouchableNativeFeedback
+        //         onPress={()=>{this.newsPress(info)}}
+        //         background={TouchableNativeFeedback.SelectableBackground()}>
+        //         <View style={styles.newsItem}>
+        //             <Text style={styles.newsItemTitle}>
+        //                 {info}
+        //             </Text>
+        //         </View>
+        //     </TouchableNativeFeedback>)
+        return <Selector onPress={()=>this.newsPress(info)} value={info} />
     }
 
     renderHeader = () =>{

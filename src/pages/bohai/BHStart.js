@@ -9,20 +9,42 @@ import {
     Image,
     TouchableOpacity,
 } from 'react-native'
-import {Container, Content, List, ListItem, Button, Separator, Text,} from 'native-base';
-import {observer, inject} from 'mobx-react/native';
-import Example from "./Example";
+import {Container, Content, List, ListItem, Button, Separator, Text} from 'native-base';
+import {observer} from 'mobx-react/native';
+import userStore from "../../store/userStore";
 
 @observer
 export default class BHStart extends Component {
     constructor(props){
         super(props);
+        this.state={
+            isSales: false,
+        }
     }
     static navigationOptions = ({navigation})=>({
         headerTitle: '渤海监测',
-        headerRight: <View></View>
+        headerRight: <Button transparent light onPress={()=>navigation.navigate('BHList')}><Text>送检单</Text></Button>
     });
-
+    componentDidMount(){
+        var timer = setTimeout(()=>{
+            this.fetchData();
+        }, 200);
+    }
+    componentWillUnMount(){
+        this.timer && clearTimeout(this.timer);
+    }
+    fetchData(page){
+        request.getJson(urls.apis.BH_IS_SALES, {phone: userStore.phone}).then((res)=>{
+            if(res===true){
+                this.setState({isSales: true});
+            }else{
+                tools.showToast('您还不是瑞普用户,不能提交申请');
+                this.setState({isSales: false});
+            }
+        }).catch((err)=>{
+            tools.showToast(err.message)
+        });
+    }
     render() {
         const { navigation } = this.props;
         return (
@@ -43,16 +65,20 @@ export default class BHStart extends Component {
                     <Separator bordered>
                         <Text style={{fontSize:14}}>提交申请单</Text>
                     </Separator>
-                    <View>
-                        <List style={{backgroundColor:'#fff'}}>
-                            <ListItem onPress={()=>navigation.navigate('BHApply', {type: '家禽'})}>
-                                <Text>家禽</Text>
-                            </ListItem>
-                            <ListItem onPress={()=>navigation.navigate('BHApply', {type: '家畜'})}>
-                                <Text>家畜</Text>
-                            </ListItem>
-                        </List>
-                    </View>
+                    {
+                        this.state.isSales?
+                        <View>
+                            <List style={{backgroundColor:'#fff'}}>
+                                <ListItem onPress={()=>navigation.navigate('BHApply', {type: '家禽'})}>
+                                    <Text>家禽</Text>
+                                </ListItem>
+                                <ListItem onPress={()=>navigation.navigate('BHApply', {type: '家畜'})}>
+                                    <Text>家畜</Text>
+                                </ListItem>
+                            </List>
+                        </View>
+                        : null
+                    }
                     <Button style={{backgroundColor:'red', }} block onPress={()=>this.error()}>
                         <Text style={{color:'white'}}>测试按钮，方便开发</Text>
                     </Button>

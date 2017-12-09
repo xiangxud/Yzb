@@ -5,13 +5,13 @@ import React, {Component} from 'react'
 import {
     ScrollView,
     View,
-    Text,
     StyleSheet,
     Image,
     TouchableOpacity,
     Alert,
 } from 'react-native'
-import {Container, Content, Footer, FooterTab, Button, List, ListItem, CheckBox,Body, Icon, Right} from 'native-base';
+import {Container, Content, Footer, FooterTab, Button, List, ListItem, Body,
+    Text, Icon, Right} from 'native-base';
 import Modal from 'react-native-modalbox';
 import {observer, inject} from 'mobx-react/native';
 import StepBar from '../../components/bohai/StepBar';
@@ -27,8 +27,8 @@ import Step6 from '../../components/bohai/Step6';
 @observer
 export default class BHApply extends Component {
     static navigationOptions = ({navigation})=>({
-        headerTitle: '渤海监测',
-        headerRight: <View></View>
+        headerTitle: '填写送检申请',
+        headerRight: <Button transparent light onPress={()=>navigation.goBack()}><Text>取消申请</Text></Button>
     });
 
     componentDidMount () {
@@ -39,7 +39,7 @@ export default class BHApply extends Component {
         var timer = setTimeout(()=>{
             request.getJson(urls.apis.BH_BREEDS, null).then((res)=>{
                 bohaiStore.setBreeds(res);
-            }).catch((err)=>{tools.showToast('获取品种失败')});
+            }).catch((err)=>{alert(JSON.stringify(err))});
             request.getJson(urls.apis.BH_TEST_TYPES, null).then((res)=>{
                 bohaiStore.setTestItems(res);
             }).catch((err)=>tools.showToast('获取检测项目失败'));
@@ -277,14 +277,14 @@ export default class BHApply extends Component {
                             {
                                 step>1?
                                 <Col>
-                                    <Button full info onPress={()=>this.onPrev()}>
+                                    <Button full light large onPress={()=>this.onPrev()}>
                                         <Text>上一步</Text>
                                     </Button>
                                 </Col>
                                 : null
                             }
                             <Col>
-                                <Button full success onPress={()=>this.onNext()}>
+                                <Button full info large onPress={()=>this.onNext()}>
                                     <Text>下一步</Text>
                                 </Button>
                             </Col>

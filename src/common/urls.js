@@ -135,6 +135,8 @@ const urls = {
         BH_APPROVE_USERS: apiPath + 'bh/getApprovers',
         BH_IS_SALES: apiPath + 'bh/isSales',
         BH_POST_SHEET: apiPath + 'bh/postSheet',
+        BH_GET_SHEETS: apiPath + 'bh/getSheets',
+        BH_GET_SHEET: apiPath + 'bh/getSheet',
 
 
 
