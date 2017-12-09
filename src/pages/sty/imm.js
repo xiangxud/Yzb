@@ -11,8 +11,6 @@ import AlarmClock from '../../components/sty/AlarmClock'
 import Filter from '../../components/sty/Filter'
 
 @inject('immStore')
-@inject('immFilterStore')
-
 @observer
 export default class imm extends Component{
     static navigationOptions = ({navigation})=>({
