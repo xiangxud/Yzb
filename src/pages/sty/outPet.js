@@ -15,6 +15,35 @@ export default class OutPet extends Component{
         super(props);
     }
 
+
+    componentWillMount(){
+        const {outPetStore,navigation} = this.props;
+
+        debugger;
+        outPetStore.onIni({
+            styId:navigation.state.params.code,
+            farm:navigation.state.params.farm
+        },(data)=>{
+            debugger;
+        },(mess)=>{
+            Toast.show({
+                type:'danger',
+                text: '产生错误:'+err,
+                position: 'top'
+            })
+            this.autoClose();
+        });
+    }
+
+    autoClose( callback ){
+        setTimeout(()=>{
+            Toast.toastInstance._root.closeToast();
+            if(callback){
+                callback();
+            }
+        },800);
+    }
+
     buttons=[{title:'取消' , default:false, onPress:()=>{}},{title:'提交' , default:true, onPress:()=>{}}];
     render(){
         return (

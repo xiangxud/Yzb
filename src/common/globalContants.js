@@ -47,3 +47,11 @@ String.prototype.ToDate = function(){
     }
     return new Date(fullDate[0], fullDate[1]-1, fullDate[2], 0, 0, 0);
 }
+Array.prototype.fristOne=function (findIndexHandler) {
+    for( var i=0;i<this.length;i++){
+        if(findIndexHandler && findIndexHandler!=null && findIndexHandler(this[i])){
+            return this[i];
+        }
+    }
+    return null;
+}
