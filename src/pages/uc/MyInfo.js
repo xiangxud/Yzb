@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 
-import {Alert, Image, ScrollView, Text, TextInput, TouchableOpacity} from "react-native";
-import {Body, Button, Icon, Left, ListItem, Right, View} from "native-base";
+import {Alert, Image, ScrollView, TextInput, TouchableOpacity} from "react-native";
+import {Body, Button, Icon, Left, Text, ListItem, Right, View} from "native-base";
 //import ImagePicker from "react-native-image-picker";
 import {observer} from "mobx-react/native";
 import userStore from "../../store/userStore";
@@ -133,10 +133,31 @@ export default class MyInfo extends Component {
         })
     }
 
-    changeSex(sex) {
-        //this._modal.show();
-    }
-
+    /*<View style={styles.row}>
+        <Text>性别</Text>
+        <Text>{loginUser.sex === 1 ? '男' : '女'}</Text>
+    </View>
+    <View style={styles.row}>
+        <Text>出生日期</Text>
+        <DatePicker
+            style={{width: 100}}
+            date={this.state.date}
+            showIcon={false}
+            mode="date"
+            placeholder={loginUser.birthday}
+            format="YYYY-MM-DD"
+            confirmBtnText="确定"
+            cancelBtnText="取消"
+            customStyles={{
+                dateInput: {borderWidth: 0, flexDirection: 'row', justifyContent: 'flex-end'},
+                dateText: {color: "#666", fontSize: 16},
+                placeholderText: {color: "#666", fontSize: 16}
+            }}
+            onDateChange={(date) => {
+                this.setState({date: date})
+            }}
+        />
+    </View>*/
     render() {
         const {loginUser} = userStore;
         return (
@@ -173,31 +194,6 @@ export default class MyInfo extends Component {
                             }}
                         />
                     </View>
-                    /*<View style={styles.row}>
-                        <Text>性别</Text>
-                        <Text>{loginUser.sex === 1 ? '男' : '女'}</Text>
-                    </View>
-                    <View style={styles.row}>
-                        <Text>出生日期</Text>
-                        <DatePicker
-                            style={{width: 100}}
-                            date={this.state.date}
-                            showIcon={false}
-                            mode="date"
-                            placeholder={loginUser.birthday}
-                            format="YYYY-MM-DD"
-                            confirmBtnText="确定"
-                            cancelBtnText="取消"
-                            customStyles={{
-                                dateInput: {borderWidth: 0, flexDirection: 'row', justifyContent: 'flex-end'},
-                                dateText: {color: "#666", fontSize: 16},
-                                placeholderText: {color: "#666", fontSize: 16}
-                            }}
-                            onDateChange={(date) => {
-                                this.setState({date: date})
-                            }}
-                        />
-                    </View>*/
                     <View style={styles.row}>
                         <Text>公司名称</Text>
                         <TextInput
@@ -232,23 +228,9 @@ export default class MyInfo extends Component {
                         </View>
                         <Text style={{ marginTop: 10}}>我的二维码</Text>
                     </View>
-
-                    <View style={{
-                        flexDirection: "row",
-                        justifyContent: 'center',
-                    }}>
-                        <Button style={{
-                            width: 180,
-                            height: 40,
-                            marginTop: 10,
-                            marginBottom: 10,
-                            backgroundColor: '#15856e',
-                            justifyContent: 'center'
-                        }}
-                                onPress={()=>this.quit()}>
-                            <Text style={{color: '#fff'}}>退出登录</Text>
-                        </Button>
-                    </View>
+                    <Button rounded danger block style={styles.logoutBtn} onPress={()=>this.quit()}>
+                        <Text style={{color: '#fff'}}>退出登录</Text>
+                    </Button>
                 </ScrollView>
             </KeyboardAwareScrollView>
         )
@@ -284,5 +266,11 @@ const styles = {
     },
     myName: {
         fontSize: 16,
+    },
+    logoutBtn:{
+        marginLeft:50,
+        marginRight:50,
+        marginTop: 10,
+        marginBottom: 10,
     }
 };

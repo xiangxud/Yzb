@@ -1,6 +1,7 @@
 import React, {PureComponent} from "react";
 import {
-    Image
+    Image,
+    Alert
 } from 'react-native';
 import {Body, Icon, Left, ListItem, Right, Text, View} from "native-base";
 import {SeparatorArea} from "../../components";
@@ -36,7 +37,9 @@ export default class MyList extends PureComponent {
         navigation && navigation.navigate(page, params)
     }
     checkUpdate = () => {
-        alert('已经是最新版本');
+        Alert.alert('更新提示', '功能完善中,暂未开放', [
+            {text: '好的', onPress: () => {}},
+        ],);
     }
     render() {
         return (
