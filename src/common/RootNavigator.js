@@ -15,7 +15,9 @@ import BHDetail from '../pages/bohai/BHDetail';
 import ChooseFarm from '../pages/bohai/modal/ChooseFarm';
 
 import Didi from '../pages/didi/DidiMap';
+import MarkerExample from '../pages/didi/MarkerExample';
 import VetInfo from '../pages/didi/VetInfo';
+
 import Web from '../pages/Web';
 import About from '../pages/uc/About';
 import MyInfo from '../pages/uc/MyInfo';
@@ -179,7 +181,7 @@ const RootNavigator = StackNavigator({
     BHList:{ screen: BHList },
     Web:{ screen: Web },
     Live:{ screen: Live },
-    Didi:{ screen: Didi },
+    Didi:{ screen: MarkerExample },
     VetInfo:{ screen: VetInfo },
     About:{ screen: About },
     MyInfo:{ screen: MyInfo },

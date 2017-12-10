@@ -7,9 +7,7 @@ import {
 //import LinearGradient from 'react-native-linear-gradient';
 import {NavigationActions} from 'react-navigation';
 import { inject, observer } from 'mobx-react/native'
-import Spinner from 'react-native-spinkit';
-import {Icon, Form, Item, Input, Label, Text, Button} from 'native-base';
-import AnooTextInput from '../components/AnooTextInput';
+import {Icon, Form, Item, Input, Label, Text, Button, Spinner} from 'native-base';
 const dismissKeyboard = require('dismissKeyboard');
 
 @inject('userStore')
@@ -236,12 +234,7 @@ export default class LoginScreen extends Component {
                     <Text style={{color:'#fff',fontSize:24,}}>养殖宝</Text>
                 </View>
                 {this.renderBackArrow()}
-                <Spinner
-                    style={styles.spinner}
-                    isVisible={this.state.showSpinner}
-                    size={100}
-                    type={'ThreeBounce'}
-                    color={'#888'}/>
+                {this.state.showSpinner? <Spinner style={styles.spinner} color='green'/> :null}
                 {this.renderForm()}
                 <Button block success disabled={this.state.showSpinner} onPress={() => { this._login() }} style={{margin:10}}>
                     <Text>{this.state.stepTitle}</Text>

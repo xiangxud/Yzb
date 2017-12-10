@@ -9,6 +9,7 @@ class DidiStore {
     @observable current = {};
     @observable errorMsg = '';
     @observable isFetching = true;
+    @observable locationInterval = 2000;
     @observable position = {
         accuracy: 1,
         latitude: 39.907723,
@@ -23,6 +24,7 @@ class DidiStore {
             runInAction(() => {
                 this.vets = res;
                 this.isFetching = false;
+                //alert(JSON.stringify(res));
             });
         }).catch((error) => {
             tools.showToast(JSON.stringify(error))
@@ -30,6 +32,7 @@ class DidiStore {
     }
     @action setMyPosition(po){
         this.position = po;
+        this.locationInterval = 60000;
         if(po.accuracy > 0 && this.vets.length === 0){
             this.fetchVets();
         }
