@@ -7,7 +7,7 @@ import {
 //import LinearGradient from 'react-native-linear-gradient';
 import {NavigationActions} from 'react-navigation';
 import { inject, observer } from 'mobx-react/native'
-import {Icon, Form, Item, Input, Label, Text, Button, Spinner} from 'native-base';
+import {Container, Content, Icon, Form, Item, Input, Label, Text, Button, Spinner} from 'native-base';
 const dismissKeyboard = require('dismissKeyboard');
 
 @inject('userStore')
@@ -31,88 +31,93 @@ export default class LoginScreen extends Component {
         this.setState({step: step, stepTitle: stepTitle});
     }
     _login = () => {
-        this.loginRequest = requestAnimationFrame(() => {
+        const { userStore, navigation }= this.props;
 
-            dismissKeyboard();
+        if (this.state.step === 1) {
+            //登录
+            if(userStore.validateErrorLoginPhone){
+                tools.showToast(userStore.validateErrorLoginPhone);
+                return;
+            }else if(userStore.validateErrorLoginPassword){
+                tools.showToast(userStore.validateErrorLoginPassword);
+                return;
+            }
 
-            const { userStore, navigation }= this.props;
-
-            if (this.state.step === 1) {
-                //登录
-                if(userStore.validateErrorLoginPhone){
-                    tools.showToast(userStore.validateErrorLoginPhone);
-                    return;
-                }else if(userStore.validateErrorLoginPassword){
-                    tools.showToast(userStore.validateErrorLoginPassword);
-                    return;
-                }
-
-                this.setState({showSpinner: true});
-                userStore.login((status, resp)=> {
-                    this.setState({showSpinner: false});
-                    if(!status){
-                        tools.showToast(resp)
-                    }else {
-                        userStore.fetchLoginUser().then((data) => {
-                            userStore.setLoginUser(data)
-                            let resetAction = NavigationActions.reset({
-                                index: 0,
-                                actions: [
-                                    NavigationActions.navigate({routeName: 'Main', params: {token: resp.access_token}})
-                                ]
-                            });
-                            navigation.dispatch(resetAction);
-                        }).catch((err) => {
-                            tools.showToast('bbb'+JSON.stringify(err))
+            this.setState({showSpinner: true});
+            userStore.login((status, resp)=> {
+                this.setState({showSpinner: false});
+                if(!status){
+                    tools.showToast(resp)
+                }else {
+                    userStore.fetchLoginUser().then((data) => {
+                        userStore.setLoginUser(data)
+                        let resetAction = NavigationActions.reset({
+                            index: 0,
+                            actions: [
+                                NavigationActions.navigate({routeName: 'Main', params: {token: resp.access_token}})
+                            ]
                         });
-                    }
-                })
-            }
-            else if (this.state.step === 2) {
-                if(userStore.validateErrorLoginPhone){
-                    tools.showToast(userStore.validateErrorLoginPhone);
-                    return;
-                }else if(userStore.validateErrorRegisterPassword){
-                    tools.showToast(userStore.validateErrorRegisterPassword);
-                    return;
-                }else if(userStore.validateErrorRegisterPasswordRepeat){
-                    tools.showToast(userStore.validateErrorRegisterPasswordRepeat);
-                    return;
-                }else if(userStore.validateErrorRegisterValidateCode){
-                    tools.showToast(userStore.validateErrorRegisterValidateCode);
-                    return;
+                        navigation.dispatch(resetAction);
+                    }).catch((err) => {
+                        tools.showToast('bbb'+JSON.stringify(err))
+                    });
                 }
-                //注册
-                this.setState({showSpinner: true});
-                userStore.register().then(() => {
-                    this.setState({showSpinner: false});
-                    let resetAction = NavigationActions.reset({
-                        index: 0,
-                        actions: [
-                            NavigationActions.navigate({routeName: 'Main', params: {token: ''}})
-                        ]
-                    });
-                    navigation.dispatch(resetAction);
-                });
+            })
+        }
+        else if (this.state.step === 2) {
+            //注册
+            if(userStore.validateErrorLoginPhone){
+                tools.showToast(userStore.validateErrorLoginPhone);
+                return;
+            }else if(userStore.validateErrorRegisterPassword){
+                tools.showToast(userStore.validateErrorRegisterPassword);
+                return;
+            }else if(userStore.validateErrorRegisterPasswordRepeat){
+                tools.showToast(userStore.validateErrorRegisterPasswordRepeat);
+                return;
+            }else if(userStore.validateErrorRegisterValidateCode){
+                tools.showToast(userStore.validateErrorRegisterValidateCode);
+                return;
             }
-            else if (this.state.step === 3) {
-                //找回密码
-                this.setState({showSpinner: true});
-                userStore.register().then(() => {
-                    this.setState({showSpinner: false});
-                    let resetAction = NavigationActions.reset({
-                        index: 0,
-                        actions: [
-                            NavigationActions.navigate({routeName: 'Main', params: {token: ''}})
-                        ]
-                    });
-                    navigation.dispatch(resetAction);
+            this.setState({showSpinner: true});
+            userStore.register().then(() => {
+                this.setState({showSpinner: false});
+                let resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({routeName: 'Main', params: {token: ''}})
+                    ]
                 });
+                navigation.dispatch(resetAction);
+            });
+        }
+        else if (this.state.step === 3) {
+            //找回密码
+            if(userStore.validateErrorLoginPhone){
+                tools.showToast(userStore.validateErrorLoginPhone);
+                return;
+            }else if(userStore.validateErrorRegisterPassword){
+                tools.showToast(userStore.validateErrorRegisterPassword);
+                return;
+            }else if(userStore.validateErrorRegisterPasswordRepeat){
+                tools.showToast(userStore.validateErrorRegisterPasswordRepeat);
+                return;
+            }else if(userStore.validateErrorRegisterValidateCode){
+                tools.showToast(userStore.validateErrorRegisterValidateCode);
+                return;
             }
-        })
-    }
-    componentWillUnmount() {
-        this.loginRequest && cancelAnimationFrame(this.loginRequest)
+            this.setState({showSpinner: true});
+            userStore.find().then(() => {
+                this.setState({showSpinner: false});
+                let resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({routeName: 'Main', params: {token: ''}})
+                    ]
+                });
+                navigation.dispatch(resetAction);
+            });
+        }
     }
 
     renderBackArrow() {
@@ -229,29 +234,31 @@ export default class LoginScreen extends Component {
     }
     render() {
         return (
-            <View style={styles.container}>
-                <View style={{height:200, justifyContent:'center', alignItems:'center', backgroundColor:'#009688'}}>
-                    <Text style={{color:'#fff',fontSize:24,}}>养殖宝</Text>
-                </View>
-                {this.renderBackArrow()}
-                {this.state.showSpinner? <Spinner style={styles.spinner} color='green'/> :null}
-                {this.renderForm()}
-                <Button block success disabled={this.state.showSpinner} onPress={() => { this._login() }} style={{margin:10}}>
-                    <Text>{this.state.stepTitle}</Text>
-                </Button>
-                <View style={{marginLeft:10, marginRight:10, flexDirection:'row'}}>
-                    {this.state.step!==2?
-                    <TouchableOpacity visible={false} onPress={() => { this.onChangeStep(2, '注册') }} style={{alignItems:'flex-start', flex:1,}}>
-                        <Text>没有账号？现在注册</Text>
-                    </TouchableOpacity>
-                    : null }
-                    {this.state.step!==3?
-                    <TouchableOpacity onPress={() => { this.onChangeStep(3, '找回密码') }} style={{alignItems:'flex-end', flex:1,}}>
-                        <Text style={{}}>忘记密码？</Text>
-                    </TouchableOpacity>
-                        : null }
-                </View>
-            </View>
+            <Container>
+                <Content>
+                    <View style={{height:200, justifyContent:'center', alignItems:'center', backgroundColor:'#009688'}}>
+                        <Text style={{color:'#fff',fontSize:24,}}>养殖宝</Text>
+                    </View>
+                    {this.renderBackArrow()}
+                    {this.state.showSpinner? <Spinner style={styles.spinner} color='green'/> :null}
+                    {this.renderForm()}
+                    <Button block success disabled={this.state.showSpinner} onPress={() => { this._login() }} style={{margin:10}}>
+                        <Text>{this.state.stepTitle}</Text>
+                    </Button>
+                    <View style={{marginLeft:10, marginRight:10, flexDirection:'row'}}>
+                        {this.state.step!==2?
+                            <TouchableOpacity visible={false} onPress={() => { this.onChangeStep(2, '注册') }} style={{alignItems:'flex-start', flex:1,}}>
+                                <Text>没有账号？现在注册</Text>
+                            </TouchableOpacity>
+                            : null }
+                        {this.state.step!==3?
+                            <TouchableOpacity onPress={() => { this.onChangeStep(3, '找回密码') }} style={{alignItems:'flex-end', flex:1,}}>
+                                <Text style={{}}>忘记密码？</Text>
+                            </TouchableOpacity>
+                            : null }
+                    </View>
+                </Content>
+            </Container>
         );
     }
 }

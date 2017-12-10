@@ -3,12 +3,12 @@ import {action, computed, observable, reaction, runInAction, useStrict} from 'mo
 useStrict(true);
 
 class breedItem{
-    code="";
-    title="";
+    code='';
+    title='';
     publised= new Date();
-    source="";
+    source='';
     comments=0;
-    publishFormate="";
+    publishFormate='';
 }
 
 class breedItemCollection {
@@ -16,30 +16,25 @@ class breedItemCollection {
         this.datatype = type;
     }
 
-    @observable
-    source=[];
-
-    @observable
-    end=true;
-
-    @observable
-    datatype="";
-
-    @observable
-    pageIndex=1;
-
-    pageSize=8;
-    searchTxt="";
+    @observable searchTxt='';
+    @observable source=[];
+    @observable datatype='';
+    @observable pageIndex=1;
+    @observable more= true;
+    @observable end= false;
+    @observable isLoading = true;
+    @observable pageSize=10;
 
     @action
     onLoad(){
         this.source=[];
         this.end = false;
         this.pageIndex = 1;
+        this.isLoading = true;
         this.onLoadFromApi(this.pageIndex, (items)=>{
             this.onParse(items);
             this.onCloseEnd();
-        },()=>{
+        },(err)=>{
             this.onCloseEnd();
         });
     };
@@ -55,14 +50,13 @@ class breedItemCollection {
         request.getJson(urls.apis.CMS_ARTICLE_LIST,{page: index, size: this.pageSize, type: this.datatype, txt:this.searchTxt}).then((data) => {
             callback(data);
         }).catch((err) => {
-            alert(JSON.stringify(err))
+            tools.showToast('没有更多内容了');
             falied(err);
         });
     }
 
     @action
-    onParse(list)
-    {
+    onParse(list) {
         list.forEach((e) => {
             let item = new breedItem();
             item.code = e.code;
@@ -71,24 +65,33 @@ class breedItemCollection {
             item.source = e.copy_from;
             item.publishFormate = e.formate;
             this.source.push(item);
-        })
+        });
     }
 
     @action
     onMore(){
-        this.end = false;
-        this.onLoadFromApi(this.pageIndex+1,(items)=>{
-            this.onParse(items);
-            this.pageIndex++;
-            this.onCloseEnd();
-        },()=>{
-            this.onCloseEnd();
-        });
+        if(!this.more){
+            return;
+        }else {
+            this.end = false;
+            this.onLoadFromApi(this.pageIndex + 1, (items) => {
+                this.onParse(items);
+                if (items.length < this.pageSize) {
+                    this.more = false;
+                }
+                this.pageIndex++;
+                this.onCloseEnd();
+            }, (err) => {
+                this.onCloseEnd();
+                this.more = false;
+            });
+        }
     }
 
     @action
     onCloseEnd(){
         this.end = true;
+        this.isLoading = false;
     }
 }
 
@@ -99,10 +102,9 @@ class InfoStore {
 
     @action
     onChanged(label){
-        this.currentLabel=label;
+        this.currentLabel = label;
         let data = this.onGetCurrentCollection();
-        if( data != null && data.source.length == 0 )
-        {
+        if( data != null && data.source.length == 0 ) {
             data.onLoad();
         }
     }
@@ -111,7 +113,7 @@ class InfoStore {
     @action
     onFilter(txt){
         let data = this.onGetCurrentCollection();
-        if(data==null) {
+        if(data == null) {
             return;
         }
         data.onFilter(txt);

@@ -10,7 +10,7 @@ import {WebView} from '../components';
 export default class Live extends Component {
     static navigationOptions = ({navigation})=>({
         headerTitle: '直播间',
-        headerRight: <View/>
+        headerRight: navigation.state.params && navigation.state.params.from==='homepage'?<View/>:null
     });
 
     render() {

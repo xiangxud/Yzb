@@ -21,7 +21,7 @@ class HomeStore {
     @observable errorMsg = '';
     @observable isFetching = false;
     @observable isNoMore = true;
-
+    @observable loadMore = true;
     @observable farm={};//养殖场id
 
     constructor() {
@@ -57,16 +57,16 @@ class HomeStore {
     }
 
     @action fetchNextInfos = async () => {
-        this.isFetching = true;
+        this.loadMore = true;
         this.news_page = this.news_page + 1;
         request.getJson(urls.apis.INFORMATION_LIST, {page: this.news_page}).then((res) => {
             runInAction(() => {
-                this.isFetching = false;
+                this.loadMore = false;
                 this.news.splice(this.news.length, 0, ...res);
                 //alert(JSON.stringify(res))
             });
         }).catch((error) => {
-            this.isFetching = false;
+            this.loadMore = false;
             tools.showToast(JSON.stringify(error))
         });
     }

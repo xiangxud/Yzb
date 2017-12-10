@@ -9,8 +9,9 @@ import {
     Image,
     TouchableOpacity,
 } from 'react-native'
-import {Container, Content, List, ListItem, Button, Separator, Text} from 'native-base';
+import {Container, Content, Spinner, List, ListItem, Button, Separator, Text} from 'native-base';
 import {observer} from 'mobx-react/native';
+import {MaskLoading} from '../../components';
 import userStore from "../../store/userStore";
 
 @observer
@@ -19,37 +20,39 @@ export default class BHStart extends Component {
         super(props);
         this.state={
             isSales: false,
+            isLoading: true,
         }
     }
     static navigationOptions = ({navigation})=>({
         headerTitle: '渤海监测',
         headerRight: <Button transparent light onPress={()=>navigation.navigate('BHList')}><Text>送检单</Text></Button>
     });
-    componentDidMount(){
-        var timer = setTimeout(()=>{
+    componentDidMount() {
+        var timer = setTimeout(() => {
             this.fetchData();
         }, 200);
     }
     componentWillUnMount(){
         this.timer && clearTimeout(this.timer);
     }
-    fetchData(page){
+    fetchData(){
         request.getJson(urls.apis.BH_IS_SALES, {phone: userStore.phone}).then((res)=>{
             if(res===true){
-                this.setState({isSales: true});
+                this.setState({isSales: true, isLoading: false});
             }else{
                 tools.showToast('您还不是瑞普用户,不能提交申请');
-                this.setState({isSales: false});
+                this.setState({isSales: false, isLoading: false});
             }
         }).catch((err)=>{
-            tools.showToast(err.message)
+            tools.showToast(err.message);
         });
     }
     render() {
         const { navigation } = this.props;
         return (
             <Container>
-                <Content style={styles.container}>
+                <Content>
+                    <MaskLoading show={this.state.isLoading} />
                     <View style={styles.topBox}>
                         <View style={styles.topBoxLine}>
                             <Image source={require('../../resource/bohai_logo.png')} style={{width: 40, height: 40}}/>
@@ -67,17 +70,17 @@ export default class BHStart extends Component {
                     </Separator>
                     {
                         this.state.isSales?
-                        <View>
-                            <List style={{backgroundColor:'#fff'}}>
-                                <ListItem onPress={()=>navigation.navigate('BHApply', {type: '家禽'})}>
-                                    <Text>家禽</Text>
-                                </ListItem>
-                                <ListItem onPress={()=>navigation.navigate('BHApply', {type: '家畜'})}>
-                                    <Text>家畜</Text>
-                                </ListItem>
-                            </List>
-                        </View>
-                        : null
+                            <View>
+                                <List style={{backgroundColor:'#fff'}}>
+                                    <ListItem onPress={()=>navigation.navigate('BHApply', {type: '家禽'})}>
+                                        <Text>家禽</Text>
+                                    </ListItem>
+                                    <ListItem onPress={()=>navigation.navigate('BHApply', {type: '家畜'})}>
+                                        <Text>家畜</Text>
+                                    </ListItem>
+                                </List>
+                            </View>
+                            : null
                     }
                 </Content>
             </Container>
@@ -86,9 +89,6 @@ export default class BHStart extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     topBox:{
         marginTop:5,
         padding:15,

@@ -11,7 +11,7 @@ import {
     TouchableOpacity,
 } from 'react-native'
 import {Container, Content, List, ListItem, Button, Separator, Text} from 'native-base';
-import {Loading} from '../../components'
+import {MaskLoading} from '../../components';
 import {observer} from 'mobx-react/native';
 import SheetInfo from '../../components/bohai/SheetInfo'
 
@@ -42,7 +42,7 @@ export default class BHDetail extends Component {
         request.getJson(urls.apis.BH_GET_SHEET, {sheetNo: item.sheetNo}).then((res)=>{
             this.setState({
                 data: res,
-                loading: false
+                loading: false,
             });
         }).catch((err)=>{
             tools.showToast(err.message);
@@ -59,23 +59,16 @@ export default class BHDetail extends Component {
         let { item } = this.props.navigation.state.params;
         return (
             <Container>
-                <Content style={styles.container}>
+                <Content>
                     {
                         !this.state.loading ?
                             <SheetInfo data={this.state.data}
                                        info={item}
                                        reports={this.state.reports}/>
-                            : <Loading isShow={this.state.loading}/>
+                            : <MaskLoading show={this.state.loading}/>
                     }
                 </Content>
             </Container>
         )
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor:'#e0e0e0'
-    },
-})
