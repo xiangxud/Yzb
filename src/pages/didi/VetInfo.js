@@ -42,10 +42,13 @@ export default class VetInfo extends Component {
                     </View>
                     <View style={styles.descContainer}>
                         <Text>
-                            专长：{vet.goodat}
+                            从事临床生产经验：{vet.clinic_year?vet.clinic_year:'未知'}
                         </Text>
                         <Text>
-                            成就：{vet.remark}
+                            专长：{vet.major_skill}
+                        </Text>
+                        <Text>
+                            成就：{vet.skill}
                         </Text>
                     </View>
                     <View style={{margin:20}}>

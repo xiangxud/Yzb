@@ -63,7 +63,7 @@ export default class MarkerExample extends Component {
                                     <Text style={{fontSize: 18}}>{current.name}</Text>
                                     <Text style={{fontSize: 14, color: '#ccc', marginLeft: 5}}>手机{current.phone}</Text>
                                 </View>
-                                <Text style={{marginTop: 5}}>专长：{current.goodat}</Text>
+                                <Text style={{marginTop: 5}}>专长：{current.major_skill?current.major_skill:'未知'}</Text>
                             </View>
                             <Button bordered info onPress={() => { navigation.navigate("VetInfo",{ vet: current }) }}>
                                 <Text>详情</Text>

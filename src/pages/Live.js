@@ -4,14 +4,13 @@
 import React, {Component} from 'react'
 import {
     View,
-    Text,
-    BackHandler
 } from 'react-native'
 import {WebView} from '../components';
 
 export default class Live extends Component {
     static navigationOptions = ({navigation})=>({
         headerTitle: '直播间',
+        headerRight: <View/>
     });
 
     render() {
