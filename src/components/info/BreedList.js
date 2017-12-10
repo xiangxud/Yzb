@@ -8,6 +8,7 @@ import
     TouchableNativeFeedback
 } from 'react-native';
 import {observer} from 'mobx-react/native';
+import {Loading, MaskLoading} from '../../components'
 
 @observer
 export default class BreedList extends Component{
@@ -15,8 +16,7 @@ export default class BreedList extends Component{
         super(props);
     }
 
-    componentWillMount()
-    {
+    componentWillMount() {
         this.props.source.onLoad();
     }
 
@@ -39,29 +39,16 @@ export default class BreedList extends Component{
         return <View style={{ height: 1, backgroundColor: '#e2e2e2' }}/>;
     }
     _renderFooter(){
-        // if (this.state.showFoot === 1) {
-        //     return (
-        //         <View style={{height:30,alignItems:'center',justifyContent:'flex-start',}}>
-        //             <Text style={{color:'#999999',fontSize:14,marginTop:5,marginBottom:5,}}>
-        //                 没有更多数据了
-        //             </Text>
-        //         </View>
-        //     );
-        // } else if(this.state.showFoot === 2) {
-        //     return (
-        //         <View style={styles.footer}>
-        //             <ActivityIndicator />
-        //             <Text>正在加载更多数据...</Text>
-        //         </View>
-        //     );
-        // } else if(this.state.showFoot === 0){
-        //     return (
-        //         <View style={styles.footer}>
-        //             <Text></Text>
-        //         </View>
-        //     );
-        // }
-        return <View />
+        if (!this.props.source.more) {
+            return (
+                <View style={{height:30,alignItems:'center',justifyContent:'flex-start',}}>
+                    <Text style={{color:'#999999',fontSize:14,marginTop:5,marginBottom:5,}}>
+                        没有更多数据了
+                    </Text>
+                </View>
+            );
+        }
+        return <Loading show={true}/>
     }
     render(){
         return <View style={style.list}>
@@ -69,17 +56,19 @@ export default class BreedList extends Component{
                       renderItem={this.renderRow}
                       onEndReachedThreshold={0.5}
                       ItemSeparatorComponent={this._separator}
-                      ListFooterComponent={this._renderFooter}
-                      refreshing={!this.props.source.end}
+                      ListFooterComponent={this._renderFooter()}
                       onEndReached={()=>{
                           this.props.source.onMore();
                           return true;
                       }}
+                      refreshing={this.props.source.isLoading}
                       onRefresh={()=>{
                           this.props.source.onLoad();
                           return true;
-                      }} keyExtractor={(item,key) => key}>
+                      }}
+                      keyExtractor={(item,key) => key}>
             </FlatList>
+            <MaskLoading show={this.props.source.isLoading} text={''}/>
         </View>
     }
 };

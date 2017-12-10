@@ -1,7 +1,7 @@
 import React, {PureComponent} from "react";
 import {StyleSheet, ScrollView, View} from "react-native";
 import PropTypes from 'prop-types';
-import Loading from "./Loading";
+import {Spinner} from "native-base";
 
 export default class Content extends PureComponent {
 
@@ -12,6 +12,21 @@ export default class Content extends PureComponent {
 		};
 		this.timer = null;
 	}
+
+    componentDidMount() {
+        let {isLoading} = this.state;
+        if (isLoading) {
+            this.timer = setTimeout(() => {
+                this.setState({
+                    isLoading: false
+                })
+            }, config.loadingDelayTime)
+        }
+    }
+
+    componentWillUnmount() {
+        this.timer && clearTimeout(this.timer);
+    }
 
 	render() {
 		let {isLoading} = this.state;
@@ -30,26 +45,11 @@ export default class Content extends PureComponent {
 
 		return (
 			<View style={contentStyle}>
-				<Loading isShow={isLoading}/>
+				{isLoading? <Spinner color='green'/>: null}
 				{!isLoading && children}
 			</View>
 		)
 	}
-
-	componentDidMount() {
-		let {isLoading} = this.state;
-		if (isLoading) {
-            this.timer = setTimeout(() => {
-                this.setState({
-                    isLoading: false
-                })
-            }, config.loadingDelayTime)
-		}
-	}
-
-    componentWillUnmount() {
-        this.timer && clearTimeout(this.timer);
-    }
 }
 
 Content.propTypes = {

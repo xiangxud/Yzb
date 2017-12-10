@@ -63,7 +63,7 @@ export default class MarkerExample extends Component {
                                     <Text style={{fontSize: 18}}>{current.name}</Text>
                                     <Text style={{fontSize: 14, color: '#ccc', marginLeft: 5}}>手机{current.phone}</Text>
                                 </View>
-                                <Text style={{marginTop: 5}}>专长：{current.goodat}</Text>
+                                <Text style={{marginTop: 5}}>专长：{current.major_skill?current.major_skill:'未知'}</Text>
                             </View>
                             <Button bordered info onPress={() => { navigation.navigate("VetInfo",{ vet: current }) }}>
                                 <Text>详情</Text>
@@ -74,7 +74,7 @@ export default class MarkerExample extends Component {
                             {isFetching ?
                                 <View>
                                     <Spinner color={'red'}/>
-                                    <Text style={styles.loadingText}>正在查找您附近的医生，请稍后...</Text>
+                                    <Text style={styles.loadingText}>正在获取您的位置及附近的兽医，请稍后...</Text>
                                 </View>
                                 :
                                 <Text style={styles.loadingText}>请点击地图中的标记选择兽医</Text>

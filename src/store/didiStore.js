@@ -32,7 +32,7 @@ class DidiStore {
     }
     @action setMyPosition(po){
         this.position = po;
-        this.locationInterval = 60000;
+        this.locationInterval = 120000;
         if(po.accuracy > 0 && this.vets.length === 0){
             this.fetchVets();
         }

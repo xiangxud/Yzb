@@ -6,14 +6,11 @@ import {
     ScrollView,
     StyleSheet,
     View,
-    Text,
     Image,
-    TouchableHighlight,
     Linking,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {Container, Content} from "../../components";
-import {Button} from 'native-base';
+import {Button, Icon, Text,} from 'native-base';
 
 export default class VetInfo extends Component {
     static navigationOptions = ({navigation})=>({
@@ -30,32 +27,38 @@ export default class VetInfo extends Component {
                         <Image source={{uri: vet.head_photo}} style={styles.head}/>
                         <View style={styles.userProfile}>
                             <Text style={{fontSize:18, fontWeight:'bold',}}>
-                                <Icon name={'user-circle-o'} size={20} /> { vet.name }
+                                <Icon name={'ios-contact'} style={{fontSize:20}} /> { vet.name }
                             </Text>
                             <Text style={{fontSize:14, marginTop:5, color:'#ccc'}}>
-                                <Icon name={'thumbs-o-up'} size={16} /> 已服务{vet.service_count}人
+                                <Icon name={'ios-people'} style={{fontSize:16}} /> 已服务{vet.service_count}人
                             </Text>
                             <Text style={{fontSize:14, marginTop:5, color:'#ccc'}}>
-                                <Icon name={'star-half-o'} size={16} /> 服务评分：{vet.star?vet.star:'暂无评分'}
+                                <Icon name={'ios-star-half'} style={{fontSize:16}} /> 服务评分：{vet.star?vet.star:'暂无评分'}
                             </Text>
                         </View>
                     </View>
                     <View style={styles.descContainer}>
                         <Text>
-                            专长：{vet.goodat}
+                            从事临床生产经验：{vet.clinic_year?vet.clinic_year:'未知'}
                         </Text>
                         <Text>
-                            成就：{vet.remark}
+                            专长：{vet.major_skill}
+                        </Text>
+                    </View>
+                    <View style={styles.descContainer}>
+                        <Text>
+                            简介：{vet.vitae} {vet.skill}
                         </Text>
                     </View>
                     <View style={{margin:20}}>
-                        <Button block success onPress={()=>{Linking.canOpenURL('tel:'+vet.phone).then(supported => {
+                        <Button block success large onPress={()=>{Linking.canOpenURL('tel:'+vet.phone).then(supported => {
                             if(supported){
                                 Linking.openURL('tel:'+vet.phone);
                             }else{
                                 tools.showToast('无法拨打电话'+vet.phone);
                             }
                         })}}>
+                            <Icon name={'ios-call-outline'} style={{color:'#fff'}}/>
                             <Text>给他打电话</Text>
                         </Button>
                     </View>

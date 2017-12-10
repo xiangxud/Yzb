@@ -3,15 +3,13 @@
  */
 import React, {Component} from 'react'
 import {
-    ScrollView,
     View,
     StyleSheet,
-    Image,
     FlatList,
     TouchableOpacity,
 } from 'react-native'
 import {Container, Content, Text} from 'native-base';
-import {Loading} from '../../components'
+import {MaskLoading} from '../../components';
 import {observer} from 'mobx-react/native';
 import userStore from "../../store/userStore";
 
@@ -71,10 +69,10 @@ export default class BHList extends Component {
     renderItem = (item) =>{
         return (<TouchableOpacity onPress={()=>this.props.navigation.navigate('BHDetail', {item: item})}>
             <View style={styles.item}>
-                <View style={{flexDirection:'row', alignItems:'center', borderBottomWidth:1, borderBottomColor:'#ccc', marginBottom:5, paddingBottom:5}}>
+                <View style={styles.bhNo}>
                     <Text style={{fontSize:18, flex:1,}}>众联单号 {item.sheetNo}</Text>
                     <Text style={{color:'gray'}}>{item.submitDate.substr(0, 10)}</Text>
-                    <Text style={{backgroundColor:'#ff9800',color:'#fff', marginLeft:3, paddingLeft:3, paddingRight:3, borderRadius:3}}>{item.status}</Text>
+                    <Text style={styles.statusText}>{item.status}</Text>
                 </View>
                 <View style={{flexDirection:'row',}}>
                     <Text style={{flex:1, fontWeight:'bold'}}>{item.farmName}</Text>
@@ -84,13 +82,14 @@ export default class BHList extends Component {
         </TouchableOpacity>);
     }
     renderFooter = () => {
-        return <Loading isShow={this.state.loading}/>
+        return null;
     };
     render() {
         const { navigation } = this.props;
         return (
             <Container>
-                <Content style={styles.container}>
+                <Content>
+                    <MaskLoading show={this.state.loading}/>
                     <FlatList
                         data={this.state.data}
                         renderItem={({ item }) => this.renderItem(item)}
@@ -109,13 +108,25 @@ export default class BHList extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     item:{
         marginTop:10,
         padding:10,
         backgroundColor:'#fff',
     },
-
+    bhNo:{
+        flexDirection:'row',
+        alignItems:'center',
+        borderBottomWidth:1,
+        borderBottomColor:'#ccc',
+        marginBottom:5,
+        paddingBottom:5
+    },
+    statusText:{
+        backgroundColor:'#ff9800',
+        color:'#fff',
+        marginLeft:3,
+        paddingLeft:3,
+        paddingRight:3,
+        borderRadius:3
+    },
 })

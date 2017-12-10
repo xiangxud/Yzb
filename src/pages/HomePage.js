@@ -11,14 +11,14 @@ import {
     TouchableNativeFeedback,
 } from 'react-native';
 import {observer, inject} from 'mobx-react/native';
-
+import {Container, Content} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SwiperBanner from '../components/home/SwiperBanner';
 import MySties from '../components/home/MySties';
 import Reminds from "../components/home/Reminds";
-import Report from "../components/home/Report";
+//import Report from "../components/home/Report";
 import TitleBar from '../components/common/TitleBar'
-import {Loading} from '../components'
+import {Loading, MaskLoading} from '../components'
 
 @inject('homeStore')
 @observer
@@ -47,27 +47,26 @@ export default class HomePage extends Component {
         homeStore.fetchNextInfos();
     }
     onStyPress(sty){
-        const {navigation} = this.props;
-        let { sties } = homeStore;
         let list=[];
-        sties.forEach((item)=>{
+        homeStore.sties.forEach((item)=>{
             list.push({
                 code:item.id,
                 title:item.name
             });
         });
-        navigation.navigate("Sty",{ code : sty.id , title:sty.name, list : list , farm : homeStore.farm });
+        this.props.navigation.navigate("Sty",{ code : sty.id , title:sty.name, list : list , farm : homeStore.farm });
     }
 
     onAddSty(){
-        const {navigation} = this.props;
-        navigation.navigate("AddSty",{ farm : homeStore.farm });
+        this.props.navigation.navigate("AddSty",{ farm : homeStore.farm });
     }
 
     renderListHeader(){
         const {isFetching, reminds, fields, sties} = homeStore;
         return (
-            <View>
+            <Container>
+                <Content>
+                    <MaskLoading show={isFetching}/>
                 <View style={{height:120, backgroundColor:'#ffc'}}>
                     <SwiperBanner />
                 </View>
@@ -84,7 +83,7 @@ export default class HomePage extends Component {
                             <Text>滴滴兽医</Text>
                         </View>
                     </TouchableHighlight>
-                    <TouchableHighlight underlayColor={'#f9f3f9'} onPress={()=> this.props.navigation.navigate('Live') } style={styles.homeBigButton}>
+                    <TouchableHighlight underlayColor={'#f9f3f9'} onPress={()=> this.props.navigation.navigate('Live', {from: 'homepage'}) } style={styles.homeBigButton}>
                         <View style={styles.homeBigButtonInner}>
                             <Icon name='video-camera' color={'#F1745E'} size={34} />
                             <Text>直播间</Text>
@@ -110,7 +109,8 @@ export default class HomePage extends Component {
                           title={'养殖头条'}
                           showMore = {true}
                           onMorePress={()=>{this.remindMore('news')}} />
-            </View>
+                </Content>
+            </Container>
         )
     }
     _keyExtractor = (item, index) => index;
@@ -132,14 +132,14 @@ export default class HomePage extends Component {
     }
     render() {
         const {homeStore} = this.props;
-        const {isFetching, news, news_page} = homeStore;
+        const {isFetching, news, news_page, loadMore} = homeStore;
         return (
                 <FlatList
                     style={styles.container}
                     data={news.slice()}
                     renderItem={({ item }) => this.renderRow(item) }
                     ListHeaderComponent={this.renderListHeader()}
-                    ListFooterComponent={<Loading isShow={isFetching}/>}
+                    ListFooterComponent={<Loading show={loadMore}/>}
                     keyExtractor={ this._keyExtractor }
                     onRefresh={()=>{homeStore.fetchHomeData()}}
                     refreshing = {isFetching}

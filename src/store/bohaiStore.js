@@ -81,6 +81,12 @@ class BohaiStore {
     @observable modalBreedsVisible = false;
     @observable modalGenerationsVisible = false;
 
+    @observable isFetching = true;
+
+
+    @action setFetch(res){
+        this.isFetching = res;
+    }
     // constructor(){
     //     this.addTestItem();
     // }
@@ -161,10 +167,12 @@ class BohaiStore {
 
     @action setBreeds = (brees) => {
         this.picker_poultry_breeds = brees;
+        this.setFetch(false);
     }
     @action setTestItems = (items) =>{
         this.poultry_test_items = items.poultry_items;
         this.livestock_test_items = items.livestock_items;
+        this.setFetch(false);
     }
     @action nextStep(v) {
         if (this.step < 6) {

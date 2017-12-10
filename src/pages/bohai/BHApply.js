@@ -22,6 +22,7 @@ import Step3 from '../../components/bohai/Step3';
 import Step4 from '../../components/bohai/Step4';
 import Step5 from '../../components/bohai/Step5';
 import Step6 from '../../components/bohai/Step6';
+import {MaskLoading} from '../../components';
 
 @inject('bohaiStore')
 @observer
@@ -33,17 +34,23 @@ export default class BHApply extends Component {
 
     componentDidMount () {
         let animalType = this.props.navigation.state.params.type;
+        bohaiStore.setFetch(true);
         if(animalType){
             bohaiStore.set('animalType', animalType);
         }
         var timer = setTimeout(()=>{
-            request.getJson(urls.apis.BH_BREEDS, null).then((res)=>{
-                bohaiStore.setBreeds(res);
-            }).catch((err)=>{alert(JSON.stringify(err))});
-            request.getJson(urls.apis.BH_TEST_TYPES, null).then((res)=>{
-                bohaiStore.setTestItems(res);
-            }).catch((err)=>tools.showToast('获取检测项目失败'));
+            this._fetch();
         }, 1000);
+    }
+    _fetch = () => {
+        if(bohaiStore.data.animalType==='家禽') {
+            request.getJson(urls.apis.BH_BREEDS, null).then((res) => {
+                bohaiStore.setBreeds(res);
+            }).catch((err) => tools.showToast(err.message));
+        }
+        request.getJson(urls.apis.BH_TEST_TYPES, null).then((res)=>{
+            bohaiStore.setTestItems(res);
+        }).catch((err)=>tools.showToast(err.message));
     }
     componentWillUnmount(){
         this.timer && clearTimeout(this.timer);
@@ -167,8 +174,9 @@ export default class BHApply extends Component {
                 tools.showToast('请选择销售审批人')
             }else{
                 //提交到数据库
+                bohaiStore.setFetch(true);
                 request.postJson(urls.apis.BH_POST_SHEET, data).then((res)=>{
-                    //alert(JSON.stringify(res));
+                    bohaiStore.setFetch(false);
                     Alert.alert(
                         '成功提交',
                         '您的检测申请单已经成功提交，请耐心等待审核。',
@@ -562,6 +570,7 @@ export default class BHApply extends Component {
                         </Content>
                     </ScrollView>
                 </Modal>
+                <MaskLoading show={bohaiStore.isFetching}/>
             </Container>
         )
     }
