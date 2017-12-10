@@ -10,7 +10,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import {observer} from 'mobx-react/native'
-import { Form, Item, Input, Label, Picker, Icon } from 'native-base';
+import { Form, Item, Input, Label, Icon } from 'native-base';
 const Step1 = observer((props)=> {
     const { navigation } = props;
     return (

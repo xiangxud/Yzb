@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TouchableWithoutFeedback,
     TouchableOpacity,
     View,} from 'react-native';
 //import LinearGradient from 'react-native-linear-gradient';
 import {NavigationActions} from 'react-navigation';
 import { inject, observer } from 'mobx-react/native'
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import Spinner from 'react-native-spinkit';
+import {Icon, Form, Item, Input, Label, Text} from 'native-base';
 import AnooTextInput from '../components/AnooTextInput';
 const dismissKeyboard = require('dismissKeyboard');
 
@@ -126,7 +125,7 @@ export default class LoginScreen extends Component {
         if (this.state.step > 1) {
             return (
                 <TouchableWithoutFeedback onPress={()=>{ this.onChangeStep(1, '登录'); }}>
-                    <Icon style={styles.backArrow} name="keyboard-backspace" size={30} color="#fff" />
+                    <Icon name="ios-arrow-round-back" style={styles.backArrow} />
                 </TouchableWithoutFeedback>
             )
         }
@@ -136,24 +135,26 @@ export default class LoginScreen extends Component {
         if (this.state.step === 1) {
             return (
                 <View style={styles.animView}>
-                    <AnooTextInput
-                        placeHolder={'请输入手机号码'}
-                        label = {'手机号'}
-                        inputProps={{
-                            keyboardType: 'phone-pad',
-                            autoCapitalize: 'none',
-                            autoCorrect: false,
-                            maxLength: 11
-                        }}
-                        onChange={(text)=> userStore.setLoginPhone(text)}/>
-                    <AnooTextInput
-                        label = {'密码'}
-                        placeHolder={'请输入登陆密码'}
-                        inputProps={{
-                            secureTextEntry: true,
-                            maxLength: 16
-                        }}
-                        onChange={(text)=> userStore.setLoginPassword(text)}/>
+                    <Form>
+                        <Item fixedLabel style={styles.pdR}>
+                            <Label>手机号</Label>
+                            <Input placeholder="请输入手机号码"
+                                   maxLength={11}
+                                   keyboardType={'phone-pad'}
+                                   autoCapitalize='none'
+                                   autoCorrect={false}
+                                   onChangeText={(text)=> userStore.setLoginPhone(text)} />
+                        </Item>
+                        <Item fixedLabel last>
+                            <Label>登录密码</Label>
+                            <Input placeholder="请输入登陆密码"
+                                   maxLength={16}
+                                   secureTextEntry={true}
+                                   onTextChange={(text)=> userStore.setLoginPassword(text)}
+
+                            />
+                        </Item>
+                    </Form>
                 </View>
             );
         }
@@ -292,11 +293,12 @@ const styles = StyleSheet.create({
         paddingBottom: 20
     },
     backArrow: {
+        top: 15,
+        left: 15,
+        color:'#fff',
         position: 'absolute',
         backgroundColor: 'transparent',
-        top: 15,
         alignSelf: 'flex-start',
-        left: 15
     },
     logo: {
         height: 65,

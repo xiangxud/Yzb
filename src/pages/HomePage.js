@@ -105,7 +105,6 @@ export default class HomePage extends Component {
                              exec={this.exec}
                              ignore={this.exec}/>
                     :null}
-                <Report fields={fields} morePress={this.remindMore}/>
                 <TitleBar icon={'newspaper-o'}
                           iconColor={'red'}
                           title={'养殖头条'}
