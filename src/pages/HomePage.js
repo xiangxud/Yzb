@@ -56,7 +56,7 @@ export default class HomePage extends Component {
                 title:item.name
             });
         });
-        navigation.navigate("Sty",{ code : sty.id , list : list , farm : homeStore.farm });
+        navigation.navigate("Sty",{ code : sty.id , title:sty.name, list : list , farm : homeStore.farm });
     }
 
     onAddSty(){

@@ -52,14 +52,34 @@ const ValidateInput = observer(function ValidateInput({label, data , name , plac
     }
 });
 
-const ValidateChooseItem = observer(function ValidateChooseItem({label, data , name ,getOptions,optionslabel, placeholder,onChange,...props}){
+const ValidateInputInt = observer(function ValidateInput({label, data , name , placeholder,onChange,...props}){
+    let errNode = camelCase( 'validateError',name );
+    let value = data[name];
+
+    if(data["submited"] && data[errNode] && data[errNode] != null && data[errNode]!=""){
+        return (
+            <Item error fixedLabel {...props}>
+                <Label>{label}</Label>
+                <Input placeholder={placeholder} keyboardType="numeric" value={`${value}`} onChangeText={onChange} placeholderTextColor='#b1b1b1' />
+                <Icon name='close-circle' />
+            </Item>
+        )
+    }else {
+        return (
+            <Item fixedLabel style={style.rightPadding} {...props}>
+                <Label>{label}</Label>
+                <Input placeholder={placeholder} keyboardType="numeric" value={`${value}`} onChangeText={onChange} placeholderTextColor='#b1b1b1' />
+            </Item>
+        )
+    }
+});
+
+const ValidateChooseItem = observer(function ValidateChooseItem({label, data , name ,getOptions,selectOptions,optionslabel, placeholder,onChange,...props}){
     let onPress =() => {
-        debugger;
-        let options = getOptions();
-
-        let instance = ActionSheet.actionsheetInstance;
-
-        debugger;
+        let options = getOptions?getOptions():[];
+        if(selectOptions){
+            selectOptions.forEach(o=> options.push(o));
+        }
 
         ActionSheet.show(
             {
@@ -68,9 +88,6 @@ const ValidateChooseItem = observer(function ValidateChooseItem({label, data , n
                 cancelButtonIndex:-1
             },
             (index) => {
-
-                debugger;
-
                 if( index >= 0 && index < options.length ){
                     onChange(options[index]);
                 }
@@ -143,7 +160,6 @@ class ValidateInputDate extends Component{
     }
 }
 
-
 const ValidRadioItem = observer(function ValidateChooseItem({label, value ,selectValue, onChanged}){
     let selected = value == selectValue;
     return (
@@ -208,6 +224,4 @@ class ValidateRadioInput extends Component{
     }
 }
 
-
-
-export { ValidateInput,ValidateInputDate,ReadOnlyInput,ValidateChooseItem,ValidateRadioInput }
+export { ValidateInput,ValidateInputInt,ValidateInputDate,ReadOnlyInput,ValidateChooseItem,ValidateRadioInput }
