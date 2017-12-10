@@ -1,66 +1,54 @@
 import {AsyncStorage} from 'react-native'
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
 import validate from 'mobx-form-validate';
+import storeBase from '../store/common/storeBase';
 
 import _ from "lodash";
 useStrict(true);
 
-class outPetStore {
+class outPetStore extends storeBase {
     farm={};
     styId="";
-
-    @observable
-    styName="";
-
-    @observable
-    otherStyOptions=[];//其它栋舍
-
-    @observable
-    batchsOptions=[];//其它批次
-    @observable
-    batchs=[];
-
-    @observable
-    showTransferSty=false;
-
-
+    @observable styName="";
+    @observable otherStyOptions=[];//其它栋舍
+    @observable batchsOptions=[];//其它批次
+    @observable batchs=[];
+    @observable showTransferSty=false;
     data={
         Id:'',
         StyId:'',
         FarmId:'',
-        @observable
-
-        Genus:'',
-
-        @observable
-        Collection:{
-            @observable
-            Normal:0,
-            @observable
-            Death:0,
-            @observable
-            Eliminate:0,
-            @observable
-            Other:0,
-            @observable
-            Transfer:0
+        @observable Genus:'',
+        @observable Collection:{
+            @observable Normal:0,
+            @observable Death:0,
+            @observable Eliminate:0,
+            @observable Other:0,
+            @observable Transfer:0
         },
 
-        @observable
-        Day:0,
-        @observable
-        BatchNumber:'',
-        @observable
-        Type:1,//操作类型
-        @observable
-        OutDate:'',//出栏日期
-        @observable
-        Reason:'',
-        @observable
-        TransferSty:'',//转移到的栋舍
-        @observable
-        TransferStyName:''
+        @validate(/^\+?[1-9]\d*$/, '日龄必填且为数值')
+        @observable Day:0,
+        @observable BatchNumber:'',
+        @observable Type:1,//操作类型
+
+        @validate(/\S+$/, '出栏日期必填且正确')
+        @observable OutDate:'',//出栏日期
+        @observable Reason:'',
+        @observable TransferSty:'',//转移到的栋舍
+        @observable TransferStyName:'',
+
+        //验证信息
+        @computed get validateItemTransferStyName(){
+            //1、自定义验证
+            if( this.Collection.Transfer && this.Collection.Transfer > 0 && (!this.TransferStyName || this.TransferStyName == null || this.TransferStyName=="") ){
+                return "转移到栋舍必填";
+            }else{
+                return "";
+            }
+        },
     }
+
 
     OutPetReasonTypeEum = {
         Normal: { Label: '销售出栏', Transfer: false },

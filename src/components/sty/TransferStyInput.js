@@ -13,9 +13,9 @@ export default class TransferStyInput extends Component{
     }
 
     render(){
-        let {show,label,data,name,options,placeholder,onChanged} = this.props;
+        let {show,label,data,name,options,placeholder,IsValidate,onChanged} = this.props;
         if(show){
-            return (<ValidateChooseItem label={label} data={data} name={name} selectOptions={options} optionslabel={label} placeholder={placeholder} onChange={onChanged} />);
+            return (<ValidateChooseItem label={label} data={data} name={name} IsValidate={IsValidate} selectOptions={options} optionslabel={label} placeholder={placeholder} onChange={onChanged} />);
         }else{
             return null;
         }

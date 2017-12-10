@@ -23,6 +23,21 @@ const style = StyleSheet.create({
     }
 });
 
+class validateHepler {
+    static getMess(dataitem,name){
+        let mess=[];
+        let errNode = camelCase( 'validateError',name );
+        let printErrNode = camelCase('validateItem',name);
+        if( dataitem[errNode] && dataitem[errNode] != null && dataitem[errNode]!=""  ){
+            mess.push(dataitem[errNode]);
+        }
+        if( dataitem[printErrNode] && dataitem[printErrNode] != null && dataitem[printErrNode]!=""  ){
+            mess.push(dataitem[printErrNode]);
+        }
+        return mess.length > 0;
+    }
+}
+
 const ReadOnlyInput = observer(function ReadOnlyInput({label, value}){
         return (
             <Item fixedLabel style={style.rightPadding}>
@@ -32,9 +47,8 @@ const ReadOnlyInput = observer(function ReadOnlyInput({label, value}){
         )
 });
 
-const ValidateInput = observer(function ValidateInput({label, data , name , placeholder,onChange,...props}){
-    let errNode = camelCase( 'validateError',name );
-    if(data["submited"] && data[errNode] && data[errNode] != null && data[errNode]!=""){
+const ValidateInput = observer(function ValidateInput({label, data , name ,IsValidate, placeholder,onChange,...props}){
+    if(IsValidate && validateHepler.getMess(data,name)){
         return (
             <Item error fixedLabel {...props}>
                 <Label>{label}</Label>
@@ -52,11 +66,9 @@ const ValidateInput = observer(function ValidateInput({label, data , name , plac
     }
 });
 
-const ValidateInputInt = observer(function ValidateInput({label, data , name , placeholder,onChange,...props}){
-    let errNode = camelCase( 'validateError',name );
+const ValidateInputInt = observer(function ValidateInputInt({label, data , name ,IsValidate, placeholder,onChange,...props}){
     let value = data[name];
-
-    if(data["submited"] && data[errNode] && data[errNode] != null && data[errNode]!=""){
+    if(IsValidate && validateHepler.getMess(data,name)){
         return (
             <Item error fixedLabel {...props}>
                 <Label>{label}</Label>
@@ -74,7 +86,7 @@ const ValidateInputInt = observer(function ValidateInput({label, data , name , p
     }
 });
 
-const ValidateChooseItem = observer(function ValidateChooseItem({label, data , name ,getOptions,selectOptions,optionslabel, placeholder,onChange,...props}){
+const ValidateChooseItem = observer(function ValidateChooseItem({label, data , name ,getOptions,selectOptions,optionslabel,IsValidate, placeholder,onChange,...props}){
     let onPress =() => {
         let options = getOptions?getOptions():[];
         if(selectOptions){
@@ -94,10 +106,9 @@ const ValidateChooseItem = observer(function ValidateChooseItem({label, data , n
             }
         )
     }
-    let errNode = camelCase( 'validateError',name );
-    if(data["submited"] && data[errNode] && data[errNode] != null && data[errNode]!=""){
+    if(IsValidate && validateHepler.getMess(data,name)){
         return (
-            <Item onPress={onPress} fixedLabel {...props}>
+            <Item error onPress={onPress} fixedLabel {...props}>
                 <Label>{label}</Label>
                 <Input editable={false} value={data[name]} placeholder={placeholder} placeholderTextColor='#b1b1b1' />
                 <Icon style={style.ico} active name="ios-arrow-forward" />
@@ -139,11 +150,10 @@ class ValidateInputDate extends Component{
     }
 
     render(){
-        let { data,label,name,placeholder } = this.props;
-        let errNode = camelCase( 'validateError',name );
-        if(data["submited"] && data[errNode] && data[errNode] != null && data[errNode]!=""){
+        let { data,label,name,IsValidate,placeholder } = this.props;
+        if(IsValidate && validateHepler.getMess(data,name)){
             return (
-                <Item error fixedLabel>
+                <Item error fixedLabel  onPress={this.showDatePicker.bind(this)}>
                     <Label>{label}</Label>
                     <Input placeholderTextColor='#b1b1b1' editable={false} placeholder={placeholder} value={data[name]} />
                     <Icon name='close-circle' />
@@ -160,7 +170,7 @@ class ValidateInputDate extends Component{
     }
 }
 
-const ValidRadioItem = observer(function ValidateChooseItem({label, value ,selectValue, onChanged}){
+const ValidRadioItem = observer(function ValidRadioItem({label, value ,selectValue, onChanged}){
     let selected = value == selectValue;
     return (
         <ListItem fixedLabel style={style.rightPadding} onPress={()=>{

@@ -59,8 +59,15 @@ export default class OutPet extends Component{
                                                        }} /> );
     }
 
+    onCommit(){
+        const {outPetStore} = this.props;
+        let mess = outPetStore.onValidate();
+        for(let i=0;i<mess.length;i++){
+         alert(mess[i]);
+        }
+    }
 
-    buttons=[{title:'取消' , default:false, onPress:()=>{}},{title:'提交' , default:true, onPress:()=>{}}];
+    buttons=[{title:'取消' , default:false, onPress:()=>{}},{title:'提交' , default:true, onPress:()=>{ this.onCommit() }}];
     render(){
 
         const {outPetStore} = this.props;
@@ -73,12 +80,12 @@ export default class OutPet extends Component{
                             <Icon style={style.titleIco} name="ios-book" active></Icon><Text>{outPetStore.styName}出栏</Text>
                         </ListItem>
                         <ValidateChooseItem label="动物批次" data={outPetStore.data} name="BatchNumber" selectOptions={outPetStore.batchsOptions} optionslabel="动物批次" placeholder="请选择动物批次" onChange={(e)=>{outPetStore.onUpdate({BatchNumber:e})}} />
-                        <ValidateInputInt label="日龄" data={outPetStore.data} name="Day" placeholder="如 20" onChange={(e)=>{outPetStore.onUpdate({Day:e})}} />
+                        <ValidateInputInt label="日龄" data={outPetStore.data} name="Day"  IsValidate={outPetStore.IsValidate} placeholder="如 20" onChange={(e)=>{outPetStore.onUpdate({Day:e})}} />
 {
     this.renderOutNumber()
 }
-                        <ValidateInputDate label="出栏日期" data={outPetStore.data} name="OutDate" placeholder="出栏日期" onChange={(e)=>{outPetStore.onUpdate({OutDate:e})}} />
-                        <TransferStyInput show={outPetStore.showTransferSty} label="转移到" data={outPetStore.data} options={outPetStore.otherStyOptions} name="TransferStyName" placeholder="转移到的栋舍" onChanged={(e)=>{outPetStore.onUpdate({TransferSty:e.value,TransferStyName:e.text})}} />
+                        <ValidateInputDate label="出栏日期" data={outPetStore.data} name="OutDate" IsValidate={outPetStore.IsValidate} placeholder="出栏日期" onChange={(e)=>{outPetStore.onUpdate({OutDate:e})}} />
+                        <TransferStyInput show={outPetStore.showTransferSty} label="转移到" data={outPetStore.data} IsValidate={outPetStore.IsValidate} options={outPetStore.otherStyOptions} name="TransferStyName" placeholder="转移到的栋舍" onChanged={(e)=>{outPetStore.onUpdate({TransferSty:e.value,TransferStyName:e.text})}} />
                     </Form>
                 </Content>
                 <FootBar buttons={this.buttons}></FootBar>
