@@ -6,20 +6,25 @@ import {
     Text,
     View,
     StyleSheet,
-    TouchableHighlight,
+    TouchableNativeFeedback,
     Image,
     ScrollView,
     Dimensions
 } from 'react-native';
-import CommonStyles from '../../styles'
-import {observer, inject} from 'mobx-react/native'
+import {Icon} from 'native-base';
+import {observer, inject} from 'mobx-react/native';
 import TitleBar from '../common/TitleBar';
+
 var {height, width} = Dimensions.get('window');
+
 const Sty = ({sty, getSty, isCurrent}) =>{
     return (
-        <TouchableHighlight onPress={()=>{getSty(sty)}} style={[styles.styBox, isCurrent? styles.current: {}]}>
-            <Text>{sty.name}</Text>
-        </TouchableHighlight>
+        <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={()=>{getSty(sty)}}>
+            <View style={[styles.styBox, isCurrent? styles.currentSty: {}]}>
+                <Icon name={'ios-keypad'+(!sty.total?'-outline':'')} style={isCurrent?styles.currentText:{color:'#8b8b8b'}} />
+                <Text style={isCurrent?styles.currentText:{}}>{sty.name.substr(0, 6)}</Text>
+            </View>
+        </TouchableNativeFeedback>
     );
 }
 @inject('homeStore')
@@ -37,9 +42,11 @@ export default class MySties extends Component {
             <View style={styles.container}>
                 <TitleBar icon={'bank'} iconColor={'red'} title={'我的栋舍'} />
                 <ScrollView horizontal={true} style={styles.stiesContainer}>
-                    <View style={[styles.styBox, styles.addSty]}>
-                        <Text style={{fontSize:18,}} onPress={this.props.onAddSty}>添加栋舍</Text>
-                    </View>
+                    <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={this.props.onAddSty}>
+                        <View style={[styles.styBox, styles.addSty]}>
+                            <Icon name={'ios-add-circle-outline'} style={{fontSize:40, color:'#15856e'}}/>
+                        </View>
+                    </TouchableNativeFeedback>
                     {sties.map((val, key) => (
                         <Sty key={key} sty={val} getSty={this.getSty} isCurrent={currentSty.id===val.id}/>
                     ))}
@@ -47,15 +54,19 @@ export default class MySties extends Component {
                 <View style={{}}>
                     <View style={{flex:1, height:300, backgroundColor:'#efc'}}>
                         <View style={{height:100, backgroundColor:'#fae4ac'}}>
-                            <Text>{homeStore.currentSty.genus}</Text>
+                            <Image source={require('../../resource/video.jpg')} style={{height:100, width: width}}/>
                         </View>
                         <View style={{height:200, backgroundColor:'#f9f3f9', marginTop:1}}>
+                            <Text>
+                                栋舍温度：13
+                                栋舍湿度：23
+                                二氧化碳：32
+                            </Text>
                             <Text onPress={()=>this.props.onStyPress(homeStore.currentSty)} style={{
-                                height:60,
                                 backgroundColor:'yellow',
+                                textAlignVertical:'center',
                                 width:60,
-                                textAlignVertical:'center'
-                            }}>详情</Text>
+                            }}>栋舍详情</Text>
                         </View>
                     </View>
                 </View>
@@ -72,20 +83,30 @@ const styles = StyleSheet.create({
     stiesContainer:{
         width: width,
         height:70,
-        backgroundColor:'#ffa'
+        marginBottom:5,
+        backgroundColor:'#fff'
     },
     addSty:{
-        backgroundColor:'#ff0',
+        backgroundColor:'#f9f3f9',
+        justifyContent:'center',
+        marginLeft:5,
     },
     styBox:{
         width:70,
         height:70,
         borderWidth:1,
-        borderColor:'#FAFAFA',
+        borderColor:'#e2e2e2',
+        borderRadius:5,
         justifyContent:'center',
         alignItems:'center',
+        padding:10,
+        marginRight:5,
     },
-    current:{
-        backgroundColor:'red'
+    currentSty:{
+        borderColor:'#15856e',
+        backgroundColor:'#15856e'
+    },
+    currentText:{
+        color:'#fff'
     }
 });

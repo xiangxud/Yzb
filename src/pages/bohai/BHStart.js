@@ -79,9 +79,6 @@ export default class BHStart extends Component {
                         </View>
                         : null
                     }
-                    <Button style={{backgroundColor:'red', }} block onPress={()=>this.error()}>
-                        <Text style={{color:'white'}}>测试按钮，方便开发</Text>
-                    </Button>
                 </Content>
             </Container>
         )

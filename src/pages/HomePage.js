@@ -72,25 +72,25 @@ export default class HomePage extends Component {
                     <SwiperBanner />
                 </View>
                 <View style={{marginTop:10, marginBottom:10, backgroundColor:'#fff', height:80, flexDirection:'row'}}>
-                    <TouchableHighlight onPress={()=> this.props.navigation.navigate('BHStart') } style={styles.homeBigButton}>
+                    <TouchableHighlight underlayColor={'#f9f3f9'} onPress={()=> this.props.navigation.navigate('BHStart') } style={styles.homeBigButton}>
                         <View style={styles.homeBigButtonInner}>
                             <Icon name='medkit' color={'#8bc34a'} size={34} />
                             <Text>动物诊疗</Text>
                         </View>
                     </TouchableHighlight>
-                    <TouchableHighlight onPress={()=> this.props.navigation.navigate('Didi') } style={styles.homeBigButton}>
+                    <TouchableHighlight underlayColor={'#f9f3f9'} onPress={()=> this.props.navigation.navigate('Didi') } style={styles.homeBigButton}>
                         <View style={styles.homeBigButtonInner}>
                             <Icon name='user-md' color={'#50AAF0'} size={34} />
                             <Text>滴滴兽医</Text>
                         </View>
                     </TouchableHighlight>
-                    <TouchableHighlight onPress={()=> this.props.navigation.navigate('Main.Live') } style={styles.homeBigButton}>
+                    <TouchableHighlight underlayColor={'#f9f3f9'} onPress={()=> this.props.navigation.navigate('Live') } style={styles.homeBigButton}>
                         <View style={styles.homeBigButtonInner}>
                             <Icon name='video-camera' color={'#F1745E'} size={34} />
                             <Text>直播间</Text>
                         </View>
                     </TouchableHighlight>
-                    <TouchableHighlight onPress={()=> this.props.navigation.navigate('Quotes') } style={styles.homeBigButton}>
+                    <TouchableHighlight underlayColor={'#f9f3f9'} onPress={()=> this.props.navigation.navigate('Quotes') } style={styles.homeBigButton}>
                         <View style={styles.homeBigButtonInner}>
                             <Icon name='line-chart' color={'#009688'} size={34} />
                             <Text>行情</Text>

@@ -47,7 +47,7 @@ export default class BHList extends Component {
                 refreshing: false
             });
         }).catch((err)=>{
-            alert(err);
+            tools.showToast(err.message);
         });
     }
     handleRefresh = () => {
@@ -69,7 +69,7 @@ export default class BHList extends Component {
         );
     };
     renderItem = (item) =>{
-        return (<TouchableOpacity onPress={()=>this.props.navigation.navigate('BHDetail', {sheetNo: item.sheetNo})}>
+        return (<TouchableOpacity onPress={()=>this.props.navigation.navigate('BHDetail', {item: item})}>
             <View style={styles.item}>
                 <View style={{flexDirection:'row', alignItems:'center', borderBottomWidth:1, borderBottomColor:'#ccc', marginBottom:5, paddingBottom:5}}>
                     <Text style={{fontSize:18, flex:1,}}>众联单号 {item.sheetNo}</Text>
