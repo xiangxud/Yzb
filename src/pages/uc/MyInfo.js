@@ -173,7 +173,7 @@ export default class MyInfo extends Component {
                             }}
                         />
                     </View>
-                    <View style={styles.row}>
+                    /*<View style={styles.row}>
                         <Text>性别</Text>
                         <Text>{loginUser.sex === 1 ? '男' : '女'}</Text>
                     </View>
@@ -197,7 +197,7 @@ export default class MyInfo extends Component {
                                 this.setState({date: date})
                             }}
                         />
-                    </View>
+                    </View>*/
                     <View style={styles.row}>
                         <Text>公司名称</Text>
                         <TextInput

@@ -8,7 +8,7 @@ import {
 import {NavigationActions} from 'react-navigation';
 import { inject, observer } from 'mobx-react/native'
 import Spinner from 'react-native-spinkit';
-import {Icon, Form, Item, Input, Label, Text} from 'native-base';
+import {Icon, Form, Item, Input, Label, Text, Button} from 'native-base';
 import AnooTextInput from '../components/AnooTextInput';
 const dismissKeyboard = require('dismissKeyboard');
 
@@ -31,10 +31,6 @@ export default class LoginScreen extends Component {
 
     onChangeStep = (step, stepTitle) => {
         this.setState({step: step, stepTitle: stepTitle});
-    }
-    onTextChange = (v) =>{
-        const {userStore} = this.props;
-        userStore.setLoginPhone(v)
     }
     _login = () => {
         this.loginRequest = requestAnimationFrame(() => {
@@ -161,93 +157,74 @@ export default class LoginScreen extends Component {
         else if (this.state.step === 2) {
             return (
                 <View style={styles.animView}>
-                    <AnooTextInput
-                        placeHolder={'请输入手机号'}
-                        label={'手机号'}
-                        inputProps={{
-                            keyboardType: 'phone-pad',
-                            autoCapitalize: 'none',
-                            autoCorrect: false,
-                            autoFocus: false
-                        }}
-                        maxLength={11}
-                        onChange={(text)=>userStore.setLoginPhone(text)}/>
-                    <View>
-                        <AnooTextInput
-                            label={'验证码'}
-                            placeHolder={'请输入6位验证码'}
-                            inputProps={{
-                                value: '123456',
-                                maxLength:6
-                            }}
-                            onChange={(text)=>userStore.setRegisterValidateCode(text)}/>
-                        <TouchableOpacity style={styles.btnGetCode}>
-                            <Text style={{color:'#fff'}}>获取验证码</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <AnooTextInput
-                        label={'登陆密码'}
-                        placeHolder={'登录密码(6-20位)'}
-                        inputProps={{
-                            secureTextEntry: true,
-                            maxLength:16,
-                            value: '123456'
-                        }}
-                        onChange={(text)=>userStore.setRegisterPassword(text)}/>
-                    <AnooTextInput
-                        label={'重复密码'}
-                        placeHolder={'请输入上面相同的密码'}
-                        inputProps={{
-                            secureTextEntry: true,
-                            maxLength:16,
-                            value: '123456'
-                        }}
-                        onChange={(text)=>userStore.setRegisterPasswordRepeat(text)}/>
+                    <Item fixedLabel style={styles.pdR}>
+                        <Label>手机号码</Label>
+                        <Input placeholder="请输入手机号码"
+                               maxLength={11}
+                               keyboardType={'phone-pad'}
+                               autoCapitalize='none'
+                               autoCorrect={false}
+                               onChangeText={(text)=> userStore.setLoginPhone(text)} />
+                    </Item>
+                    <Item fixedLabel style={styles.pdR}>
+                        <Label>验证码</Label>
+                        <Input placeholder="请输入6位验证码"
+                               maxLength={6}
+                               keyboardType={'numeric'}
+                               onChangeText={(text)=> userStore.setRegisterValidateCode(text)} />
+                        <Button rounded success small style={styles.btnGetCode}>
+                            <Text>获取验证码</Text>
+                        </Button>
+                    </Item>
+                    <Item fixedLabel style={styles.pdR}>
+                        <Label>登陆密码</Label>
+                        <Input placeholder="请输入(6-20位)登录密码"
+                               maxLength={20}
+                               onChangeText={(text)=> userStore.setRegisterPassword(text)} />
+                    </Item>
+                    <Item fixedLabel style={styles.pdR}>
+                        <Label>重复密码</Label>
+                        <Input placeholder="请输入上面相同的密码"
+                               maxLength={20}
+                               onChangeText={(text)=> userStore.setRegisterPasswordRepeat(text)} />
+                    </Item>
                 </View>
             )
         }
         else if(this.state.step === 3){
             return (
                 <View style={styles.animView}>
-                    <AnooTextInput
-                        placeHolder={'请输入手机号'}
-                        label={'手机号'}
-                        inputProps={{
-                            keyboardType: 'phone-pad',
-                            autoCapitalize: 'none',
-                            autoCorrect: false,
-                            autoFocus: false
-                        }}
-                        maxLength={11}
-                        onChange={(text)=>userStore.setLoginPhone(text)}/>
-                    <View>
-                        <AnooTextInput
-                            label={'验证码'}
-                            placeHolder={'请输入6位验证码'}
-                            inputProps={{value: '123456', maxLength:6}}
-                            onChange={(text)=>userStore.setRegisterValidateCode(text)}/>
-                        <TouchableOpacity style={styles.btnGetCode}>
-                            <Text style={{color:'#fff'}}>获取验证码</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <AnooTextInput
-                        label={'登陆密码'}
-                        placeHolder={'登录密码(6-20位)'}
-                        inputProps={{
-                            secureTextEntry: true,
-                            maxLength:6,
-                            value: '123456'
-                        }}
-                        onChange={(text)=>userStore.setRegisterPassword(text)}/>
-                    <AnooTextInput
-                        label={'重复密码'}
-                        placeHolder={'请输入上面相同的密码'}
-                        inputProps={{
-                            secureTextEntry: true,
-                            maxLength:6,
-                            value: '123456'
-                        }}
-                        onChange={(text)=>userStore.setRegisterPasswordRepeat(text)}/>
+                    <Item fixedLabel style={styles.pdR}>
+                        <Label>手机号码</Label>
+                        <Input placeholder="请输入手机号码"
+                               maxLength={11}
+                               keyboardType={'phone-pad'}
+                               autoCapitalize='none'
+                               autoCorrect={false}
+                               onChangeText={(text)=> userStore.setLoginPhone(text)} />
+                    </Item>
+                    <Item fixedLabel style={styles.pdR}>
+                        <Label>验证码</Label>
+                        <Input placeholder="请输入6位验证码"
+                               maxLength={6}
+                               keyboardType={'numeric'}
+                               onChangeText={(text)=> userStore.setRegisterValidateCode(text)} />
+                        <Button rounded success small style={styles.btnGetCode}>
+                            <Text>获取验证码</Text>
+                        </Button>
+                    </Item>
+                    <Item fixedLabel style={styles.pdR}>
+                        <Label>登陆密码</Label>
+                        <Input placeholder="请输入(6-20位)登录密码"
+                               maxLength={20}
+                               onChangeText={(text)=> userStore.setRegisterPassword(text)} />
+                    </Item>
+                    <Item fixedLabel style={styles.pdR}>
+                        <Label>重复密码</Label>
+                        <Input placeholder="请输入上面相同的密码"
+                               maxLength={20}
+                               onChangeText={(text)=> userStore.setRegisterPasswordRepeat(text)} />
+                    </Item>
                 </View>
             )
         }
@@ -266,9 +243,9 @@ export default class LoginScreen extends Component {
                     type={'ThreeBounce'}
                     color={'#888'}/>
                 {this.renderForm()}
-                <TouchableOpacity disabled={this.state.showSpinner} onPress={() => { this._login() }} style={styles.roundedButton}>
-                    <Text style={styles.buttonText}>{this.state.stepTitle}</Text>
-                </TouchableOpacity>
+                <Button block success disabled={this.state.showSpinner} onPress={() => { this._login() }} style={{margin:10}}>
+                    <Text>{this.state.stepTitle}</Text>
+                </Button>
                 <View style={{marginLeft:10, marginRight:10, flexDirection:'row'}}>
                     {this.state.step!==2?
                     <TouchableOpacity visible={false} onPress={() => { this.onChangeStep(2, '注册') }} style={{alignItems:'flex-start', flex:1,}}>
@@ -295,62 +272,11 @@ const styles = StyleSheet.create({
     backArrow: {
         top: 15,
         left: 15,
+        fontSize:36,
+        fontWeight:'bold',
         color:'#fff',
         position: 'absolute',
-        backgroundColor: 'transparent',
         alignSelf: 'flex-start',
-    },
-    logo: {
-        height: 65,
-        width: 65,
-    },
-    logoContainer: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        // position: 'absolute'
-    },
-    endText: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        paddingBottom: 50
-    },
-    signIn: {
-        color: '#fff',
-        backgroundColor: 'transparent',
-        fontFamily: 'OpenSans-Bold',
-        fontSize: 20,
-        width: 260,
-        textAlign: 'center',
-        letterSpacing :1
-    },
-    softText: {
-        color: '#fff',
-        backgroundColor: 'transparent',
-        fontFamily: 'OpenSans-Regular',
-        textAlign: 'center',
-        fontSize: 20,
-        marginTop: 10,
-        lineHeight: 28,
-        opacity: 0.5
-    },
-    roundedButton: {
-        backgroundColor: '#009688',
-        borderRadius: 5,
-        height: 45,
-        margin:10,
-        marginTop:20,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    buttonText: {
-        color: '#fff',
-        backgroundColor: 'transparent',
-        fontFamily: 'OpenSans-Regular',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        fontSize: 16,
-        letterSpacing: 1
     },
     spinner: {
         position: 'absolute',
@@ -359,10 +285,7 @@ const styles = StyleSheet.create({
     },
     btnGetCode: {
         position:'absolute',
-        top:5,
+        top:10,
         right:5,
-        padding:8,
-        marginTop:3,
-        backgroundColor:'#009688'
     }
 });
