@@ -74,7 +74,7 @@ export default class MarkerExample extends Component {
                             {isFetching ?
                                 <View>
                                     <Spinner color={'red'}/>
-                                    <Text style={styles.loadingText}>正在查找您附近的医生，请稍后...</Text>
+                                    <Text style={styles.loadingText}>正在获取您的位置及附近的兽医，请稍后...</Text>
                                 </View>
                                 :
                                 <Text style={styles.loadingText}>请点击地图中的标记选择兽医</Text>
