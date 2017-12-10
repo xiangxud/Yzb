@@ -29,6 +29,7 @@ class outPetStore {
         StyId:'',
         FarmId:'',
         @observable
+
         Genus:'',
 
         @observable
@@ -56,7 +57,9 @@ class outPetStore {
         @observable
         Reason:'',
         @observable
-        TransferSty:''//转移到的栋舍
+        TransferSty:'',//转移到的栋舍
+        @observable
+        TransferStyName:''
     }
 
     OutPetReasonTypeEum = {
@@ -80,11 +83,12 @@ class outPetStore {
     };
 
     onIni(paramter,callback,failed){
-        let {styId,farm} = paramter;
+        let {styId,title,farm} = paramter;
         this.styId = styId;
         this.farm = farm;
+        this.styName=title;
         this.getOutPetConfigFromApi((data)=>{
-            this.updateConfig(data.styName,data.BatchNumbers,data.Other);
+            this.updateConfig(data.BatchNumbers,data.Other);
             if(callback){
                 callback(data);
             }
@@ -100,8 +104,7 @@ class outPetStore {
     }
 
     @action
-    updateConfig(styName,batchsSource,stySource){
-        this.styName=styName;
+    updateConfig(batchsSource,stySource){
         this.batchs=batchsSource;
         if(batchsSource && batchsSource!=null){
             this.batchsOptions=[];
@@ -126,6 +129,7 @@ class outPetStore {
             this.onChangedBatch(newBatchNumber);
         }
     }
+
     @action
     onUpdateCollection(key,value){
         this.data.Collection[key] = value;
@@ -133,6 +137,7 @@ class outPetStore {
             this.showTransferSty=true;
         }
     }
+
     @action
     onChangedBatch(batch){
         let item = this.batchs.fristOne(item=> item.BatchNumber==batch);

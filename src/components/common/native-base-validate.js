@@ -56,13 +56,11 @@ const ValidateInputInt = observer(function ValidateInput({label, data , name , p
     let errNode = camelCase( 'validateError',name );
     let value = data[name];
 
-    debugger;
-
     if(data["submited"] && data[errNode] && data[errNode] != null && data[errNode]!=""){
         return (
             <Item error fixedLabel {...props}>
                 <Label>{label}</Label>
-                <Input placeholder={placeholder} keyboardType="numeric" value={`${value}`} onChangeText={onChange} placeholderTextColor='red' />
+                <Input placeholder={placeholder} keyboardType="numeric" value={`${value}`} onChangeText={onChange} placeholderTextColor='#b1b1b1' />
                 <Icon name='close-circle' />
             </Item>
         )
@@ -70,7 +68,7 @@ const ValidateInputInt = observer(function ValidateInput({label, data , name , p
         return (
             <Item fixedLabel style={style.rightPadding} {...props}>
                 <Label>{label}</Label>
-                <Input placeholder={placeholder} keyboardType="numeric" value={`${value}`} onChangeText={onChange} placeholderTextColor='red' />
+                <Input placeholder={placeholder} keyboardType="numeric" value={`${value}`} onChangeText={onChange} placeholderTextColor='#b1b1b1' />
             </Item>
         )
     }
@@ -80,7 +78,6 @@ const ValidateChooseItem = observer(function ValidateChooseItem({label, data , n
     let onPress =() => {
         let options = getOptions?getOptions():[];
         if(selectOptions){
-            debugger;
             selectOptions.forEach(o=> options.push(o));
         }
 

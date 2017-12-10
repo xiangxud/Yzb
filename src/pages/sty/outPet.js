@@ -20,17 +20,19 @@ export default class OutPet extends Component{
         const {outPetStore,navigation} = this.props;
         outPetStore.onIni({
             styId:navigation.state.params.code,
+            title:navigation.state.params.title,
             farm:navigation.state.params.farm
         },(data)=>{
         },(mess)=>{
             Toast.show({
                 type:'danger',
-                text: '产生错误:'+err,
+                text: '产生错误:'+mess,
                 position: 'top'
             })
             this.autoClose();
         });
     }
+
     autoClose( callback ){
         setTimeout(()=>{
             Toast.toastInstance._root.closeToast();
@@ -76,7 +78,7 @@ export default class OutPet extends Component{
     this.renderOutNumber()
 }
                         <ValidateInputDate label="出栏日期" data={outPetStore.data} name="OutDate" placeholder="出栏日期" onChange={(e)=>{outPetStore.onUpdate({OutDate:e})}} />
-                        <TransferStyInput show={outPetStore.showTransferSty} label="转移到" data={outPetStore.data} options={outPetStore.otherStyOptions} name="TransferSty" placeholder="转移到的栋舍" onChanged={(e)=>{outPetStore.onUpdate({TransferSty:e})}} />
+                        <TransferStyInput show={outPetStore.showTransferSty} label="转移到" data={outPetStore.data} options={outPetStore.otherStyOptions} name="TransferStyName" placeholder="转移到的栋舍" onChanged={(e)=>{outPetStore.onUpdate({TransferSty:e.value,TransferStyName:e.text})}} />
                     </Form>
                 </Content>
                 <FootBar buttons={this.buttons}></FootBar>
