@@ -7,11 +7,16 @@ useStrict(true);
 
 class outPetStore {
     farm={};
-
+    styId="";
     styName="";
 
     @observable
-    otherSty=[];
+    otherStyOptions=[];//其它栋舍
+
+    @observable
+    batchsOptions=[];//其它批次
+    batchs=[];
+
 
     data={
         Id:'',
@@ -55,7 +60,55 @@ class outPetStore {
         PoultryAndLivestock: 2
     };
 
-    onIni(callback,failed){
+    onIni(paramter,callback,failed){
+        let {styId,farm} = paramter;
+        this.styId = styId;
+        this.farm = farm;
+
+        debugger;
+        this.getOutPetConfigFromApi((data)=>{
+            debugger;
+            //批次
+            this.batchs=data.BatchNumbers;
+            this.fillBatchNumberOptions(data.BatchNumbers);
+            //其它栋舍
+            this.fillOtherStyOptions(data.Other);
+            if(callback){
+                callback(data);
+            }
+        },failed);
+    }
+
+    getOutPetConfigFromApi(callback,falied){
+        request.getJson(urls.apis.IMM_GET_OUTPETCONFIG,{styid:this.styId}).then((data) => {
+            debugger;
+            callback(data);
+        }).catch((err) => {
+            debugger;
+            falied(err);
+        });
+    }
+
+    @action
+    fillBatchNumberOptions(source){
+        if(source && source!=null){
+            source.forEach((item)=>{
+                this.batchsOptions.push({ value: item.BatchNumber, title: item.BatchNumber });
+            });
+        }
+    }
+    @action
+    fillOtherStyOptions(source){
+        if(source && source!=null){
+            source.forEach((item)=>{
+                this.otherStyOptions.push({ value: item.Id, title: item.Name });
+            });
+        }
+    }
+
+    //查找指定的批号对应的元素值
+    onGetBatchByCode(code){
+        return this.batchs.fristOne(item=> item.BatchNumber==code);
     }
 }
 
