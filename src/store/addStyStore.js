@@ -3,19 +3,21 @@ import {action, computed, observable, reaction, runInAction, useStrict} from 'mo
 import validate from 'mobx-form-validate';
 
 import _ from "lodash";
+import storeBase from "./common/storeBase";
 useStrict(true);
 
-class addStyStore {
+class addStyStore extends storeBase{
     @observable
     farm={};
 
     genus=[];//种属列表
 
     @observable
-    sty={
+    data={
         @observable
         code:'',
         @observable
+        @validate(/\S+$/, '种属必填')
         genus:'',
         @observable
         @validate(/\S+$/, '栋舍名称必填')
@@ -26,11 +28,11 @@ class addStyStore {
         @observable
         batchNumber:'',
         @observable
-        number:null,
+        @validate(/^[1-9]\d*$/, '数量必填且为大于0')
+        number:0,
         @observable
-        addDate:null,
-        @observable
-        submited:false
+        @validate(/\S+$/, '入栏日期')
+        addDate:'',
     }
 
     @action

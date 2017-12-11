@@ -28,6 +28,11 @@ class validateHepler {
         let mess=[];
         let errNode = camelCase( 'validateError',name );
         let printErrNode = camelCase('validateItem',name);
+
+        if(name=="genus"){
+            debugger;
+        }
+
         if( dataitem[errNode] && dataitem[errNode] != null && dataitem[errNode]!=""  ){
             mess.push(dataitem[errNode]);
         }
@@ -151,6 +156,7 @@ class ValidateInputDate extends Component{
 
     render(){
         let { data,label,name,IsValidate,placeholder } = this.props;
+        debugger;
         if(IsValidate && validateHepler.getMess(data,name)){
             return (
                 <Item error fixedLabel  onPress={this.showDatePicker.bind(this)}>
