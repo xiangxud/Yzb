@@ -11,12 +11,12 @@ import {
     Dimensions
 } from 'react-native';
 import {Icon, Text, Button} from 'native-base';
-import {observer, inject} from 'mobx-react/native';
+import {observer} from 'mobx-react/native';
 import TitleBar from '../common/TitleBar';
 
 var {height, width} = Dimensions.get('window');
 
-const Sty = ({sty, getSty, isCurrent}) =>{
+const Sty = observer(({sty, getSty, isCurrent}) =>{
     return (
         <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={()=>{getSty(sty)}}>
             <View style={[styles.styBox, isCurrent? styles.currentSty: {}]}>
@@ -25,18 +25,19 @@ const Sty = ({sty, getSty, isCurrent}) =>{
             </View>
         </TouchableNativeFeedback>
     );
-}
-@inject('homeStore')
+});
+
 @observer
 export default class MySties extends Component {
     constructor(props){
         super(props);
     }
     getSty = (sty) =>{
-        homeStore.setCurrentSty(sty);
+        const {store} = this.props;
+        store.setCurrentSty(sty);
     }
     render() {
-        const {sties, currentSty} = homeStore;
+        const {store} = this.props;
         return (
             <View style={styles.container}>
                 <TitleBar icon={'bank'} iconColor={'red'} title={'我的栋舍'} />
@@ -46,11 +47,11 @@ export default class MySties extends Component {
                             <Icon name={'ios-add-circle-outline'} style={{fontSize:40, color:'#15856e'}}/>
                         </View>
                     </TouchableNativeFeedback>
-                    {sties.map((val, key) => (
-                        <Sty key={key} sty={val} getSty={this.getSty} isCurrent={currentSty.id===val.id}/>
+                    {store.sties.map((val, key) => (
+                        <Sty key={key} sty={val} getSty={this.getSty} isCurrent={store.currentSty.id===val.id}/>
                     ))}
                 </ScrollView>
-                {currentSty?
+                {store.currentSty && store.currentSty.id?
                 <View style={{backgroundColor:'#efc'}}>
                     <View style={{flexDirection:'row', height:100, backgroundColor:'#fae4ac'}}>
                         <View style={styles.video}>
@@ -63,7 +64,7 @@ export default class MySties extends Component {
                             <Text>监控视频003</Text>
                         </View>
                     </View>
-                    <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={()=>this.props.onStyPress(homeStore.currentSty)}>
+                    <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={()=>this.props.onStyPress(store.currentSty)}>
                         <View style={{backgroundColor:'#f9f3f9', flexDirection: 'row'}}>
                             <View style={styles.reportItems}>
                                 <Text>栋舍湿度</Text>

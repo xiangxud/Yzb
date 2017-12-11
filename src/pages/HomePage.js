@@ -20,6 +20,19 @@ import Reminds from "../components/home/Reminds";
 import TitleBar from '../components/common/TitleBar'
 import {Loading, MaskLoading} from '../components'
 
+const InfoItem = observer(({info, press})=>{
+    return <TouchableNativeFeedback onPress={()=>press(info)} background={TouchableNativeFeedback.SelectableBackground()}>
+        <View style={styles.newsItem}>
+            <Text style={styles.newsItemTitle}>
+                {info.title}
+            </Text>
+            <Text style={styles.newsItemDesc}>
+                {info.copy_from} {info.formate}
+            </Text>
+        </View>
+    </TouchableNativeFeedback>
+});
+
 @inject('homeStore')
 @observer
 export default class HomePage extends Component {
@@ -43,9 +56,7 @@ export default class HomePage extends Component {
         const {navigation} = this.props;
         navigation.navigate("InfoDetail",{ code : info.code , title: info.title })
     }
-    fetchMore =()=>{
-        homeStore.fetchNextInfos();
-    }
+
     onStyPress(sty){
         let list=[];
         homeStore.sties.forEach((item)=>{
@@ -95,7 +106,7 @@ export default class HomePage extends Component {
                         </View>
                     </TouchableHighlight>
                 </View>
-                <MySties sties={sties} onStyPress={(sty) => { this.onStyPress(sty) }} onAddSty={this.onAddSty.bind(this)} />
+                <MySties store={homeStore} onStyPress={(sty) => { this.onStyPress(sty) }} onAddSty={this.onAddSty.bind(this)} />
                 <Reminds reminds={reminds}
                          morePress={this.remindMore}
                          detailPress={this.detailPress}
@@ -110,37 +121,25 @@ export default class HomePage extends Component {
         )
     }
     renderRow = (info) =>{
-        return (
-            <TouchableNativeFeedback
-                onPress={()=>{this.newsPress(info)}}
-                background={TouchableNativeFeedback.SelectableBackground()}>
-                <View style={styles.newsItem}>
-                    <Text style={styles.newsItemTitle}>
-                        {info.title}
-                    </Text>
-                    <Text style={styles.newsItemDesc}>
-                        {info.copy_from} {info.formate}
-                    </Text>
-                </View>
-            </TouchableNativeFeedback>)
+        return <InfoItem info={info} press={this.newsPress}/>
     }
     render() {
         const {homeStore} = this.props;
-        const {isFetching, news, news_page, loadMore} = homeStore;
+        const {isFetching, news, isNoMore, loadingMore} = homeStore;
         return (
             <FlatList
                 style={styles.container}
                 data={news.slice()}
                 renderItem={({ item }) => this.renderRow(item) }
                 ListHeaderComponent={this.renderListHeader()}
-                ListFooterComponent={<Loading show={loadMore}/>}
+                ListFooterComponent={<Loading show={loadingMore}/>}
                 keyExtractor={ (item, index) => index }
                 onRefresh={()=>{homeStore.fetchHomeData()}}
                 refreshing = {isFetching}
                 onEndReachedThreshold={0.5}
                 onEndReached={() => {
-                    if (news_page > 0) {
-                        this.fetchMore()
+                    if (isNoMore) {
+                        homeStore.fetchMore();
                     }
                 }}
             />

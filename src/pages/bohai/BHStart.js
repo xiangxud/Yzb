@@ -45,6 +45,7 @@ export default class BHStart extends Component {
             }
         }).catch((err)=>{
             tools.showToast(err.message);
+            this.setState({isSales: false, isLoading: false});
         });
     }
     render() {

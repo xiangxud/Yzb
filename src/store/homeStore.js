@@ -17,67 +17,55 @@ class HomeStore {
     @observable reminds = [];
     @observable news = [];
 
-    @observable news_page = 1;
-    @observable errorMsg = '';
-    @observable isFetching = false;
+    @observable pageIndex = 1;
+    @observable isFetching = true;
     @observable isNoMore = true;
-    @observable loadMore = true;
-    @observable farm={};//养殖场id
-
-    constructor() {
-        this.isFetching = true;
-    }
+    @observable loadingMore = true;
+    @observable farm = {};
 
     @action fetchHomeData = async () => {
-        if (this.isFetching) {
-            this.news_page = 1
-        }
-        const params = {}
-        request.getJson(urls.apis.HOME_ALL, params).then((res) => {
-            const {fields, sties, reminds, news,farm} = res;
+        this.pageIndex = 1
+        this.isFetching = true;
+        request.getJson(urls.apis.HOME_ALL, {}).then((res) => {
+            const {fields, sties, reminds, news, farm} = res;
             runInAction(() => {
-                this.isFetching = false
-                this.errorMsg = ''
-                if (this.news_page === 1) {
-                    this.fields = fields;
-                    this.sties = sties;
-                    this.farm=farm;
-                    this.reminds.replace(reminds);
-                    this.news.replace(news);
-                    if(sties && sties.length>0){
-                        this.setCurrentSty(sties[0]);
-                    }
-                } else {
-                    this.reminds.splice(this.reminds.length, 0, ...reminds);
+                this.isFetching = false;
+                this.fields = fields;
+                this.sties = sties;
+                this.farm = farm;
+                this.reminds.replace(reminds);
+                this.news.replace(news);
+                if(sties && sties.length){
+                    this.setCurrentSty(sties[0]);
                 }
             });
-        }).catch((error) => {
-            tools.showToast(JSON.stringify(error))
+        }).catch((err) => {
+            tools.showToast(err.message)
+            this.isFetching = false;
         })
     }
 
-    @action fetchNextInfos = async () => {
-        this.loadMore = true;
-        this.news_page = this.news_page + 1;
-        request.getJson(urls.apis.INFORMATION_LIST, {page: this.news_page}).then((res) => {
-            runInAction(() => {
-                this.loadMore = false;
-                this.news.splice(this.news.length, 0, ...res);
-                //alert(JSON.stringify(res))
+    @action fetchMore = async () => {
+        if(this.isNoMore) {
+            this.loadingMore = true;
+            this.pageIndex = this.pageIndex + 1;
+            request.getJson(urls.apis.INFORMATION_LIST, {page: this.pageIndex}).then((res) => {
+                runInAction(() => {
+                    this.loadingMore = false;
+                    if (res.length < 15) {
+                        this.isNoMore = false;
+                    }
+                    this.news.splice(this.news.length, 0, ...res);
+                });
+            }).catch((err) => {
+                this.loadingMore = false;
+                tools.showToast(err.message)
             });
-        }).catch((error) => {
-            this.loadMore = false;
-            tools.showToast(JSON.stringify(error))
-        });
+        }
     }
     //设置当前选中的栋舍
     @action setCurrentSty(sty){
         this.currentSty = sty;
-    }
-
-    @computed
-    get isLoadMore() {
-        return this.news_page !== 1
     }
 }
 

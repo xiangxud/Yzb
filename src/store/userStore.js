@@ -1,4 +1,3 @@
-import {AsyncStorage} from 'react-native'
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
 import validate from 'mobx-form-validate';
 import { persist } from 'mobx-persist'
@@ -11,11 +10,11 @@ class UserStore {
     //loginForm
     @observable
     @validate(/^1(3|4|5|7|8)\d{9}$/, '请输入正确的手机号')
-    loginPhone='';
+    loginPhone='18307722503';
 
     @observable
     @validate(/^[\w]{6,16}$/, '请输入至少6位字母、数字、下划线密码')
-    loginPassword='';
+    loginPassword='123456';
 
     @observable
     @validate(/^[\w]{6,16}$/, '请输入至少6位字母、数字、下划线密码')
@@ -47,13 +46,6 @@ class UserStore {
     @persist('object') @observable loginUser = {};
     @persist('object') @observable location = {};
 
-    constructor(){
-        this.loginPhone='18307722503';
-        this.loginPassword='123456';
-        this.token = {
-            access_token: ''
-        }
-    }
     //#####################################登录注册
     @action setLoginPhone = _.debounce((phone)=>{
         this.loginPhone = phone;
@@ -226,7 +218,7 @@ class UserStore {
 
 const userStore = new UserStore();
 export default userStore
-hydrate('user', userStore).then(() => {
-    userStore.hydrated = true;
-    //console.log('user hydrated', userStore)
-});
+// hydrate('user', userStore).then(() => {
+//     userStore.hydrated = true;
+//     //console.log('user hydrated', userStore)
+// });
