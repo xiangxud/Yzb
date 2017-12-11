@@ -48,7 +48,7 @@ class AlarmClockRow extends Component{
                         <Text style={style.left}>免疫日期</Text>
                     </Left>
                     <Body>
-                        <Text style={style.right}>{item.ImmuneTime.ToDate().Format("yyyy-MM-dd")}</Text>
+                        <Text style={style.right}>{this.isNoNull(item.ImmuneTime) ?"": item.ImmuneTime.ToDate().Format("yyyy-MM-dd")}</Text>
                     </Body>
                 </ListItem>
                 <ListItem style={style.planItem}>
@@ -108,6 +108,10 @@ class AlarmClockRow extends Component{
         this.showPlan=!this.showPlan;
     }
 
+    isNoNull(m){
+        return !m || m==null || m=="";
+    }
+
     render(){
         let {item} = this.props;
         return (
@@ -126,7 +130,7 @@ class AlarmClockRow extends Component{
                                   <TouchableOpacity onPressIn={()=>{ this.flipPlan() }}>
                                       <View style={style.row}>
                                           {
-                                              this.renderDate(item.ImmuneTime.ToDate().Format("yyyy-MM-dd"))
+                                              this.renderDate(this.isNoNull(item.ImmuneTime) ? "空" : item.ImmuneTime.ToDate().Format("yyyy-MM-dd"))
                                           }
                                           <Text style={style.immTitle} numberOfLines={1}>
                                               {item.VaccineName}

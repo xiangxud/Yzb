@@ -157,7 +157,9 @@ const urls = {
         //获取免疫提醒
         IMM_GET_DETAIL:apiPath + 'ImmPlan/PostQuery',
         //获取出栏配置
-        IMM_GET_OUTPETCONFIG:apiPath + 'Sty/GetOutPetConfig'
+        IMM_GET_OUTPETCONFIG:apiPath + 'Sty/GetOutPetConfig',
+        //出栏
+        IMM_POST_REMOVE_PET:apiPath + 'Sty/PostRoutine'
     },
     // 获取图片完整路径
     getImage(filePath, width, height){

@@ -13,22 +13,24 @@ class outPetStore extends storeBase {
     @observable otherStyOptions=[];//其它栋舍
     @observable batchsOptions=[];//其它批次
     @observable batchs=[];
-    @observable showTransferSty=false;
+    @observable showTransferSty=false;//是否显示转栏
+    @observable showBatch=false;//是否批次管理
+
     data={
         Id:'',
         StyId:'',
         FarmId:'',
         @observable Genus:'',
         @observable Collection:{
-            @observable Normal:0,
-            @observable Death:0,
-            @observable Eliminate:0,
-            @observable Other:0,
-            @observable Transfer:0
+            @observable Normal:'',
+            @observable Death:'',
+            @observable Eliminate:'',
+            @observable Other:'',
+            @observable Transfer:''
         },
 
         @validate(/^\+?[1-9]\d*$/, '日龄必填且为数值')
-        @observable Day:0,
+        @observable Day:'',
         @observable BatchNumber:'',
         @observable Type:1,//操作类型
 
@@ -49,6 +51,17 @@ class outPetStore extends storeBase {
         },
     }
 
+    onParse(  ){
+        //待优化，这里的转换主要因为 this.data.Collection里的key，微信版为汉字Label
+        let o = {};
+        Object.assign( o , o , this.data );
+        o.Collection={};
+        for(var key in this.data.Collection){
+            o.Collection[this.OutPetReasonTypeEum[key].Label]=this.data.Collection[key];
+        }
+        return o;
+    }
+
 
     OutPetReasonTypeEum = {
         Normal: { Label: '销售出栏', Transfer: false },
@@ -65,18 +78,18 @@ class outPetStore extends storeBase {
     };
 
     BreedEnum = {
-        Poultry: 0,
-        Livestock: 1,
-        PoultryAndLivestock: 2
+        Poultry: 0,//家禽
+        Livestock: 1,//家畜
+        PoultryAndLivestock: 2//家禽、家畜
     };
-
+    @action
     onIni(paramter,callback,failed){
         let {styId,title,farm} = paramter;
         this.styId = styId;
         this.farm = farm;
         this.styName=title;
         this.getOutPetConfigFromApi((data)=>{
-            this.updateConfig(data.BatchNumbers,data.Other);
+            this.updateConfig(data);
             if(callback){
                 callback(data);
             }
@@ -91,18 +104,33 @@ class outPetStore extends storeBase {
         });
     }
 
+    onComiit(callback,falied){
+        let o = this.onParse();
+        request.postJson(urls.apis.IMM_POST_REMOVE_PET,o).then((data) => {
+            callback(data);
+        }).catch((err) => {
+            falied(err);
+        });
+    }
+
     @action
-    updateConfig(batchsSource,stySource){
-        this.batchs=batchsSource;
-        if(batchsSource && batchsSource!=null){
-            this.batchsOptions=[];
-            batchsSource.forEach((item)=>{
+    updateConfig(data) {
+        this.data.FarmId = this.farm.Id;
+        this.data.StyId = data.Id;
+        this.data.Genus = data.Genus;
+        this.showBatch = this.farm.Breed != this.BreedEnum.Poultry;
+        this.batchs=data.BatchNumbers;
+
+        this.batchsOptions=[];
+        if(data.BatchNumbers && data.BatchNumbers!=null){
+            data.BatchNumbers.forEach((item)=>{
                 this.batchsOptions.push(item.BatchNumber);
             });
         }
 
-        if(stySource && stySource!=null){
-            stySource.forEach((item)=>{
+        this.otherStyOptions=[];
+        if(data.Other && data.Other!=null){
+            data.Other.forEach((item)=>{
                 this.otherStyOptions.push({ value: item.Id, text: item.Name , ico:'home' , iconColor: "#2c8ef4" });
             });
         }
