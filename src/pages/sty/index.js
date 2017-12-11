@@ -20,30 +20,44 @@ import Monitor from '../../components/sty/Monitor';
 @inject('styStore')
 @observer
 export default class Sty extends Component{
-    static navigationOptions = ({navigation})=> {
-        return         {header:(<StyBar goBack={navigation.goBack}
-                                        navigate={navigation.navigate}
-                                        iniCode={navigation.state.params.code}
-                                        Title={navigation.state.params.title}
-                                        styList={navigation.state.params.list}
-                                        onMessPress={()=>{}}
-                                        onSettingPress={()=>{
-                                        }}
-                                        onOutPetPress={()=>{
-                                            navigation.navigate("OutPet",{
-                                                code:navigation.state.params.code,
-                                                title:navigation.state.params.title,
-                                                farm:navigation.state.params.farm})
-                                        }}
-                                        onEditPress={()=>{
-                                            navigation.navigate("EditSty",{
-                                                code:navigation.state.params.code,
-                                                title:navigation.state.params.title,
-                                                farm:navigation.state.params.farm})
-                                        }}></StyBar>)
-    }};
+    // static navigationOptions = ({navigation})=> {
+    //     return         {header:(<StyBar goBack={navigation.goBack}
+    //                                     navigate={navigation.navigate}
+    //                                     iniCode={navigation.state.params.code}
+    //                                     Title={navigation.state.params.title}
+    //                                     styList={navigation.state.params.list}
+    //                                     onMessPress={()=>{}}
+    //                                     onSettingPress={()=>{
+    //                                     }}
+    //                                     onOutPetPress={()=>{
+    //                                         navigation.navigate("OutPet",{
+    //                                             code:navigation.state.params.code,
+    //                                             title:navigation.state.params.title,
+    //                                             farm:navigation.state.params.farm})
+    //                                     }}
+    //                                     onEditPress={()=>{
+    //                                         navigation.navigate("EditSty",{
+    //                                             code:navigation.state.params.code,
+    //                                             title:navigation.state.params.title,
+    //                                             farm:navigation.state.params.farm})
+    //                                     }}></StyBar>)
+    // }};
+    static navigationOptions = ({navigation})=>({
+        headerTitle: navigation.state.params.title,
+        headerRight: <StyBar
+            onOutPetPress={()=>{
+                navigation.navigate("OutPet",{
+                    code:navigation.state.params.code,
+                    title:navigation.state.params.title,
+                    farm:navigation.state.params.farm})}}
 
-
+            onEditPress={()=>{
+                navigation.navigate("EditSty",{
+                    code:navigation.state.params.code,
+                    title:navigation.state.params.title,
+                    farm:navigation.state.params.farm})
+            }} />
+    });
 
     componentWillMount(){
         const {styStore,navigation} = this.props;
