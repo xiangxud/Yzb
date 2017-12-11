@@ -22,10 +22,20 @@ class AlarmClockRow extends Component{
     @observable
     showPlan=false;
 
-    renderDate(date){
+    renderDate(item){
+        let formate = "";
+        if( item.IsCyc ){
+            formate="周期免疫";
+        }else if( this.isNoNull(item.ImmuneTime)){
+            formate = "";
+        }else {
+            formate = item.ImmuneTime.ToDate().Format("yyyy-MM-dd");
+            formate = formate == new Date().Format("yyyy-MM-dd") ? "今天" : formate;
+        }
+
         return (
             <Text style={style.immTime} numberOfLines={1}>
-                {date == new Date().Format("yyyy-MM-dd") ? "今天" : date }
+                {formate}
             </Text>);
     };
 
@@ -114,6 +124,9 @@ class AlarmClockRow extends Component{
 
     render(){
         let {item} = this.props;
+
+        debugger;
+
         return (
             <View style={{  alignItems:'stretch' }}>
                 <SwipeRow rightOpenValue={-150}
@@ -130,7 +143,7 @@ class AlarmClockRow extends Component{
                                   <TouchableOpacity onPressIn={()=>{ this.flipPlan() }}>
                                       <View style={style.row}>
                                           {
-                                              this.renderDate(this.isNoNull(item.ImmuneTime) ? "空" : item.ImmuneTime.ToDate().Format("yyyy-MM-dd"))
+                                              this.renderDate(item)
                                           }
                                           <Text style={style.immTitle} numberOfLines={1}>
                                               {item.VaccineName}

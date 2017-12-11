@@ -84,6 +84,7 @@ class immStore {
     onMore(callback,falied){
         this.openEnd();
         this.queryConfig.PageIndex = this.queryConfig.PageIndex + 1;
+        debugger;
         this.getDataFromApi(this.queryConfig,data=>{
             this.addList(data);
             callback();
@@ -117,9 +118,11 @@ class immStore {
     }
 
     @action
-    getDataFromApi(config,callback,falied){
-        request.postJson(urls.apis.IMM_GET_DETAIL,config).then(data=>{
+    getDataFromApi(_config,callback,falied){
+        debugger;
+        request.postJson(urls.apis.IMM_GET_DETAIL,_config).then(data=>{
             if(callback){
+                debugger;
                 callback(data.Rows);
             }
         }).catch(err=>{
