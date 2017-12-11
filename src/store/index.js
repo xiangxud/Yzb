@@ -9,6 +9,7 @@ import addStyStore from './addStyStore'
 import editStyStore from './editStyStore'
 import bohaiStore from './bohaiStore'
 import outPetStore from './outPetStore'
+import inPetStore from './inPetStore'
 
 export default {
     app: new App(),
@@ -21,5 +22,6 @@ export default {
     editStyStore,
     immStore,
     bohaiStore,
-    outPetStore
+    outPetStore,
+    inPetStore
 }

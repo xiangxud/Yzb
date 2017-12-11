@@ -63,6 +63,7 @@ export default class StyBar extends Component{
             icon:"ios-log-in",
             iconColor:"#49179b",
             action:()=>{
+                this.props.onInPetPress();
             }
         }
 

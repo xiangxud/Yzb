@@ -70,18 +70,17 @@ class outPetStore extends storeBase {
         Other: { Label: '其他', Transfer: false },
         Transfer: { Label: '转栏', Transfer: true }
     };
-
     StyeOperationType = {
         AddPet: { Value: 0, Label: '补栏/补苗' },
         RemovePet: { Value: 1, Label: '出栏' },
         ClearSty: { Value: 2, Label: "清栏" }
     };
-
     BreedEnum = {
         Poultry: 0,//家禽
         Livestock: 1,//家畜
         PoultryAndLivestock: 2//家禽、家畜
     };
+
     @action
     onIni(paramter,callback,failed){
         let {styId,title,farm} = paramter;

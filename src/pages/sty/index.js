@@ -45,6 +45,12 @@ export default class Sty extends Component{
     static navigationOptions = ({navigation})=>({
         headerTitle: navigation.state.params.title,
         headerRight: <StyBar
+            onInPetPress={()=>{
+                navigation.navigate("InPet",{
+                    code:navigation.state.params.code,
+                    title:navigation.state.params.title,
+                    farm:navigation.state.params.farm})
+            }}
             onOutPetPress={()=>{
                 navigation.navigate("OutPet",{
                     code:navigation.state.params.code,
