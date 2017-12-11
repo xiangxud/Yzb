@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
     titleWrap:{
         height:40,
         paddingLeft:10,
-        marginBottom:5,
         flexDirection:'row',
         backgroundColor:'#fff',
         borderBottomWidth:StyleSheet.hairlineWidth,
