@@ -21,7 +21,7 @@ const Sty = ({sty, getSty, isCurrent}) =>{
         <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={()=>{getSty(sty)}}>
             <View style={[styles.styBox, isCurrent? styles.currentSty: {}]}>
                 <Icon name={'ios-keypad'+(!sty.total?'-outline':'')} style={isCurrent?styles.currentText:{color:'#15856e'}} />
-                <Text style={isCurrent?styles.currentText:{}}>{sty.name.substr(0, 6)}</Text>
+                <Text style={isCurrent?styles.currentText:{}}>{sty.name.substr(0, 5)}</Text>
             </View>
         </TouchableNativeFeedback>
     );
@@ -77,7 +77,7 @@ export default class MySties extends Component {
                                 <Text><Text style={styles.report}>0.08</Text> %</Text>
                             </View>
                             <View style={styles.reportItems}>
-                                <Button rounded light onPress={()=>this.props.onStyPress(homeStore.currentSty)}><Text>栋舍详情...</Text></Button>
+                                <Button rounded light onPress={()=>this.props.onStyPress(homeStore.currentSty)}><Text>详情</Text></Button>
                             </View>
                         </View>
                     </View>
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     },
     stiesContainer:{
         width: width,
-        height:70,
+        height:85,
         marginBottom:5,
         backgroundColor:'#fff'
     },
@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
         marginLeft:5,
     },
     styBox:{
-        width:70,
-        height:70,
+        width:80,
+        height:80,
         borderWidth:1,
         borderColor:'#e2e2e2',
         borderRadius:5,
@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         padding:10,
         marginRight:5,
+        marginTop:5,
     },
     currentSty:{
         borderColor:'#15856e',
