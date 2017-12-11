@@ -102,7 +102,7 @@ export default class Add extends Component{
                     <ReadOnlyInput label="养殖场" value={addStyStore.farm.Name} />
                     <ValidateInput label="栋舍栏位" data={addStyStore.data} name="name" placeholder="请输入栋舍栏位" IsValidate={addStyStore.IsValidate} onChange={(e)=>{this.onUpdateData({name:e})}} />
                     <ValidateChooseItem label="种属" data={addStyStore.data} name="genus" IsValidate={addStyStore.IsValidate} getOptions={this.getGenus.bind(this)} optionslabel="请选择种属" placeholder="请选择" onChange={(e)=>{this.onUpdateData({genus:e})}} />
-                    <ValidateInput label="当前日龄" data={addStyStore.data} name="day" placeholder="如 20" IsValidate={addStyStore.IsValidate} onChange={(e)=>{this.onUpdateData({day:e})}} />
+                    <ValidateInputInt label="当前日龄" data={addStyStore.data} name="day" placeholder="如 20" IsValidate={addStyStore.IsValidate} onChange={(e)=>{this.onUpdateData({day:e})}} />
                     <ValidateInput label="入栏批次" data={addStyStore.data} name="batchNumber" placeholder="动物批次" onChange={(e)=>{this.onUpdateData({batchNumber:e})}} />
                     <ValidateInputInt label="进栏数量" data={addStyStore.data} name="number" placeholder="进栏数量" IsValidate={addStyStore.IsValidate} onChange={(e)=>{this.onUpdateData({number:e})}} />
                     <ValidateInputDate label="进栏日期" data={addStyStore.data} name="addDate" placeholder="进栏日期" IsValidate={addStyStore.IsValidate} onChange={(e)=>{this.onUpdateData({addDate:e})}} />

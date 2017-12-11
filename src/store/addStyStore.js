@@ -24,12 +24,12 @@ class addStyStore extends storeBase{
         name:'',
         @observable
         @validate(/\d+$/, '日龄必填且为数值')
-        day:null,
+        day:'',
         @observable
         batchNumber:'',
         @observable
         @validate(/^[1-9]\d*$/, '数量必填且为大于0')
-        number:0,
+        number:'',
         @observable
         @validate(/\S+$/, '入栏日期')
         addDate:'',
@@ -37,7 +37,7 @@ class addStyStore extends storeBase{
 
     @action
     onChangedSty(uo){
-        Object.assign(this.sty,this.sty,uo);
+        Object.assign(this.data,this.data,uo);
     }
 
     @action
@@ -62,12 +62,12 @@ class addStyStore extends storeBase{
 
     @action
     onFillSty(data){
-        this.sty.code=data.Id,
-        this.sty.genus=data.Genus;
-        this.sty.name=data.Name;
-        this.sty.day=data.Day.toString();
-        this.sty.number=data.Total.toString();
-        this.sty.addDate=data.IniDate;
+        this.data.code=data.Id,
+        this.data.genus=data.Genus;
+        this.data.name=data.Name;
+        this.data.day=data.Day.toString();
+        this.data.number=data.Total.toString();
+        this.data.addDate=data.IniDate;
         this.genus=data.SourceGenus;
     }
 
@@ -83,13 +83,13 @@ class addStyStore extends storeBase{
     @action
     onUpdateSty(callback,falied) {
         let item = {
-            StyId: this.sty.code,
-            Name: this.sty.name,
-            Day: this.sty.day,
-            Genus: this.sty.genus,
-            Number: this.sty.number,
-            AddDate: this.sty.addDate,
-            BatchNumber: this.sty.batchNumber
+            StyId: this.data.code,
+            Name: this.data.name,
+            Day: this.data.day,
+            Genus: this.data.genus,
+            Number: this.data.number,
+            AddDate: this.data.addDate,
+            BatchNumber: this.data.batchNumber
         };
         request.postJson(urls.apis.IMM_POST_STY,item).then(data=>{
             callback(data);
@@ -112,12 +112,12 @@ class addStyStore extends storeBase{
         request.postJson(urls.apis.IMM_STYADD,{
             FarmName:this.farm.Name,
             Id:'00000000-0000-0000-0000-000000000000',
-            Name:this.sty.name,
-            Genus:this.sty.genus,
-            IniPetDay:this.sty.day,
-            IniPetCount:this.sty.number,
-            IniPetDate:this.sty.addDate,
-            BatchNumber:this.sty.batchNumber
+            Name:this.data.name,
+            Genus:this.data.genus,
+            IniPetDay:this.data.day,
+            IniPetCount:this.data.number,
+            IniPetDate:this.data.addDate,
+            BatchNumber:this.data.batchNumber
         }).then((data)=>{
             callback(data);
         }).catch((err)=>{

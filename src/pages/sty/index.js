@@ -43,6 +43,8 @@ export default class Sty extends Component{
                                         }}></StyBar>)
     }};
 
+
+
     componentWillMount(){
         const {styStore,navigation} = this.props;
         styStore.onIni(navigation.state.params.code);

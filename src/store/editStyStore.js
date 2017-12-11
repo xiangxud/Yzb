@@ -4,39 +4,41 @@ import validate from 'mobx-form-validate';
 import camelCase from 'camelcase';
 
 import _ from "lodash";
+import storeBase from "./common/storeBase";
 useStrict(true);
 
-class editStyStore {
+class editStyStore extends storeBase {
     @observable
     farm={};
 
     genus=[];//种属列表
 
     @observable
-    sty={
+    data={
         @observable
         code:'',
         @observable
+        @validate(/\S+$/, '种属必填')
         genus:'',
         @observable
-            @validate(/\S+$/, '栋舍名称必填')
+        @validate(/\S+$/, '栋舍名称必填')
         name:'',
         @observable
-            @validate(/\d+$/, '日龄必填且为数值')
-        day:null,
+        @validate(/\d+$/, '日龄必填且为数值')
+        day:'',
         @observable
         batchNumber:'',
         @observable
-        number:null,
+        @validate(/^[1-9]\d*$/, '数量必填且为大于0')
+        number:'',
         @observable
-        addDate:null,
-        @observable
-        submited:false
+        @validate(/\S+$/, '入栏日期')
+        addDate:''
     }
 
     @action
     onChangedSty(uo){
-        Object.assign(this.sty,this.sty,uo);
+        Object.assign(this.data,this.data,uo);
     }
 
     @action
@@ -51,12 +53,12 @@ class editStyStore {
 
     @action
     onFillSty(data){
-        this.sty.code=data.Id,
-            this.sty.genus=data.Genus;
-        this.sty.name=data.Name;
-        this.sty.day=data.Day.toString();
-        this.sty.number=data.Total.toString();
-        this.sty.addDate=data.IniDate;
+        this.data.code=data.Id,
+            this.data.genus=data.Genus;
+        this.data.name=data.Name;
+        this.data.day=data.Day.toString();
+        this.data.number=data.Total.toString();
+        this.data.addDate=data.IniDate;
         this.genus=data.SourceGenus;
     }
 
@@ -71,45 +73,26 @@ class editStyStore {
 
     @action
     onInvalid(){
-        if( !this.sty.isValid ){
+        if( !this.data.isValid ){
         }
     }
 
     @action
     onUpdateSty(callback,falied) {
         let item = {
-            StyId: this.sty.code,
-            Name: this.sty.name,
-            Day: this.sty.day,
-            Genus: this.sty.genus,
-            Number: this.sty.number,
-            AddDate: this.sty.addDate,
-            BatchNumber: this.sty.batchNumber
+            StyId: this.data.code,
+            Name: this.data.name,
+            Day: this.data.day,
+            Genus: this.data.genus,
+            Number: this.data.number,
+            AddDate: this.data.addDate,
+            BatchNumber: this.data.batchNumber
         };
         request.postJson(urls.apis.IMM_POST_STY,item).then(data=>{
             callback(data);
         }).catch(err => {
             falied(err);
         });
-    }
-
-    onValidMess(){
-        let mess = [];
-        for(var key in this.sty){
-            let info = this.getFiledValidMess(key);
-            if( info && info != null && info != "" ){
-                mess.push(info);
-            }
-        }
-        return mess;
-    }
-
-    getFiledValidMess(name){
-        let errNode = camelCase( 'validateError',name )
-        if(this.sty[errNode] && this.sty[errNode] != null && this.sty[errNode]!=""){
-            return this.sty[errNode];
-        }
-        return "";
     }
 }
 

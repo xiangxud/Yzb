@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 import { Container, Header, Content, Form,Separator,Icon,Root,ListItem,Text,Toast} from 'native-base';
 import {observer,inject} from 'mobx-react/native';
 import FootBar from '../../components/sty/FootBar'
-import {ValidateInput,ValidateInputDate,ValidateChooseItem,ReadOnlyInput} from '../../components/common/native-base-validate'
+import {ValidateInput,ValidateInputInt,ValidateInputDate,ValidateChooseItem,ReadOnlyInput} from '../../components/common/native-base-validate'
 
 @inject('editStyStore')
 @observer
@@ -58,10 +58,8 @@ export default class Edit extends Component{
         navigation.navigate("Sty",{ code : Id , list : list , farm : navigation.state.params.farm });
     }
     next(){
-        this.onUpdateData({ submited:true });
         const {editStyStore} = this.props;
-
-        let mess = editStyStore.onValidMess();
+        let mess = editStyStore.onValidate();
         if(mess.length > 0){
             Toast.show({
                 type:'warning',
@@ -105,14 +103,14 @@ export default class Edit extends Component{
                             <Icon style={style.titleIco} name="ios-book" active></Icon><Text>编辑栋舍</Text>
                         </ListItem>
                         <ReadOnlyInput label="养殖场" value={editStyStore.farm.Name} />
-                        <ValidateInput label="栋舍栏位" data={editStyStore.sty} name="name" placeholder="请输入栋舍栏位" onChange={(e)=>{this.onUpdateData({name:e})}} />
-                        <ValidateChooseItem label="种属" data={editStyStore.sty} name="genus" getOptions={this.getGenus.bind(this)} optionslabel="请选择种属" placeholder="请选择" onChange={(e)=>{this.onUpdateData({genus:e})}} />
-                        <ValidateInput label="日龄" data={editStyStore.sty} name="day" placeholder="如 20" onChange={(e)=>{this.onUpdateData({day:e})}} />
-                        <ValidateInput label="数量" data={editStyStore.sty} name="number" placeholder="进栏数量" onChange={(e)=>{this.onUpdateData({number:e})}} />
-                        <ValidateInputDate label="进雏" data={editStyStore.sty} name="addDate" placeholder="进雏" onChange={(e)=>{this.onUpdateData({addDate:e})}} />
+                        <ValidateInput label="栋舍栏位" data={editStyStore.data} name="name" IsValidate={editStyStore.IsValidate} placeholder="请输入栋舍栏位" onChange={(e)=>{this.onUpdateData({name:e})}} />
+                        <ValidateChooseItem label="种属" data={editStyStore.data} name="genus" IsValidate={editStyStore.IsValidate} getOptions={this.getGenus.bind(this)} optionslabel="请选择种属" placeholder="请选择" onChange={(e)=>{this.onUpdateData({genus:e})}} />
+                        <ValidateInputInt label="日龄" data={editStyStore.data} name="day" IsValidate={editStyStore.IsValidate} placeholder="如 20" onChange={(e)=>{this.onUpdateData({day:e})}} />
+                        <ValidateInputInt label="数量" data={editStyStore.data} name="number" IsValidate={editStyStore.IsValidate} placeholder="进栏数量" onChange={(e)=>{this.onUpdateData({number:e})}} />
+                        <ValidateInputDate label="进栏日期" data={editStyStore.data} name="addDate" IsValidate={editStyStore.IsValidate} placeholder="进雏" onChange={(e)=>{this.onUpdateData({addDate:e})}} />
                     </Form>
-                        <FootBar buttons={this.buttons}></FootBar>
                     </Content>
+                    <FootBar buttons={this.buttons}></FootBar>
                 </Container>
         );
     }
