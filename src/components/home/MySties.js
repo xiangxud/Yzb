@@ -3,7 +3,6 @@
  */
 import React, { Component } from 'react'
 import {
-    Text,
     View,
     StyleSheet,
     TouchableNativeFeedback,
@@ -11,7 +10,7 @@ import {
     ScrollView,
     Dimensions
 } from 'react-native';
-import {Icon} from 'native-base';
+import {Icon, Text, Button} from 'native-base';
 import {observer, inject} from 'mobx-react/native';
 import TitleBar from '../common/TitleBar';
 
@@ -21,7 +20,7 @@ const Sty = ({sty, getSty, isCurrent}) =>{
     return (
         <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={()=>{getSty(sty)}}>
             <View style={[styles.styBox, isCurrent? styles.currentSty: {}]}>
-                <Icon name={'ios-keypad'+(!sty.total?'-outline':'')} style={isCurrent?styles.currentText:{color:'#8b8b8b'}} />
+                <Icon name={'ios-keypad'+(!sty.total?'-outline':'')} style={isCurrent?styles.currentText:{color:'#15856e'}} />
                 <Text style={isCurrent?styles.currentText:{}}>{sty.name.substr(0, 6)}</Text>
             </View>
         </TouchableNativeFeedback>
@@ -51,22 +50,35 @@ export default class MySties extends Component {
                         <Sty key={key} sty={val} getSty={this.getSty} isCurrent={currentSty.id===val.id}/>
                     ))}
                 </ScrollView>
-                <View style={{}}>
-                    <View style={{flex:1, height:300, backgroundColor:'#efc'}}>
-                        <View style={{height:100, backgroundColor:'#fae4ac'}}>
-                            <Image source={require('../../resource/video.jpg')} style={{height:100, width: width}}/>
+                <View style={{backgroundColor:'#efc'}}>
+                    <View style={{flexDirection:'row', height:100, backgroundColor:'#fae4ac'}}>
+                        <View style={styles.video}>
+                            <Text>监控视频001</Text>
                         </View>
-                        <View style={{height:200, backgroundColor:'#f9f3f9', marginTop:1}}>
-                            <Text>
-                                栋舍温度：13
-                                栋舍湿度：23
-                                二氧化碳：32
-                            </Text>
-                            <Text onPress={()=>this.props.onStyPress(homeStore.currentSty)} style={{
-                                backgroundColor:'yellow',
-                                textAlignVertical:'center',
-                                width:60,
-                            }}>栋舍详情</Text>
+                        <View style={styles.video}>
+                            <Text>监控视频002</Text>
+                        </View>
+                        <View style={styles.video}>
+                            <Text>监控视频003</Text>
+                        </View>
+                    </View>
+                    <View style={{backgroundColor:'#f9f3f9', marginTop:1}}>
+                        <View style={{flexDirection: 'row'}}>
+                            <View style={styles.reportItems}>
+                                <Text>栋舍湿度</Text>
+                                <Text><Text style={[styles.report, {color:'red'}]}>84</Text> %rh</Text>
+                            </View>
+                            <View style={styles.reportItems}>
+                                <Text>栋舍温度</Text>
+                                <Text><Text style={styles.report}>25</Text> ℃</Text>
+                            </View>
+                            <View style={styles.reportItems}>
+                                <Text>二氧化碳浓度</Text>
+                                <Text><Text style={styles.report}>0.08</Text> %</Text>
+                            </View>
+                            <View style={styles.reportItems}>
+                                <Button rounded light onPress={()=>this.props.onStyPress(homeStore.currentSty)}><Text>栋舍详情...</Text></Button>
+                            </View>
                         </View>
                     </View>
                 </View>
@@ -108,5 +120,23 @@ const styles = StyleSheet.create({
     },
     currentText:{
         color:'#fff'
-    }
+    },
+    video:{
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center',
+        margin:10,
+        backgroundColor:'#ccc'
+    },
+    reportItems:{
+        flex:1,
+        height:70,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    report:{
+        fontSize:30,
+        fontWeight:'bold',
+        color:'#15856e'
+    },
 });

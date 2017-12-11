@@ -64,9 +64,8 @@ export default class HomePage extends Component {
     renderListHeader(){
         const {isFetching, reminds, fields, sties} = homeStore;
         return (
-            <Container>
-                <Content>
-                    <MaskLoading show={isFetching}/>
+            <View style={styles.container}>
+                <MaskLoading show={isFetching}/>
                 <View style={{height:120, backgroundColor:'#ffc'}}>
                     <SwiperBanner />
                 </View>
@@ -97,24 +96,19 @@ export default class HomePage extends Component {
                     </TouchableHighlight>
                 </View>
                 <MySties sties={sties} onStyPress={(sty) => { this.onStyPress(sty) }} onAddSty={this.onAddSty.bind(this)} />
-                {!isFetching && reminds ?
-                    <Reminds reminds={reminds}
-                             morePress={this.remindMore}
-                             detailPress={this.detailPress}
-                             exec={this.exec}
-                             ignore={this.exec}/>
-                    :null}
+                <Reminds reminds={reminds}
+                         morePress={this.remindMore}
+                         detailPress={this.detailPress}
+                         exec={this.exec}
+                         ignore={this.exec}/>
                 <TitleBar icon={'newspaper-o'}
                           iconColor={'red'}
                           title={'养殖头条'}
-                          showMore = {true}
+                          showMore = {false}
                           onMorePress={()=>{this.remindMore('news')}} />
-                </Content>
-            </Container>
+            </View>
         )
     }
-    _keyExtractor = (item, index) => index;
-
     renderRow = (info) =>{
         return (
             <TouchableNativeFeedback
@@ -134,22 +128,22 @@ export default class HomePage extends Component {
         const {homeStore} = this.props;
         const {isFetching, news, news_page, loadMore} = homeStore;
         return (
-                <FlatList
-                    style={styles.container}
-                    data={news.slice()}
-                    renderItem={({ item }) => this.renderRow(item) }
-                    ListHeaderComponent={this.renderListHeader()}
-                    ListFooterComponent={<Loading show={loadMore}/>}
-                    keyExtractor={ this._keyExtractor }
-                    onRefresh={()=>{homeStore.fetchHomeData()}}
-                    refreshing = {isFetching}
-                    onEndReachedThreshold={0.5}
-                    onEndReached={() => {
-                        if (news_page > 0) {
-                            this.fetchMore()
-                        }
-                    }}
-                />
+            <FlatList
+                style={styles.container}
+                data={news.slice()}
+                renderItem={({ item }) => this.renderRow(item) }
+                ListHeaderComponent={this.renderListHeader()}
+                ListFooterComponent={<Loading show={loadMore}/>}
+                keyExtractor={ (item, index) => index }
+                onRefresh={()=>{homeStore.fetchHomeData()}}
+                refreshing = {isFetching}
+                onEndReachedThreshold={0.5}
+                onEndReached={() => {
+                    if (news_page > 0) {
+                        this.fetchMore()
+                    }
+                }}
+            />
         )
     }
 }
