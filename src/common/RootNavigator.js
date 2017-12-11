@@ -39,7 +39,7 @@ const StyTabNavigation = TabNavigator({
         navigationOptions:{
             headerTitle: '概况',
             tabBarLabel:'概况',
-            tabBarIcon: ({tintColor}) => (<Icon name='home' color={tintColor} size={24}/>)
+            tabBarIcon: ({tintColor}) => (<Icon name='building' color={tintColor} size={24}/>)
         }
     },
     ImmTab:{
@@ -47,10 +47,10 @@ const StyTabNavigation = TabNavigator({
         navigationOptions:{
             headerTitle: '免疫',
             tabBarLabel:'免疫',
-            tabBarIcon: ({tintColor}) => (<Icon name='stethoscope' color={tintColor} size={24}/>)
+            tabBarIcon: ({tintColor}) => (<Icon name='calendar-check-o' color={tintColor} size={24}/>)
         }
     },
-    MonitorTab:{
+    /*MonitorTab:{
         screen:monitor,
         navigationOptions:{
             headerTitle: '监控',
@@ -73,7 +73,7 @@ const StyTabNavigation = TabNavigator({
             tabBarLabel:'报表',
             tabBarIcon: ({tintColor}) => (<Icon name='bar-chart' color={tintColor} size={24}/>)
         }
-    }
+    }*/
 },{
     initialRouteName:'StyTab',
     animationEnabled: false,
@@ -84,11 +84,12 @@ const StyTabNavigation = TabNavigator({
         style: {
             height:49,
             paddingTop:0,
-            backgroundColor:'#f1f9f7'
+            backgroundColor:'#d6d6d6'
         },
         labelStyle:{
             marginTop:0,
-            paddingTop:0
+            paddingTop:0,
+            fontSize:12,
         },
         iconStyle:{
             marginTop:0,
@@ -100,7 +101,7 @@ const StyTabNavigation = TabNavigator({
         inactiveTintColor:'#aaa',
         showLabel:true,
         showIcon:true,
-        indicatorStyle:{height:0}
+        indicatorStyle:{height:0}/**/
     }
 });
 

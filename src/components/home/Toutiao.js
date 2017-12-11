@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {observer} from 'mobx-react/native'
 import TitleBar from '../common/TitleBar'
-import loading from '../common/Loading'
+import {Loading} from './'
 
 const Toutiao = observer(({list, newsPress, page, loadMore, isFetching,navigation})=>{
     openNewInfo = newsPress==null || newsPress == undefined ? (info) =>{

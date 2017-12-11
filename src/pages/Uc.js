@@ -49,12 +49,14 @@ export default class Uc extends Component {
                     <Content gray>
                         <UserHead />
                         <MyList navigation={this.props.navigation} user={loginUser} />
-                        <TouchableOpacity
-                            activeOpacity={0.75}
-                            style={styles.registerBtn}
-                            onPress = {()=>this.error()}>
-                            <Text style={{fontSize: 16, color: 'red'}}>SYSTEM ERROR...</Text>
-                        </TouchableOpacity>
+                        {__DEV__?
+                            <TouchableOpacity
+                                activeOpacity={0.75}
+                                style={styles.registerBtn}
+                                onPress = {()=>this.error()}>
+                                <Text style={{fontSize: 16, color: 'red'}}>SYSTEM ERROR...</Text>
+                            </TouchableOpacity>
+                            : null}
                     </Content>
                 </Container>
             </ScrollView>

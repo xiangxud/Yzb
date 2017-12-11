@@ -50,6 +50,7 @@ export default class MySties extends Component {
                         <Sty key={key} sty={val} getSty={this.getSty} isCurrent={currentSty.id===val.id}/>
                     ))}
                 </ScrollView>
+                {currentSty?
                 <View style={{backgroundColor:'#efc'}}>
                     <View style={{flexDirection:'row', height:100, backgroundColor:'#fae4ac'}}>
                         <View style={styles.video}>
@@ -62,8 +63,8 @@ export default class MySties extends Component {
                             <Text>监控视频003</Text>
                         </View>
                     </View>
-                    <View style={{backgroundColor:'#f9f3f9', marginTop:1}}>
-                        <View style={{flexDirection: 'row'}}>
+                    <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={()=>this.props.onStyPress(homeStore.currentSty)}>
+                        <View style={{backgroundColor:'#f9f3f9', flexDirection: 'row'}}>
                             <View style={styles.reportItems}>
                                 <Text>栋舍湿度</Text>
                                 <Text><Text style={[styles.report, {color:'red'}]}>84</Text> %rh</Text>
@@ -76,12 +77,13 @@ export default class MySties extends Component {
                                 <Text>二氧化碳浓度</Text>
                                 <Text><Text style={styles.report}>0.08</Text> %</Text>
                             </View>
-                            <View style={styles.reportItems}>
-                                <Button rounded light onPress={()=>this.props.onStyPress(homeStore.currentSty)}><Text>详情</Text></Button>
-                            </View>
                         </View>
-                    </View>
+                    </TouchableNativeFeedback>
+                </View>:
+                <View style={styles.video}>
+                    <Text>点击上方栋舍查看详情</Text>
                 </View>
+                }
             </View>
         );
     }
