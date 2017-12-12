@@ -107,12 +107,12 @@ class immStore {
         this.getDataFromApi(this.queryConfig,data=>{
             this.fillList(data);
             if( callback && callback != null ) {
-                callback()
+                callback(data)
             };
         },(err)=>{
             this.closeEnd();
             if( falied && falied != null ) {
-                falied()
+                falied(err)
             };
         });
     }
