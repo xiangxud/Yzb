@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import {observer} from 'mobx-react/native';
 import {Button, Icon, Text } from 'native-base';
-import Modal from 'react-native-modalbox';
 
 @observer
 export default class Monitor extends Component{
@@ -57,5 +56,5 @@ const styles = StyleSheet.create({
         padding:5,
         color:'#ffffff'
     },
-    webView: { height: 247 },
+    webView: { height: 257 },
 });

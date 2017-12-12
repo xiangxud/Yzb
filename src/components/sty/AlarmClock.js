@@ -1,17 +1,14 @@
 import React, {Component} from 'react';
-import
-{
+import {
     View,
-
     StyleSheet,
     FlatList,
     TouchableNativeFeedback,
     TouchableOpacity
 } from 'react-native';
 import { SwipeRow,Button,Text,Icon,List, ListItem,Left,Body,Right} from 'native-base';
+import {observable, action} from 'mobx';
 import {observer} from 'mobx-react/native';
-import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx';
-
 
 @observer
 class AlarmClockRow extends Component{

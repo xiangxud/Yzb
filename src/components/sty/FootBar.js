@@ -7,7 +7,7 @@ import {
     TouchableOpacity
 } from 'react-native'
 import {Container, Content, Footer, FooterTab, Button,Text} from 'native-base';
-import {observer, inject} from 'mobx-react/native';
+import {observer} from 'mobx-react/native';
 
 @observer
 export default class FootBar extends Component {
