@@ -123,6 +123,7 @@ class styStore {
     @action
     onIni( id ){
         this.onLoadFromApi(id,(data)=>{
+            //1、基础数据
             this.code = data.Id;
             this.title = data.Name;
             this.genus=data.Genus;
@@ -130,13 +131,17 @@ class styStore {
             this.day = data.Day;
             this.unit=data.Unit;
             //this.immCollection=data.Imm;
+            //2、环控数据
             if(data.Env && data.Env != null){
                 this.environmental.onParse(data.Env);//环控数据
                 this.waring.onParse(data.Env,this);
             }
+            //3、预警信息
             if(data.Imm && data.Imm != null){
                 this.immCollection.onParse(data.Imm);
             }
+            //4、摄像头数据
+            this.moitor.camera = data.Cameras;
         },(err)=>{
             alert("获取栋舍详情失败");
         });

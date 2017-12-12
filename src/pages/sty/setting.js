@@ -22,7 +22,8 @@ export default class setting extends Component{
     });
 
     componentDidMount(){
-        const {styStore,navigation} = this.props;
+        const {styStore} = this.props;
+        //styStore.moitor.camera;
     }
 
     constructor(props){
