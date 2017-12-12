@@ -10,7 +10,7 @@ import
     StyleSheet,
     ScrollView
 } from 'react-native';
-import { Container,Content,Root } from 'native-base';
+import { Container,Content } from 'native-base';
 import {observer,inject} from 'mobx-react/native';
 import StyBar from '../../components/sty/StyBar';
 import Waring from '../../components/sty/Waring';
@@ -40,6 +40,12 @@ export default class Sty extends Component{
                     code:navigation.state.params.code,
                     title:navigation.state.params.title,
                     farm:navigation.state.params.farm})
+            }}
+            onSettingPress={()=>{
+                navigation.navigate("StySetting",{
+                    code:navigation.state.params.code,
+                    title:navigation.state.params.title,
+                    farm:navigation.state.params.farm})
             }} />
     });
 
@@ -55,7 +61,6 @@ export default class Sty extends Component{
     render(){
         const {styStore} = this.props;
         return (
-            <Root>
                 <Container>
                     <Content>
                         <View style={style.main}>
@@ -68,7 +73,6 @@ export default class Sty extends Component{
                         </View>
                     </Content>
                 </Container>
-            </Root>
         );
     }
 }

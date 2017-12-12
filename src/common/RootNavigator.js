@@ -34,6 +34,7 @@ import addSty from '../pages/sty/add';
 import editSty from '../pages/sty/edit';
 import outPet from '../pages/sty/outPet'
 import inPet from '../pages/sty/inPet'
+import stySetting from '../pages/sty/setting';
 
 const StyTabNavigation = TabNavigator({
     StyTab:{
@@ -178,6 +179,7 @@ const RootNavigator = StackNavigator({
     Sty:{screen:StyTabNavigation},
     AddSty:{screen:addSty},
     EditSty:{screen:editSty},
+    StySetting:{screen:stySetting},
     OutPet:{screen:outPet},
     InPet:{screen:inPet},
     BHStart:{ screen: BHStart },
