@@ -100,7 +100,7 @@ const StyTabNavigation = TabNavigator({
         activeBackgroundColor:'white',
         activeTintColor:'#009688',
         inactiveBackgroundColor:'white',
-        inactiveTintColor:'#aaa',
+        inactiveTintColor:'#444444',
         showLabel:true,
         showIcon:true,
         indicatorStyle:{height:0}/**/

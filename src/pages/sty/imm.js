@@ -17,7 +17,7 @@ export default class imm extends Component{
         headerRight: <View />
     });
 
-    componentWillMount(){
+    componentDidMount(){
         const {immStore,immFilterStore} = this.props;
         this.onLoadList();
     }
@@ -28,14 +28,7 @@ export default class imm extends Component{
 
     onLoadList(config) {
         const {immStore} = this.props;
-        immStore.onLoad(config, (mess) => {
-            Toast.show({
-                type:'warning',
-                text: mess,
-                position: 'top'
-            });
-            this.autoClose();
-        } )
+        immStore.onLoad(config, (mess) => {},(mess)=> {})
     }
 
     onMoreList(){
