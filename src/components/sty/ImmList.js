@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import
-{
+import{
     View,
     StyleSheet,
     FlatList,
@@ -15,7 +14,7 @@ export default class ImmList extends Component{
     constructor(props){
         super(props);
     }
-    componentWillMount(){
+    componentDidMount(){
 
     }
     renderRow = (info) =>{
@@ -67,17 +66,17 @@ export default class ImmList extends Component{
                     <Text>更多</Text>
                 </View>
             </View>
-                <FlatList data={this.props.collection.list}
-                          renderItem={this.renderRow}
-                          onEndReachedThreshold={0.5}
-                          ItemSeparatorComponent={this._separator}
-                          ListFooterComponent={this._renderFooter}
-                          refreshing={!this.props.collection.End}
-                          onEndReached={()=>{
-                              this.props.collection.onLoad();
-                              return true;
-                          }} keyExtractor={(item,key) => key}>
-                </FlatList>
+            <FlatList data={this.props.collection.list}
+                      renderItem={this.renderRow}
+                      onEndReachedThreshold={0.5}
+                      ItemSeparatorComponent={this._separator}
+                      ListFooterComponent={this._renderFooter}
+                      refreshing={!this.props.collection.End}
+                      onEndReached={()=>{
+                          this.props.collection.onLoad();
+                          return true;
+                      }} keyExtractor={(item,key) => key}>
+            </FlatList>
         </View>
     }
 };
@@ -131,9 +130,9 @@ const style = StyleSheet.create({
         flex:1,
     },
     immTime:{
-      color:'#ababab',
-      fontSize:12,
-      marginLeft:3,
+        color:'#ababab',
+        fontSize:12,
+        marginLeft:3,
         width:100
     },
     second:{
