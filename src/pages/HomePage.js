@@ -17,8 +17,8 @@ import SwiperBanner from '../components/home/SwiperBanner';
 import MySties from '../components/home/MySties';
 import Reminds from "../components/home/Reminds";
 //import Report from "../components/home/Report";
-import TitleBar from '../components/common/TitleBar'
-import {Loading, MaskLoading} from '../components'
+import TitleBar from '../components/common/TitleBar';
+import {Loading, MaskLoading} from '../components';
 
 const InfoItem = observer(({info, press})=>{
     return <TouchableNativeFeedback onPress={()=>press(info)} background={TouchableNativeFeedback.SelectableBackground()}>
