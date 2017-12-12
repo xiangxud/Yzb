@@ -34,6 +34,20 @@ class inPetStore extends storeBase{
         this.styId = styId;
         this.farm = farm;
         this.styName=title;
+        this.data.FarmId = farm.Id;
+        this.data.StyId = styId;
+    }
+    @action
+    postSurcess(data,callback){
+        callback(data);
+    }
+    @action
+    postFalied(err,callback){
+        callback(err);
+    }
+    onCommit(callback,falied){
+        debugger;
+        request.postJson(urls.apis.IMM_POST_ADD_PET,this.data).then(data=>this.postSurcess(data,callback)).catch(err=>this.postFalied(err,falied));
     }
 }
 

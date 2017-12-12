@@ -18,9 +18,6 @@ export default class InPet extends Component{
     }
     componentWillMount(){
         const {inPetStore,navigation} = this.props;
-
-        debugger;
-
         inPetStore.onIni({
             styId:navigation.state.params.code,
             title:navigation.state.params.title,
@@ -46,6 +43,25 @@ export default class InPet extends Component{
             this.autoClose();
             return;
         }
+        inPetStore.onCommit(data=>{
+            Toast.show({
+                type:'success',
+                text: '入栏成功',
+                position: 'top'
+            });
+            this.autoClose(()=>{
+                const {navigation} = this.props;
+                let { Id } = data;
+                navigation.navigate("Sty",{ code : Id , list : [] , farm:navigation.state.params.farm });
+            });
+        },err=>{
+            Toast.show({
+                type:'warning',
+                text: '入栏失败:' + err,
+                position: 'top'
+            });
+            this.autoClose();
+        });
     }
 
     buttons=[{title:'取消' , default:false, onPress:()=>{}},{title:'提交' , default:true, onPress:()=>{ this.onCommit() }}];
