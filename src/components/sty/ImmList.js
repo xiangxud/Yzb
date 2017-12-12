@@ -5,10 +5,9 @@ import{
     FlatList,
     TouchableNativeFeedback,
 } from 'react-native';
-import { SwipeRow,Button,Text,Icon } from 'native-base';
+import { SwipeRow, Button, Text, Icon } from 'native-base';
 import {observer} from 'mobx-react/native';
-import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx';
-
+import {TitleBar} from '../../components';
 @observer
 export default class ImmList extends Component{
     constructor(props){
@@ -55,22 +54,17 @@ export default class ImmList extends Component{
         return <View />
     }
     render(){
-        return <View style={style.list}>
-            <View style={style.header}>
-                <View style={style.title}>
-                    <Icon name="list-box" style={{fontSize:22,color:'#e51c23'}}></Icon>
-                    <Text style={style.word}>{this.props.title}</Text>
-                    <Text style={style.count}>({this.props.collection.count})</Text>
-                </View>
-                <View style={style.more}>
-                    <Text>更多</Text>
-                </View>
-            </View>
+        return <View style={style.container}>
+            <TitleBar icon={'bell-o'}
+                      title='免疫提醒'
+                      morePress={()=>{alert('请完善跳转至列表页')}}
+                      sub={<Text style={style.count}>({this.props.collection.count})</Text>}/>
             <FlatList data={this.props.collection.list}
                       renderItem={this.renderRow}
                       onEndReachedThreshold={0.5}
                       ItemSeparatorComponent={this._separator}
                       ListFooterComponent={this._renderFooter}
+                      ListEmptyComponent={()=><View style={{height:100, justifyContent:'center', alignItems:'center'}}><Text style={{color:'gray'}}>暂无免疫提醒</Text></View>}
                       refreshing={!this.props.collection.End}
                       onEndReached={()=>{
                           this.props.collection.onLoad();
@@ -82,26 +76,10 @@ export default class ImmList extends Component{
 };
 
 const style = StyleSheet.create({
-    list:{
+    container:{
         flex:1,
+        marginTop:10,
         alignItems:'stretch'
-    },
-    header:{
-        flexDirection:'row',
-        height:40,
-        alignItems:'center',
-        borderBottomWidth:StyleSheet.hairlineWidth,
-        borderBottomColor:'#888'
-    },
-    title:{
-        paddingRight:10,
-        flexDirection:'row',
-        alignItems:'center',
-        flex:1
-    },
-    word:{
-        marginLeft:5,
-        color:'#101010'
     },
     count:{
         marginLeft:2,

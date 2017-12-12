@@ -12,14 +12,14 @@ import {
 import { observer } from 'mobx-react/native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const TitleBar = observer(({title, icon, iconColor, showMore, morePress})=> {
+const TitleBar = observer(({title, sub, icon, iconColor, morePress})=> {
         return (
             <View style={styles.titleWrap}>
                 <Icon name={icon? icon: 'institution'}
                       color={iconColor? iconColor: '#F1745E'} size={16} />
-                <Text style={styles.titleText}>{title}</Text>
+                <Text style={styles.titleText}>{title}{sub}</Text>
                 {
-                    showMore ?
+                    morePress ?
                     <TouchableHighlight style={styles.more} onPress={()=> morePress()}>
                         <Text>更多</Text>
                     </TouchableHighlight>

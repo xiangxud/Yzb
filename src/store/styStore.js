@@ -49,17 +49,22 @@ class WaringStore {
 }
 
 class MoitorStore{
-    constructor(){
-        this.name='005摄像头';
-        this.timer='2017-09-09 14时35分69秒2983S';
-        this.camera=['001摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头'];
-    }
     @observable
     name='';
     @observable
     timer='';
     @observable
-    camera=[];
+    cameras=[];
+
+    constructor(){
+        this.name='005摄像头';
+        this.timer='2017-09-09 14时35分69秒2983S';
+        let cams = [];
+        for(let i =1; i<=15; i++){
+            cams.push({name: '摄像头00'+i, camera_id: '00000'+i});
+        }
+        this.cameras = cams;
+    }
 }
 
 class  EnvironmentalStore{
@@ -120,29 +125,30 @@ class StyStore {
     @action
     onIni( id ){
         this.onLoadFromApi(id, (data)=>{
-            //1、基础数据
-            this.code = data.Id;
-            this.title = data.Name;
-            this.genus = data.Genus;
-            this.count = data.Total;
-            this.day = data.Day;
-            this.unit = data.Unit;
-            //2、环控数据
-            if(data.Env){
-                this.environmental.onParse(data.Env);//环控数据
-                this.waring.onParse(data.Env, this);
-            }
-            //3、预警信息
-            if(data.Imm){
-                this.immCollection.onParse(data.Imm);
-            }
-            //4、摄像头数据
-            try {
-                this.moitor.camera = data.Cameras;
-            }catch(e){
-                alert(JSON.stringify(e))
-            }
-
+            runInAction(()=>{
+                //1、基础数据
+                this.code = data.Id;
+                this.title = data.Name;
+                this.genus = data.Genus;
+                this.count = data.Total;
+                this.day = data.Day;
+                this.unit = data.Unit;
+                //2、环控数据
+                if(data.Env){
+                    this.environmental.onParse(data.Env);//环控数据
+                    this.waring.onParse(data.Env, this);
+                }
+                //3、预警信息
+                if(data.Imm){
+                    this.immCollection.onParse(data.Imm);
+                }
+                //4、摄像头数据
+                try {
+                    //this.moitor.cameras = data.Cameras;
+                }catch(e){
+                    alert(JSON.stringify(e))
+                }
+            });
         }, (err)=>{
             tools.showToast("获取栋舍信息失败");
         });

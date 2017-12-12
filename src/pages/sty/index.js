@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {
     View,
+    StyleSheet,
+    ScrollView
 } from 'react-native';
 import { Container, Content, Text } from 'native-base';
 import Modal from 'react-native-modalbox';
@@ -59,20 +61,29 @@ export default class Sty extends Component {
                     <Waring waring={waring}/>
                     <Monitor monitor={moitor} switchVideo={()=>{this.refs.modal_choose_monitor.open();}}/>
                     <ImmList title="免疫提醒" collection={immCollection}/>
-                    <Modal
-                        ref={"modal_choose_monitor"}
-                        position={"center"}
-                        onClosed={()=>{alert('close')}}>
-                        <View>
-                            {
-                                moitor.camera.map((camera, i)=>(
-                                    <Text key={i}>上拉大楼大楼大楼大楼大楼大楼大楼</Text>
-                                ))
-                            }
-                        </View>
-                    </Modal>
                 </Content>
+                <Modal
+                    ref={"modal_choose_monitor"}
+                    position={"center"}
+                    style={styles.modal}
+                    onClosed={()=>{tools.showToast('...')}}>
+                    <ScrollView style={{flex:1}}>
+                        {
+                            moitor.cameras.map((camera, i)=>(
+                                <Text key={i}>{camera.name}</Text>
+                            ))
+                        }
+                    </ScrollView>
+                </Modal>
             </Container>
         );
     }
 }
+
+
+const styles = StyleSheet.create({
+    modal:{
+        width:300,
+        height:300,
+    }
+})
