@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Text,Button,ActionSheet} from 'native-base';
 import {observer} from 'mobx-react/native';
-import {action,observable} from 'mobx'
+import {action, observable} from 'mobx'
 import { Icon } from 'native-base'
 
 @observer
