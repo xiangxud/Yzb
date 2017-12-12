@@ -4,14 +4,13 @@ import
     View,
     TextInput,
     WebView,
-    Image,
     TouchableOpacity,
     StyleSheet
 } from 'react-native';
 import {observer,inject} from 'mobx-react/native';
 import {Container, Content, Button, Text} from 'native-base';
 
-export default class monitor extends Component{
+export default class MonitorPlay extends Component{
 
     static navigationOptions = ({navigation})=>({
         headerTitle: '栋舍监控',
@@ -22,9 +21,12 @@ export default class monitor extends Component{
         return (<Container>
             <Content>
                 <View style={styles.container}>
-                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('MonitorPlay', {id: '00000001'})}>
-                        <Image source={{uri:'http://pic32.photophoto.cn/20140704/0022005589418625_b.jpg'}} style={{width:50, height:30}}/>
-                    </TouchableOpacity>
+                    <WebView
+                        source={{uri: urls.webPath+'yzb/monitor/live?1'}}
+                        scalesPageToFit={false}
+
+                        style={{height:300, marginTop: 20}}
+                    />
                 </View>
             </Content>
         </Container>);
@@ -33,6 +35,9 @@ export default class monitor extends Component{
 
 const styles = StyleSheet.create({
     container:{
-        marginTop:10,
+        marginTop:5,
+        borderTopWidth:3,
+        borderTopColor:'#ff9800',
+        backgroundColor:'#fff',
     },
 })

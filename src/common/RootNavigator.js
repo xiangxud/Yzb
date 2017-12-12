@@ -24,8 +24,9 @@ import MyInfo from '../pages/uc/MyInfo';
 import Sty from '../pages/sty';
 import imm from '../pages/sty/imm';
 import monitor from '../pages/sty/monitor';
-import environmental from '../pages/sty/environmental';
-import report from '../pages/sty/report';
+import MonitorPlay from '../pages/sty/MonitorPlay';
+//import environmental from '../pages/sty/environmental';
+//import report from '../pages/sty/report';
 import Quotes from '../pages/Quotes';
 
 
@@ -56,7 +57,7 @@ const StyTabNavigation = TabNavigator({
         navigationOptions:{
             headerTitle: '监控',
             tabBarLabel:'监控',
-            tabBarIcon: ({tintColor}) => (<Icon name='desktop' color={tintColor} size={24}/>)
+            tabBarIcon: ({tintColor}) => (<Icon name='video-camera' color={tintColor} size={24}/>)
         }
     },
     /*EnvironmentalTab:{
@@ -182,6 +183,7 @@ const RootNavigator = StackNavigator({
     BHStart:{ screen: BHStart },
     BHApply:{ screen: BHApply },
     BHList:{ screen: BHList },
+    MonitorPlay:{ screen: MonitorPlay },
     Web:{ screen: Web },
     Live:{ screen: Live },
     Didi:{ screen: MarkerExample },
