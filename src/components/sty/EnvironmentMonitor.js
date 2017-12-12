@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     },
     val: {
         fontSize:22,
-        color:'red',
+        color:'#6f6f6f',
         fontWeight:'bold',
     },
 });
