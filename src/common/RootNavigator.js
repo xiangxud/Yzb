@@ -23,7 +23,7 @@ import About from '../pages/uc/About';
 import MyInfo from '../pages/uc/MyInfo';
 import Sty from '../pages/sty';
 import imm from '../pages/sty/imm';
-import monitor from '../pages/sty/monitor';
+import Monitor from '../pages/sty/Monitor';
 import MonitorPlay from '../pages/sty/MonitorPlay';
 //import environmental from '../pages/sty/environmental';
 //import report from '../pages/sty/report';
@@ -53,7 +53,7 @@ const StyTabNavigation = TabNavigator({
         }
     },
     MonitorTab:{
-        screen:monitor,
+        screen:Monitor,
         navigationOptions:{
             headerTitle: '监控',
             tabBarLabel:'监控',

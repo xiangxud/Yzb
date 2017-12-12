@@ -52,38 +52,40 @@ export default class MySties extends Component {
                     ))}
                 </ScrollView>
                 {store.currentSty && store.currentSty.id?
-                <View style={{backgroundColor:'#efc'}}>
-                    <View style={{flexDirection:'row', height:100, backgroundColor:'#fae4ac'}}>
-                        <View style={styles.video}>
-                            <Text>监控视频001</Text>
-                        </View>
-                        <View style={styles.video}>
-                            <Text>监控视频002</Text>
-                        </View>
-                        <View style={styles.video}>
-                            <Text>监控视频003</Text>
-                        </View>
+                    <View style={{backgroundColor:'#efc'}}>
+                        <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={()=>this.props.onStyPress(store.currentSty)}>
+                            <View>
+                                <View style={{flexDirection:'row', height:100, backgroundColor:'#fae4ac'}}>
+                                    <View style={styles.video}>
+                                        <Text>监控视频001</Text>
+                                    </View>
+                                    <View style={styles.video}>
+                                        <Text>监控视频002</Text>
+                                    </View>
+                                    <View style={styles.video}>
+                                        <Text>监控视频003</Text>
+                                    </View>
+                                </View>
+                                <View style={{backgroundColor:'#f9f3f9', flexDirection: 'row'}}>
+                                    <View style={styles.reportItems}>
+                                        <Text>栋舍湿度</Text>
+                                        <Text><Text style={[styles.report, {color:'red'}]}>84</Text> %rh</Text>
+                                    </View>
+                                    <View style={styles.reportItems}>
+                                        <Text>栋舍温度</Text>
+                                        <Text><Text style={styles.report}>25</Text> ℃</Text>
+                                    </View>
+                                    <View style={styles.reportItems}>
+                                        <Text>二氧化碳浓度</Text>
+                                        <Text><Text style={styles.report}>0.08</Text> %</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </TouchableNativeFeedback>
+                    </View>:
+                    <View style={styles.video}>
+                        <Text>点击上方栋舍查看详情</Text>
                     </View>
-                    <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={()=>this.props.onStyPress(store.currentSty)}>
-                        <View style={{backgroundColor:'#f9f3f9', flexDirection: 'row'}}>
-                            <View style={styles.reportItems}>
-                                <Text>栋舍湿度</Text>
-                                <Text><Text style={[styles.report, {color:'red'}]}>84</Text> %rh</Text>
-                            </View>
-                            <View style={styles.reportItems}>
-                                <Text>栋舍温度</Text>
-                                <Text><Text style={styles.report}>25</Text> ℃</Text>
-                            </View>
-                            <View style={styles.reportItems}>
-                                <Text>二氧化碳浓度</Text>
-                                <Text><Text style={styles.report}>0.08</Text> %</Text>
-                            </View>
-                        </View>
-                    </TouchableNativeFeedback>
-                </View>:
-                <View style={styles.video}>
-                    <Text>点击上方栋舍查看详情</Text>
-                </View>
                 }
             </View>
         );
