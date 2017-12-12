@@ -48,26 +48,24 @@ class WaringStore {
     }
 }
 
-class MoitorStore{
+class MonitorStore{
     @observable
-    name='';
-    @observable
-    timer='';
+    current={};
+
     @observable
     cameras=[];
 
     constructor(){
-        this.name='005摄像头';
-        this.timer='2017-09-09 14时35分69秒2983S';
         let cams = [];
-        for(let i =1; i<=15; i++){
+        for(let i = 1; i <= 15; i++){
             cams.push({name: '摄像头00'+i, camera_id: '00000'+i});
         }
         this.cameras = cams;
+        this.current = cams[0];
     }
 }
 
-class  EnvironmentalStore{
+class EnvironmentalStore{
     constructor(){
         this.temperature="";
         this.humidity="";
@@ -75,8 +73,8 @@ class  EnvironmentalStore{
     }
     @action
     onParse(data){
-        this.temperature=data.Temperature;
-        this.humidity=data.Humidity;
+        this.temperature = data.Temperature;
+        this.humidity = data.Humidity;
         this.o2c = data.O2c;
     }
     @observable
@@ -120,7 +118,7 @@ class StyStore {
     waring=new WaringStore();
 
     @observable
-    moitor=new MoitorStore();
+    monitor=new MonitorStore();
 
     @action
     onIni( id ){
@@ -144,7 +142,7 @@ class StyStore {
                 }
                 //4、摄像头数据
                 try {
-                    //this.moitor.cameras = data.Cameras;
+                    //this.monitor.cameras = data.Cameras;
                 }catch(e){
                     alert(JSON.stringify(e))
                 }
@@ -153,6 +151,11 @@ class StyStore {
             tools.showToast("获取栋舍信息失败");
         });
     }
+
+    @action switchCamera=(o)=>{
+        this.monitor.current = o;
+    }
+
     @action
     onLoadFromApi(id, callback, failed){
         request.getJson(urls.apis.IMM_STYBASIC, {id: id}).then((data) => {

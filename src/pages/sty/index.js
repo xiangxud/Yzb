@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {
     View,
     StyleSheet,
-    ScrollView
+    ScrollView,
+    TouchableOpacity
 } from 'react-native';
 import { Container, Content, Text } from 'native-base';
 import Modal from 'react-native-modalbox';
@@ -49,18 +50,23 @@ export default class Sty extends Component {
             }} />
     });
 
+    switchCamera = (c) =>{
+        styStore.switchCamera(c);
+        this.refs.modal_choose_monitor.close();
+    }
+
     componentDidMount(){
         const {styStore, navigation} = this.props;
         styStore.onIni(navigation.state.params.code);
     }
 
     render(){
-        const {waring, moitor, immCollection, environmental} = this.props.styStore;
+        const {waring, monitor, immCollection, environmental} = this.props.styStore;
         return (
             <Container>
                 <Content>
                     <Waring waring={waring}/>
-                    <Monitor monitor={moitor} switchVideo={()=>{this.refs.modal_choose_monitor.open();}}/>
+                    <Monitor monitor={monitor} switchVideo={()=>{this.refs.modal_choose_monitor.open();}}/>
                     <EnvironmentMonitor data={environmental} />
                     <ImmList title="免疫提醒" collection={immCollection}/>
                 </Content>
@@ -68,11 +74,15 @@ export default class Sty extends Component {
                     ref={"modal_choose_monitor"}
                     position={"center"}
                     style={styles.modal}
-                    onClosed={()=>{tools.showToast('...')}}>
+                    onClosed={()=>{}}>
                     <ScrollView style={{flex:1}}>
                         {
-                            moitor.cameras.map((camera, i)=>(
-                                <Text key={i}>{camera.name}</Text>
+                            monitor.cameras.map((camera, i)=>(
+                                <TouchableOpacity key={i} onPress={()=>this.switchCamera(camera)}>
+                                    <View style={[styles.item, camera.name===monitor.current.name?styles.current:null]}>
+                                        <Text>{camera.name}</Text>
+                                    </View>
+                                </TouchableOpacity>
                             ))
                         }
                     </ScrollView>
@@ -86,6 +96,15 @@ export default class Sty extends Component {
 const styles = StyleSheet.create({
     modal:{
         width:300,
-        height:300,
+        height:200,
+    },
+    item:{
+        padding:15,
+        margin:.5,
+        width:300,
+        backgroundColor:'#d6d6d6',
+    },
+    current:{
+        backgroundColor:'#e69d63'
     }
 })

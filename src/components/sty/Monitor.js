@@ -11,11 +11,12 @@ import {Button, Icon, Text } from 'native-base';
 @observer
 export default class Monitor extends Component{
     render(){
+        const {monitor} = this.props;
         return (
             <View style={styles.container}>
                 <View style={styles.infoBox}>
                     <Text style={styles.desc}>
-                        当前摄像头：{this.props.monitor.name}
+                        当前摄像头：{monitor && monitor.current ? monitor.current.name: ''}
                     </Text>
                     <TouchableOpacity onPress={this.props.switchVideo}>
                         <View style={{flexDirection:'row', alignItems:'center'}}>
