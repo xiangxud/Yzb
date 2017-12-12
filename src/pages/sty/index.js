@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import
-{
+import {
     View,
     Text ,
     Button,
@@ -19,7 +18,11 @@ import Monitor from '../../components/sty/Monitor';
 
 @inject('styStore')
 @observer
-export default class Sty extends Component{
+export default class Sty extends Component {
+    constructor(props){
+        super(props);
+    }
+
     static navigationOptions = ({navigation})=>({
         headerTitle: navigation.state.params.title,
         headerRight: <StyBar
@@ -49,56 +52,21 @@ export default class Sty extends Component{
             }} />
     });
 
-    componentWillMount(){
+    componentDidMount(){
         const {styStore,navigation} = this.props;
         styStore.onIni(navigation.state.params.code);
-    }
-
-    constructor(props){
-        super(props);
     }
 
     render(){
         const {styStore} = this.props;
         return (
-                <Container>
-                    <Content>
-                        <View style={style.main}>
-                            <Waring style={style.waring} waring={styStore.waring}>
-                            </Waring>
-                            <Monitor style={style.mon} monitor={styStore.moitor} backgroundColor="#615e61">
-                            </Monitor>
-                            <ImmList style={style.imm} title="免疫提醒" collection={styStore.immCollection}>
-                            </ImmList>
-                        </View>
-                    </Content>
-                </Container>
+            <Container>
+                <Content>
+                    <Waring waring={styStore.waring}/>
+                    <Monitor monitor={styStore.moitor} backgroundColor="#615e61"/>
+                    <ImmList title="免疫提醒" collection={styStore.immCollection}/>
+                </Content>
+            </Container>
         );
     }
 }
-
-const style = StyleSheet.create({
-    tab : {
-        height:60,
-        flexDirection:'row',
-        alignItems:'stretch'
-    },
-    main:{
-        flex:1,
-        alignItems:'stretch',
-        backgroundColor:'#ffffff',
-        paddingLeft:2,
-        paddingRight:2
-    },
-    imm:{
-        marginLeft :2,
-        marginRight:2
-    },
-    waring:{
-        marginLeft :5,
-        marginRight:5
-    },
-    mon:{
-        backgroundColor:'#f3f3f3'
-    }
-});

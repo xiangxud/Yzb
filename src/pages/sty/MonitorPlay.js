@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
-import
-{
+import {
     View,
     TextInput,
     WebView,
-    TouchableOpacity,
     StyleSheet
 } from 'react-native';
-import {observer,inject} from 'mobx-react/native';
 import {Container, Content, Button, Icon, Text} from 'native-base';
 
 export default class MonitorPlay extends Component{
@@ -15,12 +12,12 @@ export default class MonitorPlay extends Component{
         super(props);
         this.state= {
             current: {},
-            url: urls.webPath+'yzb/monitor/live',
+            url: urls.webPath+'yzb/monitor/play',
             WebViewHeight: 200,
         };
     }
     static navigationOptions = ({navigation})=>({
-        headerTitle: '栋舍监控',
+        headerTitle: '监控历史查看',
         headerRight: <View/>
     });
 
@@ -39,7 +36,7 @@ export default class MonitorPlay extends Component{
                 <View style={styles.container}>
                     <WebView
                         javaScriptEnabled={true}
-                        source={{uri: urls.webPath + 'yzb/monitor/live'}}
+                        source={{uri: this.state.url}}
                         style={{ height: this.state.WebViewHeight }}
                         scalesPageToFit={false}
                         scrollEnabled={false}

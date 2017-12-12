@@ -6,13 +6,12 @@ import
     StyleSheet,
     FlatList,
     TouchableNativeFeedback,
-    Image
+    Image,
+    WebView
 } from 'react-native';
 import {observer} from 'mobx-react/native';
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx';
 import { Icon } from 'native-base'
-
-const defaultVideo = require('../../resource/video.jpg');
 
 @observer
 export default class Monitor extends Component{
@@ -20,46 +19,48 @@ export default class Monitor extends Component{
         super(props);
     }
 
-    componentWillMount()
-    {
-    }
     render(){
-        let bg = this.props.backgroundColor;
-        bg={
-            backgroundColor:this.props.backgroundColor
-        };
-        return <View style={[style.main,bg]}>
-            <View style={style.toolbar}>
-                <Text style={style.txt}>
-                    {this.props.monitor.name}
-                </Text>
-                <Text style={style.txt}>
-                    {this.props.monitor.timer}
-                </Text>
+        return (
+            <View style={styles.container}>
+                <View style={styles.infoBox}>
+                    <Text style={styles.desc}>
+                        当前摄像头：{this.props.monitor.name}
+                    </Text>
+                    <Text style={{color:'white'}}>
+                        <Icon name={'md-swap'} style={{fontSize:22, color:'red'}}/>
+                        切换
+                    </Text>
+                </View>
+                <WebView
+                    javaScriptEnabled={true}
+                    source={{uri: urls.webPath + 'yzb/monitor/live'}}
+                    style={styles.webView}
+                    scalesPageToFit={false}
+                    scrollEnabled={false}
+                    onNavigationStateChange={(page)=> {
+                        this.setState({
+                            WebViewHeight: parseInt(page.title)
+                        })
+                    }}
+                />
             </View>
-            <View style={style.video}>
-                <Image source={defaultVideo} style={style.img}></Image>
-            </View>
-        </View>
+        )
     }
 };
 
-const style = StyleSheet.create({
-    main:{
-        alignItems:'stretch',
+const styles = StyleSheet.create({
+    container:{
+        backgroundColor:'#000',
     },
-    toolbar:{
+    infoBox:{
         flexDirection:'row',
-        height:25,
         alignItems:'center',
+        height:30,
+        padding:3,
     },
-    txt:{
+    desc:{
+        flex:1,
         color:'#ffffff'
     },
-    video:{
-        flexDirection:'row',
-    },
-    img:{
-        flex:1
-    }
+    webView: { height: 247 },
 });
