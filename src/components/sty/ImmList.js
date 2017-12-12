@@ -57,7 +57,7 @@ export default class ImmList extends Component{
         return <View style={style.container}>
             <TitleBar icon={'bell-o'}
                       title='免疫提醒'
-                      morePress={()=>{alert('请完善跳转至列表页')}}
+                      morePress={this.props.onMore}
                       sub={<Text style={style.count}>({this.props.collection.count})</Text>}/>
             <FlatList data={this.props.collection.list}
                       renderItem={this.renderRow}
