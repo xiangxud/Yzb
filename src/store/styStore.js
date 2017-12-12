@@ -52,7 +52,7 @@ class MoitorStore{
     constructor(){
         this.name='005摄像头';
         this.timer='2017-09-09 14时35分69秒2983S';
-        this.camera=['001摄像头','002摄像头','003摄像头','004摄像头','005摄像头'];
+        this.camera=['001摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头','002摄像头','003摄像头','004摄像头','005摄像头'];
     }
     @observable
     name='';
@@ -82,7 +82,7 @@ class  EnvironmentalStore{
     o2c="";//二氧化碳
 }
 
-class styStore {
+class StyStore {
     constructor(){
     }
 
@@ -119,39 +119,43 @@ class styStore {
 
     @action
     onIni( id ){
-        this.onLoadFromApi(id,(data)=>{
+        this.onLoadFromApi(id, (data)=>{
             //1、基础数据
             this.code = data.Id;
             this.title = data.Name;
-            this.genus=data.Genus;
+            this.genus = data.Genus;
             this.count = data.Total;
             this.day = data.Day;
-            this.unit=data.Unit;
-            //this.immCollection=data.Imm;
+            this.unit = data.Unit;
             //2、环控数据
-            if(data.Env && data.Env != null){
+            if(data.Env){
                 this.environmental.onParse(data.Env);//环控数据
-                this.waring.onParse(data.Env,this);
+                this.waring.onParse(data.Env, this);
             }
             //3、预警信息
-            if(data.Imm && data.Imm != null){
+            if(data.Imm){
                 this.immCollection.onParse(data.Imm);
             }
             //4、摄像头数据
-            this.moitor.camera = data.Cameras;
-        },(err)=>{
-            alert("获取栋舍详情失败");
+            try {
+                this.moitor.camera = data.Cameras;
+            }catch(e){
+                alert(JSON.stringify(e))
+            }
+
+        }, (err)=>{
+            tools.showToast("获取栋舍信息失败");
         });
     }
     @action
-    onLoadFromApi(id, callback, falied){
-        request.getJson(urls.apis.IMM_STYBASIC,{id:id}).then((data) => {
+    onLoadFromApi(id, callback, failed){
+        request.getJson(urls.apis.IMM_STYBASIC, {id: id}).then((data) => {
             callback(data);
         }).catch((err) => {
-            falied(err);
+            failed(err);
         });
     }
 }
-styStore = new styStore();
 
+styStore = new StyStore();
 export default styStore;

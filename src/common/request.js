@@ -28,7 +28,7 @@ const request = {
             let errorCallback = (error) => {
                 //登录过期
                 if (error.status == 450) {
-                    tools.showToast('认证未通过，已为您重新登录')
+                    //tools.showToast('认证未通过，已为您重新登录')
                     userStore.relogin(() => {
                         _fetchGet2(url, params, successCallback, errorCallback);
                     });
@@ -62,6 +62,7 @@ const request = {
             if (responseData.successful) {
                 successCallback(responseData.data)
             } else {
+                //alert(JSON.stringify(responseData))
                 errorCallback(responseData);
             }
         }).catch((error) => {

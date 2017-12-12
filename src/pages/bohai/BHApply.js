@@ -6,8 +6,6 @@ import {
     ScrollView,
     View,
     StyleSheet,
-    Image,
-    TouchableOpacity,
     Alert,
 } from 'react-native'
 import {Container, Content, Footer, FooterTab, Button, List, ListItem, Body,

@@ -17,30 +17,6 @@ import MyList from '../components/uc/MyList';
 @inject('userStore')
 @observer
 export default class Uc extends Component {
-    _onLogout = () =>{
-        Alert.alert(
-            '您确认要注销登录吗？',
-            '注销后将退出系统，您需要重新登录后才能正常访问。',
-            [
-                {text: '暂不注销', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                {text: '确认退出登录', onPress: () => {
-                    const {userStore} = this.props;
-                    if(userStore.logout()){
-                        let resetAction = NavigationActions.reset({
-                            index: 0,
-                            actions: [
-                                NavigationActions.navigate({routeName: 'Login', params: { token: null }})
-                            ]
-                        });
-                        this.props.navigation.dispatch(resetAction);
-                    }else{
-                        alert('Error');
-                    }
-                }},
-            ],
-            { cancelable: false }
-        )
-    }
     render() {
         const {loginUser} = this.props.userStore;
         return (

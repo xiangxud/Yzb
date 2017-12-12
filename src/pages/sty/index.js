@@ -1,15 +1,9 @@
 import React, {Component} from 'react';
 import {
     View,
-    Text ,
-    Button,
-    TextInput,
-    WebView,
-    TouchableOpacity,
-    StyleSheet,
-    ScrollView
 } from 'react-native';
-import { Container,Content } from 'native-base';
+import { Container, Content, Text } from 'native-base';
+import Modal from 'react-native-modalbox';
 import {observer,inject} from 'mobx-react/native';
 import StyBar from '../../components/sty/StyBar';
 import Waring from '../../components/sty/Waring';
@@ -53,18 +47,30 @@ export default class Sty extends Component {
     });
 
     componentDidMount(){
-        const {styStore,navigation} = this.props;
+        const {styStore, navigation} = this.props;
         styStore.onIni(navigation.state.params.code);
     }
 
     render(){
-        const {styStore} = this.props;
+        const {waring, moitor, immCollection} = this.props.styStore;
         return (
             <Container>
                 <Content>
-                    <Waring waring={styStore.waring}/>
-                    <Monitor monitor={styStore.moitor} backgroundColor="#615e61"/>
-                    <ImmList title="免疫提醒" collection={styStore.immCollection}/>
+                    <Waring waring={waring}/>
+                    <Monitor monitor={moitor} switchVideo={()=>{this.refs.modal_choose_monitor.open();}}/>
+                    <ImmList title="免疫提醒" collection={immCollection}/>
+                    <Modal
+                        ref={"modal_choose_monitor"}
+                        position={"center"}
+                        onClosed={()=>{alert('close')}}>
+                        <View>
+                            {
+                                moitor.camera.map((camera, i)=>(
+                                    <Text key={i}>上拉大楼大楼大楼大楼大楼大楼大楼</Text>
+                                ))
+                            }
+                        </View>
+                    </Modal>
                 </Content>
             </Container>
         );

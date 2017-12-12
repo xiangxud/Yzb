@@ -1,23 +1,16 @@
 import React, {Component} from 'react';
 import {
     View,
-    Text,
     StyleSheet,
-    FlatList,
-    TouchableNativeFeedback,
-    Image,
+    TouchableOpacity,
     WebView
 } from 'react-native';
 import {observer} from 'mobx-react/native';
-import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx';
-import { Icon } from 'native-base'
+import {Button, Icon, Text } from 'native-base';
+import Modal from 'react-native-modalbox';
 
 @observer
 export default class Monitor extends Component{
-    constructor(props){
-        super(props);
-    }
-
     render(){
         return (
             <View style={styles.container}>
@@ -25,10 +18,12 @@ export default class Monitor extends Component{
                     <Text style={styles.desc}>
                         当前摄像头：{this.props.monitor.name}
                     </Text>
-                    <Text style={{color:'white'}}>
-                        <Icon name={'md-swap'} style={{fontSize:22, color:'red'}}/>
-                        切换
-                    </Text>
+                    <TouchableOpacity onPress={this.props.switchVideo}>
+                        <View style={{flexDirection:'row', alignItems:'center'}}>
+                            <Icon name={'md-swap'} style={{fontSize:24, color:'red'}}/>
+                            <Text style={{color:'white', fontSize:16}}>切换</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
                 <WebView
                     javaScriptEnabled={true}
@@ -55,10 +50,11 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center',
         height:30,
-        padding:3,
+        paddingRight:10,
     },
     desc:{
         flex:1,
+        padding:5,
         color:'#ffffff'
     },
     webView: { height: 247 },

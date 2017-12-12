@@ -1,16 +1,10 @@
 import React, {Component} from 'react';
 import {
     View,
-    StyleSheet,
-    FlatList,
-    TouchableNativeFeedback,
-    TouchableHighlight,
-    TouchableOpacity
+    Alert
 } from 'react-native';
-import { Text,Button,ActionSheet} from 'native-base';
+import { Icon,Button,ActionSheet} from 'native-base';
 import {observer} from 'mobx-react/native';
-import {action, observable} from 'mobx'
-import { Icon } from 'native-base'
 
 @observer
 export default class StyBar extends Component{
@@ -33,6 +27,14 @@ export default class StyBar extends Component{
             icon:"ios-trash",
             iconColor: "#FF0000",
             action:()=>{
+                Alert.alert('删除提示？',  '栋舍删除后不可恢复，您确认要删除该栋舍吗？',  [
+                        {text: '取消', onPress: () => {}, style: 'cancel'},
+                        {text: '确认删除', onPress: () => {
+                            //////////////////这里是删除逻辑
+                        }},
+                    ],
+                    { cancelable: false }
+                )
             }
         },{
             name:"EditSty",
