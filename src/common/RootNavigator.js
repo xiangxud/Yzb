@@ -29,13 +29,75 @@ import MonitorPlay from '../pages/sty/MonitorPlay';
 //import report from '../pages/sty/report';
 import Quotes from '../pages/Quotes';
 
-
 import addSty from '../pages/sty/add';
 import editSty from '../pages/sty/edit';
 import outPet from '../pages/sty/outPet'
 import inPet from '../pages/sty/inPet'
 import stySetting from '../pages/sty/setting';
 
+//主菜单
+const TabNavigation = TabNavigator({
+    HomeTab: {
+        screen: HomePage,
+        navigationOptions:{
+            headerTitle: '智能养殖',
+            tabBarLabel:'智能养殖',
+            tabBarIcon: ({tintColor}) => (<Icon name='home' color={tintColor} size={24}/>)
+        }
+    },
+    LiveTab: {
+        screen: Live,
+        navigationOptions:{
+            title: '直播',
+            tabBarIcon: ({tintColor}) => (<Icon name='video-camera' color={tintColor} size={24}/>)
+        }
+    },
+    InfoTab: {
+        screen: Info,
+        navigationOptions:{
+            headerTitle: '养殖头条',
+            tabBarLabel:'头条',
+            tabBarIcon: ({tintColor}) => (<Icon name='fire' color={tintColor} size={24}/>)
+        }
+    },
+    UCTab: {
+        screen: Uc,
+        navigationOptions:{
+            headerTitle: '个人中心',
+            tabBarLabel:'我的',
+            tabBarIcon: ({tintColor}) => (<Icon name='user' color={tintColor} size={24}/>)
+        }
+    },
+}, {
+    animationEnabled: false,
+    tabBarPosition: 'bottom',
+    swipeEnabled: false,
+    backBehavior: 'none',
+    lazy: true,
+    tabBarOptions: {
+        style: {
+            height:49,
+            paddingTop:0,
+            backgroundColor:'#f1f9f7'
+        },
+        labelStyle:{
+            marginTop:0,
+            paddingTop:0
+        },
+        iconStyle:{
+            marginTop:0,
+            paddingTop:0,
+        },
+        activeBackgroundColor:'white',
+        activeTintColor:'#009688',
+        inactiveBackgroundColor:'white',
+        inactiveTintColor:'#aaa',
+        showLabel:true,
+        showIcon:true,
+        indicatorStyle:{height:0}
+    }
+});
+//栋舍菜单
 const StyTabNavigation = TabNavigator({
     StyTab:{
         screen:Sty,
@@ -83,6 +145,7 @@ const StyTabNavigation = TabNavigator({
     tabBarPosition: 'bottom',
     swipeEnabled: false,
     backBehavior: 'none',
+    lazy: true,
     tabBarOptions: {
         style: {
             height:49,
@@ -107,69 +170,6 @@ const StyTabNavigation = TabNavigator({
         indicatorStyle:{height:0}/**/
     }
 });
-
-// see here for options: https://reactnavigation.org/docs/navigators/tab
-const TabNavigation = TabNavigator({
-    HomeTab: {
-        screen: HomePage,
-        navigationOptions:{
-            headerTitle: '智能养殖',
-            tabBarLabel:'智能养殖',
-            tabBarIcon: ({tintColor}) => (<Icon name='home' color={tintColor} size={24}/>)
-        }
-    },
-    LiveTab: {
-        screen: Live,
-        navigationOptions:{
-            title: '直播',
-            tabBarIcon: ({tintColor}) => (<Icon name='video-camera' color={tintColor} size={24}/>)
-        }
-    },
-    InfoTab: {
-        screen: Info,
-        navigationOptions:{
-            headerTitle: '养殖头条',
-            tabBarLabel:'头条',
-            tabBarIcon: ({tintColor}) => (<Icon name='fire' color={tintColor} size={24}/>)
-        }
-    },
-    UCTab: {
-        screen: Uc,
-        navigationOptions:{
-            headerTitle: '个人中心',
-            tabBarLabel:'我的',
-            tabBarIcon: ({tintColor}) => (<Icon name='user' color={tintColor} size={24}/>)
-        }
-    },
-}, {
-    animationEnabled: false,
-    tabBarPosition: 'bottom',
-    swipeEnabled: false,
-    backBehavior: 'none',
-    tabBarOptions: {
-        style: {
-            height:49,
-            paddingTop:0,
-            backgroundColor:'#f1f9f7'
-        },
-        labelStyle:{
-            marginTop:0,
-            paddingTop:0
-        },
-        iconStyle:{
-            marginTop:0,
-            paddingTop:0,
-        },
-        activeBackgroundColor:'white',
-        activeTintColor:'#009688',
-        inactiveBackgroundColor:'white',
-        inactiveTintColor:'#aaa',
-        showLabel:true,
-        showIcon:true,
-        indicatorStyle:{height:0}
-    }
-});
-
 // add your router below
 const RootNavigator = StackNavigator({
     Welcome:{ screen: Welcome },

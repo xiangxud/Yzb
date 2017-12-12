@@ -30,7 +30,7 @@ const cols = 3;
 const cellWidth = 100;
 const cellHeight = 150;
 const vMargin = (screenW - cellWidth * cols) / (cols + 1);
-const hMargin = 10;
+const hMargin = 5;
 
 export default class Monitor extends Component{
 

@@ -38,8 +38,7 @@ export default class Info extends Component{
     //     _.debounce(()=>infoStore.onFilter(txt), 500);
     // }
     //
-    componentWillMount() {
-        this.onItemPress.bind(this);
+    componentDidMount() {
         infoStore.onChanged(infoStore.labels[0]);
     }
 
@@ -49,7 +48,6 @@ export default class Info extends Component{
     }
 
     render(){
-        const {data0, data1, data2} = infoStore;
         return (
             <View style={{flex:1}}>
                 <ScrollableTabView
