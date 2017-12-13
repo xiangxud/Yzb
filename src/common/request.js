@@ -1,4 +1,4 @@
-// import tools from "./tools";
+// created by tom chow @20171028
 import userStore from "../store/userStore";
 /**
  * network request
@@ -42,7 +42,7 @@ const request = {
 
     _fetchGet2(url, params, successCallback, errorCallback){
         if (params) {
-            let paramsArray = []
+            let paramsArray = [];
             Object.keys(params).forEach(key => paramsArray.push(key + '=' + encodeURIComponent(params[key])))
             if (url.search(/\?/) === -1) {
                 url += '?' + paramsArray.join('&')
@@ -59,15 +59,15 @@ const request = {
             }
         }).then((response) => response.json())
             .then((responseData) => {
-            if (responseData.successful) {
-                successCallback(responseData.data)
-            } else {
-                //alert(JSON.stringify(responseData))
-                errorCallback(responseData);
-            }
-        }).catch((error) => {
-            errorCallback(error);
-            // tools.showToast('网络异常，请重试！')
+                if (responseData.successful) {
+                    successCallback(responseData.data)
+                } else {
+                    //alert(JSON.stringify(responseData))
+                    errorCallback(responseData);
+                }
+            }).catch((error) => {
+            //errorCallback(error);
+            tools.showToast('数据请求失败，请稍后再试！');
         });
     },
 
@@ -94,7 +94,6 @@ const request = {
                 'Authorization': 'Bearer ' + userStore.token.access_token,
             },
             body = null;
-
         if (params) {
             if (typeof params == 'object' && params.constructor == Object) {
                 // let paramsArray = []
@@ -106,8 +105,7 @@ const request = {
             } else if (typeof params == 'object' && params instanceof FormData) {
                 body = params;
                 headers["Content-Type"] = 'multipart/form-data';
-            }
-            else {
+            } else {
                 body = params;
             }
         }
@@ -117,19 +115,16 @@ const request = {
                 method: 'POST',
                 headers,
                 body
-            })
-                .then((response) => type == 'text' ? response.text() : response.json())
+            }).then((response) => type == 'text' ? response.text() : response.json())
                 .then((responseData) => {
                     if (responseData.successful) {
                         resolve(responseData.data)
-                    }
-                    else{
+                    } else {
                         reject(responseData.message)
                     }
-                })
-                .catch((error) => {
-                    //tools.showToast('服务器异常，请重试!');
-                    reject(error);
+                }).catch((error) => {
+                    tools.showToast('数据服务器异常，请稍后再试!');
+                    //reject(error);
                 }).done();
         })
     },
