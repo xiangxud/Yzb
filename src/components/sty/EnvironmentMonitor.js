@@ -13,11 +13,11 @@ const EnvironmentMonitor = observer(({data})=>{
         <View style={styles.container}>
             <View style={styles.infoBox}>
                 <Text style={styles.desc}>温度</Text>
-                <Text style={styles.val}>{data.temperature}</Text>
+                <Text style={[styles.val, {color:'orange'}]}>{data.temperature}</Text>
             </View>
             <View style={styles.infoBox}>
                 <Text style={styles.desc}>湿度</Text>
-                <Text style={styles.val}>{data.humidity}</Text>
+                <Text style={[styles.val, {color:'red'}]}>{data.humidity}</Text>
             </View>
             <View style={styles.infoBox}>
                 <Text style={styles.desc}>二氧化碳</Text>
@@ -31,7 +31,7 @@ export default EnvironmentMonitor;
 const styles = StyleSheet.create({
     container:{
         flexDirection:'row',
-        backgroundColor:'#fae4ac',
+        backgroundColor:'#e0e0e0',
     },
     infoBox:{
         flex:1,
@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
         color:'#6f6f6f',
     },
     val: {
-        fontSize:22,
-        color:'#6f6f6f',
+        fontSize:24,
+        color:'green',
         fontWeight:'bold',
     },
 });

@@ -3,13 +3,11 @@ import
 {
     View,
     TextInput,
-    WebView,
     Image,
     TouchableOpacity,
     StyleSheet,
     ListView,
 } from 'react-native';
-import {observer,inject} from 'mobx-react/native';
 import {Container, Content, Button, Icon, Text} from 'native-base';
 
 const videos =[

@@ -124,7 +124,6 @@ export default class HomePage extends Component {
         return <InfoItem info={info} press={this.newsPress}/>
     }
     render() {
-        const {homeStore} = this.props;
         const {isFetching, news, isNoMore, loadingMore} = homeStore;
         return (
             <FlatList

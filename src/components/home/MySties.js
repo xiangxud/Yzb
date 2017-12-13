@@ -65,7 +65,7 @@ export default class MySties extends Component {
                         </View>
                         <View style={{justifyContent:'center'}}>
                             <Button block light onPress={()=>this.props.onStyPress(store.currentSty)}>
-                                <Text>{store.currentSty.name}的详情</Text>
+                                <Text>查看{store.currentSty.name}的详情</Text>
                             </Button>
                         </View>
                     </View>:

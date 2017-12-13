@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import {
     View,
     TextInput,
-    WebView,
     StyleSheet
 } from 'react-native';
 import {Container, Content, Button, Icon, Text} from 'native-base';
+import {WebView} from '../../components'
 
 export default class MonitorPlay extends Component{
     constructor(props){
@@ -13,7 +13,6 @@ export default class MonitorPlay extends Component{
         this.state= {
             current: {},
             url: urls.webPath+'yzb/monitor/play',
-            WebViewHeight: 200,
         };
     }
     static navigationOptions = ({navigation})=>({
@@ -25,27 +24,16 @@ export default class MonitorPlay extends Component{
         this.setState({current: this.props.navigation.state.params.video});
     }
 
-    changePlay = (o) =>{
-        this.setState({current: o});
-    }
+    // changePlay = (o) =>{
+    //     this.setState({current: o});
+    // }
 
     render(){
         const {current} = this.state;
         return (<Container>
             <Content>
                 <View style={styles.container}>
-                    <WebView
-                        javaScriptEnabled={true}
-                        source={{uri: this.state.url}}
-                        style={{ height: this.state.WebViewHeight }}
-                        scalesPageToFit={false}
-                        scrollEnabled={false}
-                        onNavigationStateChange={(page)=> {
-                            this.setState({
-                                WebViewHeight: parseInt(page.title)
-                            })
-                        }}
-                    />
+                    <WebView uri={this.state.url} style={{ height: 270 }} />
                     <View style={styles.desc}>
                         <View style={{flexDirection:'row', alignItems:'center'}}>
                             <Icon name={'ios-videocam'} style={{color:'#dd3215', fontSize:28, marginRight:3}}/>

@@ -3,10 +3,10 @@ import {
     View,
     StyleSheet,
     TouchableOpacity,
-    WebView
 } from 'react-native';
 import {observer} from 'mobx-react/native';
 import {Button, Icon, Text } from 'native-base';
+import { WebView} from '../'
 
 @observer
 export default class Monitor extends Component{
@@ -25,18 +25,8 @@ export default class Monitor extends Component{
                         </View>
                     </TouchableOpacity>
                 </View>
-                <WebView
-                    javaScriptEnabled={true}
-                    source={{uri: urls.webPath + 'yzb/monitor/live'}}
-                    style={styles.webView}
-                    scalesPageToFit={false}
-                    scrollEnabled={false}
-                    onNavigationStateChange={(page)=> {
-                        this.setState({
-                            WebViewHeight: parseInt(page.title)
-                        })
-                    }}
-                />
+                <WebView uri ={urls.webPath + 'yzb/monitor/live'}
+                         style={styles.webView} />
             </View>
         )
     }
@@ -57,5 +47,5 @@ const styles = StyleSheet.create({
         padding:5,
         color:'#ffffff'
     },
-    webView: { height: 257 },
+    webView: { height: 270 },
 });
