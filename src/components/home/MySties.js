@@ -65,13 +65,13 @@ export default class MySties extends Component {
                         </View>
                         <View style={{justifyContent:'center'}}>
                             <Button block light onPress={()=>this.props.onStyPress(store.currentSty)}>
-                                <Text>查看({store.currentSty.name})详情</Text>
+                                <Text>{store.currentSty.name}的详情</Text>
                             </Button>
                         </View>
                     </View>:
-                    <View style={styles.tips}>
-                        <Text style={{color:'gray'}}>点击上方栋舍查看详情</Text>
-                    </View>
+                    <Button block light onPress={this.props.onAddSty}>
+                        <Text style={{color:'gray'}}>您当前还没有任何栋舍，赶快添加一个吧.</Text>
+                    </Button>
                 }
             </View>
         );
