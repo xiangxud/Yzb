@@ -9,7 +9,6 @@ import {
     Image,
     ScrollView,
     Dimensions,
-    //WebView
 } from 'react-native';
 import {Icon, Text, Button} from 'native-base';
 import {observer} from 'mobx-react/native';
@@ -54,7 +53,7 @@ export default class MySties extends Component {
                     ))}
                 </ScrollView>
                 {store.currentSty && store.currentSty.id?
-                    <View style={{justifyContent:'center'}}>
+                    <View>
                         <WebView uri={urls.webPath + 'yzb/monitor/live?rd='}
                                  style={{ height:270, }} />
                         <WebView uri={urls.webPath + 'yzb/monitor/em?rd='+rd}
@@ -64,9 +63,11 @@ export default class MySties extends Component {
                             <Text style={styles.sTitle}>栋舍温度</Text>
                             <Text style={styles.sTitle}>二氧化碳浓度</Text>
                         </View>
-                        <Button rounded light onPress={()=>this.props.onStyPress(store.currentSty)}>
-                            <Text>栋舍详情</Text>
-                        </Button>
+                        <View style={{justifyContent:'center'}}>
+                            <Button block light onPress={()=>this.props.onStyPress(store.currentSty)}>
+                                <Text>查看({store.currentSty.name})详情</Text>
+                            </Button>
+                        </View>
                     </View>:
                     <View style={styles.tips}>
                         <Text style={{color:'gray'}}>点击上方栋舍查看详情</Text>
