@@ -8,12 +8,13 @@ import {
     TouchableNativeFeedback,
     Image,
     ScrollView,
-    Dimensions
+    Dimensions,
+    //WebView
 } from 'react-native';
 import {Icon, Text, Button} from 'native-base';
 import {observer} from 'mobx-react/native';
 import TitleBar from '../common/TitleBar';
-
+import {WebView} from '../';
 var {height, width} = Dimensions.get('window');
 
 const Sty = observer(({sty, getSty, isCurrent}) =>{
@@ -38,6 +39,7 @@ export default class MySties extends Component {
     }
     render() {
         const {store} = this.props;
+        let rd = new Date();
         return (
             <View style={styles.container}>
                 <TitleBar icon={'bank'} iconColor={'red'} title={'我的栋舍'} />
@@ -52,39 +54,19 @@ export default class MySties extends Component {
                     ))}
                 </ScrollView>
                 {store.currentSty && store.currentSty.id?
-                    <View style={{backgroundColor:'#efc'}}>
-                        <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={()=>this.props.onStyPress(store.currentSty)}>
-                            <View>
-                                <View style={{flexDirection:'row', height:100, backgroundColor:'#fae4ac'}}>
-                                    <View style={styles.video}>
-                                        <Text>监控视频001</Text>
-                                    </View>
-                                    <View style={styles.video}>
-                                        <Text>监控视频002</Text>
-                                    </View>
-                                    <View style={styles.video}>
-                                        <Text>监控视频003</Text>
-                                    </View>
-                                </View>
-                                <View style={{backgroundColor:'#f9f3f9', flexDirection: 'row'}}>
-                                    <View style={styles.reportItems}>
-                                        <Text>栋舍湿度</Text>
-                                        <Text><Text style={[styles.report, {color:'red'}]}>84</Text> %rh</Text>
-                                    </View>
-                                    <View style={styles.reportItems}>
-                                        <Text>栋舍温度</Text>
-                                        <Text><Text style={styles.report}>25</Text> ℃</Text>
-                                    </View>
-                                    <View style={styles.reportItems}>
-                                        <Text>二氧化碳浓度</Text>
-                                        <Text><Text style={styles.report}>0.08</Text> %</Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </TouchableNativeFeedback>
+                    <View>
+                        <WebView uri={urls.webPath + 'yzb/monitor/live?rd='}
+                                 style={{ height:270, }} />
+                        <WebView uri={urls.webPath + 'yzb/monitor/em?rd='+rd}
+                                 style={{ height:120, }} />
+                        <View style={styles.reportItems}>
+                            <Text style={styles.sTitle}>栋舍湿度</Text>
+                            <Text style={styles.sTitle}>栋舍温度</Text>
+                            <Text style={styles.sTitle}>二氧化碳浓度</Text>
+                        </View>
                     </View>:
-                    <View style={[styles.video, {height:70}]}>
-                        <Text>点击上方栋舍查看详情</Text>
+                    <View style={styles.tips}>
+                        <Text style={{color:'gray'}}>点击上方栋舍查看详情</Text>
                     </View>
                 }
             </View>
@@ -127,22 +109,19 @@ const styles = StyleSheet.create({
     currentText:{
         color:'#fff'
     },
-    video:{
+    tips:{
         flex:1,
         justifyContent:'center',
         alignItems:'center',
-        margin:10,
-        backgroundColor:'#ccc'
+        height:80,
+        backgroundColor:'#fff'
     },
     reportItems:{
+        flexDirection:'row',
+        height:30,
+    },
+    sTitle:{
         flex:1,
-        height:70,
-        justifyContent:'center',
-        alignItems:'center'
-    },
-    report:{
-        fontSize:30,
-        fontWeight:'bold',
-        color:'#15856e'
-    },
+        textAlign:'center'
+    }
 });
