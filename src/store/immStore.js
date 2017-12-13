@@ -119,10 +119,8 @@ class immStore {
 
     @action
     getDataFromApi(_config,callback,falied){
-        debugger;
         request.postJson(urls.apis.IMM_GET_DETAIL,_config).then(data=>{
             if(callback){
-                debugger;
                 callback(data.Rows);
             }
         }).catch(err=>{

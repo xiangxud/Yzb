@@ -116,14 +116,11 @@ class AlarmClockRow extends Component{
     }
 
     isNoNull(m){
-        return !m || m==null || m=="";
+        return !m || m=="";
     }
 
     render(){
         let {item} = this.props;
-
-        debugger;
-
         return (
             <View style={{  alignItems:'stretch' }}>
                 <SwipeRow rightOpenValue={-150}

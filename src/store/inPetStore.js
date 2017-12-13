@@ -46,7 +46,6 @@ class inPetStore extends storeBase{
         callback(err);
     }
     onCommit(callback,falied){
-        debugger;
         request.postJson(urls.apis.IMM_POST_ADD_PET,this.data).then(data=>this.postSurcess(data,callback)).catch(err=>this.postFalied(err,falied));
     }
 }
