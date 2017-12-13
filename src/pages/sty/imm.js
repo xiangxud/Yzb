@@ -18,8 +18,8 @@ export default class imm extends Component{
     });
 
     componentDidMount(){
-        const {immStore,immFilterStore} = this.props;
-        this.onLoadList();
+        const {navigation} = this.props;
+        this.onLoadList({ StyName : navigation.state.params.title });
     }
 
     constructor(props){

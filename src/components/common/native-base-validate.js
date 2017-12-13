@@ -20,6 +20,10 @@ const style = StyleSheet.create({
     },
     label:{
         width:55
+    },
+    radio:{
+        fontSize:20,
+        color:'#101010'
     }
 });
 
@@ -172,14 +176,14 @@ class ValidateInputDate extends Component{
 }
 
 const ValidRadioItem = observer(function ValidRadioItem({label, value ,selectValue, onChanged}){
-    let selected = value == selectValue;
+    let icon = value == selectValue ? "md-radio-button-on":"md-radio-button-off";
     return (
         <ListItem fixedLabel style={style.rightPadding} onPress={()=>{
             onChanged(value)
         }}>
             <Label style={style.label}>{label}</Label>
             <Right>
-                <Radio selected={selected} />
+                <Icon name={icon} style={style.radio} />
             </Right>
         </ListItem>);
 })
