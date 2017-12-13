@@ -13,7 +13,7 @@ const EnvironmentMonitor = observer(({data})=>{
         <View style={styles.container}>
             <View style={styles.infoBox}>
                 <Text style={styles.desc}>温度</Text>
-                <Text style={[styles.val, {color:'orange'}]}>{data.temperature}</Text>
+                <Text style={[styles.val, {color:'#18ccc8'}]}>{data.temperature}</Text>
             </View>
             <View style={styles.infoBox}>
                 <Text style={styles.desc}>湿度</Text>
