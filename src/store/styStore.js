@@ -141,11 +141,7 @@ class StyStore {
                     this.immCollection.onParse(data.Imm);
                 }
                 //4、摄像头数据
-                try {
-                    //this.monitor.cameras = data.Cameras;
-                }catch(e){
-                    alert(JSON.stringify(e))
-                }
+                //this.monitor.cameras = data.Cameras;
             });
         }, (err)=>{
             tools.showToast("获取栋舍信息失败");

@@ -21,6 +21,7 @@ class immStore {
     queryConfig = {
         PageIndex:1,
         PageSize:10,
+        StyName:'',
         StartDate:null,
         EntDate:null,
         PlanState:0,
@@ -84,7 +85,6 @@ class immStore {
     onMore(callback,falied){
         this.openEnd();
         this.queryConfig.PageIndex = this.queryConfig.PageIndex + 1;
-        debugger;
         this.getDataFromApi(this.queryConfig,data=>{
             this.addList(data);
             callback();
