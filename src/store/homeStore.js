@@ -14,6 +14,7 @@ class HomeStore {
     };
     @observable sties = [];
     @observable currentSty = {};
+    @observable remindsCount=0;
     @observable reminds = [];
     @observable news = [];
 
@@ -66,6 +67,22 @@ class HomeStore {
     //设置当前选中的栋舍
     @action setCurrentSty(sty){
         this.currentSty = sty;
+    }
+
+    onChangedState(id,state,callback,falied){
+        let item = this.reminds.fristOne(o=>o.id==id);
+        if( item==null && falied ){
+            falied("操作失败");
+            return;
+        }
+        request.postJson(urls.apis.IMM_POST_IMPLEMENT,{PlanId:item.id,StyId:item.styId,State:state}).then(data=>{
+            runInAction(()=>{
+                this.remindsCount = this.reminds.removeItem(o=>o.id == id).length;
+                if(callback) callback(data);
+            });
+        }).catch(err=>{
+            if(falied)falied(err);
+        });
     }
 }
 

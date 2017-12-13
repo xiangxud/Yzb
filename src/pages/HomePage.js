@@ -11,7 +11,7 @@ import {
     TouchableNativeFeedback,
 } from 'react-native';
 import {observer, inject} from 'mobx-react/native';
-import {Container, Content} from 'native-base';
+import {Container, Content,Toast} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SwiperBanner from '../components/home/SwiperBanner';
 import MySties from '../components/home/MySties';
@@ -42,21 +42,56 @@ export default class HomePage extends Component {
     componentDidMount(){
         homeStore.fetchHomeData()
     }
-
     remindMore=(t)=>{
-        alert(t)
     }
     detailPress=(id)=>{
-        alert('detail'+id)
     }
+    autoClose( callback ){
+        setTimeout(()=>{
+            Toast.toastInstance._root.closeToast();
+            if(callback){
+                callback();
+            }
+        },800);
+    }
+    ignore=key=>{
+        homeStore.onChangedState( key,PlanState.Ignore.Value,()=>{
+            Toast.show({
+                type:'success',
+                text: "忽略成功",
+                position: 'top'
+            });
+            this.autoClose();
+        },(mess)=>{
+            Toast.show({
+                type:'warning',
+                text: "忽略失败",
+                position: 'top'
+            });
+            this.autoClose();
+        } );
+    };
     exec = (key) =>{
-        alert('ok-'+key)
+        homeStore.onChangedState( key,PlanState.Finished.Value,()=>{
+            Toast.show({
+                type:'success',
+                text: "执行成功",
+                position: 'top'
+            });
+            this.autoClose();
+        },(mess)=>{
+            Toast.show({
+                type:'warning',
+                text: "执行失败",
+                position: 'top'
+            });
+            this.autoClose();
+        } );
     }
     newsPress =(info) =>{
         const {navigation} = this.props;
         navigation.navigate("InfoDetail",{ code : info.code , title: info.title })
     }
-
     onStyPress(sty){
         let list=[];
         homeStore.sties.forEach((item)=>{
@@ -110,8 +145,8 @@ export default class HomePage extends Component {
                 <Reminds reminds={reminds}
                          morePress={this.remindMore}
                          detailPress={this.detailPress}
-                         exec={this.exec}
-                         ignore={this.exec}/>
+                         exec={this.exec.bind(this)}
+                         ignore={this.ignore.bind(this)}/>
                 <TitleBar icon={'newspaper-o'}
                           iconColor={'red'}
                           title={'养殖头条'}

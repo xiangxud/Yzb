@@ -24,7 +24,8 @@ class immStore {
         StartDate:null,
         EntDate:null,
         PlanState:0,
-        Config:true
+        Config:true,
+        Cyc:false
     }
 
     @observable
