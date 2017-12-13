@@ -22,7 +22,6 @@ export default class Sty extends Component {
     }
 
     static navigationOptions = ({navigation})=>({
-        title: navigation.state.params.title,
         headerRight: <StyBar
             onInPetPress={()=>{
                 navigation.navigate("InPet",{
@@ -57,9 +56,6 @@ export default class Sty extends Component {
 
     componentDidMount(){
         const {styStore, navigation} = this.props;
-
-        alert(navigation.state.params.title);
-
         styStore.onIni(navigation.state.params.code);
     }
 
