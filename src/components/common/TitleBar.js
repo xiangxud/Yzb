@@ -6,7 +6,7 @@ import {
     Text,
     View,
     StyleSheet,
-    TouchableHighlight,
+    TouchableOpacity,
 } from 'react-native';
 
 import { observer } from 'mobx-react/native'
@@ -20,9 +20,9 @@ const TitleBar = observer(({title, sub, icon, iconColor, morePress})=> {
                 <Text style={styles.titleText}>{title}{sub}</Text>
                 {
                     morePress ?
-                    <TouchableHighlight style={styles.more} onPress={()=> morePress()}>
+                    <TouchableOpacity style={styles.more} onPress={()=> morePress()}>
                         <Text>更多</Text>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                     : null
                 }
             </View>

@@ -83,7 +83,7 @@ export default class MySties extends Component {
                             </View>
                         </TouchableNativeFeedback>
                     </View>:
-                    <View style={styles.video}>
+                    <View style={[styles.video, {height:70}]}>
                         <Text>点击上方栋舍查看详情</Text>
                     </View>
                 }

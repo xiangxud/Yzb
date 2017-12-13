@@ -17,9 +17,7 @@ const Reminds = observer(({reminds, morePress, detailPress, exec, ignore})=> {
         <View style={styles.container}>
             <TitleBar icon={'bell-o'}
                       iconColor={'red'}
-                      title={'今日提醒'}
-                      showMore = {false}
-                      morePress={ () => morePress('remind') } />
+                      title={'今日提醒'} />
             {reminds.length ? reminds.map((val, key) => (
                 <TouchableNativeFeedback
                     key={key}

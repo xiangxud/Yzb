@@ -15,13 +15,21 @@ export default class StyBar extends Component{
     onMenu(){
         let formList = [{
             name:"SettingSty",
-            text: "设置",
+            text: "设置监控",
             icon: "ios-cog",
             iconColor: "#15856e",
             action:()=>{
                 this.props.onSettingPress();
             }
         }, {
+            name:"EditSty",
+            text: "修改栋舍",
+            icon: "ios-create",
+            iconColor: "#15856e",
+            action:()=>{
+                this.props.onEditPress();
+            }
+        },/*{
             name:"DeleteSty",
             text:"删除栋舍",
             icon:"ios-trash",
@@ -36,15 +44,7 @@ export default class StyBar extends Component{
                     { cancelable: false }
                 )
             }
-        },{
-            name:"EditSty",
-            text: "修改栋舍",
-            icon: "ios-create",
-            iconColor: "#2c8ef4",
-            action:()=>{
-                this.props.onEditPress();
-            }
-        },{
+        },*/{
             name:"OutPet",
             text:"入栏",
             icon:"ios-log-in",

@@ -93,7 +93,7 @@ export default class HomePage extends Component {
                             <Text>滴滴兽医</Text>
                         </View>
                     </TouchableHighlight>
-                    <TouchableHighlight underlayColor={'#f9f3f9'} onPress={()=> this.props.navigation.navigate('Live', {from: 'homepage'}) } style={styles.homeBigButton}>
+                    <TouchableHighlight underlayColor={'#f9f3f9'} onPress={()=> this.props.navigation.navigate('LiveTab') } style={styles.homeBigButton}>
                         <View style={styles.homeBigButtonInner}>
                             <Icon name='video-camera' color={'#F1745E'} size={34} />
                             <Text>直播间</Text>

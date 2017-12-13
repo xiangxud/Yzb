@@ -187,7 +187,7 @@ const RootNavigator = StackNavigator({
     BHList:{ screen: BHList },
     MonitorPlay:{ screen: MonitorPlay },
     Web:{ screen: Web },
-    Live:{ screen: Live },
+
     Didi:{ screen: MarkerExample },
     VetInfo:{ screen: VetInfo },
     About:{ screen: About },
