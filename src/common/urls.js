@@ -161,7 +161,9 @@ const urls = {
         //出栏
         IMM_POST_REMOVE_PET:apiPath + 'Sty/PostRoutine',
         //出栏
-        IMM_POST_ADD_PET:apiPath + 'Sty/PostAddPet'
+        IMM_POST_ADD_PET:apiPath + 'Sty/PostAddPet',
+        //执行
+        IMM_POST_IMPLEMENT:apiPath + 'ImmPlan/PostImplement'
     },
     // 获取图片完整路径
     getImage(filePath, width, height){

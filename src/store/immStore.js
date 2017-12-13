@@ -14,7 +14,6 @@ class alarmCollection{
 
     @observable
     end=true
-
 }
 
 class immStore {
@@ -51,6 +50,16 @@ class immStore {
     @observable
     collection = new alarmCollection();
 
+    onChangedState(plan,state,callback,falied){
+        request.postJson(urls.apis.IMM_POST_IMPLEMENT,{PlanId:plan.Id,StyId:plan.StyId,State:state}).then(data=>{
+            runInAction(()=>{
+                this.collection.count = this.collection.list.removeItem(o=>o.Id == plan.Id).length;
+                if(callback) callback(data);
+            });
+        }).catch(err=>{
+            if(falied)falied("执行失败");
+        });
+    }
 
     @action
     clear(){

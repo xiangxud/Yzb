@@ -65,6 +65,45 @@ export default class imm extends Component{
         this.closeDrawer();
     }
 
+
+
+    onImplement(data) {
+        const {immStore} = this.props;
+        immStore.onChangedState(data,PlanState.Finished.Value,(data)=>{
+            Toast.show({
+                type:'success',
+                text: "执行成功",
+                position: 'top'
+            });
+            this.autoClose();
+        },(err)=>{
+            Toast.show({
+                type:'warning',
+                text: "执行失败",
+                position: 'top'
+            });
+            this.autoClose();
+        });
+    }
+    onIgnore(data) {
+        const {immStore} = this.props;
+        immStore.onChangedState(data,PlanState.Ignore.Value,(data)=>{
+            Toast.show({
+                type:'success',
+                text: "忽略成功",
+                position: 'top'
+            });
+            this.autoClose();
+        },(err)=>{
+            Toast.show({
+                type:'warning',
+                text: "忽略失败",
+                position: 'top'
+            });
+            this.autoClose();
+        });
+    }
+
     render(){
         const {immStore} = this.props;
 
@@ -95,7 +134,10 @@ export default class imm extends Component{
                             <AlarmClock
                                 onLoad={this.onLoadList.bind(this)}
                                 onMore={this.onMoreList.bind(this)}
+                                count={immStore.collection.count}
                                 end={immStore.collection.end}
+                                onImplement={this.onImplement.bind(this)}
+                                onIgnore={this.onIgnore.bind(this)}
                                 collection={immStore.collection}>
                             </AlarmClock>
                         </List>

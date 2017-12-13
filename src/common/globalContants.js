@@ -18,6 +18,23 @@ global.request = request;
 global.theme = theme;
 global._ = _;
 global.tools = tools;
+global.PlanState={
+    NotFinished:{
+        Label:'未执行',
+        Value:0
+    },
+    Finished:{
+        Label:'已执行',
+        Value:1
+    },
+    Ignore:{
+        Label:'忽略',
+        Value:2
+    }
+}
+
+
+
 
 //日期扩展
 Date.prototype.Format = function (fmt) {
@@ -49,9 +66,18 @@ String.prototype.ToDate = function(){
 }
 Array.prototype.fristOne=function (findIndexHandler) {
     for( var i=0;i<this.length;i++){
-        if(findIndexHandler && findIndexHandler!=null && findIndexHandler(this[i])){
+        if(findIndexHandler && findIndexHandler(this[i])){
             return this[i];
         }
     }
     return null;
+}
+Array.prototype.removeItem=function (findIndexHandler) {
+    for( var i=0;i<this.length;i++){
+        if(findIndexHandler && findIndexHandler(this[i])){
+            this.splice(i,1);
+            return this;
+        }
+    }
+    return this;
 }
