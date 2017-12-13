@@ -31,7 +31,9 @@ export default EnvironmentMonitor;
 const styles = StyleSheet.create({
     container:{
         flexDirection:'row',
-        backgroundColor:'#e0e0e0',
+        borderBottomWidth:StyleSheet.hairlineWidth,
+        borderBottomColor:'#e2e2e2',
+        backgroundColor:'#fff'
     },
     infoBox:{
         flex:1,
