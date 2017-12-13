@@ -54,7 +54,7 @@ export default class MySties extends Component {
                     ))}
                 </ScrollView>
                 {store.currentSty && store.currentSty.id?
-                    <View>
+                    <View style={{justifyContent:'center'}}>
                         <WebView uri={urls.webPath + 'yzb/monitor/live?rd='}
                                  style={{ height:270, }} />
                         <WebView uri={urls.webPath + 'yzb/monitor/em?rd='+rd}
@@ -64,6 +64,9 @@ export default class MySties extends Component {
                             <Text style={styles.sTitle}>栋舍温度</Text>
                             <Text style={styles.sTitle}>二氧化碳浓度</Text>
                         </View>
+                        <Button rounded light onPress={()=>this.props.onStyPress(store.currentSty)}>
+                            <Text>栋舍详情</Text>
+                        </Button>
                     </View>:
                     <View style={styles.tips}>
                         <Text style={{color:'gray'}}>点击上方栋舍查看详情</Text>
