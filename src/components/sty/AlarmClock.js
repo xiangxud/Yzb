@@ -106,6 +106,17 @@ class AlarmClockRow extends Component{
                     <Text style={style.right}>{item.Remark}</Text>
                     </Body>
                 </ListItem>
+                {
+                    item.Status == PlanState.NotFinished.Value?
+                    <ListItem>
+                        <Body style={style.actions}>
+                        <Button warning full style={style.action} onPress={()=>this.props.onIgnore(item)}><Text>忽略</Text></Button>
+                        <Button success full style={style.action} onPress={()=>this.props.onImplement(item)}><Text>执行</Text></Button>
+                        </Body>
+                    </ListItem>
+                    :
+                    null
+                }
             </List>
         </View>);
     }
@@ -123,31 +134,18 @@ class AlarmClockRow extends Component{
         let {item} = this.props;
         return (
             <View style={{  alignItems:'stretch' }}>
-                <SwipeRow rightOpenValue={-150}
-                          style={{flex:1,paddingTop:0,paddingBottom:0}}
-                          list={{}}
-                          right={
-                              <View style={style.actions}>
-                                  <Button info style={style.action}><Text>执行</Text></Button>
-                                  <Button info style={style.action}><Text>忽略</Text></Button>
-                              </View>
-                          }
-                          body={
-                              <View>
-                                  <TouchableOpacity onPressIn={()=>{ this.flipPlan() }}>
-                                      <View style={style.row}>
-                                          {
-                                              this.renderDate(item)
-                                          }
-                                          <Text style={style.immTitle} numberOfLines={1}>
-                                              {item.VaccineName}
-                                          </Text>
-                                      </View>
-                                  </TouchableOpacity>
-                              </View>
-                          }
-                >
-                </SwipeRow>
+                <View>
+                    <TouchableOpacity onPressIn={()=>{this.flipPlan()}}>
+                        <View style={style.row}>
+                            {
+                                this.renderDate(item)
+                            }
+                            <Text style={style.immTitle} numberOfLines={1}>
+                                {item.VaccineName}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
                 {
                     this.renderPlan(item)
                 }
@@ -167,7 +165,7 @@ export default class AlarmClock extends Component{
     }
 
     renderRow(info){
-        return(<AlarmClockRow item={info.item}></AlarmClockRow>);
+        return(<AlarmClockRow item={info.item} onIgnore={this.props.onIgnore} onImplement={this.props.onImplement}></AlarmClockRow>);
     }
 
     _separator=()=>{
@@ -230,12 +228,15 @@ const style = StyleSheet.create({
     },
     actions:{
         flexDirection:'row',
-        alignItems:'stretch'
+        alignItems:'stretch',
+
     },
     action:{
+        flex:1,
+        marginLeft:5,
+        marginRight:5,
     },
     plan:{
-
     },
     planItem:{
         borderTopWidth:1,
