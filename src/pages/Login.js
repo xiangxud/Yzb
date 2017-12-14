@@ -3,11 +3,11 @@ import {
     StyleSheet,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    View,} from 'react-native';
-//import LinearGradient from 'react-native-linear-gradient';
+    View,
+} from 'react-native';
 import {NavigationActions} from 'react-navigation';
 import { inject, observer } from 'mobx-react/native'
-import {Container, Content, Icon, Form, Item, Input, Label, Text, Button} from 'native-base';
+import {Container, Content, Body, CheckBox, Icon, Form, Item, Input, Label, Text, Button} from 'native-base';
 import {MaskLoading} from '../components'
 import userStore from "../store/userStore";
 
@@ -20,8 +20,12 @@ export default class LoginScreen extends Component {
             step: 1,
             stepTitle: '登录',
             loginErrors: {},
+            agree: false,
             loading: false,
-            canSend: true,
+            timerCount: 60,
+            timerTitle: '获取验证码',
+            counting: false,
+            selfEnable: true,
         }
     }
 
@@ -32,12 +36,56 @@ export default class LoginScreen extends Component {
     onChangeStep = (step, stepTitle) => {
         this.setState({step: step, stepTitle: stepTitle});
     }
+    _countDownAction(){
+        this.setState({
+            counting: true,
+            selfEnable: false
+        });
 
+        const codeTime = this.state.timerCount;
+        const now = Date.now();
+        const overTimeStamp = now + codeTime * 1000 + 100;/*过期时间戳（毫秒） +100 毫秒容错*/
+        this.interval = setInterval(() => {
+            const nowStamp = Date.now();
+            if (nowStamp >= overTimeStamp) {
+                /* 倒计时结束*/
+                this.interval && clearInterval(this.interval);
+                this.setState({
+                    timerCount: codeTime,
+                    timerTitle: '获取验证码',
+                    counting: false,
+                    selfEnable: true,
+                });
+            }else{
+                const leftTime = parseInt((overTimeStamp - nowStamp)/1000, 10);
+                this.setState({
+                    timerCount: leftTime,
+                    timerTitle: `${leftTime}s后再获取`,
+                });
+            }
+        }, 1000);
+    }
+    componentWillUnmount(){
+        clearInterval(this.interval)
+    }
     getValidateCode = (t) =>{
+        if (this.state.counting) {return}
+        //if (shouldStart) {
+        //}else{
+        //    this.setState({selfEnable: true});
+        //}
+        if(userStore.validateErrorLoginPhone){
+            tools.showToast(userStore.validateErrorLoginPhone);
+            return;
+        }
+        this.setState({loading: true});
         request.getJson(urls.apis.USER_GET_PHONE_CODE, {phone: userStore.loginPhone, type: t}).then((res)=>{
-            alert(res)
+            this.setState({loading: false});
+            this._countDownAction();
+            alert(res);
         }).catch((err)=>{
-            tools.showToast(err);
+            this.setState({loading: false});
+            tools.showToast(err.message);
         })
     }
 
@@ -70,14 +118,17 @@ export default class LoginScreen extends Component {
                         });
                         navigation.dispatch(resetAction);
                     }).catch((err) => {
-                        tools.showToast('bbb'+JSON.stringify(err))
+                        tools.showToast(err.message);
                     });
                 }
             })
         }
         else if (this.state.step === 2) {
             //注册
-            if(userStore.validateErrorLoginPhone){
+            if(!this.state.agree){
+                tools.showToast('请先同意许可条款');
+                return;
+            } else if(userStore.validateErrorLoginPhone){
                 tools.showToast(userStore.validateErrorLoginPhone);
                 return;
             }else if(userStore.validateErrorRegisterPassword){
@@ -145,7 +196,7 @@ export default class LoginScreen extends Component {
         if (this.state.step === 1) {
             return (
                 <Form>
-                    <Item fixedLabel style={styles.pdR}>
+                    <Item fixedLabel>
                         <Label>手机号</Label>
                         <Input placeholder="请输入手机号码"
                                maxLength={11}
@@ -169,7 +220,7 @@ export default class LoginScreen extends Component {
         else if (this.state.step === 2) {
             return (
                 <Form>
-                    <Item fixedLabel style={styles.pdR}>
+                    <Item fixedLabel>
                         <Label>手机号码</Label>
                         <Input placeholder="请输入手机号码"
                                maxLength={11}
@@ -178,37 +229,65 @@ export default class LoginScreen extends Component {
                                autoCorrect={false}
                                onChangeText={(text)=> userStore.setLoginPhone(text)} />
                     </Item>
-                    <Item fixedLabel style={styles.pdR}>
+                    <Item fixedLabel>
                         <Label>验证码</Label>
                         <Input placeholder="请输入6位验证码"
                                maxLength={6}
                                keyboardType={'numeric'}
                                onChangeText={(text)=> userStore.setRegisterValidateCode(text)} />
-                        <Button rounded success small style={styles.btnGetCode} disabled={this.state.canSend} onPress={()=>this.getValidateCode(1)}>
-                            <Text>获取验证码</Text>
+                        <Button rounded success small
+                                style={styles.btnGetCode}
+                                disabled={ this.state.counting }
+                                onPress={()=>{
+                                    !this.state.counting && this.state.selfEnable && this.getValidateCode(1)
+                                }}>
+                            <Text>{this.state.timerTitle}</Text>
                         </Button>
                     </Item>
-                    <Item fixedLabel style={styles.pdR}>
+                    <Item fixedLabel>
                         <Label>登陆密码</Label>
                         <Input placeholder="请输入(6-20位)登录密码"
                                maxLength={20}
                                secureTextEntry={true}
                                onChangeText={(text)=> userStore.setRegisterPassword(text)} />
                     </Item>
-                    <Item fixedLabel last style={styles.pdR}>
+                    <Item fixedLabel>
                         <Label>重复密码</Label>
                         <Input placeholder="请输入上面相同的密码"
                                maxLength={20}
                                secureTextEntry={true}
                                onChangeText={(text)=> userStore.setRegisterPasswordRepeat(text)} />
                     </Item>
+                    <Item fixedLabel>
+                        <Label>真实姓名</Label>
+                        <Input placeholder="请输入您的真实姓名"
+                               maxLength={20}
+                               onChangeText={(text)=> {}} />
+                    </Item>
+                    <Item fixedLabel>
+                        <Label>企业名称</Label>
+                        <Input placeholder="请输入您的养殖场名称"
+                               maxLength={100}
+                               onChangeText={(text)=> {}} />
+                    </Item>
+                    <Item fixedLabel last>
+                        <Label>养殖类型</Label>
+                        <Input placeholder="家禽家畜"
+                               maxLength={20}
+                               onChangeText={(text)=> {}} />
+                    </Item>
+                    <View style={{flexDirection:'row', margin:20}}>
+                        <CheckBox checked={this.state.agree} color='#377cc3' onPress={()=>this.setState({agree: !this.state.agree})} />
+                        <Text style={{marginLeft:15}}>同意</Text>
+                        <Text style={{color:'#377cc3'}} onPress={()=>this.props.navigation.navigate('Web', {url: urls.webPath+'/yzb/about/protocol', title:'用户协议'})}>许可协议</Text>
+                    </View>
                 </Form>
             )
         }
         else if(this.state.step === 3){
             return (
                 <Form>
-                    <Item fixedLabel style={styles.pdR}>
+                    <Item fixedLabel>
                         <Label>手机号码</Label>
                         <Input placeholder="请输入手机号码"
                                maxLength={11}
@@ -217,7 +296,7 @@ export default class LoginScreen extends Component {
                                autoCorrect={false}
                                onChangeText={(text)=> userStore.setLoginPhone(text)} />
                     </Item>
-                    <Item fixedLabel style={styles.pdR}>
+                    <Item fixedLabel>
                         <Label>验证码</Label>
                         <Input placeholder="请输入6位验证码"
                                maxLength={6}
@@ -227,14 +306,14 @@ export default class LoginScreen extends Component {
                             <Text>获取验证码</Text>
                         </Button>
                     </Item>
-                    <Item fixedLabel style={styles.pdR}>
+                    <Item fixedLabel>
                         <Label>登陆密码</Label>
                         <Input placeholder="请输入(6-20位)登录密码"
                                maxLength={20}
                                secureTextEntry={true}
                                onChangeText={(text)=> userStore.setRegisterPassword(text)} />
                     </Item>
-                    <Item fixedLabel style={styles.pdR}>
+                    <Item fixedLabel>
                         <Label>重复密码</Label>
                         <Input placeholder="请输入上面相同的密码"
                                maxLength={20}
@@ -258,9 +337,9 @@ export default class LoginScreen extends Component {
                     <Button block success disabled={this.state.loading} onPress={() => { this._login() }} style={{margin:10}}>
                         <Text>{this.state.stepTitle}</Text>
                     </Button>
-                    <View style={{marginLeft:10, marginRight:10, flexDirection:'row'}}>
+                    <View style={{margin:10, flexDirection:'row'}}>
                         {this.state.step!==2?
-                            <TouchableOpacity visible={false} onPress={() => { this.onChangeStep(2, '注册') }} style={{alignItems:'flex-start', flex:1,}}>
+                            <TouchableOpacity onPress={() => { this.onChangeStep(2, '注册') }} style={{alignItems:'flex-start', flex:1,}}>
                                 <Text>没有账号？现在注册</Text>
                             </TouchableOpacity>
                             : null }

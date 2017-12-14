@@ -67,7 +67,7 @@ class UserStore {
         this.loginUser = u;
     }
     @action register() {
-        return fetch('https://anooworld.herokuapp.com/register', {
+        return fetch(urls.apis.USER_REGISTER, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -91,34 +91,27 @@ const urls = {
         CMS_ARTICLE_QUOTES:apiPath + 'info/getQuotes',
 
         //用户------------------------------------------------------------------------
-
-        //验证手机号
-        USER_CHECKPHONEREGISTERED: apiPath + 'user/checkPhoneRegistered',
-        //验证验证码
-        USER_CHECKCODE: apiPath + 'user/checkCode',
-        //注册
-        USER_REGISTER: apiPath + "user/register",
         //登录
         USER_LOGIN: apiPath + "auth/login",
         //发送验证码
         USER_GET_PHONE_CODE: apiPath + 'auth/getVcode',
+        //注册
+        USER_REGISTER: apiPath + "auth/register",
         //获取用户信息
-        USER_GETLOGINUSER: apiPath + 'public/myinfo',
+        USER_GET_MINE: apiPath + 'public/myinfo',
         //获取指定用户信息
-        USER_GETUSER: apiPath + 'user/getUser',
+        //USER_GET: apiPath + 'user/getUser',
         //重置密码
-        USER_RESETPASSWORD: apiPath + "user/resetPassword",
-        //基本信息
-        USER_SETUSERBASEINFO: apiPath + "user/setUserBaseInfo",
+        //USER_RESET_PASSWORD: apiPath + "user/resetPassword",
         //签到
-        USER_SIGNIN: apiPath + "user/signIn",
+        //USER_SIGN: apiPath + "user/signIn",
 
         //获取用户信息
-        USER_DETAIL: apiPath + 'user/accountInfo',
+        //USER_DETAIL: apiPath + 'user/accountInfo',
         //修改用户信息
-        USER_UPDATEUSERINFO: apiPath + 'user/updateUserInfo',
+        //USER_UPDATE_PROFILE: apiPath + 'user/updateUserInfo',
         //搜索用户
-        USER_SEARCH: apiPath + 'user/searchUser',
+        //USER_SEARCH: apiPath + 'user/searchUser',
 
 
 
