@@ -10,10 +10,12 @@ class camera extends storeBase{
     data={
         @observable
         Id:'',
-
+        StyId:'',
         @observable
         @validate(/\S+$/, '摄像头名称必填')
-        Name:''
+        Name:'',
+
+
     }
 
     @action
@@ -27,11 +29,12 @@ class camera extends storeBase{
     }
     @action
     onCommit(callback,failed){
-        request.postJson("",this).then(data=>{
+        request.postJson(urls.apis.IMM_POST_CAMERA,this.data).then(data=>{
             if(callback){
                 callback(data);
             }
         }).catch(err=>{
+            alert(err)
             if(failed){
                 failed(err)
             }
@@ -55,6 +58,10 @@ export default class cameraSettingStore{
     @action
     onChangDefault(id){
         this.defaultId=id;
+    }
+    @action
+    onPush(o){
+        this.list.push(o);
     }
 }
 

@@ -29,7 +29,7 @@ export default class add extends Component{
         const {navigation} = this.props;
         this.styName=navigation.state.params.styName;
         this.styId=navigation.state.params.styId;
-        this.camera.onUpdate({Id:this.styId});
+        this.camera.onUpdate({StyId:this.styId});
     }
     autoClose( callback ){
         setTimeout(()=>{
