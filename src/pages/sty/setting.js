@@ -47,18 +47,25 @@ export default class setting extends Component{
     @observable
     store=new cameraSettingStore();
 
-    buttons=[{title:'取消' , default:false, onPress:()=>{}},{title:'提交' , default:true, onPress:()=>{ this.onCommit()}}];
 
+    onAdd(){
+        const {navigation} = this.props;
+        const addSucess=(camera)=>{
+            alert("scuess")
+        }
+        navigation.navigate("CameraAdd",{ styId:navigation.state.params.code, styName : navigation.state.params.title,onNotice:addSucess.bind(this) });
+    }
     render(){
         return (
                 <Container>
                     <Content>
                         <ListItem itemDivider icon>
-                            <Left><Text style={style.label}>摄像头</Text></Left>
+                            <Left>
+                                <Text style={style.label}>摄像头</Text></Left>
                             <Body>
                             </Body>
                             <Right>
-                                <TouchableOpacity style={style.headAction}>
+                                <TouchableOpacity style={style.headAction} onPress={this.onAdd.bind(this)}>
                                     <Icon name="md-add" style={style.headIco} />
                                     <Text style={style.label}>添加</Text>
                                 </TouchableOpacity>
