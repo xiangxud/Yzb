@@ -94,14 +94,14 @@ const urls = {
 
         //验证手机号
         USER_CHECKPHONEREGISTERED: apiPath + 'user/checkPhoneRegistered',
-        //发送验证码
-        USER_GET_PHONE_CODE: apiPath + 'user/sendValidateCode',
         //验证验证码
         USER_CHECKCODE: apiPath + 'user/checkCode',
         //注册
         USER_REGISTER: apiPath + "user/register",
         //登录
         USER_LOGIN: apiPath + "auth/login",
+        //发送验证码
+        USER_GET_PHONE_CODE: apiPath + 'auth/getVcode',
         //获取用户信息
         USER_GETLOGINUSER: apiPath + 'public/myinfo',
         //获取指定用户信息

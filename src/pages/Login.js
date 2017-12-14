@@ -21,6 +21,7 @@ export default class LoginScreen extends Component {
             stepTitle: '登录',
             loginErrors: {},
             loading: false,
+            canSend: true,
         }
     }
 
@@ -32,9 +33,9 @@ export default class LoginScreen extends Component {
         this.setState({step: step, stepTitle: stepTitle});
     }
 
-    sendVcode = () =>{
-        request.getJson(urls.apis.USER_SENDCODE, {phone: userStore.loginPhone}).then((res)=>{
-
+    getValidateCode = (t) =>{
+        request.getJson(urls.apis.USER_GET_PHONE_CODE, {phone: userStore.loginPhone, type: t}).then((res)=>{
+            alert(res)
         }).catch((err)=>{
             tools.showToast(err);
         })
@@ -183,7 +184,7 @@ export default class LoginScreen extends Component {
                                maxLength={6}
                                keyboardType={'numeric'}
                                onChangeText={(text)=> userStore.setRegisterValidateCode(text)} />
-                        <Button rounded success small style={styles.btnGetCode}>
+                        <Button rounded success small style={styles.btnGetCode} disabled={this.state.canSend} onPress={()=>this.getValidateCode(1)}>
                             <Text>获取验证码</Text>
                         </Button>
                     </Item>
@@ -221,8 +222,8 @@ export default class LoginScreen extends Component {
                         <Input placeholder="请输入6位验证码"
                                maxLength={6}
                                keyboardType={'numeric'}
-                               onChangeText={(text)=> userStore.setRegisterValidateCode(text)} />
-                        <Button rounded success small style={styles.btnGetCode}>
+                               onChangeText={(text)=> userStore.setRegisterValidateCode(text)}/>
+                        <Button rounded success small style={styles.btnGetCode} onPress={()=>this.getValidateCode(2)}>
                             <Text>获取验证码</Text>
                         </Button>
                     </Item>
