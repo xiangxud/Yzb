@@ -7,8 +7,9 @@ import {
 //import LinearGradient from 'react-native-linear-gradient';
 import {NavigationActions} from 'react-navigation';
 import { inject, observer } from 'mobx-react/native'
-import {Container, Content, Icon, Form, Item, Input, Label, Text, Button, Spinner} from 'native-base';
-const dismissKeyboard = require('dismissKeyboard');
+import {Container, Content, Icon, Form, Item, Input, Label, Text, Button} from 'native-base';
+import {MaskLoading} from '../components'
+import userStore from "../store/userStore";
 
 @inject('userStore')
 @observer
@@ -19,7 +20,7 @@ export default class LoginScreen extends Component {
             step: 1,
             stepTitle: '登录',
             loginErrors: {},
-            showSpinner: false,
+            loading: false,
         }
     }
 
@@ -30,6 +31,15 @@ export default class LoginScreen extends Component {
     onChangeStep = (step, stepTitle) => {
         this.setState({step: step, stepTitle: stepTitle});
     }
+
+    sendVcode = () =>{
+        request.getJson(urls.apis.USER_SENDCODE, {phone: userStore.loginPhone}).then((res)=>{
+
+        }).catch((err)=>{
+            tools.showToast(err);
+        })
+    }
+
     _login = () => {
         const { userStore, navigation }= this.props;
 
@@ -43,9 +53,9 @@ export default class LoginScreen extends Component {
                 return;
             }
 
-            this.setState({showSpinner: true});
+            this.setState({loading: true});
             userStore.login((status, resp)=> {
-                this.setState({showSpinner: false});
+                this.setState({loading: false});
                 if(!status){
                     tools.showToast(resp)
                 }else {
@@ -79,9 +89,9 @@ export default class LoginScreen extends Component {
                 tools.showToast(userStore.validateErrorRegisterValidateCode);
                 return;
             }
-            this.setState({showSpinner: true});
+            this.setState({loading: true});
             userStore.register().then(() => {
-                this.setState({showSpinner: false});
+                this.setState({loading: false});
                 let resetAction = NavigationActions.reset({
                     index: 0,
                     actions: [
@@ -106,9 +116,9 @@ export default class LoginScreen extends Component {
                 tools.showToast(userStore.validateErrorRegisterValidateCode);
                 return;
             }
-            this.setState({showSpinner: true});
+            this.setState({loading: true});
             userStore.find().then(() => {
-                this.setState({showSpinner: false});
+                this.setState({loading: false});
                 let resetAction = NavigationActions.reset({
                     index: 0,
                     actions: [
@@ -133,33 +143,31 @@ export default class LoginScreen extends Component {
         const {userStore} = this.props;
         if (this.state.step === 1) {
             return (
-                <View style={styles.animView}>
-                    <Form>
-                        <Item fixedLabel style={styles.pdR}>
-                            <Label>手机号</Label>
-                            <Input placeholder="请输入手机号码"
-                                   maxLength={11}
-                                   keyboardType={'phone-pad'}
-                                   autoCapitalize='none'
-                                   autoCorrect={false}
-                                   onChangeText={(text)=> userStore.setLoginPhone(text)} />
-                        </Item>
-                        <Item fixedLabel last>
-                            <Label>登录密码</Label>
-                            <Input placeholder="请输入登陆密码"
-                                   maxLength={16}
-                                   secureTextEntry={true}
-                                   onTextChange={(text)=> userStore.setLoginPassword(text)}
+                <Form>
+                    <Item fixedLabel style={styles.pdR}>
+                        <Label>手机号</Label>
+                        <Input placeholder="请输入手机号码"
+                               maxLength={11}
+                               keyboardType={'phone-pad'}
+                               autoCapitalize='none'
+                               autoCorrect={false}
+                               onChangeText={(text)=> userStore.setLoginPhone(text)} />
+                    </Item>
+                    <Item fixedLabel last>
+                        <Label>登录密码</Label>
+                        <Input placeholder="请输入登陆密码"
+                               maxLength={16}
+                               secureTextEntry={true}
+                               onTextChange={(text)=> userStore.setLoginPassword(text)}
 
-                            />
-                        </Item>
-                    </Form>
-                </View>
+                        />
+                    </Item>
+                </Form>
             );
         }
         else if (this.state.step === 2) {
             return (
-                <View style={styles.animView}>
+                <Form>
                     <Item fixedLabel style={styles.pdR}>
                         <Label>手机号码</Label>
                         <Input placeholder="请输入手机号码"
@@ -183,20 +191,22 @@ export default class LoginScreen extends Component {
                         <Label>登陆密码</Label>
                         <Input placeholder="请输入(6-20位)登录密码"
                                maxLength={20}
+                               secureTextEntry={true}
                                onChangeText={(text)=> userStore.setRegisterPassword(text)} />
                     </Item>
-                    <Item fixedLabel style={styles.pdR}>
+                    <Item fixedLabel last style={styles.pdR}>
                         <Label>重复密码</Label>
                         <Input placeholder="请输入上面相同的密码"
                                maxLength={20}
+                               secureTextEntry={true}
                                onChangeText={(text)=> userStore.setRegisterPasswordRepeat(text)} />
                     </Item>
-                </View>
+                </Form>
             )
         }
         else if(this.state.step === 3){
             return (
-                <View style={styles.animView}>
+                <Form>
                     <Item fixedLabel style={styles.pdR}>
                         <Label>手机号码</Label>
                         <Input placeholder="请输入手机号码"
@@ -220,15 +230,17 @@ export default class LoginScreen extends Component {
                         <Label>登陆密码</Label>
                         <Input placeholder="请输入(6-20位)登录密码"
                                maxLength={20}
+                               secureTextEntry={true}
                                onChangeText={(text)=> userStore.setRegisterPassword(text)} />
                     </Item>
                     <Item fixedLabel style={styles.pdR}>
                         <Label>重复密码</Label>
                         <Input placeholder="请输入上面相同的密码"
                                maxLength={20}
+                               secureTextEntry={true}
                                onChangeText={(text)=> userStore.setRegisterPasswordRepeat(text)} />
                     </Item>
-                </View>
+                </Form>
             )
         }
     }
@@ -240,9 +252,9 @@ export default class LoginScreen extends Component {
                         <Text style={{color:'#fff',fontSize:24,}}>养殖宝</Text>
                     </View>
                     {this.renderBackArrow()}
-                    {this.state.showSpinner? <Spinner style={styles.spinner} color='green'/> :null}
+                    {this.state.loading? <MaskLoading /> :null}
                     {this.renderForm()}
-                    <Button block success disabled={this.state.showSpinner} onPress={() => { this._login() }} style={{margin:10}}>
+                    <Button block success disabled={this.state.loading} onPress={() => { this._login() }} style={{margin:10}}>
                         <Text>{this.state.stepTitle}</Text>
                     </Button>
                     <View style={{marginLeft:10, marginRight:10, flexDirection:'row'}}>

@@ -1,5 +1,3 @@
-import {AsyncStorage} from 'react-native'
-import validate from 'mobx-form-validate';
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
 
 export default class storeBase{

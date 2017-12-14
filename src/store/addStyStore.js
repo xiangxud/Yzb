@@ -109,7 +109,7 @@ class addStyStore extends storeBase{
 
     @action
     onCommit( callback,falied ) {
-        request.postJson(urls.apis.IMM_STYADD,{
+        request.postJson(urls.apis.IMM_STY_ADD,{
             FarmName:this.farm.Name,
             Id:'00000000-0000-0000-0000-000000000000',
             Name:this.data.name,

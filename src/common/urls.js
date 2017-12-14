@@ -95,7 +95,7 @@ const urls = {
         //验证手机号
         USER_CHECKPHONEREGISTERED: apiPath + 'user/checkPhoneRegistered',
         //发送验证码
-        USER_SENDCODE: apiPath + 'user/sendCode',
+        USER_GET_PHONE_CODE: apiPath + 'user/sendValidateCode',
         //验证验证码
         USER_CHECKCODE: apiPath + 'user/checkCode',
         //注册
@@ -119,10 +119,6 @@ const urls = {
         USER_UPDATEUSERINFO: apiPath + 'user/updateUserInfo',
         //搜索用户
         USER_SEARCH: apiPath + 'user/searchUser',
-        //栋舍首页
-        STYBASIC: apiPath + 'sty/GetStyHome',
-
-
 
 
 
@@ -145,11 +141,11 @@ const urls = {
 
         //免疫宝-------------------------------------------------------------
         //栋舍信息
-        IMM_STYBASIC: apiPath + 'sty/GetStyHome',
+        IMM_STY_BASIC: apiPath + 'sty/GetStyHome',
         //字典列表
         IMM_DICTIONARY:apiPath + 'Dictionary/Get',
         //栋舍创建
-        IMM_STYADD:apiPath + 'sty/Post',
+        IMM_STY_ADD:apiPath + 'sty/Post',
         //获取栋舍详情
         IMM_GET_STY_BASE:apiPath + 'Sty/Get',
         //栋舍提交
@@ -157,7 +153,7 @@ const urls = {
         //获取免疫提醒
         IMM_GET_DETAIL:apiPath + 'ImmPlan/PostQuery',
         //获取出栏配置
-        IMM_GET_OUTPETCONFIG:apiPath + 'Sty/GetOutPetConfig',
+        IMM_GET_OUT_PET_CONFIG:apiPath + 'Sty/GetOutPetConfig',
         //出栏
         IMM_POST_REMOVE_PET:apiPath + 'Sty/PostRoutine',
         //出栏

@@ -1,9 +1,7 @@
 import {AsyncStorage} from 'react-native'
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
 import validate from 'mobx-form-validate';
-import camelCase from 'camelcase';
 
-import _ from "lodash";
 import storeBase from "./common/storeBase";
 useStrict(true);
 

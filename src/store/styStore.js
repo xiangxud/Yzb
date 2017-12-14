@@ -154,7 +154,7 @@ class StyStore {
 
     @action
     onLoadFromApi(id, callback, failed){
-        request.getJson(urls.apis.IMM_STYBASIC, {id: id}).then((data) => {
+        request.getJson(urls.apis.IMM_STY_BASIC, {id: id}).then((data) => {
             callback(data);
         }).catch((err) => {
             failed(err);

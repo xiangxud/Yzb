@@ -2,7 +2,6 @@ import {AsyncStorage} from 'react-native'
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
 import validate from 'mobx-form-validate';
 import storeBase from '../store/common/storeBase';
-import _ from "lodash";
 
 useStrict(true);
 class inPetStore extends storeBase{

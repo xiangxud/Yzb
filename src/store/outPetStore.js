@@ -3,7 +3,6 @@ import {action, computed, observable, reaction, runInAction, useStrict} from 'mo
 import validate from 'mobx-form-validate';
 import storeBase from '../store/common/storeBase';
 
-import _ from "lodash";
 useStrict(true);
 
 class outPetStore extends storeBase {
@@ -96,7 +95,7 @@ class outPetStore extends storeBase {
     }
 
     getOutPetConfigFromApi(callback,falied){
-        request.getJson(urls.apis.IMM_GET_OUTPETCONFIG,{styid:this.styId}).then((data) => {
+        request.getJson(urls.apis.IMM_GET_OUT_PET_CONFIG,{styid:this.styId}).then((data) => {
             callback(data);
         }).catch((err) => {
             falied(err);
