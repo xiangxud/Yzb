@@ -163,7 +163,11 @@ const urls = {
         //出栏
         IMM_POST_ADD_PET:apiPath + 'Sty/PostAddPet',
         //执行
-        IMM_POST_IMPLEMENT:apiPath + 'ImmPlan/PostImplement'
+        IMM_POST_IMPLEMENT:apiPath + 'ImmPlan/PostImplement',
+        //增加摄像头
+        IMM_POST_CAMERA:apiPath + 'Sty/PostCamera',
+        //修改摄像头
+        IMM_UPDATE_CAMERA:apiPath + 'Sty/UpdateCamera',
     },
     // 获取图片完整路径
     getImage(filePath, width, height){

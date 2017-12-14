@@ -9,7 +9,7 @@ import
     StyleSheet,
     ScrollView
 } from 'react-native';
-import { Container,Content,Root,List,ListItem,Right,Left,Button,Icon,Body } from 'native-base';
+import { Container,Content,Root,List,ListItem,Right,Left,Button,Icon,Body,Toast } from 'native-base';
 import {observer,inject} from 'mobx-react/native';
 import cameraSettingStore from '../../store/cameraSettingStore';
 import FootBar from '../../components/sty/FootBar'
@@ -47,13 +47,27 @@ export default class setting extends Component{
     @observable
     store=new cameraSettingStore();
 
+    autoClose( callback ){
+        setTimeout(()=>{
+            Toast.toastInstance._root.closeToast();
+            if(callback){
+                callback();
+            }
+        },800);
+    }
 
     onAdd(){
         const {navigation} = this.props;
-        const addSucess=(camera)=>{
-            alert("scuess")
+        const onNotice=(camera)=>{
+            this.store.onPush(camera);
+            Toast.show({
+                type:'success',
+                text: '增加成功',
+                position: 'top'
+            });
+            this.autoClose();
         }
-        navigation.navigate("CameraAdd",{ styId:navigation.state.params.code, styName : navigation.state.params.title,onNotice:addSucess.bind(this) });
+        navigation.navigate("CameraAdd",{ styId:navigation.state.params.code, styName : navigation.state.params.title,onNotice:onNotice.bind(this) });
     }
     render(){
         return (
