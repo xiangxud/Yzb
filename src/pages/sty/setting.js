@@ -15,6 +15,7 @@ import cameraSettingStore from '../../store/cameraSettingStore';
 import FootBar from '../../components/sty/FootBar'
 import CList from '../../components/sty/CameraList';
 import {observable} from "mobx";
+import cameraEdit from "./camera/edit";
 
 @observer
 export default class setting extends Component{
@@ -28,19 +29,19 @@ export default class setting extends Component{
         super(props);
         this.store.onIni([{
             Id:'C506ADF6-87AD-4C1B-8D46-2BF1ACAEC99C',
-            CameraName:'东01东01东01东01东01东01东01'
+            Name:'东01东01东01东01东01东01东01'
         },{
             Id:'547FB556-B7E3-4EE6-9F98-7A1A2F312B88',
-            CameraName:'东02'
+            Name:'东02'
         },{
             Id:'765B07F2-09CB-4B2F-9A86-C6AA5D2C379D',
-            CameraName:'东03'
+            Name:'东03'
         },{
             Id:'307BF785-2658-4538-B202-5D4FB1CD8776',
-            CameraName:'东04'
+            Name:'东04'
         },{
             Id:'0FDDF936-9F6B-4754-8E2A-05CEF2244847',
-            CameraName:'东05'
+            Name:'东05'
         }],'C506ADF6-87AD-4C1B-8D46-2BF1ACAEC99C');
     }
 
@@ -69,6 +70,23 @@ export default class setting extends Component{
         }
         navigation.navigate("CameraAdd",{ styId:navigation.state.params.code, styName : navigation.state.params.title,onNotice:onNotice.bind(this) });
     }
+    onModify(camera){
+        const {navigation} = this.props;
+
+        alert(JSON.stringify(camera));
+
+        const onNotice=(camera)=>{
+            this.store.onUpdate(camera);
+            Toast.show({
+                type:'success',
+                text: '编辑成功',
+                position: 'top'
+            });
+            this.autoClose();
+        }
+        navigation.navigate("CameraEdit",{ camera:camera, styName : navigation.state.params.title,onNotice:onNotice.bind(this) });
+
+    }
     render(){
         return (
                 <Container>
@@ -85,7 +103,7 @@ export default class setting extends Component{
                                 </TouchableOpacity>
                             </Right>
                         </ListItem>
-                        <CList list={this.store.list} defaultId={this.store.defaultId} onChanged={this.store.onChangDefault.bind(this.store)}></CList>
+                        <CList list={this.store.list} defaultId={this.store.defaultId} onChanged={this.store.onChangDefault.bind(this.store)} onModify={this.onModify.bind(this)}></CList>
                     </Content>
                 </Container>
         );

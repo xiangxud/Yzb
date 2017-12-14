@@ -35,6 +35,7 @@ import outPet from '../pages/sty/outPet'
 import inPet from '../pages/sty/inPet'
 import stySetting from '../pages/sty/setting';
 import cameraAdd from '../pages/sty/camera/add'
+import cameraEdit from '../pages/sty/camera/edit'
 
 //主菜单
 const TabNavigation = TabNavigator({
@@ -189,6 +190,7 @@ const RootNavigator = StackNavigator({
     MonitorPlay:{ screen: MonitorPlay },
     Web:{ screen: Web },
     CameraAdd:{screen:cameraAdd},
+    CameraEdit:{screen:cameraEdit},
     Didi:{ screen: MarkerExample },
     VetInfo:{ screen: VetInfo },
     About:{ screen: About },

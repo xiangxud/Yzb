@@ -34,7 +34,18 @@ class camera extends storeBase{
                 callback(data);
             }
         }).catch(err=>{
-            alert(err)
+            if(failed){
+                failed(err)
+            }
+        });
+    }
+    @action
+    onCommitUpdate(callback,failed){
+        request.postJson(urls.apis.IMM_UPDATE_CAMERA,this.data).then(data=>{
+            if(callback){
+                callback(data);
+            }
+        }).catch(err=>{
             if(failed){
                 failed(err)
             }
@@ -62,6 +73,9 @@ export default class cameraSettingStore{
     @action
     onPush(o){
         this.list.push(o);
+    }
+    @action
+    onUpdate(o){
     }
 }
 

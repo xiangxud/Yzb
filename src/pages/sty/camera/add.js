@@ -61,7 +61,10 @@ export default class add extends Component{
     onUpdateData(data){
         this.camera.onUpdate(data);
     }
-    buttons=[{title:'取消' , default:false, onPress:()=>{}},{title:'提交' , default:true, onPress:()=>{ this.onCommit()}}];
+    buttons=[{title:'取消' , default:false, onPress:()=>{
+            const {navigation} = this.props;
+            navigation.goBack();
+        }},{title:'提交' , default:true, onPress:()=>{ this.onCommit()}}];
     render(){
         return (
             <Container style={{backgroundColor:'#ffffff'}}>
