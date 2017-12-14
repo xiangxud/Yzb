@@ -9,16 +9,33 @@ useStrict(true);
 class camera extends storeBase{
     data={
         @observable
-        id:'',
+        Id:'',
+
         @observable
-        name:'',
+        @validate(/\S+$/, '摄像头名称必填')
+        Name:''
     }
 
     @action
     onIni(o){
-        this.data.id = o.Id;
-        this.data.name=o.CameraName;
+        Object.assign(this.data,this.data,o);
         return this;
+    }
+    @action
+    onUpdate(o){
+        Object.assign(this.data,this.data,o);
+    }
+    @action
+    onCommit(callback,failed){
+        request.postJson("",this).then(data=>{
+            if(callback){
+                callback(data);
+            }
+        }).catch(err=>{
+            if(failed){
+                failed(err)
+            }
+        });
     }
 }
 
@@ -40,3 +57,5 @@ export default class cameraSettingStore{
         this.defaultId=id;
     }
 }
+
+export {camera};

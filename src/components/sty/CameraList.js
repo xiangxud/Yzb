@@ -11,14 +11,14 @@ import {observer} from "mobx-react/native";
 const CameraList = observer(function CameraList({list,defaultId,onChanged,...props}){
     let _render=(item) =>
     {
-        let icon= item.id==defaultId?"md-radio-button-on":"md-radio-button-off";
-        let checkStyle = item.id==defaultId?[style.atxt,style.default]:[style.atxt];
-        return <View key={item.id} style={style.border}>
+        let icon= item.Id==defaultId?"md-radio-button-on":"md-radio-button-off";
+        let checkStyle = item.Id==defaultId?[style.atxt,style.default]:[style.atxt];
+        return <View key={item.Id} style={style.border}>
             <View style={style.row}>
-                <Label numberOfLines={1} style={style.label}>{item.name}</Label>
+                <Label numberOfLines={1} style={style.label}>{item.Name}</Label>
             </View>
             <View style={style.row}>
-                <TouchableOpacity onPress={()=>{onChanged(item.id)}}>
+                <TouchableOpacity onPress={()=>{onChanged(item.Id)}}>
                     <View style={style.left}>
                         <Icon style={[...checkStyle,style.ico]} name={icon} />
                         <Label style={checkStyle}>设置默认</Label>
