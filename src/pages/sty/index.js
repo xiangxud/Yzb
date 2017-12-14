@@ -78,8 +78,8 @@ export default class Sty extends Component {
                         {
                             monitor.cameras.map((camera, i)=>(
                                 <TouchableOpacity key={i} onPress={()=>this.switchCamera(camera)}>
-                                    <View style={[styles.item, camera.name===monitor.current.name?styles.current:null]}>
-                                        <Text>{camera.name}</Text>
+                                    <View style={[styles.item, camera.Name===monitor.current.Name?styles.current:null]}>
+                                        <Text>{camera.Name}</Text>
                                     </View>
                                 </TouchableOpacity>
                             ))

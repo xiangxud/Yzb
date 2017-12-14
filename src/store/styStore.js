@@ -56,12 +56,12 @@ class MonitorStore{
     cameras=[];
 
     constructor(){
-        let cams = [];
-        for(let i = 1; i <= 15; i++){
-            cams.push({name: '摄像头00'+i, camera_id: '00000'+i});
-        }
-        this.cameras = cams;
-        this.current = cams[0];
+        // let cams = [];
+        // for(let i = 1; i <= 15; i++){
+        //     cams.push({Name: '摄像头00'+i, Id: '00000'+i});
+        // }
+        // this.cameras = cams;
+        // this.current = cams[0];
     }
 }
 
@@ -141,7 +141,10 @@ class StyStore {
                     this.immCollection.onParse(data.Imm);
                 }
                 //4、摄像头数据
-                //this.monitor.cameras = data.Cameras;
+                this.monitor.cameras = data.Cameras;
+                if( this.monitor.cameras.length > 0 ){
+                    this.current=this.monitor.cameras[0];
+                }
             });
         }, (err)=>{
             tools.showToast("获取栋舍信息失败");
