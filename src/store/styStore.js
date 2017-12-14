@@ -155,6 +155,18 @@ class StyStore {
         this.monitor.current = o;
     }
 
+    @action onUpdateCameras=(o)=>{
+        let t = this.monitor.cameras.fristOne((c)=> c.Id==o.Id );
+        if(t){
+            Object.assign(t,t,o);
+        }
+    };
+    @action onPushCameras=(o)=>{
+        let t = {};
+         Object.assign(t,t,o);
+        this.monitor.cameras.push(t);
+    };
+
     @action
     onLoadFromApi(id, callback, failed){
         request.getJson(urls.apis.IMM_STY_BASIC, {id: id}).then((data) => {

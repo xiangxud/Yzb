@@ -45,7 +45,7 @@ export default class setting extends Component{
     }
 
     onAdd(){
-        const {navigation} = this.props;
+        const {styStore,navigation} = this.props;
         const onNotice=(camera)=>{
             this.store.onPush(camera);
             Toast.show({
@@ -54,11 +54,12 @@ export default class setting extends Component{
                 position: 'top'
             });
             this.autoClose();
+            styStore.onPushCameras(camera.data);//通知栋舍首页
         }
         navigation.navigate("CameraAdd",{ styId:navigation.state.params.code, styName : navigation.state.params.title,onNotice:onNotice.bind(this) });
     }
     onModify(camera){
-        const {navigation} = this.props;
+        const {styStore,navigation} = this.props;
         const onNotice=(camera)=>{
             this.store.onUpdate(camera);
             Toast.show({
@@ -67,6 +68,7 @@ export default class setting extends Component{
                 position: 'top'
             });
             this.autoClose();
+            styStore.onUpdateCameras(camera.data);//通知栋舍首页
         }
         navigation.navigate("CameraEdit",{ camera:camera, styName : navigation.state.params.title,onNotice:onNotice.bind(this) });
 
