@@ -8,30 +8,29 @@ import
 import { Form, Label,ListItem,Item,Left,Right,Text,Radio,Icon } from 'native-base';
 import {observer} from "mobx-react/native";
 
-const CameraList = observer(function CameraList({list,defaultId,onChanged,...props}){
+const CameraList = observer(function CameraList({list,defaultId,onChanged,onModify,onRemove,...props}){
     let _render=(item) =>
     {
-        let icon= item.Id==defaultId?"md-radio-button-on":"md-radio-button-off";
-        let checkStyle = item.Id==defaultId?[style.atxt,style.default]:[style.atxt];
-        return <View key={item.Id} style={style.border}>
+        let icon= item.data.Id==defaultId?"md-radio-button-on":"md-radio-button-off";
+        let checkStyle = item.data.Id==defaultId?[style.atxt,style.default]:[style.atxt];
+        return <View key={item.data.Id} style={style.border}>
             <View style={style.row}>
-                <Label numberOfLines={1} style={style.label}>{item.Name}</Label>
+                <Label numberOfLines={1} style={style.label}>{item.data.Name}</Label>
             </View>
             <View style={style.row}>
-                <TouchableOpacity onPress={()=>{onChanged(item.Id)}}>
+                <TouchableOpacity onPress={()=>{onChanged(item.data.Id)}}>
                     <View style={style.left}>
                         <Icon style={[...checkStyle,style.ico]} name={icon} />
                         <Label style={checkStyle}>设置默认</Label>
                     </View>
                 </TouchableOpacity>
                 <View style={style.action}>
-
                     <TouchableOpacity style={style.action}>
                         <Icon name="ios-trash-outline" />
                         <Label style={style.atxt}>删除</Label>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={style.action}>
+                    <TouchableOpacity style={style.action} onPress={()=>onModify(item)}>
                         <Icon name="ios-create-outline" />
                         <Label style={style.atxt}>修改</Label>
                     </TouchableOpacity>
@@ -41,7 +40,7 @@ const CameraList = observer(function CameraList({list,defaultId,onChanged,...pro
     return (
         <Form style={style.main}>
             {
-                list.map((item)=>(_render(item.data)))
+                list.map((item)=>(_render(item)))
             }
         </Form>);
 });
