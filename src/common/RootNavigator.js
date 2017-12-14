@@ -142,33 +142,33 @@ const StyTabNavigation = TabNavigator({
     }*/
 },{
     initialRouteName:'StyTab',
-    animationEnabled: false,
-    tabBarPosition: 'bottom',
-    swipeEnabled: false,
-    backBehavior: 'none',
+    animationEnabled: false,// 切换页面时不显示动画
+    tabBarPosition: 'bottom',// 显示在底端，android 默认是显示在页面顶端的
+    swipeEnabled: false,// 禁止左右滑动
+    backBehavior: 'none',// 按 back 键是否跳转到第一个 Tab， none 为不跳转
     lazy: true,
     tabBarOptions: {
         style: {
             height:49,
             paddingTop:0,
-            backgroundColor:'#e0e0e0'
+            backgroundColor:'#e0e0e0'// TabBar 背景色
         },
         labelStyle:{
             marginTop:0,
             paddingTop:0,
-            fontSize:12,
+            fontSize:12,// 文字大小
         },
         iconStyle:{
             marginTop:0,
             paddingTop:0,
         },
         activeBackgroundColor:'white',
-        activeTintColor:'#009688',
+        activeTintColor:'#009688',// 文字和图片选中颜色
         inactiveBackgroundColor:'white',
-        inactiveTintColor:'#bababa',
+        inactiveTintColor:'#bababa',// 文字和图片默认颜色
         showLabel:true,
-        showIcon:true,
-        indicatorStyle:{height:0}/**/
+        showIcon:true,// android 默认不显示 icon, 需要设置为 true 才会显示
+        indicatorStyle:{height:0}// android 中TabBar下面会显示一条线，高度设为 0 后就不显示线了
     }
 });
 // add your router below
