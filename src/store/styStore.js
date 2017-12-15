@@ -166,6 +166,9 @@ class StyStore {
          Object.assign(t,t,o);
         this.monitor.cameras.push(t);
     };
+    @action onRemove=(id)=>{
+        this.monitor.cameras.removeItem(o=>o.Id == id);
+    };
 
     @action
     onLoadFromApi(id, callback, failed){

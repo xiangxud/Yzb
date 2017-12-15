@@ -157,6 +157,10 @@ const urls = {
         IMM_POST_CAMERA:apiPath + 'Sty/PostCamera',
         //修改摄像头
         IMM_UPDATE_CAMERA:apiPath + 'Sty/UpdateCamera',
+        //删除摄像头
+        IMM_REMOVE_CAMERA:apiPath + 'Sty/RemoveCamera',
+        //设置默认摄像头
+        IMM_DEFAULT_CAMERA:apiPath + 'Sty/ChangeCamera'
     },
     // 获取图片完整路径
     getImage(filePath, width, height){

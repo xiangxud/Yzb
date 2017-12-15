@@ -14,8 +14,6 @@ class camera extends storeBase{
         @observable
         @validate(/\S+$/, '摄像头名称必填')
         Name:'',
-
-
     }
 
     @action
@@ -67,8 +65,19 @@ export default class cameraSettingStore{
         this.defaultId=id;
     }
     @action
-    onChangDefault(id){
-        this.defaultId=id;
+    onChangDefault(id,styId,cllback,failed){
+        request.getJson(urls.apis.IMM_DEFAULT_CAMERA, {id: id,styId:styId}).then(data=>{
+            runInAction(()=>{
+                this.defaultId=id;
+            });
+            if(cllback){
+                cllback();
+            }
+        }).catch(err=> {
+            if(failed) {
+                failed(err)
+            }
+        });
     }
     @action
     onPush(o){
@@ -78,8 +87,15 @@ export default class cameraSettingStore{
     onUpdate(o){
     }
     @action
-    onRemove(o){
-
+    onRemove(id,callback,failed){
+        request.getJson(urls.apis.IMM_REMOVE_CAMERA, {id: id}).then((data) => {
+            runInAction(()=>{
+                this.list.removeItem(o=>o.data.Id == id);
+            });
+            callback(data);
+        }).catch((err) => {
+            failed(err);
+        });
     }
 }
 
