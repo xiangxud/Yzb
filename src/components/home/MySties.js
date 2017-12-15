@@ -20,7 +20,7 @@ const Sty = observer(({sty, getSty, isCurrent}) =>{
     return (
         <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={()=>{getSty(sty)}}>
             <View style={[styles.styBox, isCurrent? styles.currentSty: {}]}>
-                <Icon name={'ios-keypad'+(!sty.total?'-outline':'')} style={isCurrent?styles.currentText:{color:'#15856e'}} />
+                <Image source={require('../../resource/sty_livestock.png')} style={{width:50, height:42}}/>
                 <Text style={isCurrent?styles.currentText:{}}>{sty.name.substr(0, 5)}</Text>
             </View>
         </TouchableNativeFeedback>
@@ -54,10 +54,10 @@ export default class MySties extends Component {
                 </ScrollView>
                 {store.currentSty && store.currentSty.id?
                     <View>
-                        <WebView uri={urls.webPath + 'yzb/monitor/live?url=v1.mp4'}
-                                 style={{ height:200, }} />
-                        <WebView uri={urls.webPath + 'yzb/monitor/em?rd='+rd}
-                                 style={{ height:120, }} />
+                        {store.currentSty.camera_url?
+                        <WebView uri={`${urls.webPath}yzb/monitor/live?url=${store.currentSty.camera_url}`} style={{ height:200, }} />
+                            :null}
+                        <WebView uri={urls.webPath + 'yzb/monitor/em?rd='+rd} style={{ height:120, }} />
                         <View style={styles.reportItems}>
                             <Text style={styles.sTitle}>栋舍湿度</Text>
                             <Text style={styles.sTitle}>栋舍温度</Text>

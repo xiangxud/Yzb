@@ -108,12 +108,12 @@ class UserStore {
 
     @action login = (callback) => {
         this.loading = true;
-        this.phone = this.loginPhone;
-        this.password = this.loginPassword;
-        alert(`${this.password}-${this.phone}`)
-        this._login(this.phone, this.password, (token)=>{
+        //alert(`${this.password}-${this.phone}`)
+        this._login(this.loginPhone, this.loginPassword, (token)=>{
             runInAction(() => {
                 this.token = token;
+                this.phone = this.loginPhone;
+                this.password = this.loginPassword;
                 this.fetchLoginUser((data) => {
                     this.setLoading();
                     this.setLoginUser(data);

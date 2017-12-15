@@ -143,6 +143,8 @@ class StyStore {
                 this.monitor.cameras = data.Cameras;
                 if(this.monitor.cameras.length){
                     this.monitor.current = this.monitor.cameras[0];
+                }else{
+                    this.monitor.current = null;
                 }
             });
         }, (err)=>{
