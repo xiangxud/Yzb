@@ -47,5 +47,5 @@ const styles = StyleSheet.create({
         padding:5,
         color:'#ffffff'
     },
-    webView: { height: 270 },
+    webView: { height: 200 },
 });

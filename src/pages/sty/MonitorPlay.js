@@ -33,7 +33,7 @@ export default class MonitorPlay extends Component{
         return (<Container>
             <Content>
                 <View style={styles.container}>
-                    <WebView uri={this.state.url} style={{ height: 270 }} />
+                    <WebView uri={this.state.url} style={{ height: 200 }} />
                     <View style={styles.desc}>
                         <View style={{flexDirection:'row', alignItems:'center'}}>
                             <Icon name={'ios-videocam'} style={{color:'#dd3215', fontSize:28, marginRight:3}}/>

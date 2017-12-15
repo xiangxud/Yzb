@@ -54,8 +54,8 @@ export default class MySties extends Component {
                 </ScrollView>
                 {store.currentSty && store.currentSty.id?
                     <View>
-                        <WebView uri={urls.webPath + 'yzb/monitor/live?rd='}
-                                 style={{ height:270, }} />
+                        <WebView uri={urls.webPath + 'yzb/monitor/live?url=v1.mp4'}
+                                 style={{ height:200, }} />
                         <WebView uri={urls.webPath + 'yzb/monitor/em?rd='+rd}
                                  style={{ height:120, }} />
                         <View style={styles.reportItems}>
