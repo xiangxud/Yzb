@@ -46,6 +46,10 @@ export default class BHList extends Component {
             });
         }).catch((err)=>{
             tools.showToast(err.message);
+            this.setState({
+                loading: false,
+                refreshing: false
+            });
         });
     }
     handleRefresh = () => {

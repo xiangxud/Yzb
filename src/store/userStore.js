@@ -13,11 +13,11 @@ class UserStore {
     loginPhone='18307722503';
 
     @observable
-    @validate(/^[\w]{6,16}$/, '请输入至少6位字母、数字、下划线密码')
+    @validate(/^[\w]{6,16}$/, '请输入至少6位密码')
     loginPassword='123456';
 
     @observable
-    @validate(/^[\w]{6,16}$/, '请输入至少6位字母、数字、下划线密码')
+    @validate(/^[\w]{6,16}$/, '请输入至少6位密码')
     registerPassword='';
 
     @observable
@@ -26,9 +26,15 @@ class UserStore {
 
     @observable
     @validate(/\d{6}$/, '请输入6位数字验证码')
-    registerValidateCode='';
+    validateCode='';
 
-    @observable registerUserType='';
+    @observable
+    name='';
+
+    @observable
+    farmName=''
+
+    @observable animalType = [];
 
     //userSession
     @observable hydrated = false;
@@ -45,91 +51,110 @@ class UserStore {
 
     @persist('object') @observable loginUser = {};
     @persist('object') @observable location = {};
+    @observable loading = false;
 
     //#####################################登录注册
-    @action setLoginPhone = _.debounce((phone)=>{
-        this.loginPhone = phone;
-    }, 400)
-    @action setLoginPassword = _.debounce((pwd)=>{
-        this.loginPassword = pwd;
-    }, 400)
-    @action setRegisterPassword = _.debounce((pwd)=>{
-        this.registerPassword = pwd;
-    }, 400)
-    @action setRegisterPasswordRepeat = _.debounce((pwd)=>{
-        this.registerPasswordRepeat = pwd;
-    }, 400)
-    @action setRegisterValidateCode = _.debounce((code)=>{
-        this.registerValidateCode = code;
-    }, 400)
+    @action setLoginPhone = _.debounce((phone)=>{ this.loginPhone = phone; }, 400)
+    @action setLoginPassword = _.debounce((pwd)=>{ this.loginPassword = pwd; }, 400)
+    @action setRegisterPassword = _.debounce((pwd)=>{ this.registerPassword = pwd; }, 400)
+    @action setRegisterPasswordRepeat = _.debounce((pwd)=>{ this.registerPasswordRepeat = pwd; }, 400)
+    @action setValidateCode = _.debounce((code)=>{ this.validateCode = code; }, 400)
+    @action setName = _.debounce((v)=>{ this.name = v }, 400)
+    @action setFarm = _.debounce((v)=>{ this.farmName = v }, 400)
     //#######################################
     @action setLoginUser = (u) =>{
         this.loginUser = u;
     }
-    @action register() {
-        return fetch(urls.apis.USER_REGISTER, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: this.loginPhone,
-                password: this.loginPassword,
-            })
-        }).then((resp)=>{
-            if (resp.status !== 200) {
-                console.error('Error calling register '+resp._bodyText);
-            }
-            else {
-                console.log(`user ${this.user.email} registered successfully`);
-            }
-        }).catch((error)=>console.error('Error (Exception) calling register '+error))
+    @action setLoading(){
+        this.loading = !this.loading;
+    }
+    @action setBreed = (t) => {
+        let i = this.animalType.indexOf(t);
+        if(i > -1)
+            this.animalType.splice(i, 1);
+        else
+            this.animalType.push(t);
+    }
+    @action register(success, error) {
+        let reg_data = {
+            phone: this.loginPhone,
+            vcode: this.validateCode,
+            password: this.registerPassword,
+            name: this.name,
+            farm_name: this.farmName,
+            breed: this.animalType.length === 1 ? this.animalType[0] : 2,
+        };
+        request.postJson(urls.apis.USER_REGISTER, reg_data).then((res) => {
+            this.loginPassword = this.registerPassword;
+            success(res)
+        }).catch((err) =>
+            error(err)
+        )
+    }
+
+    @action find = () =>{
+        let reg_data = {
+            phone: this.loginPhone,
+            vcode: this.validateCode,
+            password: null,
+            name: null,
+            farm_name: null,
+            breed: null,
+        };
+        request.postJson(urls.apis.USER_REGISTER, reg_data).then((res)=>{
+            this.loginPassword = this.registerPassword;
+            success(res)
+        }).catch((err)=>
+            error(err)
+        )
     }
 
     @action login = (callback) => {
+        this.loading = true;
         this.phone = this.loginPhone;
         this.password = this.loginPassword;
-        this._login(this.phone, this.password).then((token)=>{
+        this._login(this.phone, this.password, (token)=>{
             runInAction(() => {
-                this.isLogin = true;
                 this.token = token;
-                callback(true, token);
+                this.fetchLoginUser((data) => {
+                    this.setLoading();
+                    this.setLoginUser(data);
+                    callback(true, data.access_token)
+                }, (err) => {
+                    this.setLoading();
+                    callback(true, err.message);
+                });
             })
-        }).catch((err)=>{
+        }, (err)=>{
+            this.setLoading();
             callback(false, err);
-        }).done();
+        });
     }
 
     @action relogin = (callback) => {
         this.login(callback)
     };
 
-    _login(phone, password) {
-        return new Promise(function (resolve, reject) {
-            request.postJson(urls.apis.USER_LOGIN, {
-                phone: phone,
-                password: password
-            }).then((data) => {
-                resolve(data);
-            }).catch((error)=>{
-                reject(error)
-            }).done();
+    _login(phone, password, success, failed) {
+        request.postJson(urls.apis.USER_LOGIN, {
+            phone: phone,
+            password: password
+        }).then((data) => {
+            success(data);
+        }).catch((error)=>{
+            failed(error)
         });
     }
 
-    @action
-    fetchLoginUser = () => {
-        return new Promise(function (resolve, reject) {
-            request.getJson(urls.apis.USER_GETLOGINUSER).then((data) => {
-                resolve(data);
-            }).catch((res)=>{
-                reject(res);
-            }).done();
+    @action fetchLoginUser(success, failed){
+        request.getJson(urls.apis.USER_GET_MINE).then((data) => {
+            success(data);
+        }).catch((res)=>{
+            failed(res);
         });
     };
 
-    @action
-    updateUserPhoto(uri, fileName) {
+    @action updateUserPhoto(uri, fileName) {
         let formData = new FormData();
         formData.append("filename", {
             uri: uri,
@@ -148,8 +173,7 @@ class UserStore {
             })
     }
 
-    @action
-    updateUserInfo(property, value) {
+    @action updateUserInfo(property, value) {
         let user0 = {...this.loginUser};
         user0[property] = value;
         this.loginUser = user0;
@@ -166,8 +190,7 @@ class UserStore {
         })
     }
 
-    @action
-    getposition() {
+    @action getposition() {
         Geolocation.getCurrentPosition(
             location => {
                 var result = "速度：" + location.coords.speed +
@@ -207,8 +230,7 @@ class UserStore {
         );
     }
 
-    @action
-    logout() {
+    @action logout() {
         this.isLogin = false;
         this.token = {access_token: ''};
         this.loginUser = {}

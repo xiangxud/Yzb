@@ -6,8 +6,11 @@ import HomePage from '../pages/HomePage';
 import Live from '../pages/Live';
 import Info from '../pages/Info';
 import InfoDetail from '../pages/info/InfoDetail';
-import Uc from '../pages/Uc';
+
 import Login from '../pages/Login';
+import Register from '../pages/uc/Register';
+import Uc from '../pages/Uc';
+
 import BHStart from '../pages/bohai/BHStart';
 import BHList from '../pages/bohai/BHList';
 import BHApply from '../pages/bohai/BHApply';
@@ -178,6 +181,7 @@ const RootNavigator = StackNavigator({
     Main:{ screen: TabNavigation },
     InfoDetail:{ screen: InfoDetail },
     Login:{ screen: Login },
+    Register:{ screen: Register },
     Sty:{screen:StyTabNavigation},
     AddSty:{screen:addSty},
     EditSty:{screen:editSty},
