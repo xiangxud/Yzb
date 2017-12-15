@@ -3,7 +3,8 @@ import
 {
     TouchableOpacity,
     StyleSheet,
-    View
+    View,
+    DeviceEventEmitter
 } from 'react-native';
 import { Container,Content,Form,ListItem,Text,Icon,Toast } from 'native-base';
 import {observer,inject} from 'mobx-react/native';
@@ -27,30 +28,16 @@ export default class edit extends Component{
         this.styName=navigation.state.params.styName;
         this.camera=navigation.state.params.camera;
     }
-    autoClose( callback ){
-        setTimeout(()=>{
-            Toast.toastInstance._root.closeToast();
-            if(callback){
-                callback();
-            }
-        },800);
-    }
     onCommit(){
         const {navigation} = this.props;
         let mess = this.camera.onValidate();
         if(mess.length > 0){
-            Toast.show({
-                type:'warning',
-                text: '数据项存在错误，请更正',
-                position: 'top'
-            });
-            this.autoClose();
+            tools.showToast("输入项存在错误");
             return ;
         }
         this.camera.onCommitUpdate(()=>{
-            if(navigation.state.params.onNotice){
-                navigation.state.params.onNotice(this.camera);
-            }
+            DeviceEventEmitter.emit('eventEditCamera',this.camera);
+            tools.showToast("编辑成功");
             navigation.goBack();
         });
     }

@@ -25,6 +25,7 @@ class camera extends storeBase{
     onUpdate(o){
         Object.assign(this.data,this.data,o);
     }
+
     @action
     onCommit(callback,failed){
         request.postJson(urls.apis.IMM_POST_CAMERA,this.data).then(data=>{
@@ -94,6 +95,9 @@ export default class cameraSettingStore{
             });
             callback(data);
         }).catch((err) => {
+
+            debugger;
+
             failed(err);
         });
     }

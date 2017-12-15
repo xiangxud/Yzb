@@ -8,7 +8,8 @@ import
     TouchableOpacity,
     StyleSheet,
     ScrollView,
-    Alert
+    Alert,
+    DeviceEventEmitter
 } from 'react-native';
 import { Container,Content,Root,List,ListItem,Right,Left,Button,Icon,Body,Toast } from 'native-base';
 import {observer,inject} from 'mobx-react/native';
@@ -26,7 +27,21 @@ export default class setting extends Component{
         headerRight: <View />
     });
     componentDidMount(){
+        this.eventAddCameraHandler = DeviceEventEmitter.addListener('eventAddCamera',(o)=>{
+
+            debugger;
+            this.store.onPush(o);
+        });
+        this.eventEditCameraHandler = DeviceEventEmitter.addListener('eventEditCamera',(o)=>{
+            this.store.onUpdate(o);
+        });
     }
+
+    componentWillUnmount(){
+        this.eventAddCameraHandler.remove();
+        this.eventEditCameraHandler.remove();
+    }
+
     constructor(props){
         super(props);
         let {styStore,navigation} = this.props;
@@ -36,59 +51,35 @@ export default class setting extends Component{
     @observable
     store=new cameraSettingStore();
 
-    autoClose( callback ){
-        setTimeout(()=>{
-            Toast.toastInstance._root.closeToast();
-            if(callback){
-                callback();
-            }
-        },800);
+    onAdd(){
+        const {navigation} = this.props;
+        navigation.navigate("CameraAdd",{
+            styId:navigation.state.params.code,
+            styName:navigation.state.params.title});
     }
 
-    onAdd(){
-        const {styStore,navigation} = this.props;
-        const onNotice=(camera)=>{
-            this.store.onPush(camera);
-            Toast.show({
-                type:'success',
-                text: '增加成功',
-                position: 'top'
-            });
-            this.autoClose();
-            styStore.onPushCameras(camera.data);//通知栋舍首页
-        }
-        navigation.navigate("CameraAdd",{ styId:navigation.state.params.code, styName : navigation.state.params.title,onNotice:onNotice.bind(this) });
-    }
     onModify(camera){
-        const {styStore,navigation} = this.props;
-        const onNotice=(camera)=>{
-            this.store.onUpdate(camera);
-            Toast.show({
-                type:'success',
-                text: '编辑成功',
-                position: 'top'
-            });
-            this.autoClose();
-            styStore.onUpdateCameras(camera.data);//通知栋舍首页
-        }
-        navigation.navigate("CameraEdit",{ camera:camera, styName : navigation.state.params.title,onNotice:onNotice.bind(this) });
+        const {navigation} = this.props;
+        navigation.navigate("CameraEdit",{ camera:camera,styName:navigation.state.params.title});
     }
 
     removeCamera(id){
-        const {styStore,navigation} = this.props;
+        const {navigation} = this.props;
         this.store.onRemove(id,()=>{
-            styStore.onRemove(id);
+            DeviceEventEmitter.emit('eventRemoveCamera',{ id : id , styId:navigation.state.params.code});
             tools.showToast('移除成功');
         },(err)=>{
             console.log(err);
-            tools.showToast('移除失败');
+            tools.showToast('移除失败：' + err);
         });
     }
+
     onChangedDefault(id){
-        const {styStore,navigation} = this.props;
+        const {navigation} = this.props;
         this.store.onChangDefault(id,navigation.state.params.code,
             ()=>{},err=> tools.showToast('设置失败'));
     }
+
     onRemove(id){
         Alert.alert(
             '温馨提示',

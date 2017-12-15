@@ -3,7 +3,8 @@ import
 {
     TouchableOpacity,
     StyleSheet,
-    View
+    View,
+    DeviceEventEmitter
 } from 'react-native';
 import { Container,Content,Form,ListItem,Text,Icon,Toast } from 'native-base';
 import {observer,inject} from 'mobx-react/native';
@@ -31,40 +32,32 @@ export default class add extends Component{
         this.styId=navigation.state.params.styId;
         this.camera.onUpdate({StyId:this.styId});
     }
-    autoClose( callback ){
-        setTimeout(()=>{
-            Toast.toastInstance._root.closeToast();
-            if(callback){
-                callback();
-            }
-        },800);
-    }
     onCommit(){
         const {navigation} = this.props;
         let mess = this.camera.onValidate();
         if(mess.length > 0){
-            Toast.show({
-                type:'warning',
-                text: '数据项存在错误，请更正',
-                position: 'top'
-            });
-            this.autoClose();
+            tools.showToast("输入项存在错误");
             return ;
         }
-        this.camera.onCommit(()=>{
-            if(navigation.state.params.onNotice){
-                navigation.state.params.onNotice(this.camera);
-            }
+        this.camera.onCommit((data)=>{
+            console.log("001111111");
+            this.camera.onUpdate(data);//刷新，比如;id
+            debugger;
+            DeviceEventEmitter.emit('eventAddCamera',this.camera);
+            tools.showToast("增加成功");
             navigation.goBack();
         });
     }
+
     onUpdateData(data){
         this.camera.onUpdate(data);
     }
+
     buttons=[{title:'取消' , default:false, onPress:()=>{
             const {navigation} = this.props;
             navigation.goBack();
         }},{title:'提交' , default:true, onPress:()=>{ this.onCommit()}}];
+
     render(){
         return (
             <Container style={{backgroundColor:'#ffffff'}}>

@@ -3,7 +3,7 @@ import {
     View,
     StyleSheet,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity, DeviceEventEmitter
 } from 'react-native';
 import { Container, Content, Text } from 'native-base';
 import Modal from 'react-native-modalbox';
@@ -60,6 +60,27 @@ export default class Sty extends Component {
     componentDidMount(){
         const {styStore, navigation} = this.props;
         styStore.onIni(navigation.state.params.code);
+
+        this.eventAddCameraHandler = DeviceEventEmitter.addListener('eventAddCamera',(o)=>{
+            if(o.data.StyId == styStore.code){
+                styStore.onPushCameras(o.data);//处理增加摄像头的通知
+            }
+        });
+        this.eventEditCameraHandler = DeviceEventEmitter.addListener('eventEditCamera',(o)=>{
+            if(o.data.StyId==styStore.code){
+                styStore.onUpdateCameras(o.data);//处理编辑摄像头的通知
+            }
+        });
+        this.eventRemoveCameraHandler = DeviceEventEmitter.addListener('eventRemoveCamera',(o)=>{
+            if(o.styId==styStore.code){
+                styStore.onRemove(o.id);//处理移除摄像头通知
+            }
+        });
+    }
+    componentWillUnmount(){
+        this.eventAddCameraHandler.remove();
+        this.eventEditCameraHandler.remove();
+        this.eventRemoveCameraHandler.remove();
     }
 
     render(){
