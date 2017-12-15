@@ -62,10 +62,10 @@ export default class cameraSettingStore{
     list=[];
 
     @action
-    onIni(source,id){
+    onIni(source,defaultCamera,styId){
         this.list=[];
         source.forEach(item=>this.list.push( new camera().onIni(item)));
-        this.defaultId=id;
+        this.defaultId=defaultCamera;
     }
     @action
     onChangDefault(id,styId,cllback,failed){

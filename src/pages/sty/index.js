@@ -76,11 +76,17 @@ export default class Sty extends Component {
                 styStore.onRemove(o.id);//处理移除摄像头通知
             }
         });
+        this.eventChangedDefaultCamera = DeviceEventEmitter.addListener('eventChangedDefaultCamera',(o)=>{
+            if(o.styId==styStore.code){
+                styStore.onChangeCameras(o.id);//处理移除摄像头通知
+            }
+        });
     }
     componentWillUnmount(){
         this.eventAddCameraHandler.remove();
         this.eventEditCameraHandler.remove();
         this.eventRemoveCameraHandler.remove();
+        this.eventChangedDefaultCamera.remove();
     }
 
     render(){

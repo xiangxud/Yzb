@@ -13,6 +13,9 @@ const CameraList = observer(function CameraList({list,defaultId,onChanged,onModi
     {
         let icon= item.data.Id==defaultId?"md-radio-button-on":"md-radio-button-off";
         let checkStyle = item.data.Id==defaultId?[style.atxt,style.default]:[style.atxt];
+
+        debugger
+
         return <View key={item.data.Id} style={style.border}>
             <View style={style.row}>
                 <Label numberOfLines={1} style={style.label}>{item.data.Name}</Label>

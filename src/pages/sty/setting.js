@@ -44,8 +44,8 @@ export default class setting extends Component{
 
     constructor(props){
         super(props);
-        let {styStore,navigation} = this.props;
-        this.store.onIni(styStore.monitor.cameras,navigation.state.params.code);
+        let {styStore} = this.props;
+        this.store.onIni(styStore.monitor.cameras,styStore.defaultCamera,styStore.code);
     }
 
     @observable
@@ -75,9 +75,11 @@ export default class setting extends Component{
     }
 
     onChangedDefault(id){
-        const {navigation} = this.props;
-        this.store.onChangDefault(id,navigation.state.params.code,
-            ()=>{},err=> tools.showToast('设置失败'));
+        const {styStore} = this.props;
+        this.store.onChangDefault(id,styStore.code,
+            ()=>{
+                DeviceEventEmitter.emit('eventChangedDefaultCamera',{ id:id , styId:styStore.code});
+            },err=> tools.showToast('设置失败'));
     }
 
     onRemove(id){

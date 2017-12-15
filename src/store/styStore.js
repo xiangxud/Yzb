@@ -107,6 +107,9 @@ class StyStore {
     @observable
     unit="";
 
+    @observable
+    defaultCamera="";
+
     //环控数据
     @observable
     environmental=new EnvironmentalStore();
@@ -130,6 +133,7 @@ class StyStore {
                 this.count = data.Total;
                 this.day = data.Day;
                 this.unit = data.Unit;
+                this.defaultCamera=data.DefaultCamera;
                 //2、环控数据
                 if(data.Env){
                     this.environmental.onParse(data.Env);//环控数据
@@ -169,6 +173,9 @@ class StyStore {
     };
     @action onRemove=(id)=>{
         this.monitor.cameras.removeItem(o=>o.Id == id);
+    };
+    @action onChangeCameras=(id)=>{
+        this.defaultCamera=id;
     };
 
     @action
