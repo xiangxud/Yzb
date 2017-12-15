@@ -7,7 +7,8 @@ import
     WebView,
     TouchableOpacity,
     StyleSheet,
-    ScrollView
+    ScrollView,
+    Alert
 } from 'react-native';
 import { Container,Content,Root,List,ListItem,Right,Left,Button,Icon,Body,Toast } from 'native-base';
 import {observer,inject} from 'mobx-react/native';
@@ -71,8 +72,35 @@ export default class setting extends Component{
             styStore.onUpdateCameras(camera.data);//通知栋舍首页
         }
         navigation.navigate("CameraEdit",{ camera:camera, styName : navigation.state.params.title,onNotice:onNotice.bind(this) });
-
     }
+
+    removeCamera(id){
+        const {styStore,navigation} = this.props;
+        this.store.onRemove(id,()=>{
+            styStore.onRemove(id);
+            tools.showToast('移除成功');
+        },(err)=>{
+            console.log(err);
+            tools.showToast('移除失败');
+        });
+    }
+    onChangedDefault(id){
+        const {styStore,navigation} = this.props;
+        this.store.onChangDefault(id,navigation.state.params.code,
+            ()=>{},err=> tools.showToast('设置失败'));
+    }
+    onRemove(id){
+        Alert.alert(
+            '温馨提示',
+            '即将删除该摄像头，是否继续？',
+            [
+                {text: '取消',onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: '继续',onPress: () => this.removeCamera(id)},
+            ],
+            { cancelable: true }
+        )
+    }
+
     render(){
         return (
                 <Container>
@@ -89,7 +117,12 @@ export default class setting extends Component{
                                 </TouchableOpacity>
                             </Right>
                         </ListItem>
-                        <CList list={this.store.list} defaultId={this.store.defaultId} onChanged={this.store.onChangDefault.bind(this.store)} onModify={this.onModify.bind(this)}></CList>
+                        <CList list={this.store.list}
+                               defaultId={this.store.defaultId}
+                               onChanged={this.onChangedDefault.bind(this)}
+                               onModify={this.onModify.bind(this)}
+                               onRemove={this.onRemove.bind(this)}>
+                        </CList>
                     </Content>
                 </Container>
         );
