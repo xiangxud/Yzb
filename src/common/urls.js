@@ -99,10 +99,10 @@ const urls = {
         USER_REGISTER: apiPath + "auth/register",
         //获取用户信息
         USER_GET_MINE: apiPath + 'public/myinfo',
+        //重置密码
+        USER_RESET_PASSWORD: apiPath + "auth/resetPassword",
         //获取指定用户信息
         //USER_GET: apiPath + 'user/getUser',
-        //重置密码
-        //USER_RESET_PASSWORD: apiPath + "user/resetPassword",
         //签到
         //USER_SIGN: apiPath + "user/signIn",
 

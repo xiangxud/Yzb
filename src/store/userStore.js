@@ -75,7 +75,7 @@ class UserStore {
         else
             this.animalType.push(t);
     }
-    @action register(success, error) {
+    @action register = (success, error) => {
         let reg_data = {
             phone: this.loginPhone,
             vcode: this.validateCode,
@@ -92,16 +92,13 @@ class UserStore {
         )
     }
 
-    @action find = () =>{
+    @action find = (success, error) => {
         let reg_data = {
             phone: this.loginPhone,
             vcode: this.validateCode,
-            password: null,
-            name: null,
-            farm_name: null,
-            breed: null,
+            password: this.registerPassword,
         };
-        request.postJson(urls.apis.USER_REGISTER, reg_data).then((res)=>{
+        request.getJson(urls.apis.USER_RESET_PASSWORD, reg_data).then((res)=>{
             this.loginPassword = this.registerPassword;
             success(res)
         }).catch((err)=>

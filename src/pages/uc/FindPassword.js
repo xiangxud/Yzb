@@ -5,12 +5,12 @@ import {
 } from 'react-native';
 import {NavigationActions} from 'react-navigation';
 import { inject, observer } from 'mobx-react/native'
-import {Container, Content, Body, CheckBox, Icon, Form, Item, Input, Label, Text, Button} from 'native-base';
+import {Container, Content, Icon, Form, Item, Input, Label, Text, Button} from 'native-base';
 import {MaskLoading} from '../../components'
 
 @inject('userStore')
 @observer
-export default class Register extends Component {
+export default class FindPassword extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,7 +23,7 @@ export default class Register extends Component {
     }
 
     static navigationOptions = {
-        headerTitle: '注册养殖宝',
+        headerTitle: '找回我的密码',
         headerRight: <View/>
     }
 
@@ -102,10 +102,7 @@ export default class Register extends Component {
     submit = () => {
         const {userStore} = this.props;
 
-        if (!this.state.agree) {
-            tools.showToast('请先同意许可条款');
-            return;
-        } else if (userStore.validateErrorLoginPhone) {
+        if (userStore.validateErrorLoginPhone) {
             tools.showToast(userStore.validateErrorLoginPhone);
             return;
         } else if (userStore.validateErrorRegisterPassword) {
@@ -120,23 +117,14 @@ export default class Register extends Component {
         } else if (userStore.validateErrorValidateCode) {
             tools.showToast(userStore.validateErrorValidateCode);
             return;
-        } else if (!userStore.name || userStore.name.length<2) {
-            tools.showToast('请输入正确的姓名');
-            return;
-        } else if (!userStore.farmName) {
-            tools.showToast('请输入养殖场名称');
-            return;
-        } else if (!userStore.animalType.length) {
-            tools.showToast('请选择您的养殖类型');
-            return;
         }
         userStore.setLoading();
-        userStore.register((res) => {
+        userStore.find((res) => {
             this._login();
         }, (err) => {
             userStore.setLoading();
-            tools.showToast(err.message);
-            //alert(JSON.stringify(err));
+            //tools.showToast(err.message);
+            alert(JSON.stringify(err))
         });
     }
     render() {
@@ -165,7 +153,7 @@ export default class Register extends Component {
                                     style={styles.btnGetCode}
                                     disabled={ userStore.loading || this.state.counting }
                                     onPress={()=>{
-                                        !this.state.counting && this.state.selfEnable && this.getValidateCode(1)
+                                        !this.state.counting && this.state.selfEnable && this.getValidateCode(2)
                                     }}>
                                 <Text>{this.state.timerTitle}</Text>
                             </Button>
@@ -184,37 +172,9 @@ export default class Register extends Component {
                                    secureTextEntry={true}
                                    onChangeText={(text)=> userStore.setRegisterPasswordRepeat(text)} />
                         </Item>
-                        <Item fixedLabel>
-                            <Label>真实姓名</Label>
-                            <Input placeholder="请输入您的真实姓名"
-                                   maxLength={20}
-                                   onChangeText={(text)=> userStore.setName(text)} />
-                        </Item>
-                        <Item fixedLabel>
-                            <Label>企业名称</Label>
-                            <Input placeholder="请输入您的养殖场名称"
-                                   maxLength={100}
-                                   onChangeText={(text)=> userStore.setFarm(text)} />
-                        </Item>
-                        <Item fixedLabel last style={{paddingBottom:10, paddingTop:10}}>
-                            <Label>养殖类型</Label>
-                            <CheckBox checked={userStore.animalType.indexOf(0)>-1} onPress={()=>userStore.setBreed(0)} />
-                            <Body>
-                            <Text>家禽</Text>
-                            </Body>
-                            <CheckBox checked={userStore.animalType.indexOf(1)>-1} onPress={()=>userStore.setBreed(1)} />
-                            <Body>
-                            <Text>家畜</Text>
-                            </Body>
-                        </Item>
-                        <View style={{flexDirection:'row', margin:20}}>
-                            <CheckBox checked={this.state.agree} onPress={()=>this.setState({agree: !this.state.agree})} />
-                            <Text style={{marginLeft:15}}>同意</Text>
-                            <Text style={{color:'#377cc3'}} onPress={()=>this.props.navigation.navigate('Web', {url: urls.webPath+'/yzb/about/protocol', title:'用户协议'})}>许可协议</Text>
-                        </View>
                     </Form>
                     <Button block success disabled={userStore.loading} onPress={() => { this.submit() }} style={{margin:10}}>
-                        <Text>注册</Text>
+                        <Text>重置登录密码</Text>
                     </Button>
                 </Content>
             </Container>

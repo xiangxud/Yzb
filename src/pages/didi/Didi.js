@@ -10,7 +10,7 @@ import {
     Image,
     TouchableHighlight
 } from 'react-native';
-//import Icon from 'react-native-vector-icons/FontAwesome';
+
 import {Container, Content} from "../../components";
 import {observer, inject} from 'mobx-react/native'
 import {MapView, Marker, Polyline, MultiPoint} from 'react-native-amap3d'

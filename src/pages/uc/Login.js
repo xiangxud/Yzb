@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    TouchableWithoutFeedback,
     TouchableOpacity,
     View,
 } from 'react-native';
 import {NavigationActions} from 'react-navigation';
 import { observer, inject } from 'mobx-react/native'
 import {Container, Content, Form, Item, Input, Label, Text, Button} from 'native-base';
-import {MaskLoading} from '../components'
+import {MaskLoading} from '../../components'
 
 @inject('userStore')
 @observer

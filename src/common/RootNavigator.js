@@ -7,8 +7,9 @@ import Live from '../pages/Live';
 import Info from '../pages/Info';
 import InfoDetail from '../pages/info/InfoDetail';
 
-import Login from '../pages/Login';
+import Login from '../pages/uc/Login';
 import Register from '../pages/uc/Register';
+import FindPassword from '../pages/uc/FindPassword';
 import Uc from '../pages/Uc';
 
 import BHStart from '../pages/bohai/BHStart';
@@ -17,8 +18,7 @@ import BHApply from '../pages/bohai/BHApply';
 import BHDetail from '../pages/bohai/BHDetail';
 import ChooseFarm from '../pages/bohai/modal/ChooseFarm';
 
-import Didi from '../pages/didi/DidiMap';
-import MarkerExample from '../pages/didi/MarkerExample';
+import Didi from '../pages/didi/Didi';
 import VetInfo from '../pages/didi/VetInfo';
 
 import Web from '../pages/Web';
@@ -182,6 +182,7 @@ const RootNavigator = StackNavigator({
     InfoDetail:{ screen: InfoDetail },
     Login:{ screen: Login },
     Register:{ screen: Register },
+    FindPassword:{ screen: FindPassword },
     Sty:{screen:StyTabNavigation},
     AddSty:{screen:addSty},
     EditSty:{screen:editSty},
@@ -195,7 +196,7 @@ const RootNavigator = StackNavigator({
     Web:{ screen: Web },
     CameraAdd:{screen:cameraAdd},
     CameraEdit:{screen:cameraEdit},
-    Didi:{ screen: MarkerExample },
+    Didi:{ screen: Didi },
     VetInfo:{ screen: VetInfo },
     About:{ screen: About },
     MyInfo:{ screen: MyInfo },
