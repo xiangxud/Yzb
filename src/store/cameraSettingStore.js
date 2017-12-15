@@ -77,6 +77,10 @@ export default class cameraSettingStore{
     @action
     onUpdate(o){
     }
+    @action
+    onRemove(o){
+
+    }
 }
 
 export {camera};

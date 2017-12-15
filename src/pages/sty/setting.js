@@ -71,7 +71,9 @@ export default class setting extends Component{
             styStore.onUpdateCameras(camera.data);//通知栋舍首页
         }
         navigation.navigate("CameraEdit",{ camera:camera, styName : navigation.state.params.title,onNotice:onNotice.bind(this) });
-
+    }
+    onRemove(camera){
+        const {styStore,navigation} = this.props;
     }
     render(){
         return (
@@ -89,7 +91,12 @@ export default class setting extends Component{
                                 </TouchableOpacity>
                             </Right>
                         </ListItem>
-                        <CList list={this.store.list} defaultId={this.store.defaultId} onChanged={this.store.onChangDefault.bind(this.store)} onModify={this.onModify.bind(this)}></CList>
+                        <CList list={this.store.list}
+                               defaultId={this.store.defaultId}
+                               onChanged={this.store.onChangDefault.bind(this.store)}
+                               onModify={this.onModify.bind(this)}
+                               onRemove={this.onRemove.bind(this)}>
+                        </CList>
                     </Content>
                 </Container>
         );

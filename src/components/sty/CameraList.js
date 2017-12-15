@@ -25,7 +25,7 @@ const CameraList = observer(function CameraList({list,defaultId,onChanged,onModi
                     </View>
                 </TouchableOpacity>
                 <View style={style.action}>
-                    <TouchableOpacity style={style.action}>
+                    <TouchableOpacity style={style.action} onPress={()=>onRemove(item)}>
                         <Icon name="ios-trash-outline" />
                         <Label style={style.atxt}>删除</Label>
                     </TouchableOpacity>
