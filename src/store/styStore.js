@@ -50,7 +50,7 @@ class WaringStore {
 
 class MonitorStore{
     @observable
-    current={};
+    current=null;
 
     @observable
     cameras=[];
@@ -120,8 +120,7 @@ class StyStore {
     @observable
     monitor=new MonitorStore();
 
-    @action
-    onIni( id ){
+    @action onIni(id){
         this.onLoadFromApi(id, (data)=>{
             runInAction(()=>{
                 //1、基础数据
@@ -142,12 +141,13 @@ class StyStore {
                 }
                 //4、摄像头数据
                 this.monitor.cameras = data.Cameras;
-                if( this.monitor.cameras.length > 0 ){
-                    this.current=this.monitor.cameras[0];
+                if(this.monitor.cameras.length){
+                    this.monitor.current = this.monitor.cameras[0];
+                    alert(JSON.stringify(this.monitor.current))
                 }
             });
         }, (err)=>{
-            tools.showToast("获取栋舍信息失败");
+            tools.showToast("无法获取该栋舍信息，请稍后再试");
         });
     }
 

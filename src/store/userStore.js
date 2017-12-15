@@ -110,6 +110,7 @@ class UserStore {
         this.loading = true;
         this.phone = this.loginPhone;
         this.password = this.loginPassword;
+        alert(`${this.password}-${this.phone}`)
         this._login(this.phone, this.password, (token)=>{
             runInAction(() => {
                 this.token = token;
@@ -229,6 +230,7 @@ class UserStore {
 
     @action logout() {
         this.isLogin = false;
+        this.password = '';
         this.token = {access_token: ''};
         this.loginUser = {}
         return true;

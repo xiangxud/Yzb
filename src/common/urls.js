@@ -136,31 +136,31 @@ const urls = {
         //栋舍信息
         IMM_STY_BASIC: apiPath + 'sty/GetStyHome',
         //字典列表
-        IMM_DICTIONARY:apiPath + 'Dictionary/Get',
+        IMM_DICTIONARY:apiPath + 'dictionary/Get',
         //栋舍创建
         IMM_STY_ADD:apiPath + 'sty/Post',
         //获取栋舍详情
-        IMM_GET_STY_BASE:apiPath + 'Sty/Get',
+        IMM_GET_STY_BASE:apiPath + 'sty/Get',
         //栋舍提交
         IMM_POST_STY:apiPath + 'sty/modify',
         //获取免疫提醒
-        IMM_GET_DETAIL:apiPath + 'ImmPlan/PostQuery',
+        IMM_GET_DETAIL:apiPath + 'immPlan/PostQuery',
         //获取出栏配置
-        IMM_GET_OUT_PET_CONFIG:apiPath + 'Sty/GetOutPetConfig',
+        IMM_GET_OUT_PET_CONFIG:apiPath + 'sty/GetOutPetConfig',
         //出栏
-        IMM_POST_REMOVE_PET:apiPath + 'Sty/PostRoutine',
+        IMM_POST_REMOVE_PET:apiPath + 'sty/PostRoutine',
         //出栏
-        IMM_POST_ADD_PET:apiPath + 'Sty/PostAddPet',
+        IMM_POST_ADD_PET:apiPath + 'sty/PostAddPet',
         //执行
-        IMM_POST_IMPLEMENT:apiPath + 'ImmPlan/PostImplement',
+        IMM_POST_IMPLEMENT:apiPath + 'immPlan/PostImplement',
         //增加摄像头
-        IMM_POST_CAMERA:apiPath + 'Sty/PostCamera',
+        IMM_POST_CAMERA:apiPath + 'sty/PostCamera',
         //修改摄像头
-        IMM_UPDATE_CAMERA:apiPath + 'Sty/UpdateCamera',
+        IMM_UPDATE_CAMERA:apiPath + 'sty/UpdateCamera',
         //删除摄像头
-        IMM_REMOVE_CAMERA:apiPath + 'Sty/RemoveCamera',
+        IMM_REMOVE_CAMERA:apiPath + 'sty/RemoveCamera',
         //设置默认摄像头
-        IMM_DEFAULT_CAMERA:apiPath + 'Sty/ChangeCamera'
+        IMM_DEFAULT_CAMERA:apiPath + 'sty/ChangeCamera'
     },
     // 获取图片完整路径
     getImage(filePath, width, height){

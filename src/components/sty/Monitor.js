@@ -8,29 +8,29 @@ import {observer} from 'mobx-react/native';
 import {Button, Icon, Text } from 'native-base';
 import { WebView} from '../'
 
-@observer
-export default class Monitor extends Component{
-    render(){
-        const {monitor} = this.props;
-        return (
-            <View style={styles.container}>
-                <View style={styles.infoBox}>
-                    <Text style={styles.desc}>
-                        当前摄像头：{monitor && monitor.current ? monitor.current.name: ''}
-                    </Text>
-                    <TouchableOpacity onPress={this.props.switchVideo}>
-                        <View style={{flexDirection:'row', alignItems:'center'}}>
-                            <Icon name={'md-swap'} style={{fontSize:24, color:'red'}}/>
-                            <Text style={{color:'white', fontSize:16}}>切换</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <WebView uri ={urls.webPath + 'yzb/monitor/live'}
-                         style={styles.webView} />
-            </View>
-        )
+const Monitor = observer(({monitor, switchVideo})=>{
+    if(!monitor.current){
+        return null;
     }
-};
+    return (
+        <View style={styles.container}>
+            <View style={styles.infoBox}>
+                <Text style={styles.desc}>
+                    当前摄像头：{ monitor.current.Name }
+                </Text>
+                <TouchableOpacity onPress={()=>switchVideo()}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Icon name={'md-swap'} style={{fontSize: 24, color: 'red'}}/>
+                        <Text style={{color: 'white', fontSize: 16}}>切换</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+            <WebView uri={`${urls.webPath}yzb/monitor/live?url=${monitor.current.Url}`}
+                     style={styles.webView}/>
+        </View>
+    )
+});
+export default Monitor;
 
 const styles = StyleSheet.create({
     container:{

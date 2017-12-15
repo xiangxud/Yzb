@@ -53,6 +53,9 @@ export default class Sty extends Component {
         styStore.switchCamera(c);
         this.refs.modal_choose_monitor.close();
     }
+    openSwitch=()=>{
+        this.refs.modal_choose_monitor.open()
+    }
 
     componentDidMount(){
         const {styStore, navigation} = this.props;
@@ -65,7 +68,7 @@ export default class Sty extends Component {
             <Container>
                 <Content>
                     <Waring waring={waring}/>
-                    <Monitor monitor={monitor} switchVideo={()=>{this.refs.modal_choose_monitor.open();}}/>
+                    <Monitor monitor={monitor} switchVideo={this.openSwitch}/>
                     <EnvironmentMonitor data={environmental} />
                     <ImmList title="免疫提醒" collection={immCollection} onMore={()=>this.props.navigation.navigate("ImmTab",{})} />
                 </Content>
@@ -78,7 +81,7 @@ export default class Sty extends Component {
                         {
                             monitor.cameras.map((camera, i)=>(
                                 <TouchableOpacity key={i} onPress={()=>this.switchCamera(camera)}>
-                                    <View style={[styles.item, camera.Name===monitor.current.Name?styles.current:null]}>
+                                    <View style={[styles.item, monitor.current&&monitor.current.Name===camera.Name?styles.current:null]}>
                                         <Text>{camera.Name}</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -104,6 +107,6 @@ const styles = StyleSheet.create({
         backgroundColor:'#d6d6d6',
     },
     current:{
-        backgroundColor:'#e69d63'
+        backgroundColor:'#009d7b'
     }
 })
