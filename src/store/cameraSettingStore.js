@@ -14,6 +14,8 @@ class camera extends storeBase{
         @observable
         @validate(/\S+$/, '摄像头名称必填')
         Name:'',
+        @observable
+        Url:''
     }
 
     @action

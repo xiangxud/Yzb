@@ -40,7 +40,6 @@ export default class add extends Component{
             return ;
         }
         this.camera.onCommit((data)=>{
-            console.log("001111111");
             this.camera.onUpdate(data);//刷新，比如;id
             debugger;
             DeviceEventEmitter.emit('eventAddCamera',this.camera);
@@ -68,6 +67,7 @@ export default class add extends Component{
                         </ListItem>
                         <ReadOnlyInput label="养殖场" value={this.styName} />
                         <ValidateInput label="摄像头名称" data={this.camera.data} name="Name" placeholder="请录入摄像头名称" IsValidate={this.camera.IsValidate} onChange={(e)=>{this.onUpdateData({Name:e})}} />
+                        <ValidateInput label="视频地址" data={this.camera.data} name="Url" placeholder="请录入视频地址" onChange={(e)=>{this.onUpdateData({Url:e})}} />
                     </Form>
                 </Content>
                 <FootBar buttons={this.buttons}></FootBar>
