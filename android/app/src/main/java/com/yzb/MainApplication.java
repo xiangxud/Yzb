@@ -31,7 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new CodePush("GBvb17bBeYFYHf_Ji-Tav4hMqdxSed61fbdc-e98a-4455-aa57-e9c3d4d56d92", getApplicationContext(), BuildConfig.DEBUG),
+            new CodePush(BuildConfig.CODEPUSH_KEY, MainApplication.this, BuildConfig.DEBUG),
             new AMap3DPackage()
       );
     }
