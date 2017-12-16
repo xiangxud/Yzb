@@ -21,6 +21,9 @@ export default class InfcnWebView extends PureComponent {
             isForwardButtonEnable: false
         }
     }
+    static defaultProps = {
+        canBack: true,
+    }
 
     componentDidMount() {
         BackHandler.addEventListener("hardwareBackPress", ()=> {
@@ -44,7 +47,7 @@ export default class InfcnWebView extends PureComponent {
             url: navState.url,
             title: navState.title,
             loading: navState.loading,
-            isBackButtonEnable: navState.canGoBack,
+            isBackButtonEnable: navState.canGoBack && this.props.canBack,
             isForwardButtonEnable: navState.canGoForward,
         })
     }

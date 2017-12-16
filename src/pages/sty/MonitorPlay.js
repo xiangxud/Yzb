@@ -32,17 +32,15 @@ export default class MonitorPlay extends Component{
         const {current} = this.state;
         return (<Container>
             <Content>
-                <View style={styles.container}>
-                    <WebView uri={this.state.url} style={{ height: 200 }} />
-                    <View style={styles.desc}>
-                        <View style={{flexDirection:'row', alignItems:'center'}}>
-                            <Icon name={'ios-videocam'} style={{color:'#dd3215', fontSize:28, marginRight:3}}/>
-                            <Text style={{fontSize:18, fontWeight:'bold'}}>{current.videoName}</Text>
-                        </View>
-                        <Text>监控栋舍：{current.sty}</Text>
-                        <Text>监控日期：{current.date}</Text>
-                        <Text>监控时段：{current.timeBegin} - {current.timeEnd}</Text>
+                <WebView uri={this.state.url} style={{ height: 200 }} canBack={false} />
+                <View style={styles.desc}>
+                    <View style={{flexDirection:'row', alignItems:'center'}}>
+                        <Icon name={'ios-videocam'} style={{color:'#dd3215', fontSize:28, marginRight:3}}/>
+                        <Text style={{fontSize:18, fontWeight:'bold'}}>{current.videoName}</Text>
                     </View>
+                    <Text>监控栋舍：{current.sty}</Text>
+                    <Text>监控日期：{current.date}</Text>
+                    <Text>监控时段：{current.timeBegin} - {current.timeEnd}</Text>
                 </View>
             </Content>
         </Container>);
@@ -50,8 +48,6 @@ export default class MonitorPlay extends Component{
 }
 
 const styles = StyleSheet.create({
-    container:{
-    },
     desc:{
         backgroundColor:'#fff',
         padding:10,

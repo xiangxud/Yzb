@@ -34,6 +34,7 @@ export default class MySties extends Component {
     }
     getSty = (sty) =>{
         const {store} = this.props;
+        //alert(JSON.stringify(sty))
         store.setCurrentSty(sty);
     }
     render() {
@@ -55,9 +56,9 @@ export default class MySties extends Component {
                 {store.currentSty && store.currentSty.id?
                     <View>
                         {store.currentSty.camera_url?
-                        <WebView uri={`${urls.webPath}yzb/monitor/live?url=${store.currentSty.camera_url}`} style={{ height:200, }} />
+                        <WebView uri={`${urls.webPath}yzb/monitor/live?url=${store.currentSty.camera_url}`} canBack={false} style={{ height:200, }} />
                             :null}
-                        <WebView uri={urls.webPath + 'yzb/monitor/em?rd='+rd} style={{ height:120, }} />
+                        <WebView uri={`${urls.webPath}yzb/monitor/em?rd=${rd}`} canBack={false} style={{ height:120, }} />
                         <View style={styles.reportItems}>
                             <Text style={styles.sTitle}>栋舍湿度</Text>
                             <Text style={styles.sTitle}>栋舍温度</Text>
