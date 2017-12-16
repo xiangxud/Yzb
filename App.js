@@ -13,6 +13,7 @@ import {
   View
 } from 'react-native';
 import {Provider} from 'mobx-react/native';
+import CodePush from "react-native-code-push";
 import stores from './src/store';
 import NetInfoDecorator from './src/common/NetInfoDecorator';
 import YzbApp from './src/index';
@@ -29,10 +30,10 @@ export default class App extends Component<{}> {
     constructor(props) {
         super(props);
         this.state = {
-            promptPosition: new Animated.Value(0)
+            promptPosition: new Animated.Value(0),
+            restartAllowed: true
         }
     }
-
     componentWillReceiveProps(nextProps) {
         const {isConnected} = nextProps
         // 无网络
@@ -88,3 +89,5 @@ const styles = StyleSheet.create({
 })
 
 AppRegistry.registerComponent('Yzb', () => App);
+let codePushOptions = { checkFrequency: CodePush.CheckFrequency.MANUAL };
+App = CodePush(codePushOptions)(App);
