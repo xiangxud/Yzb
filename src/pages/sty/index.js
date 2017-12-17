@@ -61,32 +61,23 @@ export default class Sty extends Component {
         const {styStore, navigation} = this.props;
         styStore.onIni(navigation.state.params.code);
 
-        this.eventAddCameraHandler = DeviceEventEmitter.addListener('eventAddCamera',(o)=>{
-            if(o.data.StyId == styStore.code){
+        this.eventHandler = DeviceEventEmitter.addListener('noticeChangedCamera',(o)=>{
+            if(o.name=="eventAddCamera" && o.data.StyId == styStore.code){
                 styStore.onPushCameras(o.data);//处理增加摄像头的通知
             }
-        });
-        this.eventEditCameraHandler = DeviceEventEmitter.addListener('eventEditCamera',(o)=>{
-            if(o.data.StyId==styStore.code){
+            if(o.name=="eventEditCamera" && o.data.StyId==styStore.code){
                 styStore.onUpdateCameras(o.data);//处理编辑摄像头的通知
             }
-        });
-        this.eventRemoveCameraHandler = DeviceEventEmitter.addListener('eventRemoveCamera',(o)=>{
-            if(o.styId==styStore.code){
+            if(o.name=="eventRemoveCamera" && o.styId==styStore.code){
                 styStore.onRemove(o.id);//处理移除摄像头通知
             }
-        });
-        this.eventChangedDefaultCamera = DeviceEventEmitter.addListener('eventChangedDefaultCamera',(o)=>{
-            if(o.styId==styStore.code){
+            if(o.name=="eventChangedDefaultCamera" && o.styId==styStore.code){
                 styStore.onChangeCameras(o.id);//处理移除摄像头通知
             }
-        });
+        })
     }
     componentWillUnmount(){
-        this.eventAddCameraHandler.remove();
-        this.eventEditCameraHandler.remove();
-        this.eventRemoveCameraHandler.remove();
-        this.eventChangedDefaultCamera.remove();
+        this.eventHandler.remove();
     }
 
     render(){

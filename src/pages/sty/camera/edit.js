@@ -11,6 +11,7 @@ import {observer,inject} from 'mobx-react/native';
 import FootBar from '../../../components/sty/FootBar'
 import {camera} from '../../../store/cameraSettingStore'
 import {ValidateInput,ReadOnlyInput} from '../../../components/common/native-base-validate'
+import noticeArgs from "../../../common/noticeArgs";
 
 @observer
 export default class edit extends Component{
@@ -36,7 +37,8 @@ export default class edit extends Component{
             return ;
         }
         this.camera.onCommitUpdate(()=>{
-            DeviceEventEmitter.emit('eventEditCamera',this.camera);
+            //DeviceEventEmitter.emit('eventEditCamera',this.camera);
+            DeviceEventEmitter.emit('noticeChangedCamera',new noticeArgs(this,"eventEditCamera",this.camera));
             tools.showToast("编辑成功");
             navigation.goBack();
         });
