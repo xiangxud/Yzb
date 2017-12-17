@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {NavigationActions} from 'react-navigation';
 import { inject, observer } from 'mobx-react/native';
+import {Text} from 'native-base';
 import hydrate from "../common/hydrate";
 //import SplashScreen from 'react-native-splash-screen'
 
@@ -44,7 +45,10 @@ export default class Welcome extends Component {
         header: null
     };
     render() {
-        return (<View style={styles.container}><Text>欢迎使用养殖宝</Text></View>)
+        return (<View style={styles.container}>
+            <Text>欢迎使用养殖宝</Text>
+            <Text>当前版本{config.versionName}</Text>
+        </View>)
     }
 }
 

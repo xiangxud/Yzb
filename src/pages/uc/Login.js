@@ -52,7 +52,7 @@ export default class Login extends Component {
                 <Content>
                     <MaskLoading show={userStore.loading}/>
                     <View style={styles.topScene}>
-                        <Text style={styles.logo}>养殖宝</Text>
+                        <Text style={styles.logo}>`${config.appName}`</Text>
                     </View>
                     <Form>
                         <Item fixedLabel>
