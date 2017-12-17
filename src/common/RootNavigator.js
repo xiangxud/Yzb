@@ -96,7 +96,7 @@ const TabNavigation = TabNavigator({
         activeBackgroundColor:'white',
         activeTintColor:'#009688',
         inactiveBackgroundColor:'white',
-        inactiveTintColor:'#aaa',
+        inactiveTintColor:'#6f6f6f',
         showLabel:true,
         showIcon:true,
         indicatorStyle:{height:0}

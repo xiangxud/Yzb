@@ -12,8 +12,7 @@ import {
 } from 'react-native';
 import {Icon, Text, Button} from 'native-base';
 import {observer} from 'mobx-react/native';
-import TitleBar from '../common/TitleBar';
-import {WebView} from '../';
+import {WebView, TitleBar} from '../';
 var {height, width} = Dimensions.get('window');
 
 const Sty = observer(({sty, getSty, isCurrent}) =>{
@@ -42,13 +41,13 @@ export default class MySties extends Component {
         let rd = new Date();
         return (
             <View style={styles.container}>
-                <TitleBar icon={'bank'} iconColor={'red'} title={'我的栋舍'} />
+                <TitleBar icon={'bank'} iconColor={'red'} title={'我的栋舍'} morePress={this.props.onAddSty} rightTitle={'添加'} />
                 <ScrollView horizontal={true} style={styles.stiesContainer}>
-                    <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={this.props.onAddSty}>
-                        <View style={[styles.styBox, styles.addSty]}>
-                            <Icon name={'ios-add-circle-outline'} style={{fontSize:40, color:'#15856e'}}/>
-                        </View>
-                    </TouchableNativeFeedback>
+                    {/*<TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={this.props.onAddSty}>*/}
+                        {/*<View style={[styles.styBox, styles.addSty]}>*/}
+                            {/*<Icon name={'ios-add-circle-outline'} style={{fontSize:40, color:'#15856e'}}/>*/}
+                        {/*</View>*/}
+                    {/*</TouchableNativeFeedback>*/}
                     {store.sties.map((val, key) => (
                         <Sty key={key} sty={val} getSty={this.getSty} isCurrent={store.currentSty.id===val.id}/>
                     ))}
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
     stiesContainer:{
         width: width,
         height:85,
-        marginBottom:5,
+        paddingLeft:5,
         backgroundColor:'#fff'
     },
     addSty:{

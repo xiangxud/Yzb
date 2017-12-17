@@ -40,10 +40,11 @@ class HomeStore {
                     this.setCurrentSty(sties[0]);
                 }
             });
-        }).catch((err) => {
-            tools.showToast(err.message)
-            this.isFetching = false;
-        })
+        }, (err)=>{
+            runInAction(() => {
+                this.isFetching = false;
+            });
+        });
     }
 
     @action fetchMore = async () => {

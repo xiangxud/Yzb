@@ -22,15 +22,15 @@ export default class SwiperBanner extends Component {
                     showsButtons={false}
                     paginationStyle={{bottom:5}}
                     activeDotColor={'#009688'}
-                    autoplay={false}>
+                    autoplay={true}>
                 <View style={styles.slide1}>
                     <Image source={require('../../resource/banner_home_1.jpg')} style={{width: width, height:120,}} />
                 </View>
                 <View style={styles.slide2}>
-                    <Text style={styles.text}>Beautiful</Text>
+                    <Image source={require('../../resource/banner_home_2.jpg')} style={{width: width, height:120,}} />
                 </View>
                 <View style={styles.slide3}>
-                    <Text style={styles.text}>Just a demo</Text>
+                    <Image source={require('../../resource/banner_home_3.jpg')} style={{width: width, height:120,}} />
                 </View>
             </Swiper>
         )

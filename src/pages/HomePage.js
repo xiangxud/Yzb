@@ -11,7 +11,7 @@ import {
     TouchableNativeFeedback,
 } from 'react-native';
 import {observer, inject} from 'mobx-react/native';
-import {Container, Content,Toast} from 'native-base';
+import {Container, Content,Toast,Button} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SwiperBanner from '../components/home/SwiperBanner';
 import MySties from '../components/home/MySties';
@@ -46,46 +46,18 @@ export default class HomePage extends Component {
     }
     detailPress=(id)=>{
     }
-    autoClose( callback ){
-        setTimeout(()=>{
-            Toast.toastInstance._root.closeToast();
-            if(callback){
-                callback();
-            }
-        },800);
-    }
     ignore=key=>{
         homeStore.onChangedState( key,PlanState.Ignore.Value,()=>{
-            Toast.show({
-                type:'success',
-                text: "忽略成功",
-                position: 'top'
-            });
-            this.autoClose();
+            tools.showToast('忽略成功');
         },(mess)=>{
-            Toast.show({
-                type:'warning',
-                text: "忽略失败",
-                position: 'top'
-            });
-            this.autoClose();
+            tools.showToast('忽略失败');
         } );
     };
     exec = (key) =>{
         homeStore.onChangedState( key,PlanState.Finished.Value,()=>{
-            Toast.show({
-                type:'success',
-                text: "执行成功",
-                position: 'top'
-            });
-            this.autoClose();
+            tools.showToast('执行成功');
         },(mess)=>{
-            Toast.show({
-                type:'warning',
-                text: "执行失败",
-                position: 'top'
-            });
-            this.autoClose();
+            tools.showToast('执行失败');
         } );
     }
     newsPress =(info) =>{
@@ -165,17 +137,13 @@ export default class HomePage extends Component {
                 style={styles.container}
                 data={news.slice()}
                 renderItem={({ item }) => this.renderRow(item) }
-                ListHeaderComponent={this.renderListHeader()}
-                ListFooterComponent={<Loading show={loadingMore}/>}
+                ListHeaderComponent={ this.renderListHeader() }
+                ListFooterComponent={
+                    <Button full light onPress={()=>this.props.navigation.navigate('InfoTab')}><Text>查看更多</Text></Button>
+                }
                 keyExtractor={ (item, index) => index }
                 onRefresh={()=>{homeStore.fetchHomeData()}}
                 refreshing = {isFetching}
-                onEndReachedThreshold={0.5}
-                onEndReached={() => {
-                    if (isNoMore) {
-                        homeStore.fetchMore();
-                    }
-                }}
             />
         )
     }

@@ -66,8 +66,8 @@ const request = {
                     errorCallback(responseData);
                 }
             }).catch((error) => {
-            //errorCallback(error);
             tools.showToast('数据请求失败，请稍后再试！');
+            errorCallback(error);
         });
     },
 
