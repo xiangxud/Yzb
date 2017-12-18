@@ -3948,6 +3948,10 @@ react-native-qrcode@^0.2.6:
     prop-types "^15.5.10"
     qr.js "0.0.0"
 
+react-native-refresh-list-view@^1.0.5:
+  version "1.0.5"
+  resolved "http://registry.npm.taobao.org/react-native-refresh-list-view/download/react-native-refresh-list-view-1.0.5.tgz#6d5d83c863711614c04bfaa4e12abcb935fb1c49"
+
 react-native-scrollable-tab-view@^0.8.0:
   version "0.8.0"
   resolved "http://registry.npm.taobao.org/react-native-scrollable-tab-view/download/react-native-scrollable-tab-view-0.8.0.tgz#5cb1fcfce07bf530a3c81ab51fc5071144edac5c"

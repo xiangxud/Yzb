@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import {Body, Icon, Left, ListItem, Right, Text, View} from "native-base";
 import {SeparatorArea} from "../../components";
-import CodePush from "react-native-code-push";
+import codePush from "react-native-code-push";
 
 const Item = props => {
     return (
@@ -20,7 +20,7 @@ const Item = props => {
             <Text>{props.text}</Text>
             </Body>
             <Right style={props.bordered?{}:{borderBottomWidth: 0}}>
-                <Text>{props.subtext?props.subtext: null}</Text>
+                <Text>{props.subtext? props.subtext: null}</Text>
                 {
                     props.goToPage ?
                         <Icon name="ios-arrow-forward"/>
@@ -44,28 +44,28 @@ export default class About extends Component {
 
     codePushStatusDidChange(syncStatus) {
         switch(syncStatus) {
-            case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
+            case codePush.SyncStatus.CHECKING_FOR_UPDATE:
                 this.setState({ syncMessage: "Checking for update." });
                 break;
-            case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
+            case codePush.SyncStatus.DOWNLOADING_PACKAGE:
                 this.setState({ syncMessage: "Downloading package." });
                 break;
-            case CodePush.SyncStatus.AWAITING_USER_ACTION:
+            case codePush.SyncStatus.AWAITING_USER_ACTION:
                 this.setState({ syncMessage: "Awaiting user action." });
                 break;
-            case CodePush.SyncStatus.INSTALLING_UPDATE:
+            case codePush.SyncStatus.INSTALLING_UPDATE:
                 this.setState({ syncMessage: "Installing update." });
                 break;
-            case CodePush.SyncStatus.UP_TO_DATE:
+            case codePush.SyncStatus.UP_TO_DATE:
                 this.setState({ syncMessage: "App up to date.", progress: false });
                 break;
-            case CodePush.SyncStatus.UPDATE_IGNORED:
+            case codePush.SyncStatus.UPDATE_IGNORED:
                 this.setState({ syncMessage: "Update cancelled by user.", progress: false });
                 break;
-            case CodePush.SyncStatus.UPDATE_INSTALLED:
+            case codePush.SyncStatus.UPDATE_INSTALLED:
                 this.setState({ syncMessage: "Update installed and will be applied on restart.", progress: false });
                 break;
-            case CodePush.SyncStatus.UNKNOWN_ERROR:
+            case codePush.SyncStatus.UNKNOWN_ERROR:
                 this.setState({ syncMessage: "An unknown error occurred.", progress: false });
                 break;
         }
@@ -77,14 +77,14 @@ export default class About extends Component {
 
     toggleAllowRestart() {
         this.state.restartAllowed
-            ? CodePush.disallowRestart()
-            : CodePush.allowRestart();
+            ? codePush.disallowRestart()
+            : codePush.allowRestart();
 
         this.setState({ restartAllowed: !this.state.restartAllowed });
     }
 
     getUpdateMetadata() {
-        CodePush.getUpdateMetadata(CodePush.UpdateState.RUNNING)
+        codePush.getUpdateMetadata(codePush.UpdateState.RUNNING)
             .then((metadata: LocalPackage) => {
                 this.setState({ syncMessage: metadata ? JSON.stringify(metadata) : "Running binary version", progress: false });
             }, (error: any) => {
@@ -94,7 +94,7 @@ export default class About extends Component {
 
     /** Update is downloaded silently, and applied on restart (recommended)后台更新，静默方法 */
     sync() {
-        CodePush.sync(
+        codePush.sync(
             {},
             this.codePushStatusDidChange.bind(this),
             this.codePushDownloadDidProgress.bind(this)
@@ -103,7 +103,7 @@ export default class About extends Component {
 
     /** Update pops a confirmation dialog, and then immediately reboots the app */
     syncImmediate() {
-        CodePush.sync({ installMode: CodePush.InstallMode.IMMEDIATE, updateDialog: true },
+        codePush.sync({ installMode: codePush.InstallMode.IMMEDIATE, updateDialog: true },
             this.codePushStatusDidChange.bind(this),
             this.codePushDownloadDidProgress.bind(this)
         );
@@ -125,5 +125,5 @@ export default class About extends Component {
     }
 }
 
-let codePushOptions = { checkFrequency: CodePush.CheckFrequency.MANUAL };
-About = CodePush(codePushOptions)(About);
+let codePushOptions = { checkFrequency: codePush.CheckFrequency.MANUAL };
+About = codePush(codePushOptions)(About);

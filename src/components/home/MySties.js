@@ -85,8 +85,9 @@ const styles = StyleSheet.create({
     },
     stiesContainer:{
         width: width,
-        height:85,
+        height:90,
         paddingLeft:5,
+        paddingRight:5,
         backgroundColor:'#fff'
     },
     addSty:{
