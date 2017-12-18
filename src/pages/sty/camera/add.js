@@ -10,7 +10,7 @@ import { Container,Content,Form,ListItem,Text,Icon,Toast } from 'native-base';
 import {observer,inject} from 'mobx-react/native';
 import FootBar from '../../../components/sty/FootBar'
 import {camera} from '../../../store/cameraSettingStore'
-
+import noticeArgs from '../../../common/noticeArgs'
 import {ValidateInput,ReadOnlyInput} from '../../../components/common/native-base-validate'
 
 @observer
@@ -41,8 +41,9 @@ export default class add extends Component{
         }
         this.camera.onCommit((data)=>{
             this.camera.onUpdate(data);//刷新，比如;id
-            debugger;
-            DeviceEventEmitter.emit('eventAddCamera',this.camera);
+            //DeviceEventEmitter.emit('eventAddCamera',this.camera);
+            DeviceEventEmitter.emit('noticeChangedCamera',new noticeArgs(this,"eventAddCamera",this.camera));
+
             tools.showToast("增加成功");
             navigation.goBack();
         });

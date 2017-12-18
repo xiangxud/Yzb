@@ -18,6 +18,7 @@ import FootBar from '../../components/sty/FootBar'
 import CList from '../../components/sty/CameraList';
 import {observable} from "mobx";
 import cameraEdit from "./camera/edit";
+import noticeArgs from "../../common/noticeArgs";
 
 @inject('styStore')
 @observer
@@ -27,27 +28,22 @@ export default class setting extends Component{
         headerRight: <View />
     });
     componentDidMount(){
-        this.eventAddCameraHandler = DeviceEventEmitter.addListener('eventAddCamera',(o)=>{
-
-            debugger;
-            this.store.onPush(o);
-        });
-        this.eventEditCameraHandler = DeviceEventEmitter.addListener('eventEditCamera',(o)=>{
-            this.store.onUpdate(o);
+        this.eventHandler.addListener("noticeChangedCamera",(o)=>{
+            if(o.name=="eventAddCamera"){
+                this.store.onPush(o);//摄像头增加
+            }else if(o.name == "eventEditCamera"){
+                this.store.onUpdate(o);//摄像头编辑
+            }
         });
     }
-
     componentWillUnmount(){
-        this.eventAddCameraHandler.remove();
-        this.eventEditCameraHandler.remove();
+        this.eventHandler.remove();
     }
-
     constructor(props){
         super(props);
         let {styStore} = this.props;
         this.store.onIni(styStore.monitor.cameras,styStore.defaultCamera,styStore.code);
     }
-
     @observable
     store=new cameraSettingStore();
 
@@ -66,7 +62,10 @@ export default class setting extends Component{
     removeCamera(id){
         const {navigation} = this.props;
         this.store.onRemove(id,()=>{
-            DeviceEventEmitter.emit('eventRemoveCamera',{ id : id , styId:navigation.state.params.code});
+            DeviceEventEmitter.emit('noticeChangedCamera',
+                new noticeArgs(this,"eventRemoveCamera",
+                    { id : id , styId:navigation.state.params.code}));
+
             tools.showToast('移除成功');
         },(err)=>{
             console.log(err);
@@ -78,7 +77,9 @@ export default class setting extends Component{
         const {styStore} = this.props;
         this.store.onChangDefault(id,styStore.code,
             ()=>{
-                DeviceEventEmitter.emit('eventChangedDefaultCamera',{ id:id , styId:styStore.code});
+                DeviceEventEmitter.emit('noticeChangedCamera',
+                    new noticeArgs(this,"eventChangedDefaultCamera",
+                        {id:id,styId:styStore.code}));
             },err=> tools.showToast('设置失败'));
     }
 
