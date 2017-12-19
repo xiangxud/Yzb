@@ -43,6 +43,7 @@ export default class Edit extends Component{
             }
         },800);
     }
+
     onStyPress(data){
         const {navigation} = this.props;
         let { Stys,Id } = data;
