@@ -98,6 +98,8 @@ def enableProguardInReleaseBuilds = false
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
 
     defaultConfig {
         applicationId "com.yzb"
@@ -132,6 +134,9 @@ android {
             buildConfigField "String", "CODEPUSH_KEY", '""'
         }
         releaseStaging {
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
             buildConfigField "String", "CODEPUSH_KEY", '"GBvb17bBeYFYHf_Ji-Tav4hMqdxSed61fbdc-e98a-4455-aa57-e9c3d4d56d92"'
         }
         release {

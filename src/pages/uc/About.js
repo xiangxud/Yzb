@@ -45,28 +45,28 @@ export default class About extends Component {
     codePushStatusDidChange(syncStatus) {
         switch(syncStatus) {
             case codePush.SyncStatus.CHECKING_FOR_UPDATE:
-                this.setState({ syncMessage: "Checking for update." });
+                this.setState({ syncMessage: "正在检查更新。" });
                 break;
             case codePush.SyncStatus.DOWNLOADING_PACKAGE:
-                this.setState({ syncMessage: "Downloading package." });
+                this.setState({ syncMessage: "正在下载更新包。" });
                 break;
             case codePush.SyncStatus.AWAITING_USER_ACTION:
-                this.setState({ syncMessage: "Awaiting user action." });
+                this.setState({ syncMessage: "等待您的操作。" });
                 break;
             case codePush.SyncStatus.INSTALLING_UPDATE:
-                this.setState({ syncMessage: "Installing update." });
+                this.setState({ syncMessage: "正在安装更新。" });
                 break;
             case codePush.SyncStatus.UP_TO_DATE:
-                this.setState({ syncMessage: "App up to date.", progress: false });
+                this.setState({ syncMessage: "应用已经是最新。", progress: false });
                 break;
             case codePush.SyncStatus.UPDATE_IGNORED:
-                this.setState({ syncMessage: "Update cancelled by user.", progress: false });
+                this.setState({ syncMessage: "用户取消更新。", progress: false });
                 break;
             case codePush.SyncStatus.UPDATE_INSTALLED:
-                this.setState({ syncMessage: "Update installed and will be applied on restart.", progress: false });
+                this.setState({ syncMessage: "更新完毕，将重新启动养殖宝使更新生效。", progress: false });
                 break;
             case codePush.SyncStatus.UNKNOWN_ERROR:
-                this.setState({ syncMessage: "An unknown error occurred.", progress: false });
+                this.setState({ syncMessage: "升级版本出现错误，请稍后再试。", progress: false });
                 break;
         }
     }
@@ -103,9 +103,21 @@ export default class About extends Component {
 
     /** Update pops a confirmation dialog, and then immediately reboots the app */
     syncImmediate() {
-        codePush.sync({ installMode: codePush.InstallMode.IMMEDIATE, updateDialog: true },
+        codePush.sync({
+                installMode: codePush.InstallMode.IMMEDIATE,
+                updateDialog: {
+                    appendReleaseDescription: true,
+                    title: '应用可更新',
+                    descriptionPrefix:'更新内容：',
+                    optionalUpdateMessage:'发现可用的更新，您确定现在安装更新吗？',
+                    optionalIgnoreButtonLabel:'稍后',
+                    mandatoryContinueButtonLabel: '继续',
+                    mandatoryUpdateMessage: '有更新请您务必安装。',
+                    optionalInstallButtonLabel:'立即更新',
+                }
+            },
             this.codePushStatusDidChange.bind(this),
-            this.codePushDownloadDidProgress.bind(this)
+            this.codePushDownloadDidProgress.bind(this),
         );
     }
     render() {
