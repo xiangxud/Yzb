@@ -11,11 +11,9 @@ export default class Edit extends Component{
     static navigationOptions = ({navigation})=>({
         headerTitle: '编辑栋舍',
     });
-
     constructor(props){
         super(props);
     }
-
     getGenus(){
         const {editStyStore} = this.props;
         let options = [];
@@ -45,6 +43,7 @@ export default class Edit extends Component{
             }
         },800);
     }
+
     onStyPress(data){
         const {navigation} = this.props;
         let { Stys,Id } = data;

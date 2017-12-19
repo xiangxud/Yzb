@@ -27,6 +27,7 @@ export default class setting extends Component{
         headerTitle: "设置",
         headerRight: <View />
     });
+
     componentDidMount(){
         this.eventHandler.addListener("noticeChangedCamera",(o)=>{
             if(o.name=="eventAddCamera"){
