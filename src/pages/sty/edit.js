@@ -11,11 +11,9 @@ export default class Edit extends Component{
     static navigationOptions = ({navigation})=>({
         headerTitle: '编辑栋舍',
     });
-
     constructor(props){
         super(props);
     }
-
     getGenus(){
         const {editStyStore} = this.props;
         let options = [];
