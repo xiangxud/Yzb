@@ -7,7 +7,7 @@ import {RefreshState} from 'react-native-refresh-list-view';
 useStrict(true);
 class DidiStore {
     @observable pageIndex = 1;
-    @observable pageSize = 30;
+    @observable pageSize = 5;
     @observable refreshState = RefreshState.Idle;
     @observable vets = [];
     @observable current = {};

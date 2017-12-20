@@ -31,7 +31,7 @@ class PigSerumRecod {
 
 class BohaiStore {
     @observable step = 1;
-
+    @observable isSales = false;
     @observable poultry_test_items = [];
     @observable livestock_test_items = [];
 
@@ -83,7 +83,9 @@ class BohaiStore {
 
     @observable isFetching = true;
 
-
+    @action setSales(o){
+        this.isSales = o;
+    }
     @action setFetch(res){
         this.isFetching = res;
     }

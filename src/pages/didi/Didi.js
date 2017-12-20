@@ -35,9 +35,22 @@ export default class Didi extends Component {
         headerRight: <View/>
     }
     _onItemPress = (point) => {
+        //alert(JSON.stringify(point))
         didiStore.setCurrent(point);
     }
-
+    renderItem=(item, i)=>{
+        return <Marker
+            key={i}
+            title={item.name}
+            icon={() =>
+                <TouchableOpacity onPress={() => this._onItemPress(item)}>
+                    <Image source={{uri: item.head_photo}} style={styles.avatar}/>
+                </TouchableOpacity>
+            }
+            onInfoWindowPress={()=>this._onItemPress(item)}
+            coordinate={{latitude:item.latitude, longitude:item.longitude}}
+        ></Marker>
+    }
     render() {
         const {navigation} = this.props;
         const {vets, refreshState, current, currentType, isFetching, locationInterval, position} = didiStore;
@@ -74,11 +87,12 @@ export default class Didi extends Component {
                                      longitude: position.longitude,
                                  }}
                                  style={StyleSheet.absoluteFill}>
-                            <MultiPoint
-                                image='point'
-                                points={vets.slice()}
-                                onItemPress={(point) => this._onItemPress(point)}
-                            />
+
+                            {
+                                vets.map((item, i)=>this.renderItem(item, i)
+                                    //alert(JSON.stringify(item));
+                                )
+                            }
                         </MapView>
                         {didiStore.current.name ?
                             <View style={styles.userProfile}>
@@ -170,10 +184,6 @@ const styles = StyleSheet.create({
         borderRadius:3,
         opacity:0.5
     },
-
-    absoluteFill:{
-        flex:1,
-    },
     userProfile: {
         flexDirection:'row',
         padding:10,
@@ -185,6 +195,13 @@ const styles = StyleSheet.create({
     head:{
         width:60,
         height:60,
+    },
+    avatar:{
+        width:30,
+        height:30,
+        borderWidth:1,
+        borderColor:'white',
+        borderRadius:1,
     },
     profile:{
         flex:1,

@@ -21,25 +21,50 @@ import Step4 from '../../components/bohai/Step4';
 import Step5 from '../../components/bohai/Step5';
 import Step6 from '../../components/bohai/Step6';
 import {MaskLoading} from '../../components';
+import userStore from '../../store/userStore';
 
 @inject('bohaiStore')
 @observer
 export default class BHApply extends Component {
+    constructor(props){
+        super(props);
+    }
     static navigationOptions = ({navigation})=>({
         headerTitle: '填写送检申请',
         headerRight: <Button transparent light onPress={()=>navigation.goBack()}><Text>取消申请</Text></Button>
     });
 
     componentDidMount () {
-        let animalType = this.props.navigation.state.params.type;
-        bohaiStore.setFetch(true);
-        if(animalType){
-            bohaiStore.set('animalType', animalType);
-        }
-        var timer = setTimeout(()=>{
-            this._fetch();
-        }, 1000);
+        var timer = setTimeout(()=> {
+            this.fetchData((res) => {
+                if (res === true) {
+                    bohaiStore.setSales(true);
+                    let animalType = this.props.navigation.state.params.type;
+                    if (animalType) {
+                        bohaiStore.set('animalType', animalType);
+                    }
+                    this._fetch();
+                    bohaiStore.setFetch(false);
+                } else {
+                    tools.showToast('您还不是瑞普用户,不能提交申请');
+                    bohaiStore.setSales(false);
+                    bohaiStore.setFetch(false);
+                }
+            }, (err) => {
+                tools.showToast(err.message);
+                bohaiStore.setSales(false);
+                bohaiStore.setFetch(false);
+            });
+        }, 200);
     }
+    fetchData(success, failed){
+        request.getJson(urls.apis.BH_IS_SALES, {phone: userStore.phone}).then((res)=>{
+            success(res);
+        }).catch((err)=>{
+            failed(err.message);
+        });
+    }
+
     _fetch = () => {
         if(bohaiStore.data.animalType==='家禽') {
             request.getJson(urls.apis.BH_BREEDS, null).then((res) => {
@@ -190,113 +215,124 @@ export default class BHApply extends Component {
     }
 
     render() {
-        const {step, data, currentItemIndex, currentPigRecordIndex} = bohaiStore;
+        const {step, data, isSales, isFetching, currentItemIndex, currentPigRecordIndex} = bohaiStore;
         return (
             <Container>
-                <Content>
-                    <StepBar current={step} animalType={data.animalType}/>
-                    {step === 1?
-                        <Step1 store={bohaiStore} navigation={this.props.navigation}/>
-                        : null
-                    }
-                    {step === 2?
-                        <Step2 store={bohaiStore}
-                               openBreed={()=>this.refs.modal1.open()}
-                               openGender={()=>this.refs.modal2.open()}
-                               openPigBreed={()=>this.refs.modal_pig_breed.open()}
-                               openPigGender={()=>this.refs.modal_pig_genders.open()}/>
-                        : null
-                    }
-                    {step === 3?
-                        <Step3 store={bohaiStore}
-                               chooseBig={(index)=>{
-                                   bohaiStore.setCurrentItemIndex(index);
-                                   this.refs.modal_big.open()
-                               }}
-                               chooseSub={(index)=>{
-                                   if(!data.testingSamplingList[index].samplingSystemNo){
-                                       tools.showToast('请先选择检测大类');
-                                   }else {
+                <MaskLoading show={isFetching}/>
+                {isSales?
+                    <Content>
+                        <StepBar current={step} animalType={data.animalType}/>
+                        {step === 1?
+                            <Step1 store={bohaiStore} navigation={this.props.navigation}/>
+                            : null
+                        }
+                        {step === 2?
+                            <Step2 store={bohaiStore}
+                                   openBreed={()=>this.refs.modal1.open()}
+                                   openGender={()=>this.refs.modal2.open()}
+                                   openPigBreed={()=>this.refs.modal_pig_breed.open()}
+                                   openPigGender={()=>this.refs.modal_pig_genders.open()}/>
+                            : null
+                        }
+                        {step === 3?
+                            <Step3 store={bohaiStore}
+                                   chooseBig={(index)=>{
                                        bohaiStore.setCurrentItemIndex(index);
-                                       let o = (data.animalType==='家禽'? bohaiStore.poultry_test_items: bohaiStore.livestock_test_items).find((x)=>{
-                                           return x.name === data.testingSamplingList[index].samplingSystemNo
-                                       });
-                                       bohaiStore.setCurrentBigItemOrg(o);
-                                       this.refs.modal_sub.open();
+                                       this.refs.modal_big.open()
+                                   }}
+                                   chooseSub={(index)=>{
+                                       if(!data.testingSamplingList[index].samplingSystemNo){
+                                           tools.showToast('请先选择检测大类');
+                                       }else {
+                                           bohaiStore.setCurrentItemIndex(index);
+                                           let o = (data.animalType==='家禽'? bohaiStore.poultry_test_items: bohaiStore.livestock_test_items).find((x)=>{
+                                               return x.name === data.testingSamplingList[index].samplingSystemNo
+                                           });
+                                           bohaiStore.setCurrentBigItemOrg(o);
+                                           this.refs.modal_sub.open();
+                                       }
+                                   }}
+                                   choosePart={(index) => {
+                                       if (!data.testingSamplingList[index].testTypeName.length === 0) {
+                                           tools.showToast('请先选择检测项目');
+                                       } else {
+                                           bohaiStore.setCurrentItemIndex(index);
+                                           let o = (data.animalType==='家禽'? bohaiStore.poultry_test_items: bohaiStore.livestock_test_items).find((x) => {
+                                               return x.name === data.testingSamplingList[index].samplingSystemNo
+                                           });
+                                           let samplePartPicker = [];
+                                           o.details.forEach((v) => {
+                                               data.testingSamplingList[index].testTypeName.forEach((p) => {
+                                                   if (v.detailName === p) {
+                                                       v.samplingTypeName.forEach((s) => {
+                                                           samplePartPicker.indexOf(s) < 0 && samplePartPicker.push(s);
+                                                       });
+                                                   }
+                                               })
+                                           });
+                                           bohaiStore.setSamplingPicker(samplePartPicker);
+                                           bohaiStore.setCurrentBigItemOrg(o);
+                                           this.refs.modal_part.open()
+                                       }
                                    }
-                               }}
-                               choosePart={(index) => {
-                                   if (!data.testingSamplingList[index].testTypeName.length === 0) {
-                                       tools.showToast('请先选择检测项目');
-                                   } else {
-                                       bohaiStore.setCurrentItemIndex(index);
-                                       let o = (data.animalType==='家禽'? bohaiStore.poultry_test_items: bohaiStore.livestock_test_items).find((x) => {
-                                           return x.name === data.testingSamplingList[index].samplingSystemNo
-                                       });
-                                       let samplePartPicker = [];
-                                       o.details.forEach((v) => {
-                                           data.testingSamplingList[index].testTypeName.forEach((p) => {
-                                               if (v.detailName === p) {
-                                                   v.samplingTypeName.forEach((s) => {
-                                                       samplePartPicker.indexOf(s) < 0 && samplePartPicker.push(s);
-                                                   });
-                                               }
-                                           })
-                                       });
-                                       bohaiStore.setSamplingPicker(samplePartPicker);
-                                       bohaiStore.setCurrentBigItemOrg(o);
-                                       this.refs.modal_part.open()
                                    }
-                               }
-                               }
-                                   />
-                        : null
-                    }
-                    {step === 4?
-                        <Step4 store={bohaiStore}
-                               choosePigStage={(index)=>{
-                                   bohaiStore.setCurrentItemIndex(index, 'pig_record');
-                                   this.refs.modal_pigstage.open();
-                               }}/>
-                        : null
-                    }
-                    {step === 5?
-                        <Step5 store={bohaiStore}/>
-                        : null
-                    }
-                    {step === 6?
-                        <Step6 store={bohaiStore}
-                               navigation={this.props.navigation}
-                               chooseUser={(t)=> {
-                                   if(t===1)
-                                       this.refs.modal_consultant.open();
-                                   else
-                                       this.refs.modal_sales.open();
-                               }}
-                        />
-                        : null
-                    }
-                </Content>
-                <Footer>
-                    <FooterTab>
-                        <Grid>
-                            {
-                                step>1?
+                            />
+                            : null
+                        }
+                        {step === 4?
+                            <Step4 store={bohaiStore}
+                                   choosePigStage={(index)=>{
+                                       bohaiStore.setCurrentItemIndex(index, 'pig_record');
+                                       this.refs.modal_pigstage.open();
+                                   }}/>
+                            : null
+                        }
+                        {step === 5?
+                            <Step5 store={bohaiStore}/>
+                            : null
+                        }
+                        {step === 6?
+                            <Step6 store={bohaiStore}
+                                   navigation={this.props.navigation}
+                                   chooseUser={(t)=> {
+                                       if(t===1)
+                                           this.refs.modal_consultant.open();
+                                       else
+                                           this.refs.modal_sales.open();
+                                   }}
+                            />
+                            : null
+                        }
+                    </Content>
+                    :null}
+                {isSales?
+                    <Footer>
+                        <FooterTab>
+                            <Grid>
+                                {
+                                    step>1?
+                                        <Col>
+                                            <Button full light large onPress={()=>this.onPrev()}>
+                                                <Text>上一步</Text>
+                                            </Button>
+                                        </Col>
+                                        : null
+                                }
                                 <Col>
-                                    <Button full light large onPress={()=>this.onPrev()}>
-                                        <Text>上一步</Text>
+                                    <Button full info large onPress={()=>this.onNext()}>
+                                        <Text>下一步</Text>
                                     </Button>
                                 </Col>
-                                : null
-                            }
-                            <Col>
-                                <Button full info large onPress={()=>this.onNext()}>
-                                    <Text>下一步</Text>
-                                </Button>
-                            </Col>
-                        </Grid>
-                    </FooterTab>
-                </Footer>
+                            </Grid>
+                        </FooterTab>
+                    </Footer>
+                    :null}
+                {!isSales && !isFetching?
+                    <View style={styles.noAccess}>
+                        <Text>您还不是瑞普用户，无法提交申请</Text>
+                    </View>
+                    :null
+                }
                 <Modal
                     coverScreen={true}
                     style={[styles.modal, styles.modal1]}
@@ -308,14 +344,14 @@ export default class BHApply extends Component {
                                 {bohaiStore.picker_poultry_breeds.map((val, key) => (
                                     <ListItem onPress={() => bohaiStore.setDataArray('poultryBreeds', val)} key={key}>
                                         <Body>
-                                            <Text> {val}</Text>
+                                        <Text> {val}</Text>
                                         </Body>
                                         {
                                             bohaiStore.inDataArray('poultryBreeds', val)?
-                                            <Right>
-                                                <Icon name="ios-checkmark" />
-                                            </Right>
-                                            :null
+                                                <Right>
+                                                    <Icon name="ios-checkmark" />
+                                                </Right>
+                                                :null
                                         }
                                     </ListItem>
                                 ))}
@@ -357,15 +393,15 @@ export default class BHApply extends Component {
                             <List>
                                 {
                                     (data.animalType==='家禽'? bohaiStore.poultry_test_items: bohaiStore.livestock_test_items).map((val, key) => (
-                                    <ListItem onPress={() => {
-                                        bohaiStore.setItem(currentItemIndex, 'samplingSystemNo', val.name);
-                                        bohaiStore.setTestItemArray('testTypeName', null);
-                                        bohaiStore.setTestItemArray('testTypeDetailNames', null);
-                                        this.refs.modal_big.close()
-                                    }} key={key}>
-                                        <Text> {val.name}</Text>
-                                    </ListItem>
-                                ))}
+                                        <ListItem onPress={() => {
+                                            bohaiStore.setItem(currentItemIndex, 'samplingSystemNo', val.name);
+                                            bohaiStore.setTestItemArray('testTypeName', null);
+                                            bohaiStore.setTestItemArray('testTypeDetailNames', null);
+                                            this.refs.modal_big.close()
+                                        }} key={key}>
+                                            <Text> {val.name}</Text>
+                                        </ListItem>
+                                    ))}
                             </List>
                         </Content>
                     </ScrollView>
@@ -383,21 +419,21 @@ export default class BHApply extends Component {
                                     bohaiStore.currentTestItemOrg &&
                                     bohaiStore.currentTestItemOrg.details &&
                                     bohaiStore.currentTestItemOrg.details.map((val, key) => (
-                                    <ListItem onPress={() => {
-                                        bohaiStore.setTestItemArray('testTypeName', val.detailName)
-                                    }} key={key}>
-                                        <Body>
+                                        <ListItem onPress={() => {
+                                            bohaiStore.setTestItemArray('testTypeName', val.detailName)
+                                        }} key={key}>
+                                            <Body>
                                             <Text> {val.detailName}</Text>
-                                        </Body>
-                                        {
-                                            bohaiStore.isTestItemDetailChecked(val.detailName)?
-                                            <Right>
-                                                <Icon name="ios-checkmark" />
-                                            </Right>
-                                            :null
-                                        }
-                                    </ListItem>
-                                ))}
+                                            </Body>
+                                            {
+                                                bohaiStore.isTestItemDetailChecked(val.detailName)?
+                                                    <Right>
+                                                        <Icon name="ios-checkmark" />
+                                                    </Right>
+                                                    :null
+                                            }
+                                        </ListItem>
+                                    ))}
                             </List>
                             <Button onPress={()=> {
                                 bohaiStore.setTestItemArray('testTypeDetailNames', null);
@@ -422,14 +458,14 @@ export default class BHApply extends Component {
                                         bohaiStore.setTestItemArray('testTypeDetailNames', val);
                                     }} key={key}>
                                         <Body>
-                                            <Text> {val}</Text>
+                                        <Text> {val}</Text>
                                         </Body>
                                         {
                                             bohaiStore.isSamplingPartChecked(val)?
-                                            <Right>
-                                                <Icon name="ios-checkmark" />
-                                            </Right>
-                                            :null
+                                                <Right>
+                                                    <Icon name="ios-checkmark" />
+                                                </Right>
+                                                :null
                                         }
                                     </ListItem>
                                 ))}
@@ -560,7 +596,7 @@ export default class BHApply extends Component {
                                         this.refs.modal_pigstage.close();
                                     }} key={key}>
                                         <Body>
-                                            <Text> {val}</Text>
+                                        <Text> {val}</Text>
                                         </Body>
                                     </ListItem>
                                 ))}
@@ -568,7 +604,6 @@ export default class BHApply extends Component {
                         </Content>
                     </ScrollView>
                 </Modal>
-                <MaskLoading show={bohaiStore.isFetching}/>
             </Container>
         )
     }
@@ -580,5 +615,10 @@ const styles = StyleSheet.create({
     },
     modal1:{
         //height:350,
+    },
+    noAccess:{
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center',
     }
 });

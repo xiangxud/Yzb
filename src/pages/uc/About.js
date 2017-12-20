@@ -36,6 +36,11 @@ export default class About extends Component {
         super(props);
         this.state = { restartAllowed: true };
     }
+
+    static navigationOptions = {
+        headerTitle: '关于养殖宝',
+        headerRight: <View/>
+    }
     goToPage = (page, params) => {
         const { navigation } = this.props;
         params = params ? params : {};
