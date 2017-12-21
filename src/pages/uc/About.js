@@ -132,9 +132,9 @@ export default class About extends Component {
                     <Image source={require('../../resource/logo_1.png')} style={{width:80, height:80,}}/>
                     <Text style={{marginTop:10,}}>{config.appName}</Text>
                 </View>
-                <Item bordered icon="ios-information-circle" iconStyle={{color:'#00859c'}} goToPage={()=>this.goToPage('Web', {url: urls.webPath+'/yzb/about', title:'关于养殖宝'})} text="关于我们"/>
-                <Item bordered icon="ios-compass" iconStyle={{color:'#00d487'}} goToPage={()=>this.goToPage('Web', {url: urls.webPath+'/yzb/about/contact', title:'联系养殖宝'})} text="联系我们"/>
-                <Item icon="ios-checkmark-circle" iconStyle={{color:'orange'}} goToPage={()=>this.goToPage('Web', {url: urls.webPath+'/yzb/about/protocol', title:'用户协议'})} text="用户协议"/>
+                <Item bordered icon="ios-information-circle" iconStyle={{color:'#00859c'}} goToPage={()=>this.goToPage('Web', {url: urls.pages.ABOUT_US, title:'关于养殖宝'})} text="关于我们"/>
+                <Item bordered icon="ios-compass" iconStyle={{color:'#00d487'}} goToPage={()=>this.goToPage('Web', {url: urls.pages.CONTACT, title:'联系养殖宝'})} text="联系我们"/>
+                <Item icon="ios-checkmark-circle" iconStyle={{color:'orange'}} goToPage={()=>this.goToPage('Web', {url: urls.pages.PROTOCOL, title:'用户协议'})} text="用户协议"/>
                 <SeparatorArea style={{height: 15}}/>
                 <Item icon="ios-cloud-download" iconStyle={{color:'#777'}} goToPage={()=>this.syncImmediate()} text="检查更新" subtext={config.versionName} bordered/>
             </View>

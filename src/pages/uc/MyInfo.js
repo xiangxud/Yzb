@@ -1,16 +1,30 @@
 import React, {Component} from "react";
-
-import {Alert, Image, ScrollView, TextInput, TouchableOpacity} from "react-native";
-import {Body, Button, Icon, Left, Text, ListItem, Right, View} from "native-base";
+import {
+    View,
+    Alert,
+    TouchableOpacity
+} from "react-native";
+import {
+    Container,
+    Content,
+    Form,
+    Label,
+    Input,
+    Text,
+    Icon,
+    Item,
+    Button,
+    Thumbnail,
+    Picker,
+} from "native-base";
+import {NavigationActions} from 'react-navigation';
 //import ImagePicker from "react-native-image-picker";
+import Modal from 'react-native-modalbox';
 import {observer} from "mobx-react/native";
 import userStore from "../../store/userStore";
 import QRCode from "react-native-qrcode";
-import DatePicker from "react-native-datepicker";
-//import dynamicStore from "../../mobx/dynamicStore";
-import {NavigationActions} from 'react-navigation';
-import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
-//import WomanChoose from "../login/components/WomanChoose";
+import {MaskLoading} from '../../components';
+import ChooseRegion from '../../components/common/ChooseRegion';
 
 const photoOptions = {
     title: '请选择',
@@ -32,28 +46,24 @@ export default class MyInfo extends Component {
     constructor() {
         super()
         this.state = {
-            date: userStore.loginUser.birthday,
-            sexPickerVisible: false,
-            sex: userStore.loginUser.sex === 1 ? '男' : '女',
-            nickname: userStore.loginUser.nickname,
-            signname: userStore.loginUser.signname,
-            crowdname: userStore.loginUser.crowdname,
+
         }
     }
 
     static navigationOptions = ({navigation})=>({
         headerTitle: '我的信息',
         headerRight:(
-            <Text onPress={navigation.state.params?navigation.state.params.commitPress:null} style={{padding:5, color:'#fff'}}>
-
-            </Text>
+            <Button transparent full onPress={navigation.state.params?navigation.state.params.commitPress:null}>
+                <Text style={{color:'#fff'}}>保存</Text>
+            </Button>
         )
     });
 
     componentDidMount(){
         this.props.navigation.setParams({
             commitPress: this.commit
-        })
+        });
+        userStore.setCurrentUser();
     }
 
     cameraAction = () => {
@@ -64,213 +74,159 @@ export default class MyInfo extends Component {
         // })
     }
 
-    // quitAlert() {
-    //     let {realm} = dynamicStore;
-    //     Alert.alert('提示信息', '确定要退出吗？', [
-    //         {text: '取消'},
-    //         {
-    //             text: '确定', onPress: () => {
-    //             realm.write(() => {
-    //                 let Dynamic = realm.objects('Dynamic');
-    //                 realm.delete(Dynamic);
-    //             });
-    //             this.quit()
-    //         }
-    //         },
-    //     ])
-    // }
-
-    quit = () => {
-        Alert.alert(
-            '您确认要注销登录吗？',
-            '注销后将退出系统，您需要重新登录后才能正常访问。',
-            [
-                {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                {text: '确认注销', onPress: () => {
-                    if(userStore.logout()){
-                        let resetAction = NavigationActions.reset({
-                            index: 0,
-                            actions: [
-                                NavigationActions.navigate({routeName: 'Login', params: { token: null }})
-                            ]
-                        });
-                        this.props.navigation.dispatch(resetAction);
-                    }else{
-                        alert('Error');
-                    }
-                }},
-            ],
-            { cancelable: false }
-        )
-    }
-
-    onSexPress() {
-        //this.refs.sexPicker.show()
-    }
-
     commit = () => {
-        tools.showToast("保存成功")
-        return;
-        request.postJson(urls.apis.USER_SETUSERBASEINFO, {
-            phone: userStore.loginUser.phone,
-            sex: userStore.loginUser.sex,
-            birthday: this.state.date,
-            nickname: this.state.nickname,
-            signname: this.state.signname,
-            crowd: this.state.crowdname
-        }).then(res => {
-            // alert(JSON.stringify(res))
-            if (res.ok) {
-                tools.showToast("保存成功")
-                request.getJson(urls.apis.USER_GETLOGINUSER)
-                    .then((data) => {
-                        if (data.ok) {
-                            userStore.loginUser = data.obj
-                            Actions.pop()
-                        }
-                    });
-            }
+        userStore.setLoading();
+        const {currentUser} = userStore;
+        request.postJson(urls.apis.USER_UPDATE_PROFILE, {
+            id: currentUser.id,
+            sex: currentUser.sex,
+            name: currentUser.name,
+            company: currentUser.company,
+            province: currentUser.province,
+            city: currentUser.city,
+            district: currentUser.district,
+            address: currentUser.address,
+        }).then((res) => {
+            userStore.setLoginUser(res);
+            userStore.setLoading();
+            tools.showToast("保存成功");
+        }, (err)=>{
+            userStore.setLoading();
+            tools.showToast(err);
         })
     }
-
-    /*<View style={styles.row}>
-        <Text>性别</Text>
-        <Text>{loginUser.sex === 1 ? '男' : '女'}</Text>
-    </View>
-    <View style={styles.row}>
-        <Text>出生日期</Text>
-        <DatePicker
-            style={{width: 100}}
-            date={this.state.date}
-            showIcon={false}
-            mode="date"
-            placeholder={loginUser.birthday}
-            format="YYYY-MM-DD"
-            confirmBtnText="确定"
-            cancelBtnText="取消"
-            customStyles={{
-                dateInput: {borderWidth: 0, flexDirection: 'row', justifyContent: 'flex-end'},
-                dateText: {color: "#666", fontSize: 16},
-                placeholderText: {color: "#666", fontSize: 16}
-            }}
-            onDateChange={(date) => {
-                this.setState({date: date})
-            }}
-        />
-    </View>*/
+    chooseSex=(s)=>{
+        userStore.setProfile('sex', s);
+        this.refs.modal_sex.close();
+    }
     render() {
-        const {loginUser} = userStore;
+        const {currentUser, loading} = userStore;
         return (
-
-            <KeyboardAwareScrollView style={{flex:1,backgroundColor: '#fff'}}>
-                <ScrollView contentContainerStyle={{backgroundColor: '#E3E7F3'}}>
-                    <View style={{height: 120, justifyContent: 'center', alignItems: 'center'}}>
+            <Container>
+                <Content>
+                    <MaskLoading show={loading}/>
+                    <View style={styles.head}>
                         <TouchableOpacity activeOpacity={1} onPress={this.cameraAction}>
-                            <Image style={styles.myPhoto}
-                                   source={loginUser.photo ? {uri: loginUser.photo} : defaultPhoto}/>
+                            <Thumbnail square large source={currentUser.photo ? {uri: currentUser.photo} : defaultPhoto}/>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.row}>
-                        <Text>昵称</Text>
-                        <TextInput
-                            style={{textAlign: 'right', flex: 1, padding: 0}}
-                            underlineColorAndroid='transparent'
-                            maxLength={12}
-                            placeholder={loginUser.nick || loginUser.name}
-                            onChangeText={(value) => {
-                                this.setState({nick: value})
-                            }}
-                        />
-                    </View>
-                    <View style={styles.row}>
-                        <Text>手机</Text>
-                        <TextInput
-                            style={{textAlign: 'right', flex: 1, padding: 0}}
-                            underlineColorAndroid='transparent'
-                            maxLength={120}
-                            placeholder={loginUser.phone || ''}
-                            onChangeText={(value) => {
-                                this.setState({phone: value})
-                            }}
-                        />
-                    </View>
-                    <View style={styles.row}>
-                        <Text>公司名称</Text>
-                        <TextInput
-                            style={{textAlign: 'right', flex: 1, padding: 0}}
-                            underlineColorAndroid='transparent'
-                            maxLength={120}
-                            placeholder={loginUser.company || ''}
-                            onChangeText={(value) => {
-                                this.setState({company: value})
-                            }}
-                        />
-                    </View>
-
-                    <View style={{
-                        backgroundColor: '#E3E7F3',
-                        paddingTop: 10,
-                        paddingBottom: 10,
-                        alignItems: 'center'
-                    }}>
-                        <View style={{
-                            width: 140,
-                            height: 140,
-                            backgroundColor: '#fff',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}>
-                            <QRCode
-                                value={userStore.phone}
-                                size={120}
-                                bgColor='#15856e'
-                                fgColor='white'/>
+                    <Form style={{backgroundColor:'#fff'}}>
+                        <Item fixedLabel>
+                            <Label>姓名</Label>
+                            <Input placeholder="暂无姓名"
+                                   value={currentUser.name}
+                                   style={styles.input}
+                                   onChangeText={(text) => userStore.setProfile('name', text)} />
+                        </Item>
+                        <Item fixedLabel>
+                            <Label>手机号</Label>
+                            <Input placeholder="手机号码"
+                                   maxLength={11}
+                                   disabled
+                                   keyboardType={'phone-pad'}
+                                   value={currentUser.phone}
+                                   style={styles.input} />
+                        </Item>
+                        <Item fixedLabel>
+                            <Label>性别</Label>
+                            <Text style={styles.inputChoose} onPress={()=>this.refs.modal_sex.open()}>
+                                {currentUser.sex||'未知'}
+                            </Text>
+                        </Item>
+                        <Item fixedLabel last>
+                            <Label>养殖场名称</Label>
+                            <Input placeholder="公司名称"
+                                   maxLength={120}
+                                   style={styles.input}
+                                   value={currentUser.company || ''}
+                                   onChangeText={(text) => userStore.setProfile('company', text)} />
+                        </Item>
+                        <Item fixedLabel last>
+                            <Label>养殖类型</Label>
+                            <Input placeholder="养殖类型"
+                                   maxLength={120}
+                                   disabled
+                                   style={styles.input}
+                                   value={currentUser.breed || ''}
+                                   onChangeText={(text) => userStore.setProfile('breed', text)} />
+                        </Item>
+                        <Item fixedLabel>
+                            <Label>所在地</Label>
+                            <ChooseRegion
+                                selectedProvince={'河南'}
+                                selectedCity={'郑州'}
+                                selectedArea={'二七区'}
+                                navBtnColor={'#009D7B'}
+                                onSubmit={(params) => {
+                                    userStore.setProfile('province', params.province);
+                                    userStore.setProfile('city', params.city);
+                                    userStore.setProfile('district', params.area);
+                                }}
+                                onCancel={() => console.log('cancel')}>
+                                <Text style={styles.inputChoose}>{userStore.addr}</Text>
+                            </ChooseRegion>
+                        </Item>
+                        <Item fixedLabel last>
+                            <Label>详细地址</Label>
+                            <Input placeholder='请输入地址'
+                                   maxLength={120}
+                                   style={styles.input}
+                                   value={currentUser.address||''}
+                                   onChangeText={(text) => userStore.setProfile('address', text)} />
+                        </Item>
+                        <View style={styles.qrWrap}>
+                            <View style={styles.qrBox}>
+                                <QRCode value={userStore.phone}
+                                        size={120}
+                                        bgColor='#15856e'
+                                        fgColor='white'/>
+                            </View>
+                            <Text style={{ marginTop: 10}}>我的二维码</Text>
                         </View>
-                        <Text style={{ marginTop: 10}}>我的二维码</Text>
-                    </View>
-                    <Button rounded danger block style={styles.logoutBtn} onPress={()=>this.quit()}>
-                        <Text style={{color: '#fff'}}>退出登录</Text>
-                    </Button>
-                </ScrollView>
-            </KeyboardAwareScrollView>
+                    </Form>
+                    <Modal
+                        coverScreen={false}
+                        style={styles.modal}
+                        ref={"modal_sex"}
+                        position={"center"}>
+                        <Button light full onPress={()=>this.chooseSex('男')}><Text>男</Text></Button>
+                        <Button light full onPress={()=>this.chooseSex('女')}><Text>女</Text></Button>
+                    </Modal>
+                </Content>
+            </Container>
         )
     }
 }
 
 const styles = {
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: 50,
-        backgroundColor: '#fff',
-        paddingLeft: 15,
-        paddingRight: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: '#eee'
+    head: {
+        height: 120,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-    myCover: {
-        flexDirection: 'row',
-        alignItems: 'center',
+    qrWrap:{
         backgroundColor: '#E3E7F3',
-        padding: 15,
-        marginTop: 15,
-        marginBottom: 30
+        paddingTop: 10,
+        paddingBottom: 10,
+        alignItems: 'center'
     },
-    myPhoto: {
-        width: 100,
-        height: 100,
+    qrBox:{
+        width: 140,
+        height: 140,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-    myInfo: {
-        marginLeft: 15
+    input:{
+        textAlign:'right'
     },
-    myName: {
-        fontSize: 16,
+    inputChoose:{
+        paddingTop: 15,
+        paddingBottom:15,
+        paddingRight:5
     },
-    logoutBtn:{
-        marginLeft:50,
-        marginRight:50,
-        marginTop: 10,
-        marginBottom: 10,
-    }
+    modal:{
+        height:90,
+        width:260,
+    },
 };

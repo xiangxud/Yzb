@@ -17,25 +17,17 @@ const bohaiApi = 'http://120.24.89.243:8092/api/'
 const urls = {
     apiPath,
     webPath,
-
-    /**
-     *  网页
-     */
     pages: {
-        // 隐式声明
-        DECLARE: webPath + 'declare.html',
-        // 用户协议
-        PROTOCOL: webPath + 'protocol.html',
         // 关于养殖宝
-        ARTICLE_GETARTICLE: webPath + 'about.html',
-        // 检测新版本
-        LATEST_VERSION: webPath + 'apk/version.json',
+        ABOUT_US: webPath + 'yzb/about',
+        // 联系我们
+        CONTACT: webPath + 'yzb/about/contact',
+        // 用户协议
+        PROTOCOL: webPath + 'yzb/about/protocol',
+        // 隐式声明
+        DECLARE: webPath + 'yzb/about/protocol',
     },
-    /**
-     *  接口
-     */
     apis: {
-
         // 通用信息 ---------------------------------------------------------
 
         //获取区县
@@ -94,11 +86,13 @@ const urls = {
         //登录
         USER_LOGIN: apiPath + "auth/login",
         //发送验证码
-        USER_GET_PHONE_CODE: apiPath + 'auth/getVcode',
+        USER_GET_PHONE_CODE: apiPath + 'auth/getValidateCode',
         //注册
         USER_REGISTER: apiPath + "auth/register",
         //获取用户信息
-        USER_GET_MINE: apiPath + 'public/myinfo',
+        USER_GET_MINE: apiPath + 'auth/getProfile',
+        //修改用户信息
+        USER_UPDATE_PROFILE: apiPath + 'auth/updateProfile',
         //重置密码
         USER_RESET_PASSWORD: apiPath + "auth/resetPassword",
         //获取指定用户信息
@@ -108,12 +102,8 @@ const urls = {
 
         //获取用户信息
         //USER_DETAIL: apiPath + 'user/accountInfo',
-        //修改用户信息
-        //USER_UPDATE_PROFILE: apiPath + 'user/updateUserInfo',
         //搜索用户
         //USER_SEARCH: apiPath + 'user/searchUser',
-
-
 
 
         //渤海监测-----------------------------------------------------------
@@ -127,9 +117,6 @@ const urls = {
         BH_GET_SHEETS: apiPath + 'bh/getSheets',
         BH_GET_SHEET: apiPath + 'bh/getSheet',
         BH_GET_TESTING_REPORTS: apiPath + 'bh/getReports',
-
-
-
 
 
         //免疫宝-------------------------------------------------------------

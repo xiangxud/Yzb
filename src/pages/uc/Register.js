@@ -210,7 +210,7 @@ export default class Register extends Component {
                         <View style={{flexDirection:'row', margin:20}}>
                             <CheckBox checked={this.state.agree} onPress={()=>this.setState({agree: !this.state.agree})} />
                             <Text style={{marginLeft:15}}>同意</Text>
-                            <Text style={{color:'#377cc3'}} onPress={()=>this.props.navigation.navigate('Web', {url: urls.webPath+'/yzb/about/protocol', title:'用户协议'})}>许可协议</Text>
+                            <Text style={{color:'#377cc3'}} onPress={()=>this.props.navigation.navigate('Web', {url: urls.pages.PROTOCOL, title:'用户协议'})}>许可协议</Text>
                         </View>
                     </Form>
                     <Button block success disabled={userStore.loading} onPress={() => { this.submit() }} style={{margin:10}}>

@@ -3,8 +3,24 @@ import validate from 'mobx-form-validate';
 import { persist } from 'mobx-persist'
 import hydrate from "../common/hydrate";
 import _ from "lodash";
-
+const ENUM_BREED = ['家禽','家畜','家禽家畜'];
 useStrict(true);
+// class UserProfile{
+//     @observable id = null;
+//     @observable name = null;
+//     @observable nick = null;
+//     @observable company = null;
+//     @observable photo = null;
+//     @observable seq = null;
+//     @observable breed = null;
+//     @observable phone = null;
+//     @observable province = null;
+//     @observable city = null;
+//     @observable district = null;
+//     @observable address = null;
+//     @observable score = null;
+//     @observable sex = null;
+// }
 
 class UserStore {
     //loginForm
@@ -51,6 +67,7 @@ class UserStore {
 
     @persist('object') @observable loginUser = {};
     @persist('object') @observable location = {};
+    @observable currentUser = {};
     @observable loading = false;
 
     //#####################################登录注册
@@ -64,6 +81,32 @@ class UserStore {
     //#######################################
     @action setLoginUser = (u) =>{
         this.loginUser = u;
+    }
+    @action setCurrentUser(){
+        if(!this.currentUser || !this.currentUser.id) {
+            //Object.assign(this.currentUser, this.currentUser, this.loginUser);
+
+            //alert(JSON.stringify(this.currentUser))
+            this.currentUser = {
+                id : this.loginUser.id,
+                name : this.loginUser.name,
+                nick : this.loginUser.nick,
+                company : this.loginUser.company,
+                photo : this.loginUser.photo,
+                seq : this.loginUser.seq,
+                breed : this.loginUser.breed>=0 && this.loginUser.breed <=2 ? ENUM_BREED[this.loginUser.breed] : '',
+                phone : this.loginUser.phone,
+                province : this.loginUser.province,
+                city : this.loginUser.city,
+                district : this.loginUser.district,
+                address : this.loginUser.address,
+                score : this.loginUser.score,
+                sex : this.loginUser.sex,
+            };
+        }
+    }
+    @action setProfile(f, v){
+        this.currentUser[f] = v;
     }
     @action setLoading(){
         this.loading = !this.loading;
@@ -217,7 +260,6 @@ class UserStore {
                         ak: 'trLEKMVBCc6MKGemHlUXdyy2'
                     }).then((data) => {
                         this.location = data.result;
-
                     });
                 })
 
@@ -233,7 +275,12 @@ class UserStore {
         this.password = '';
         this.token = {access_token: ''};
         this.loginUser = {}
+        this.currentUser = {}
         return true;
+    }
+    @computed get addr(){
+        return (this.currentUser.province || this.currentUser.city || this.currentUser.district)?
+            `${this.currentUser.province||''} ${this.currentUser.city||''} ${this.currentUser.district||''}`: '点击设置';
     }
 }
 
