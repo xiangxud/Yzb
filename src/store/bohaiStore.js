@@ -14,7 +14,7 @@ class TestItem {
     @observable morbidityAge = 0;
     @observable sendSamplingCount = 0;
 }
-class PigSerumRecod {
+class PigSerumRecord {
     @observable no = '';
     @observable earNo = '';
     @observable pigStage = '';
@@ -210,7 +210,7 @@ class BohaiStore {
     }
     //猪血清学
     @action addPigSerumRecord(){
-        this.data.pigSerumRecordList.push(new PigSerumRecod());
+        this.data.pigSerumRecordList.push(new PigSerumRecord());
     }
     @action deletePigSerumRecord(index){
         this.data.pigSerumRecordList.slice(index, 1);
