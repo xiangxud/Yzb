@@ -106,6 +106,7 @@ export default class Add extends Component{
                     <ValidateInput label="入栏批次" data={addStyStore.data} name="batchNumber" placeholder="动物批次" onChange={(e)=>{this.onUpdateData({batchNumber:e})}} />
                     <ValidateInputInt label="进栏数量" data={addStyStore.data} name="number" placeholder="进栏数量" IsValidate={addStyStore.IsValidate} onChange={(e)=>{this.onUpdateData({number:e})}} />
                     <ValidateInputDate label="进栏日期" data={addStyStore.data} name="addDate" placeholder="进栏日期" IsValidate={addStyStore.IsValidate} onChange={(e)=>{this.onUpdateData({addDate:e})}} />
+                    <ValidateInput label="设备号" data={addStyStore.data} name="equNum" IsValidate={addStyStore.IsValidate} placeholder="请输入物联网设备号" onChange={(e)=>{this.onUpdateData({equNum:e})}} />
                 </Form>
                 </Content>
                 <FootBar buttons={this.buttons}></FootBar>

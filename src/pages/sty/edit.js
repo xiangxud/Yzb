@@ -107,6 +107,7 @@ export default class Edit extends Component{
                         <ValidateInputInt label="日龄" data={editStyStore.data} name="day" IsValidate={editStyStore.IsValidate} placeholder="如 20" onChange={(e)=>{this.onUpdateData({day:e})}} />
                         <ValidateInputInt label="数量" data={editStyStore.data} name="number" IsValidate={editStyStore.IsValidate} placeholder="进栏数量" onChange={(e)=>{this.onUpdateData({number:e})}} />
                         <ValidateInputDate label="进栏日期" data={editStyStore.data} name="addDate" IsValidate={editStyStore.IsValidate} placeholder="进雏" onChange={(e)=>{this.onUpdateData({addDate:e})}} />
+                        <ValidateInput label="设备号" data={editStyStore.data} name="equNum" IsValidate={editStyStore.IsValidate} placeholder="请输入物联网设备号" onChange={(e)=>{this.onUpdateData({equNum:e})}} />
                     </Form>
                     </Content>
                     <FootBar buttons={this.buttons}></FootBar>

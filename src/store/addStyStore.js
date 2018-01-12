@@ -33,6 +33,8 @@ class addStyStore extends storeBase{
         @observable
         @validate(/\S+$/, '入栏日期')
         addDate:'',
+        @observable
+        equNum:''
     }
 
     @action
@@ -89,7 +91,8 @@ class addStyStore extends storeBase{
             Genus: this.data.genus,
             Number: this.data.number,
             AddDate: this.data.addDate,
-            BatchNumber: this.data.batchNumber
+            BatchNumber: this.data.batchNumber,
+            EquNum:this.data.equNum
         };
         request.postJson(urls.apis.IMM_POST_STY,item).then(data=>{
             callback(data);
@@ -117,7 +120,8 @@ class addStyStore extends storeBase{
             IniPetDay:this.data.day,
             IniPetCount:this.data.number,
             IniPetDate:this.data.addDate,
-            BatchNumber:this.data.batchNumber
+            BatchNumber:this.data.batchNumber,
+            EquNum:this.data.equNum
         }).then((data)=>{
             callback(data);
         }).catch((err)=>{
