@@ -69,8 +69,7 @@ export default class Didi extends Component {
                 </Segment>
                 {currentType === 'map' ?
                     <Content>
-                        <MapView locationEnabled
-                                 locationInterval={locationInterval}
+                        <MapView
                                  showsCompass={true}
                                  zoomLevel={8}
                                  rotateEnabled={false}
