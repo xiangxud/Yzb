@@ -49,7 +49,7 @@ class DidiStore {
                 this.isFetching = false;
                 this.refreshState = RefreshState.Failure;
             });
-            tools.showToast(error)
+            tools.showToast(JSON.stringify(error))
         });
     }
     @action onHeaderRefresh=()=>{
