@@ -3,15 +3,16 @@
  */
 import {observable, computed, action, runInAction, useStrict} from 'mobx'
 import {RefreshState} from 'react-native-refresh-list-view';
+import { persist } from 'mobx-persist'
 
 useStrict(true);
 class DidiStore {
     @observable pageIndex = 1;
     @observable pageSize = 5;
     @observable refreshState = RefreshState.Idle;
-    @observable vets = [];
+    @persist @observable vets = [];
     @observable current = {};
-    @observable currentType = 'map';
+    @observable currentType = 'list';
     @observable errorMsg = '';
     @observable isFetching = true;
     @observable locationInterval = 2000;
@@ -28,7 +29,7 @@ class DidiStore {
             tools.showToast('正在获取您的位置，请稍后再试');
             return;
         }
-        this.currentType = this.currentType==='map'? 'list': 'map';
+        this.currentType = this.currentType === 'map'? 'list': 'map';
     }
     @action fetchVets = (page) => {
         const params = {count: this.pageSize, page: page, latitude: this.position.latitude, longitude: this.position.longitude};

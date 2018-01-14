@@ -38,6 +38,9 @@ export default class Didi extends Component {
         //alert(JSON.stringify(point))
         didiStore.setCurrent(point);
     }
+    componentDidMount(){
+        didiStore.setMyPosition(didiStore.position);
+    }
     renderItem=(item, i)=>{
         return <Marker
             key={i}
@@ -57,11 +60,11 @@ export default class Didi extends Component {
         return(
             <Container>
                 <Segment style={{backgroundColor:'#459d26'}}>
-                    <Button first active={currentType==='map'} onPress={()=>didiStore.switch()}>
-                        <Text>地图</Text>
-                    </Button>
-                    <Button last active={currentType==='list'} onPress={()=>didiStore.switch()}>
+                    <Button first active={currentType==='list'} onPress={()=>didiStore.switch()}>
                         <Text>列表</Text>
+                    </Button>
+                    <Button last active={currentType==='map'} onPress={()=>didiStore.switch()}>
+                        <Text>地图</Text>
                     </Button>
                 </Segment>
                 {currentType === 'map' ?
