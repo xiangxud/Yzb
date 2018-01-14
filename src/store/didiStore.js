@@ -14,7 +14,7 @@ class DidiStore {
     @observable current = {};
     @observable currentType = 'list';
     @observable errorMsg = '';
-    @observable isFetching = true;
+    @observable isFetching = false;
     @observable locationInterval = 2000;
     @observable position = {
         accuracy: 1,
