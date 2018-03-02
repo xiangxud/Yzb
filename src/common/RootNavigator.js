@@ -25,11 +25,11 @@ import Web from '../pages/Web';
 import About from '../pages/uc/About';
 import MyInfo from '../pages/uc/MyInfo';
 import Sty from '../pages/sty';
-import imm from '../pages/sty/imm';
+import Imm from '../pages/sty/Imm';
 import Monitor from '../pages/sty/Monitor';
 import MonitorPlay from '../pages/sty/MonitorPlay';
-//import environmental from '../pages/sty/environmental';
-//import report from '../pages/sty/report';
+import Environmental from '../pages/sty/Environmental';
+import Report from '../pages/sty/Report';
 import Quotes from '../pages/Quotes';
 
 import addSty from '../pages/sty/add';
@@ -113,7 +113,7 @@ const StyTabNavigation = TabNavigator({
         }
     },
     ImmTab:{
-        screen:imm,
+        screen:Imm,
         navigationOptions:{
             headerTitle: '免疫',
             tabBarLabel:'免疫',
@@ -128,8 +128,8 @@ const StyTabNavigation = TabNavigator({
             tabBarIcon: ({tintColor}) => (<Icon name='video-camera' color={tintColor} size={24}/>)
         }
     },
-    /*EnvironmentalTab:{
-        screen:environmental,
+    EnvironmentalTab:{
+        screen: Environmental,
         navigationOptions:{
             headerTitle: '环控',
             tabBarLabel:'环控',
@@ -137,13 +137,13 @@ const StyTabNavigation = TabNavigator({
         }
     },
     ReportTab:{
-        screen:report,
+        screen: Report,
         navigationOptions:{
             headerTitle: '报表',
             tabBarLabel:'报表',
             tabBarIcon: ({tintColor}) => (<Icon name='bar-chart' color={tintColor} size={24}/>)
         }
-    }*/
+    }
 },{
     initialRouteName:'StyTab',
     animationEnabled: false,// 切换页面时不显示动画
