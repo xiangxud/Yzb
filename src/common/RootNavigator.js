@@ -29,6 +29,7 @@ import Imm from '../pages/sty/Imm';
 import Monitor from '../pages/sty/Monitor';
 import MonitorPlay from '../pages/sty/MonitorPlay';
 import Environmental from '../pages/sty/Environmental';
+import EnvironmentalSetting from '../pages/sty/EnvironmentalSetting';
 import Report from '../pages/sty/Report';
 import Quotes from '../pages/Quotes';
 
@@ -203,6 +204,7 @@ const RootNavigator = StackNavigator({
     Quotes:{ screen: Quotes },
     ChooseFarm:{ screen: ChooseFarm },
     BHDetail:{ screen: BHDetail },
+    EnvironmentalSetting:{ screen: EnvironmentalSetting },
 }, {
     initialRouteName: 'Welcome', // 默认显示界面!global.user.loginState?'Login':'Main'
     navigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)

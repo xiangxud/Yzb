@@ -43,11 +43,8 @@ const defaultPhoto = require('../../resource/avatar.jpg');
 
 @observer
 export default class MyInfo extends Component {
-    constructor() {
-        super()
-        this.state = {
-
-        }
+    constructor(props) {
+        super(props)
     }
 
     static navigationOptions = ({navigation})=>({
