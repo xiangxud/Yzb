@@ -48,7 +48,8 @@ export default class BreedList extends Component{
                 </View>
             );
         }
-        return <Loading show={true}/>
+        return null;
+        //return <Loading show={true}/>
     }
     render(){
         return <View style={style.list}>
@@ -68,7 +69,7 @@ export default class BreedList extends Component{
                       }}
                       keyExtractor={(item,key) => key}>
             </FlatList>
-            <MaskLoading show={this.props.source.isLoading} text={''}/>
+            {/*<MaskLoading show={this.props.source.isLoading} text={''}/>*/}
         </View>
     }
 };

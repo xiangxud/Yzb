@@ -24,6 +24,7 @@ class breedItemCollection {
     @observable end= false;
     @observable isLoading = true;
     @observable pageSize=10;
+    @observable go=true;
 
     @action
     onLoad(){

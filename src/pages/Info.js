@@ -27,26 +27,13 @@ export default class Info extends Component{
     constructor(props){
         super(props);
     }
-
-    // componentDidMount() {
-    //     this.props.navigation.setParams({
-    //         onChanged : this.onSearchTxtChanged.bind(this)
-    //     });
-    // }
-    //
-    // onSearchTxtChanged(txt){
-    //     _.debounce(()=>infoStore.onFilter(txt), 500);
-    // }
-    //
     componentDidMount() {
         infoStore.onChanged(infoStore.labels[0]);
     }
-
     onItemPress(code,title){
         const {navigation} = this.props;
         navigation.navigate("InfoDetail",{ code : code , title:title })
     }
-
     render(){
         return (
             <View style={{flex:1}}>
