@@ -10,6 +10,7 @@ import editStyStore from './editStyStore'
 import bohaiStore from './bohaiStore'
 import outPetStore from './outPetStore'
 import inPetStore from './inPetStore'
+import sensorHistoryStore from './sensorHistoryStore'
 
 export default {
     app: new App(),
@@ -23,5 +24,6 @@ export default {
     immStore,
     bohaiStore,
     outPetStore,
-    inPetStore
+    inPetStore,
+    sensorHistoryStore
 }

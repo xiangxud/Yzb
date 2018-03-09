@@ -12,7 +12,7 @@ import {observer, inject} from 'mobx-react/native';
 import EnvironmentMonitor from '../../components/sty/EnvironmentMonitor';
 import {TitleBar, SeparatorArea} from '../../components';
 
-@inject('styStore')
+@inject('sensorHistoryStore')
 @observer
 export default class Environmental extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -22,9 +22,11 @@ export default class Environmental extends Component {
     })
 
     componentDidMount() {
-        this.props.navigation.setParams({
-            //commitPress: this.settingPress
+        const {navigation,sensorHistoryStore} = this.props;
+        navigation.setParams({
+            commitPress: this.settingPress
         });
+        sensorHistoryStore.onLoad(navigation.state.params.code);
     }
 
     settingPress = () => {
@@ -32,10 +34,10 @@ export default class Environmental extends Component {
     }
 
     renderListHeader =()=>{
-        const {environmental} = this.props.styStore;
+        const {now} = this.props.sensorHistoryStore.data;
         return (
             <View>
-                <EnvironmentMonitor data={environmental}/>
+                <EnvironmentMonitor data={now}/>
                 <SeparatorArea/>
                 <TitleBar icon={'history'}
                           iconColor={'gray'}
@@ -48,13 +50,13 @@ export default class Environmental extends Component {
         return (
             <View style={styles.row}>
                 <View style={styles.dt}>
-                    <Text style={styles.day}>{item.day}</Text>
-                    <Text style={styles.time}>{item.time}</Text>
+                    <Text style={styles.day}>刚刚</Text>
+                    <Text style={styles.time}>23:12</Text>
                 </View>
                 <View style={{flex:1,}}>
-                    <Text>温度：{item.temperature}</Text>
-                    <Text>湿度：{item.humidity}</Text>
-                    <Text>二氧化碳：{item.co2}</Text>
+                    <Text>温度：12</Text>
+                    <Text>湿度：13</Text>
+                    <Text>二氧化碳：10</Text>
                 </View>
             </View>
         );
@@ -63,26 +65,23 @@ export default class Environmental extends Component {
         return <View style={{borderBottomColor:'gray', borderBottomWidth:StyleSheet.hairlineWidth}}/>;
     }
     render() {
-        let list = [
-            {day:'刚刚', time:'18:22',temperature:24,humidity:64.2,co2:88.3},
-            {day:'2-11', time:'12:05',temperature:34,humidity:64.3,co2:79.5},
-        ];
-        let isFetching = false;
+        const {sensorHistoryStore} = this.props;
         return (
             <Container>
                 <Content>
                     <FlatList
                         style={styles.his}
-                        data={list.slice()}
+                        data={sensorHistoryStore.data.list}
                         renderItem={({ item }) => this.renderRow(item) }
                         ListHeaderComponent={ this.renderListHeader() }
                         ListFooterComponent={
-                            <Button full light onPress={()=>{}}><Text>查看更多</Text></Button>
+                            <Button full light onPress={()=>{homeStore.fetchHomeData()}}><Text>查看更多</Text></Button>
                         }
                         ItemSeparatorComponent={ this.renderSep }
                         keyExtractor={ (item, index) => index }
-                        refreshing = {isFetching}
+                        refreshing = {sensorHistoryStore.loading}
                     />
+                    <Button block danger onPress={()=>this.goto()}><Text>重试错误</Text></Button>
                 </Content>
             </Container>
         )

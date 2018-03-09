@@ -134,6 +134,8 @@ const urls = {
         IMM_GET_DETAIL:apiPath + 'immPlan/PostQuery',
         //获取出栏配置
         IMM_GET_OUT_PET_CONFIG:apiPath + 'sty/GetOutPetConfig',
+        //获取栋舍的历史环控数据
+        IMM_GET_GetSensorHistory:apiPath + 'sty/GetSensorHistory',
         //出栏
         IMM_POST_REMOVE_PET:apiPath + 'sty/PostRoutine',
         //出栏
