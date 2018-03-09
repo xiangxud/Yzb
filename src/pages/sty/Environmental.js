@@ -23,7 +23,7 @@ export default class Environmental extends Component {
 
     componentDidMount() {
         this.props.navigation.setParams({
-            commitPress: this.settingPress
+            //commitPress: this.settingPress
         });
     }
 
@@ -77,13 +77,12 @@ export default class Environmental extends Component {
                         renderItem={({ item }) => this.renderRow(item) }
                         ListHeaderComponent={ this.renderListHeader() }
                         ListFooterComponent={
-                            <Button full light onPress={()=>{homeStore.fetchHomeData()}}><Text>查看更多</Text></Button>
+                            <Button full light onPress={()=>{}}><Text>查看更多</Text></Button>
                         }
                         ItemSeparatorComponent={ this.renderSep }
                         keyExtractor={ (item, index) => index }
                         refreshing = {isFetching}
                     />
-                    <Button block danger onPress={()=>this.goto()}><Text>重试错误</Text></Button>
                 </Content>
             </Container>
         )

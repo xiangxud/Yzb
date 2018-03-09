@@ -121,14 +121,14 @@ const StyTabNavigation = TabNavigator({
             tabBarIcon: ({tintColor}) => (<Icon name='calendar-check-o' color={tintColor} size={24}/>)
         }
     },
-    MonitorTab:{
+    /*MonitorTab:{
         screen:Monitor,
         navigationOptions:{
             headerTitle: '监控',
             tabBarLabel:'监控',
             tabBarIcon: ({tintColor}) => (<Icon name='video-camera' color={tintColor} size={24}/>)
         }
-    },
+    },*/
     EnvironmentalTab:{
         screen: Environmental,
         navigationOptions:{
