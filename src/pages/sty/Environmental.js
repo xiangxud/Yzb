@@ -47,16 +47,18 @@ export default class Environmental extends Component {
         );
     }
     renderRow =(item)=>{
+        let d = item.CreatOn.ToDateTime().InterVal(new Date());
+        let label = d < 50 ? "刚刚":"";
         return (
             <View style={styles.row}>
                 <View style={styles.dt}>
-                    <Text style={styles.day}>刚刚</Text>
-                    <Text style={styles.time}>23:12</Text>
+                    <Text style={styles.day}>{label}</Text>
+                    <Text style={styles.time}>{item.CreatOn.ToDateTime().Format("hh:mm")}</Text>
                 </View>
                 <View style={{flex:1,}}>
-                    <Text>温度：12</Text>
-                    <Text>湿度：13</Text>
-                    <Text>二氧化碳：10</Text>
+                    <Text>温度：{item.Temp}</Text>
+                    <Text>湿度：{item.Humidity}</Text>
+                    <Text>二氧化碳：{item.CO2}</Text>
                 </View>
             </View>
         );

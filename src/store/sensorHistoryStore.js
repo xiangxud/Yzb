@@ -20,7 +20,7 @@ class sensorHistoryStore {
     @observable loading=false
     @observable loadEnd=false
     pageIndex=0
-    pageSize=15
+    pageSize=5
 
     //数据拷贝
     @action onShallCopy(t,s){
