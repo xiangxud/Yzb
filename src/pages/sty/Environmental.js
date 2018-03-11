@@ -16,19 +16,15 @@ import {TitleBar, SeparatorArea} from '../../components';
 @observer
 export default class Environmental extends Component {
     static navigationOptions = ({navigation}) => ({
-        headerRight: <Button transparent light
-                             onPress={navigation.state.params ? navigation.state.params.commitPress : null}><Icon
-            name="ios-settings" style={{color: 'white'}}/></Button>
+        headerRight:<View></View>
     })
-
     componentDidMount() {
-        const {navigation,sensorHistoryStore} = this.props;
-        navigation.setParams({
-            commitPress: this.settingPress
-        });
-        sensorHistoryStore.onLoad(navigation.state.params.code);
+        // const {navigation,sensorHistoryStore} = this.props;
+        // navigation.setParams({
+        //     commitPress: this.settingPress
+        // });
+        // sensorHistoryStore.onIni(navigation.state.params.code);
     }
-
     settingPress = () => {
         this.props.navigation.navigate('EnvironmentalSetting');
     }
@@ -77,13 +73,28 @@ export default class Environmental extends Component {
                         renderItem={({ item }) => this.renderRow(item) }
                         ListHeaderComponent={ this.renderListHeader() }
                         ListFooterComponent={
-                            <Button full light onPress={()=>{homeStore.fetchHomeData()}}><Text>查看更多</Text></Button>
+                            <View />
                         }
+                        onEndReachedThreshold={0.2}
+                        onRefresh={()=>{
+                            const {navigation,sensorHistoryStore} = this.props;
+                            navigation.setParams({
+                                commitPress: this.settingPress
+                            });
+                            sensorHistoryStore.onIni(navigation.state.params.code);
+                        }}
+                        onEndReached={()=>{
+                            const {navigation,sensorHistoryStore} = this.props;
+                            navigation.setParams({
+                                commitPress: this.settingPress
+                            });
+                            sensorHistoryStore.onLoad(navigation.state.params.code);
+                            return true;
+                        }}
                         ItemSeparatorComponent={ this.renderSep }
                         keyExtractor={ (item, index) => index }
                         refreshing = {sensorHistoryStore.loading}
                     />
-                    <Button block danger onPress={()=>this.goto()}><Text>重试错误</Text></Button>
                 </Content>
             </Container>
         )
