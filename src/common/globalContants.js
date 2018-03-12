@@ -64,6 +64,30 @@ Date.prototype.InterVal=function (date) {
     var seconds=Math.round(leave3/1000)
     return (days * 24 * 60) + (hours*60) + minutes + (seconds / 60.00);//" 相差 "+days+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒"
 }
+
+Date.prototype.GetLabel=function () {
+    d0 = new Date();
+    c = this.InterVal(d0);
+    //1、刚刚
+    if( c < 50 ){
+        return "刚刚";
+    }
+    //2、今天
+    if( d0.Format("yyyy-MM-dd") == this.Format("yyyy-MM-dd")){
+        return "今天";
+    }
+    //3、昨天
+    if( c < (d0.Format("yyyy-MM-dd").ToDate().InterVal( d0 ) + 24 * 60)){
+        return "昨天";
+    }
+    //4、当年
+    if( d0.Format("yyyy") == this.Format("yyyy") ){
+        return this.Format("MM-dd");
+    }
+    //4、其它
+    return this.Format("yyyy-MM-dd");
+}
+
 //字符串转日期
 String.prototype.ToDate = function(){
     var fullDate = this.toString().split("-");

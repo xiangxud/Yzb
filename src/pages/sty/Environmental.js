@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     StyleSheet
 } from 'react-native';
-import {Container, Content, Text, Button, Icon} from 'native-base';
+import {Container, Content,Form, Text,Spinner, Button, Icon} from 'native-base';
 import {observer, inject} from 'mobx-react/native';
 import EnvironmentMonitor from '../../components/sty/EnvironmentMonitor';
 import {TitleBar, SeparatorArea} from '../../components';
@@ -18,17 +18,14 @@ export default class Environmental extends Component {
     static navigationOptions = ({navigation}) => ({
         headerRight:<View></View>
     })
+    constructor(props){
+        super(props);
+    }
     componentDidMount() {
-        // const {navigation,sensorHistoryStore} = this.props;
-        // navigation.setParams({
-        //     commitPress: this.settingPress
-        // });
-        // sensorHistoryStore.onIni(navigation.state.params.code);
     }
     settingPress = () => {
         this.props.navigation.navigate('EnvironmentalSetting');
     }
-
     renderListHeader =()=>{
         const {now} = this.props.sensorHistoryStore.data;
         return (
@@ -43,8 +40,9 @@ export default class Environmental extends Component {
         );
     }
     renderRow =(item)=>{
-        let d = item.CreatOn.ToDateTime().InterVal(new Date());
-        let label = d < 50 ? "刚刚":"";
+        // let d = item.CreatOn.ToDateTime().InterVal(new Date());
+        // let label = d < 50 ? "刚刚":"";
+        let label = item.CreatOn.ToDateTime().GetLabel();
         return (
             <View style={styles.row}>
                 <View style={styles.dt}>
@@ -62,39 +60,38 @@ export default class Environmental extends Component {
     renderSep =()=>{
         return <View style={{borderBottomColor:'gray', borderBottomWidth:StyleSheet.hairlineWidth}}/>;
     }
+    renderList(){
+        const {sensorHistoryStore} = this.props;
+        return <FlatList
+            style={styles.his}
+            data={sensorHistoryStore.data.list}
+            renderItem={({ item }) => this.renderRow(item) }
+            ListHeaderComponent={ this.renderListHeader() }
+            ListFooterComponent={
+                <View />
+            }
+            onEndReachedThreshold={0.1}
+            onRefresh={()=>{
+                const {navigation,sensorHistoryStore} = this.props;
+                sensorHistoryStore.onIni(navigation.state.params.code);
+            }}
+            onEndReached={()=>{
+                const {navigation,sensorHistoryStore} = this.props;
+                sensorHistoryStore.onLoad(navigation.state.params.code);
+            }}
+            ItemSeparatorComponent={ this.renderSep }
+            keyExtractor={ (item, index) => index }
+            refreshing = {sensorHistoryStore.loading}
+        />
+    }
     render() {
         const {sensorHistoryStore} = this.props;
         return (
             <Container>
                 <Content>
-                    <FlatList
-                        style={styles.his}
-                        data={sensorHistoryStore.data.list}
-                        renderItem={({ item }) => this.renderRow(item) }
-                        ListHeaderComponent={ this.renderListHeader() }
-                        ListFooterComponent={
-                            <View />
+                        {
+                            this.renderList()
                         }
-                        onEndReachedThreshold={0.2}
-                        onRefresh={()=>{
-                            const {navigation,sensorHistoryStore} = this.props;
-                            navigation.setParams({
-                                commitPress: this.settingPress
-                            });
-                            sensorHistoryStore.onIni(navigation.state.params.code);
-                        }}
-                        onEndReached={()=>{
-                            const {navigation,sensorHistoryStore} = this.props;
-                            navigation.setParams({
-                                commitPress: this.settingPress
-                            });
-                            sensorHistoryStore.onLoad(navigation.state.params.code);
-                            return true;
-                        }}
-                        ItemSeparatorComponent={ this.renderSep }
-                        keyExtractor={ (item, index) => index }
-                        refreshing = {sensorHistoryStore.loading}
-                    />
                 </Content>
             </Container>
         )

@@ -20,7 +20,7 @@ class sensorHistoryStore {
     @observable loading=false
     @observable loadEnd=false
     pageIndex=0
-    pageSize=35
+    pageSize=25
 
     //数据拷贝
     @action onShallCopy(t,s){
@@ -36,7 +36,7 @@ class sensorHistoryStore {
     }
     @action onIni(id){
         this.pageIndex=0;
-        this.onLoad();
+        this.onLoad(id);
     }
     @action onLoad(id){
         if( this.loadEnd ){
