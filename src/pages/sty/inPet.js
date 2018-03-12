@@ -64,7 +64,18 @@ export default class InPet extends Component{
         });
     }
 
-    buttons=[{title:'取消' , default:false, onPress:()=>{}},{title:'提交' , default:true, onPress:()=>{ this.onCommit() }}];
+    buttons=[{title:'取消' ,
+        default:false,
+        onPress:()=>{
+            const {navigation} = this.props;
+            navigation.goBack();
+        }},{title:'提交' ,
+        default:true,
+        onPress:()=>{
+            this.onCommit()
+        }
+    }];
+
     render(){
         const {inPetStore} = this.props;
         return (

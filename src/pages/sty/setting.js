@@ -29,16 +29,16 @@ export default class setting extends Component{
     });
 
     componentDidMount(){
-        this.eventHandler.addListener("noticeChangedCamera",(o)=>{
-            if(o.name=="eventAddCamera"){
-                this.store.onPush(o);//摄像头增加
-            }else if(o.name == "eventEditCamera"){
-                this.store.onUpdate(o);//摄像头编辑
-            }
-        });
+        // this.eventHandler.addListener("noticeChangedCamera",(o)=>{
+        //     if(o.name=="eventAddCamera"){
+        //         this.store.onPush(o);//摄像头增加
+        //     }else if(o.name == "eventEditCamera"){
+        //         this.store.onUpdate(o);//摄像头编辑
+        //     }
+        // });
     }
     componentWillUnmount(){
-        this.eventHandler.remove();
+        //this.eventHandler.remove();
     }
     constructor(props){
         super(props);
@@ -48,76 +48,11 @@ export default class setting extends Component{
     @observable
     store=new cameraSettingStore();
 
-    onAdd(){
-        const {navigation} = this.props;
-        navigation.navigate("CameraAdd",{
-            styId:navigation.state.params.code,
-            styName:navigation.state.params.title});
-    }
-
-    onModify(camera){
-        const {navigation} = this.props;
-        navigation.navigate("CameraEdit",{ camera:camera,styName:navigation.state.params.title});
-    }
-
-    removeCamera(id){
-        const {navigation} = this.props;
-        this.store.onRemove(id,()=>{
-            DeviceEventEmitter.emit('noticeChangedCamera',
-                new noticeArgs(this,"eventRemoveCamera",
-                    { id : id , styId:navigation.state.params.code}));
-
-            tools.showToast('移除成功');
-        },(err)=>{
-            console.log(err);
-            tools.showToast('移除失败：' + err);
-        });
-    }
-
-    onChangedDefault(id){
-        const {styStore} = this.props;
-        this.store.onChangDefault(id,styStore.code,
-            ()=>{
-                DeviceEventEmitter.emit('noticeChangedCamera',
-                    new noticeArgs(this,"eventChangedDefaultCamera",
-                        {id:id,styId:styStore.code}));
-            },err=> tools.showToast('设置失败'));
-    }
-
-    onRemove(id){
-        Alert.alert(
-            '温馨提示',
-            '即将删除该摄像头，是否继续？',
-            [
-                {text: '取消',onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                {text: '继续',onPress: () => this.removeCamera(id)},
-            ],
-            { cancelable: true }
-        )
-    }
-
     render(){
         return (
                 <Container>
                     <Content>
-                        <ListItem itemDivider icon>
-                            <Left>
-                                <Text style={style.label}>摄像头</Text></Left>
-                            <Body>
-                            </Body>
-                            <Right>
-                                <TouchableOpacity style={style.headAction} onPress={this.onAdd.bind(this)}>
-                                    <Icon name="md-add" style={style.headIco} />
-                                    <Text style={style.label}>添加</Text>
-                                </TouchableOpacity>
-                            </Right>
-                        </ListItem>
-                        <CList list={this.store.list}
-                               defaultId={this.store.defaultId}
-                               onChanged={this.onChangedDefault.bind(this)}
-                               onModify={this.onModify.bind(this)}
-                               onRemove={this.onRemove.bind(this)}>
-                        </CList>
+
                     </Content>
                 </Container>
         );

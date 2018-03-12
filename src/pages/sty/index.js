@@ -41,12 +41,7 @@ export default class Sty extends Component {
                     title:navigation.state.params.title,
                     farm:navigation.state.params.farm})
             }}
-            onSettingPress={()=>{
-                navigation.navigate("StySetting",{
-                    code:navigation.state.params.code,
-                    title:navigation.state.params.title,
-                    farm:navigation.state.params.farm})
-            }} />
+            />
     });
 
     switchCamera = (c) =>{
@@ -58,26 +53,12 @@ export default class Sty extends Component {
     }
 
     componentDidMount(){
-        const {styStore, navigation} = this.props;
-        styStore.onIni(navigation.state.params.code);
-
-        this.eventHandler = DeviceEventEmitter.addListener('noticeChangedCamera',(o)=>{
-            if(o.name=="eventAddCamera" && o.data.StyId == styStore.code){
-                styStore.onPushCameras(o.data);//处理增加摄像头的通知
-            }
-            if(o.name=="eventEditCamera" && o.data.StyId==styStore.code){
-                styStore.onUpdateCameras(o.data);//处理编辑摄像头的通知
-            }
-            if(o.name=="eventRemoveCamera" && o.styId==styStore.code){
-                styStore.onRemove(o.id);//处理移除摄像头通知
-            }
-            if(o.name=="eventChangedDefaultCamera" && o.styId==styStore.code){
-                styStore.onChangeCameras(o.id);//处理移除摄像头通知
-            }
-        })
+        (async ()=> {
+            const {styStore, navigation} = this.props;
+            styStore.onIni(navigation.state.params.code);
+        })();
     }
     componentWillUnmount(){
-        this.eventHandler.remove();
     }
 
     render(){

@@ -124,7 +124,7 @@ class StyStore {
     monitor=new MonitorStore();
 
     @action onIni(id){
-        this.onLoadFromApi(id, (data)=>{
+        this.onLoadFromApi(id).then(data=>{
             runInAction(()=>{
                 //1、基础数据
                 this.code = data.Id;
@@ -151,7 +151,7 @@ class StyStore {
                     this.monitor.current = null;
                 }
             });
-        }, (err)=>{
+        },err=>{
             tools.showToast("无法获取该栋舍信息，请稍后再试");
         });
     }
@@ -180,11 +180,7 @@ class StyStore {
 
     @action
     onLoadFromApi(id, callback, failed){
-        request.getJson(urls.apis.IMM_STY_BASIC, {id: id}).then((data) => {
-            callback(data);
-        }).catch((err) => {
-            failed(err);
-        });
+        return request.getJson(urls.apis.IMM_STY_BASIC, {id: id});
     }
 }
 

@@ -8,19 +8,20 @@ import {Text} from 'native-base';
 import {WebView} from '../../components'
 
 const EnvironmentMonitor = observer(()=>{
-    // state = {rd : ''};
-    // componentDidMount(){
-    //     this.timer = setTimeout(()=>{
-    //         this.setState({rd: new Date()})
-    //     }, 100);
-    // }
-    // componentWillUnMount(){
-    //     this.timer && clearTimeout(this.timer);
-    // }
+    let errRender=e=>{
+        return <View>
+            <Text>Error:{e}</Text>
+        </View>
+    };
     let rd = new Date();
     return (
         <View style={styles.container}>
-            <WebView uri={urls.webPath + 'yzb/monitor/em?rd='+ rd} style={{flex:1 }} canBack={false} />
+            <WebView
+                uri={urls.webPath + 'yzb/monitor/em?rd='+ rd}
+                style={{flex:1}}
+                startInLoadingState={true}
+                onError={(e)=>errRender(e)}
+                canBack={false} />
             <View style={styles.reportItems}>
                 <Text style={styles.sTitle}>栋舍湿度</Text>
                 <Text style={styles.sTitle}>栋舍温度</Text>
@@ -34,6 +35,7 @@ export default EnvironmentMonitor;
 const styles = StyleSheet.create({
     container:{
         height:150,
+        alignItems:'stretch',
         borderBottomWidth:StyleSheet.hairlineWidth,
         borderBottomColor:'#e2e2e2',
         backgroundColor:'#fff'

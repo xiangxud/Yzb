@@ -14,14 +14,6 @@ export default class StyBar extends Component{
 
     onMenu(){
         let formList = [{
-            name:"SettingSty",
-            text: "设置监控",
-            icon: "ios-cog",
-            iconColor: "#15856e",
-            action:()=>{
-                this.props.onSettingPress();
-            }
-        }, {
             name:"EditSty",
             text: "修改栋舍",
             icon: "ios-create",
@@ -29,22 +21,7 @@ export default class StyBar extends Component{
             action:()=>{
                 this.props.onEditPress();
             }
-        },/*{
-            name:"DeleteSty",
-            text:"删除栋舍",
-            icon:"ios-trash",
-            iconColor: "#FF0000",
-            action:()=>{
-                Alert.alert('删除提示？',  '栋舍删除后不可恢复，您确认要删除该栋舍吗？',  [
-                        {text: '取消', onPress: () => {}, style: 'cancel'},
-                        {text: '确认删除', onPress: () => {
-                            //////////////////这里是删除逻辑
-                        }},
-                    ],
-                    { cancelable: false }
-                )
-            }
-        },*/{
+        },{
             name:"OutPet",
             text:"入栏",
             icon:"ios-log-in",

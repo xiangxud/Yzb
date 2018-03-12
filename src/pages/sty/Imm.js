@@ -16,21 +16,17 @@ export default class imm extends Component{
     static navigationOptions = ({navigation})=>({
         headerRight: <View />
     });
-
     componentDidMount(){
         const {navigation} = this.props;
         this.onLoadList({ StyName : navigation.state.params.title });
     }
-
     constructor(props){
         super(props);
     }
-
     onLoadList(config) {
         const {immStore} = this.props;
         immStore.onLoad(config, (mess) => {},(mess)=> {})
     }
-
     onMoreList(){
         const {immStore} = this.props;
         immStore.onMore(()=>{}, (mess) => {
@@ -42,7 +38,6 @@ export default class imm extends Component{
             this.autoClose();
         })
     }
-
     autoClose( callback ){
         setTimeout(()=>{
             Toast.toastInstance._root.closeToast();
@@ -51,22 +46,16 @@ export default class imm extends Component{
             }
         },800);
     }
-
-
     closeDrawer = () => {
         this.drawer._root.close()
     };
     openDrawer = () => {
         this.drawer._root.open()
     };
-
     onQuery(config){
         this.onLoadList(config);
         this.closeDrawer();
     }
-
-
-
     onImplement(data) {
         const {immStore} = this.props;
         immStore.onChangedState(data,PlanState.Finished.Value,(data)=>{
@@ -103,10 +92,8 @@ export default class imm extends Component{
             this.autoClose();
         });
     }
-
     render(){
         const {immStore} = this.props;
-
         return (
             <Drawer
                 ref={(ref) => { this.drawer = ref; }}
