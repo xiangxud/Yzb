@@ -40,8 +40,6 @@ export default class Environmental extends Component {
         );
     }
     renderRow =(item)=>{
-        // let d = item.CreatOn.ToDateTime().InterVal(new Date());
-        // let label = d < 50 ? "刚刚":"";
         let label = item.CreatOn.ToDateTime().GetLabel();
         return (
             <View style={styles.row}>
@@ -70,7 +68,7 @@ export default class Environmental extends Component {
             ListFooterComponent={
                 <View />
             }
-            onEndReachedThreshold={0.1}
+            onEndReachedThreshold={0.2}
             onRefresh={()=>{
                 const {navigation,sensorHistoryStore} = this.props;
                 sensorHistoryStore.onIni(navigation.state.params.code);
