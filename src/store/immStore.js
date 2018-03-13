@@ -70,6 +70,7 @@ class immStore {
     @action
     fillList(rows){
         this.collection.list = rows;
+        this.collection.count = rows.length;
         this.closeEnd();
     }
 

@@ -10,7 +10,7 @@ import {observer,inject} from 'mobx-react/native';
 import AlarmClock from '../../components/sty/AlarmClock'
 import Filter from '../../components/sty/Filter'
 
-@inject('immStore')
+@inject('styStore')
 @observer
 export default class imm extends Component{
     static navigationOptions = ({navigation})=>({
@@ -24,11 +24,16 @@ export default class imm extends Component{
         super(props);
     }
     onLoadList(config) {
-        const {immStore} = this.props;
+        const {styStore} = this.props;
+        const immStore=styStore.immCollection;
+
         immStore.onLoad(config, (mess) => {},(mess)=> {})
     }
     onMoreList(){
-        const {immStore} = this.props;
+        const {styStore} = this.props;
+        const immStore=styStore.immCollection;
+
+
         immStore.onMore(()=>{}, (mess) => {
             Toast.show({
                 type:'warning',
@@ -57,7 +62,9 @@ export default class imm extends Component{
         this.closeDrawer();
     }
     onImplement(data) {
-        const {immStore} = this.props;
+        const {styStore} = this.props;
+        const immStore=styStore.immCollection;
+
         immStore.onChangedState(data,PlanState.Finished.Value,(data)=>{
             Toast.show({
                 type:'success',
@@ -75,7 +82,9 @@ export default class imm extends Component{
         });
     }
     onIgnore(data) {
-        const {immStore} = this.props;
+        const {styStore} = this.props;
+        const immStore=styStore.immCollection;
+
         immStore.onChangedState(data,PlanState.Ignore.Value,(data)=>{
             Toast.show({
                 type:'success',
@@ -93,7 +102,8 @@ export default class imm extends Component{
         });
     }
     render(){
-        const {immStore} = this.props;
+        const {styStore} = this.props;
+        const immStore=styStore.immCollection;
         return (
             <Drawer
                 ref={(ref) => { this.drawer = ref; }}

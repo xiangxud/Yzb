@@ -5,9 +5,10 @@ import{
     FlatList,
     TouchableNativeFeedback,
 } from 'react-native';
-import { SwipeRow, Button, Text, Icon } from 'native-base';
+import { SwipeRow, Button, Text,Spinner, Icon } from 'native-base';
 import {observer} from 'mobx-react/native';
 import {TitleBar} from '../../components';
+
 @observer
 export default class ImmList extends Component{
     constructor(props){
@@ -53,24 +54,33 @@ export default class ImmList extends Component{
     _renderFooter(){
         return <View />
     }
+    renderList(){
+        let list = this.props.collection.collection.list;
+        let top = this.props.top;
+        if(!top || top < 2){
+            top = 5;
+        }
+        let array = list.slice(0,top);
+
+        return <FlatList data={array}
+                         renderItem={this.renderRow}
+                         onEndReachedThreshold={0}
+                         ItemSeparatorComponent={this._separator}
+                         ListFooterComponent={this._renderFooter}
+                         ListEmptyComponent={()=><View style={{height:100, justifyContent:'center', alignItems:'center'}}><Text style={{color:'gray'}}>暂无免疫提醒</Text></View>}
+                         refreshing={!this.props.collection.collection.end}
+                         keyExtractor={(item,key) => key}>
+        </FlatList>;
+    }
     render(){
         return <View style={style.container}>
             <TitleBar icon={'bell-o'}
                       title='免疫提醒'
                       morePress={this.props.onMore}
-                      sub={<Text style={style.count}>({this.props.collection.count})</Text>}/>
-            <FlatList data={this.props.collection.list}
-                      renderItem={this.renderRow}
-                      onEndReachedThreshold={0.5}
-                      ItemSeparatorComponent={this._separator}
-                      ListFooterComponent={this._renderFooter}
-                      ListEmptyComponent={()=><View style={{height:100, justifyContent:'center', alignItems:'center'}}><Text style={{color:'gray'}}>暂无免疫提醒</Text></View>}
-                      refreshing={!this.props.collection.End}
-                      onEndReached={()=>{
-                          this.props.collection.onLoad();
-                          return true;
-                      }} keyExtractor={(item,key) => key}>
-            </FlatList>
+                      sub={<Text style={style.count}>({this.props.collection.collection.count})</Text>}/>
+            {
+                this.props.collection.collection.end?this.renderList():<Spinner />
+            }
         </View>
     }
 };
