@@ -12,7 +12,7 @@ import {observer, inject} from 'mobx-react/native';
 import EnvironmentMonitor from '../../components/sty/EnvironmentMonitor';
 import {TitleBar, SeparatorArea} from '../../components';
 
-@inject('sensorHistoryStore')
+@inject('styStore')
 @observer
 export default class Environmental extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -27,7 +27,7 @@ export default class Environmental extends Component {
         this.props.navigation.navigate('EnvironmentalSetting');
     }
     renderListHeader =()=>{
-        const {now} = this.props.sensorHistoryStore.data;
+        const {now} = this.props.styStore.environmental.data.now;
         return (
             <View>
                 <EnvironmentMonitor data={now}/>
@@ -59,31 +59,30 @@ export default class Environmental extends Component {
         return <View style={{borderBottomColor:'gray', borderBottomWidth:StyleSheet.hairlineWidth}}/>;
     }
     renderList(){
-        const {sensorHistoryStore} = this.props;
+        const {styStore,navigation} = this.props;
+        const store = styStore.environmental;
+
         return <FlatList
             style={styles.his}
-            data={sensorHistoryStore.data.list}
+            data={store.data.list}
             renderItem={({ item }) => this.renderRow(item) }
             ListHeaderComponent={ this.renderListHeader() }
             ListFooterComponent={
                 <View />
             }
-            onEndReachedThreshold={0.2}
+            onEndReachedThreshold={0}
             onRefresh={()=>{
-                const {navigation,sensorHistoryStore} = this.props;
-                sensorHistoryStore.onIni(navigation.state.params.code);
+                store.onIni(navigation.state.params.code);
             }}
             onEndReached={()=>{
-                const {navigation,sensorHistoryStore} = this.props;
-                sensorHistoryStore.onLoad(navigation.state.params.code);
+                store.onLoad(navigation.state.params.code);
             }}
             ItemSeparatorComponent={ this.renderSep }
             keyExtractor={ (item, index) => index }
-            refreshing = {sensorHistoryStore.loading}
+            refreshing = {store.loading}
         />
     }
     render() {
-        const {sensorHistoryStore} = this.props;
         return (
             <Container>
                 <Content>

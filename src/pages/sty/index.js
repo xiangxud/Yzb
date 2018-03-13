@@ -68,7 +68,7 @@ export default class Sty extends Component {
                 <Content>
                     <Waring waring={waring}/>
                     <Monitor monitor={monitor} switchVideo={this.openSwitch}/>
-                    <EnvironmentMonitor data={environmental} />
+                    <EnvironmentMonitor data={environmental.data.now} />
                     <ImmList title="免疫提醒" collection={immCollection} top={5} onMore={()=>this.props.navigation.navigate("ImmTab",{})} />
                 </Content>
                 <Modal

@@ -1,7 +1,9 @@
 import {AsyncStorage} from 'react-native'
-import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
+import {action, computed, extendObservable, observable, reaction, runInAction, useStrict} from 'mobx'
+import tools from "../common/tools";
 useStrict(true);
 
+//1、免疫
 class alarmCollection{
     @observable
     count=0;
@@ -138,7 +140,7 @@ class _immStore {
         });
     }
 }
-
+//2、预警
 class WaringStore {
     constructor(){
     }
@@ -162,7 +164,7 @@ class WaringStore {
         this.co2=data.O2cWar;
     }
 }
-
+//3、监控
 class MonitorStore{
     @observable
     current=null;
@@ -179,25 +181,84 @@ class MonitorStore{
         // this.current = cams[0];
     }
 }
+//4、环控
+//环控数据
+class SensorData {
+    @observable
+    label=""
+}
+class EnvironmentalStore {
+    @observable data={
+        @observable now:{
+            @observable temperature:0,
+            @observable humidity:0,
+            @observable o2c:0,
+        },
+        @observable list:[]
+    }
+    @observable loading=false
+    @observable loadEnd=false
+    pageIndex=0
+    pageSize=25
+    //数据拷贝
+    @action onShallCopy(t,s){
+        for(let key in s){
+            if( t[key] == undefined ){
+                let o={};
+                o[key] = s[key];
+                extendObservable(t,o);
+            }else{
+                t[key]=s[key];
+            }
+        }
+    }
+    @action onIni(id){
+        this.pageIndex=0;
+        this.onLoad(id);
+    }
+    @action onLoad(id){
+        if( this.loadEnd ){
+            //若数据加载到底，退出
+            return;
+        }
+        if(this.loading){
+            //若正在加载，退出
+            return;
+        }
 
-class EnvironmentalStore{
-    constructor(){
-        this.temperature="";
-        this.humidity="";
-        this.o2c="";
+        s=r=>{
+            runInAction(()=>{
+                this.loading=false;
+                for( var i=0;i<r.length;i++){
+                    t= new SensorData();
+                    this.onShallCopy(t,r[i]);
+                    this.data.list.push(t);
+                }
+                if(r.length < this.pageSize){
+                    this.loadEnd=true;
+                }
+            });
+        };
+
+        eh=e=>{
+            runInAction(()=>{
+                this.loading=false;
+                tools.showToast( JSON.stringify(e) );
+            });
+        };
+
+        this.pageIndex++;
+        this.loading=true;
+        request.getJson(urls.apis.IMM_GET_GetSensorHistory,{
+            id: id,
+            pageIndex:this.pageIndex,
+            pageSize:this.pageSize}).then(s.bind(this),eh.bind(this));
     }
-    @action
-    onParse(data){
-        this.temperature = data.Temperature;
-        this.humidity = data.Humidity;
-        this.o2c = data.O2c;
+    @action onParseNow(o){
+        this.data.now.temperature = o.Temperature;
+        this.data.now.humidity = o.Humidity;
+        this.data.now.o2c = o.O2c;
     }
-    @observable
-    temperature="";//温度
-    @observable
-    humidity="";//湿度
-    @observable
-    o2c="";//二氧化碳
 }
 
 class StyStore {
@@ -251,7 +312,7 @@ class StyStore {
                 this.defaultCamera=data.DefaultCamera;
                 //2、环控数据
                 if(data.Env){
-                    this.environmental.onParse(data.Env);//环控数据
+                    this.environmental.onParseNow(data.Env);//环控数据
                     this.waring.onParse(data.Env, this);
                 }
                 //3、预警信息
