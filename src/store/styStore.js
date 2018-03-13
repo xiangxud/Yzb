@@ -198,6 +198,7 @@ class EnvironmentalStore {
     }
     @observable loading=false
     @observable loadEnd=false
+    @observable loadFrist=false
     pageIndex=0
     pageSize=25
     //数据拷贝
@@ -228,14 +229,19 @@ class EnvironmentalStore {
 
         s=r=>{
             runInAction(()=>{
-                this.loading=false;
+                d=[];
                 for( var i=0;i<r.length;i++){
                     t= new SensorData();
                     this.onShallCopy(t,r[i]);
-                    this.data.list.push(t);
+                    d.push(t);
                 }
+                this.data.list.push(...d);
                 if(r.length < this.pageSize){
                     this.loadEnd=true;
+                }
+                this.loading=false;
+                if(!this.loadFrist){
+                    this.loadFrist=true;
                 }
             });
         };

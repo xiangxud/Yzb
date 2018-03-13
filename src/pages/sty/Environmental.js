@@ -3,14 +3,16 @@ import {
     View,
     TextInput,
     WebView,
+    ScrollView,
     FlatList,
     TouchableOpacity,
+    ActivityIndicator,
     StyleSheet
 } from 'react-native';
 import {Container, Content,Form, Text,Spinner, Button, Icon} from 'native-base';
 import {observer, inject} from 'mobx-react/native';
 import EnvironmentMonitor from '../../components/sty/EnvironmentMonitor';
-import {TitleBar, SeparatorArea} from '../../components';
+import {TitleBar, SeparatorArea,Loading} from '../../components';
 
 @inject('styStore')
 @observer
@@ -20,9 +22,15 @@ export default class Environmental extends Component {
     })
     constructor(props){
         super(props);
+        this.onIni();
     }
     componentDidMount() {
     }
+    async onIni(){
+        const {styStore,navigation} = this.props;
+        const store = styStore.environmental;
+        store.onIni(navigation.state.params.code);
+    };
     settingPress = () => {
         this.props.navigation.navigate('EnvironmentalSetting');
     }
@@ -39,6 +47,27 @@ export default class Environmental extends Component {
             </View>
         );
     }
+    renderListFooter=()=>{
+        const {styStore,navigation} = this.props;
+        const store = styStore.environmental;
+
+        if(store.loading){
+            return <TouchableOpacity  style={styles.footer}>
+                <ActivityIndicator color={'#15856e'}/>
+            </TouchableOpacity>
+        }else{
+            return <TouchableOpacity  style={styles.footer} onPress={()=>{
+                store.onLoad(navigation.state.params.code);
+            }}>
+                <Text>点击查看更多</Text>
+            </TouchableOpacity>
+        }
+
+        // return <Button full light onPress={()=>{
+        //     store.onLoad(navigation.state.params.code);
+        // }}><Text>点击查看更多</Text></Button>
+    }
+
     renderRow =(item)=>{
         let label = item.CreatOn.ToDateTime().GetLabel();
         return (
@@ -67,15 +96,9 @@ export default class Environmental extends Component {
             data={store.data.list}
             renderItem={({ item }) => this.renderRow(item) }
             ListHeaderComponent={ this.renderListHeader() }
-            ListFooterComponent={
-                <View />
-            }
-            onEndReachedThreshold={0}
+            ListFooterComponent={this.renderListFooter()}
             onRefresh={()=>{
                 store.onIni(navigation.state.params.code);
-            }}
-            onEndReached={()=>{
-                store.onLoad(navigation.state.params.code);
             }}
             ItemSeparatorComponent={ this.renderSep }
             keyExtractor={ (item, index) => index }
@@ -83,12 +106,13 @@ export default class Environmental extends Component {
         />
     }
     render() {
+        const store = this.props.styStore.environmental;
         return (
             <Container>
                 <Content>
-                        {
-                            this.renderList()
-                        }
+                    {
+                        store.loadFrist?this.renderList():<Spinner />
+                    }
                 </Content>
             </Container>
         )
@@ -116,5 +140,8 @@ const styles = StyleSheet.create({
     time:{
         fontSize:20,
         fontWeight:'bold'
+    },
+    footer:{
+        height:35, justifyContent:'center' , alignItems:'center'
     }
 })
