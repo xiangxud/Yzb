@@ -13,6 +13,9 @@ class alarmCollection{
 
     @observable
     end=false
+
+    @observable
+    mored=true
 }
 class _immStore {
     queryConfig = {
@@ -78,6 +81,10 @@ class _immStore {
         rows.forEach(item=>{
             this.collection.list.push(item);
         });
+        this.collection.count=this.collection.list.length;
+        if(rows.length < this.queryConfig.PageSize){
+            this.collection.mored=false
+        }
         this.closeEnd();
     }
 
@@ -93,18 +100,30 @@ class _immStore {
 
     @action
     onMore(callback,falied){
+        if( !this.collection.mored || !this.collection.end ){
+            return ;
+        }
+
         this.openEnd();
         this.queryConfig.PageIndex = this.queryConfig.PageIndex + 1;
-        this.getDataFromApi(this.queryConfig,data=>{
-            this.addList(data);
-            callback();
-        },(err)=>{
+        this.onLoadData(callback,falied);
+    }
+
+
+    @action
+    onLoadData(c,e){
+        this.getDataFromApi(this.queryConfig).then(d=>{
+            this.addList(d.Rows);
+            c();
+        },err=>{
             this.closeEnd();
-            if( falied ){
-                falied(err);
+            if( e ){
+                e(err);
             }
         });
     }
+
+
 
     @action
     onLoad(config,callback,falied){
@@ -114,30 +133,25 @@ class _immStore {
         this.openEnd();
         this.queryConfig.PageIndex=1;
         this.clear();
-        this.getDataFromApi(this.queryConfig,data=>{
-            this.fillList(data);
-            if( callback && callback != null ) {
-                callback(data)
-            };
-        },(err)=>{
-            this.closeEnd();
-            if( falied && falied != null ) {
-                falied(err)
-            };
-        });
+
+        this.onLoadData(callback,falied);
+
+        // this.getDataFromApi(this.queryConfig).then(data=>{
+        //     this.fillList(data.Rows);
+        //     if( callback && callback != null ) {
+        //         callback(data.Rows)
+        //     };
+        // },(err)=>{
+        //     this.closeEnd();
+        //     if( falied && falied != null ) {
+        //         falied(err)
+        //     };
+        // });
     }
 
     @action
-    getDataFromApi(_config,callback,falied){
-        request.postJson(urls.apis.IMM_GET_DETAIL,_config).then(data=>{
-            if(callback){
-                callback(data.Rows);
-            }
-        }).catch(err=>{
-            if( falied ){
-                falied(err);
-            }
-        });
+    getDataFromApi(_config){
+        return request.postJson(urls.apis.IMM_GET_DETAIL,_config);
     }
 }
 //2、预警

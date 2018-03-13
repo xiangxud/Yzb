@@ -4,6 +4,7 @@ import {
     StyleSheet,
     FlatList,
     TouchableNativeFeedback,
+    ActivityIndicator,
     TouchableOpacity
 } from 'react-native';
 import { SwipeRow,Button,Text,Icon,List, ListItem,Left,Body,Right} from 'native-base';
@@ -20,16 +21,7 @@ class AlarmClockRow extends Component{
     showPlan=false;
 
     renderDate(item){
-        let formate = "";
-        if( item.IsCyc ){
-            formate="周期免疫";
-        }else if( this.isNoNull(item.ImmuneTime)){
-            formate = "";
-        }else {
-            formate = item.ImmuneTime.ToDate().Format("yyyy-MM-dd");
-            formate = formate == new Date().Format("yyyy-MM-dd") ? "今天" : formate;
-        }
-
+        let formate = item.ImmuneTime.ToDate().GetLabel();
         return (
             <Text style={style.immTime} numberOfLines={1}>
                 {formate}
@@ -161,23 +153,29 @@ export default class AlarmClock extends Component{
         super(props);
     }
     componentWillMount(){
-
     }
-
     renderRow(info){
         return(<AlarmClockRow item={info.item} onIgnore={this.props.onIgnore} onImplement={this.props.onImplement}></AlarmClockRow>);
     }
-
     _separator=()=>{
         return <View style={{ height: 1, backgroundColor: '#bbbbbb' }}/>;
     }
-    _renderFooter(){
-        return <View></View>
+    _renderFooter=()=>{
+        if(!this.props.end){
+            return <TouchableOpacity  style={style.footer}>
+                <ActivityIndicator color={'#15856e'}/>
+            </TouchableOpacity>
+        }else{
+            return <TouchableOpacity  style={style.footer} onPress={()=>{
+                this.props.onMore()
+            }}>
+                <Text style={style.footerTxt}>{!this.props.mored?'已经到底了':'点击加载更多'}</Text>
+            </TouchableOpacity>
+        }
     }
     _renderHeader(){
         return <View></View>
     }
-
     render(){
         return <FlatList
             data={this.props.collection.list}
@@ -188,11 +186,11 @@ export default class AlarmClock extends Component{
             ListFooterComponent={this._renderFooter}
             refreshing={!this.props.end}
             onRefresh={()=>{
-                // this.props.onLoad();
+                this.props.onLoad();
             }}
             onEndReached={(number)=>{
-                // this.props.onMore();
-                // return true;
+                this.props.onMore();
+                return true;
             }}
             keyExtractor={(item,key) => key}>
         </FlatList>
@@ -250,5 +248,11 @@ const style = StyleSheet.create({
     },
     right:{
         textAlign:'right'
+    },
+    footer:{
+        height:35, justifyContent:'center' , alignItems:'center'
+    },
+    footerTxt:{
+        color:'#bbbbbb'
     }
 });

@@ -26,7 +26,6 @@ export default class imm extends Component{
     onLoadList(config) {
         const {styStore} = this.props;
         const immStore=styStore.immCollection;
-
         immStore.onLoad(config, (mess) => {},(mess)=> {})
     }
     onMoreList(){
@@ -133,6 +132,7 @@ export default class imm extends Component{
                                 onMore={this.onMoreList.bind(this)}
                                 count={immStore.collection.count}
                                 end={immStore.collection.end}
+                                mored={immStore.collection.mored}
                                 onImplement={this.onImplement.bind(this)}
                                 onIgnore={this.onIgnore.bind(this)}
                                 collection={immStore.collection}>

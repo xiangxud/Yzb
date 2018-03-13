@@ -32,6 +32,8 @@ global.PlanState={
     }
 }
 
+
+
 //日期扩展
 Date.prototype.Format = function (fmt) {
     var o = {
@@ -68,23 +70,42 @@ Date.prototype.InterVal=function (date) {
 Date.prototype.GetLabel=function () {
     d0 = new Date();
     c = this.InterVal(d0);
-    //1、刚刚
-    if( c < 50 ){
-        return "刚刚";
+
+    let intD0 = parseInt(this.Format("yyyyMMdd"),10);
+    let intD1 = parseInt(d0.Format("yyyyMMdd"),10);
+
+    if(c >= 0){
+        //1、刚刚
+        if(c < 50 ){
+            return "刚刚";
+        }
+        //2、今天
+        if( intD0 == intD1){
+            return "今天";
+        }
+        //3、昨天
+        if(intD0 - intD1==1){
+            return "昨天";
+        }
+    }else{
+        //马上
+        if( c > -20 ){
+            return "马上";
+        }
+        //今天
+        if( intD0 == intD1){
+            return "今天";
+        }
+        //明天
+        if(intD1 - intD0 == 1){
+            return "明天";
+        }
     }
-    //2、今天
-    if( d0.Format("yyyy-MM-dd") == this.Format("yyyy-MM-dd")){
-        return "今天";
-    }
-    //3、昨天
-    if( c < (d0.Format("yyyy-MM-dd").ToDate().InterVal( d0 ) + 24 * 60)){
-        return "昨天";
-    }
-    //4、当年
+    //5、当年
     if( d0.Format("yyyy") == this.Format("yyyy") ){
         return this.Format("MM-dd");
     }
-    //4、其它
+    //6、其它
     return this.Format("yyyy-MM-dd");
 }
 

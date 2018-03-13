@@ -62,10 +62,6 @@ export default class Environmental extends Component {
                 <Text>点击查看更多</Text>
             </TouchableOpacity>
         }
-
-        // return <Button full light onPress={()=>{
-        //     store.onLoad(navigation.state.params.code);
-        // }}><Text>点击查看更多</Text></Button>
     }
 
     renderRow =(item)=>{
