@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import {NavigationActions} from 'react-navigation';
 import { inject, observer } from 'mobx-react/native'
-import {Container, Content, Body, CheckBox, Icon, Form, Item, Input, Label, Text, Button} from 'native-base';
+import {Container, Content, Body, CheckBox, Icon, Form, Item, Input, Label, Text, Button,Left,ActionSheet} from 'native-base';
 import {MaskLoading} from '../../components'
 
 @inject('userStore')
@@ -58,11 +58,9 @@ export default class Register extends Component {
             }
         }, 1000);
     }
-
     componentWillUnmount() {
         clearInterval(this.interval)
     }
-
     getValidateCode = (t) => {
         const {userStore} = this.props;
         if (this.state.counting) {
@@ -72,6 +70,11 @@ export default class Register extends Component {
             tools.showToast(userStore.validateErrorLoginPhone);
             return;
         }
+        if(!userStore.loginPhone || userStore.loginPhone==""){
+            tools.showToast("请输入手机号");
+            return;
+        }
+
         userStore.setLoading();
         request.getJson(urls.apis.USER_GET_PHONE_CODE, {phone: userStore.loginPhone, type: t}).then((res) => {
             userStore.setLoading();
@@ -99,7 +102,6 @@ export default class Register extends Component {
             }
         });
     }
-
     submit = () => {
         const {userStore} = this.props;
 
@@ -140,6 +142,20 @@ export default class Register extends Component {
             //alert(JSON.stringify(err));
         });
     }
+    onDisplayUserType=()=>{
+        const {userStore} = this.props;
+        options = userStore.onGetUserTypeOptions();
+        ActionSheet.show(
+            {
+                options: options,
+                title: "用户类型"
+            },
+            index => {
+                userStore.onUpdateUserType(options[index]);
+            }
+        )
+    }
+
     render() {
         const {userStore} = this.props;
         return (
@@ -150,6 +166,7 @@ export default class Register extends Component {
                         <Item fixedLabel>
                             <Label>手机号码</Label>
                             <Input placeholder="请输入手机号码"
+                                   placeholderTextColor='#b1b1b1'
                                    maxLength={11}
                                    keyboardType={'phone-pad'}
                                    autoCapitalize='none'
@@ -159,6 +176,7 @@ export default class Register extends Component {
                         <Item fixedLabel>
                             <Label>验证码</Label>
                             <Input placeholder="请输入6位验证码"
+                                   placeholderTextColor='#b1b1b1'
                                    maxLength={6}
                                    keyboardType={'numeric'}
                                    onChangeText={(text)=> userStore.setValidateCode(text)} />
@@ -174,6 +192,7 @@ export default class Register extends Component {
                         <Item fixedLabel>
                             <Label>登陆密码</Label>
                             <Input placeholder="请输入(6-20位)登录密码"
+                                   placeholderTextColor='#b1b1b1'
                                    maxLength={20}
                                    secureTextEntry={true}
                                    onChangeText={(text)=> userStore.setRegisterPassword(text)} />
@@ -181,39 +200,50 @@ export default class Register extends Component {
                         <Item fixedLabel>
                             <Label>重复密码</Label>
                             <Input placeholder="请输入上面相同的密码"
+                                   placeholderTextColor='#b1b1b1'
                                    maxLength={20}
                                    secureTextEntry={true}
                                    onChangeText={(text)=> userStore.setRegisterPasswordRepeat(text)} />
                         </Item>
                         <Item fixedLabel>
+                            <TouchableOpacity
+                                style={{flex:1,flexDirection:'row',alignItems:'center'}}
+                                onPress={()=>this.onDisplayUserType()}>
+                                <Label>类型</Label>
+                                <Input placeholder="请选择用户类型"
+                                       placeholderTextColor='#b1b1b1'
+                                       value={userStore.userTypeLabel}
+                                       editable={false}
+                                />
+                            </TouchableOpacity>
+                        </Item>
+                        <Item fixedLabel>
                             <Label>真实姓名</Label>
                             <Input placeholder="请输入您的真实姓名"
+                                   placeholderTextColor='#b1b1b1'
                                    maxLength={20}
                                    onChangeText={(text)=> userStore.setName(text)} />
                         </Item>
                         <Item fixedLabel>
                             <Label>企业名称</Label>
-                            <Input placeholder="请输入您的养殖场名称"
+                            <Input placeholder="请输入您的企业名称"
+                                   placeholderTextColor='#b1b1b1'
                                    maxLength={100}
                                    onChangeText={(text)=> userStore.setFarm(text)} />
                         </Item>
                         <Item fixedLabel last style={{paddingBottom:10, paddingTop:10}}>
                             <Label>养殖类型</Label>
-                            <TouchableOpacity  onPress={()=>userStore.setBreed(0)} style={{flex:1,flexDirection:'row'}}>
-                                <CheckBox checked={userStore.animalType.indexOf(0)>-1} />
-                                <Body>
-                                    <Text>家禽</Text>
-                                </Body>
+                            <TouchableOpacity style={{flex:1,flexDirection:'row',alignItems:'center'}} onPress={()=>userStore.setBreed(0)}>
+                                <CheckBox checked={userStore.animalType.indexOf(0)>-1} onPress={()=>userStore.setBreed(0)} />
+                                <Text style={{marginLeft:15}}>家禽</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>userStore.setBreed(1)} style={{flex:1,flexDirection:'row'}}>
-                                <CheckBox checked={userStore.animalType.indexOf(1)>-1}/>
-                                <Body>
-                                    <Text>家畜</Text>
-                                </Body>
+                            <TouchableOpacity style={{flex:1,flexDirection:'row',alignItems:'center'}} onPress={()=>userStore.setBreed(1)}>
+                                <CheckBox checked={userStore.animalType.indexOf(1)>-1} onPress={()=>userStore.setBreed(1)} />
+                                <Text style={{marginLeft:15}}>家畜</Text>
                             </TouchableOpacity>
                         </Item>
-                        <View style={{flexDirection:'row', margin:20}}>
-                            <TouchableOpacity onPress={()=>this.setState({agree: !this.state.agree})} style={{flex:1,flexDirection:'row' }}>
+                        <View style={{flexDirection:'row', margin:20,alignItems:'center'}}>
+                            <TouchableOpacity onPress={()=>this.setState({agree: !this.state.agree})} style={{flex:1,flexDirection:'row',alignItems:'center'}}>
                                 <CheckBox checked={this.state.agree} onPress={()=>this.setState({agree: !this.state.agree})} />
                                 <Text style={{marginLeft:15}}>同意</Text>
                             </TouchableOpacity>

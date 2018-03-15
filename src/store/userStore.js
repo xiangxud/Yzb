@@ -49,8 +49,11 @@ class UserStore {
 
     @observable
     farmName=''
-
+    //养殖类型
     @observable animalType = [];
+    //用户类型
+    @observable userType=1;
+    @observable userTypeLabel="养殖场";
 
     //userSession
     @observable hydrated = false;
@@ -79,6 +82,16 @@ class UserStore {
     @action setName = _.debounce((v)=>{ this.name = v }, 400)
     @action setFarm = _.debounce((v)=>{ this.farmName = v }, 400)
     //#######################################
+
+    userTypeOptions=[{label:'养殖场',value:1},{label:'经销商',value:2},{label:'业务员',value:3}];
+    onGetUserTypeOptions=()=>{
+        options=[];
+        this.userTypeOptions.forEach(
+            item=>options.push(item.label)
+        );
+        return options;
+    };
+
     @action setLoginUser = (u) =>{
         this.loginUser = u;
     }
@@ -124,6 +137,7 @@ class UserStore {
         let reg_data = {
             phone: this.loginPhone,
             vcode: this.validateCode,
+            userType:this.userType,
             password: this.registerPassword,
             name: this.name,
             farm_name: this.farmName,
@@ -177,7 +191,13 @@ class UserStore {
     @action relogin = (callback) => {
         this.login(callback)
     };
-
+    @action onUpdateUserType=label=>{
+        let o = this.userTypeOptions.fristOne(item=>item.label==label);
+        if(o!=null){
+            this.userType=o.value;
+            this.userTypeLabel=o.label;
+        }
+    };
     _login(phone, password, success, failed) {
         request.postJson(urls.apis.USER_LOGIN, {
             phone: phone,
@@ -188,7 +208,6 @@ class UserStore {
             failed(error)
         });
     }
-
     @action fetchLoginUser(success, failed){
         request.getJson(urls.apis.USER_GET_MINE).then((data) => {
             success(data);
@@ -196,7 +215,6 @@ class UserStore {
             failed(res);
         });
     };
-
     @action updateUserPhoto(uri, fileName) {
         let formData = new FormData();
         formData.append("filename", {
@@ -215,7 +233,6 @@ class UserStore {
                 }
             })
     }
-
     @action updateUserInfo(property, value) {
         let user0 = {...this.loginUser};
         user0[property] = value;
@@ -232,7 +249,6 @@ class UserStore {
             }
         })
     }
-
     @action getposition() {
         Geolocation.getCurrentPosition(
             location => {
@@ -271,7 +287,6 @@ class UserStore {
             }
         );
     }
-
     @action logout() {
         this.isLogin = false;
         this.password = '';
