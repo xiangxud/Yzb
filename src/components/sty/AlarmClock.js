@@ -169,7 +169,7 @@ export default class AlarmClock extends Component{
             return <TouchableOpacity  style={style.footer} onPress={()=>{
                 this.props.onMore()
             }}>
-                <Text style={style.footerTxt}>{!this.props.mored?'已经到底了':'点击加载更多'}</Text>
+                <Text style={style.footerTxt}>{!this.props.mored?'':'点击加载更多'}</Text>
             </TouchableOpacity>
         }
     }
