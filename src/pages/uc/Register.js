@@ -199,18 +199,18 @@ export default class Register extends Component {
                         </Item>
                         <Item fixedLabel last style={{paddingBottom:10, paddingTop:10}}>
                             <Label>养殖类型</Label>
-                            <CheckBox checked={userStore.animalType.indexOf(0)>-1} onPress={()=>userStore.setBreed(0)} />
-                            <Body>
-                            <TouchableOpacity onPress={()=>userStore.setBreed(0)}>
-                                <Text>家禽</Text>
+                            <TouchableOpacity  onPress={()=>userStore.setBreed(0)} style={{flex:1,flexDirection:'row'}}>
+                                <CheckBox checked={userStore.animalType.indexOf(0)>-1} />
+                                <Body>
+                                    <Text>家禽</Text>
+                                </Body>
                             </TouchableOpacity>
-                            </Body>
-                            <CheckBox checked={userStore.animalType.indexOf(1)>-1} onPress={()=>userStore.setBreed(1)} />
-                            <Body>
-                            <TouchableOpacity onPress={()=>userStore.setBreed(1)}>
-                                <Text>家畜</Text>
+                            <TouchableOpacity onPress={()=>userStore.setBreed(1)} style={{flex:1,flexDirection:'row'}}>
+                                <CheckBox checked={userStore.animalType.indexOf(1)>-1}/>
+                                <Body>
+                                    <Text>家畜</Text>
+                                </Body>
                             </TouchableOpacity>
-                            </Body>
                         </Item>
                         <View style={{flexDirection:'row', margin:20}}>
                             <TouchableOpacity onPress={()=>this.setState({agree: !this.state.agree})} style={{flex:1,flexDirection:'row' }}>
