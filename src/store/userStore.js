@@ -113,10 +113,12 @@ class UserStore {
     }
     @action setBreed = (t) => {
         let i = this.animalType.indexOf(t);
-        if(i > -1)
+        if(i > -1){
             this.animalType.splice(i, 1);
-        else
+        }
+        else{
             this.animalType.push(t);
+        }
     }
     @action register = (success, error) => {
         let reg_data = {

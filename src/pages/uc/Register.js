@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     View,
+    TouchableOpacity
 } from 'react-native';
 import {NavigationActions} from 'react-navigation';
 import { inject, observer } from 'mobx-react/native'
@@ -16,7 +17,7 @@ export default class Register extends Component {
         this.state = {
             agree: false,
             timerCount: 60,
-            timerTitle: '获取验证码',
+            timerTitle: '获取',
             counting: false,
             selfEnable: true,
         }
@@ -200,16 +201,22 @@ export default class Register extends Component {
                             <Label>养殖类型</Label>
                             <CheckBox checked={userStore.animalType.indexOf(0)>-1} onPress={()=>userStore.setBreed(0)} />
                             <Body>
-                            <Text>家禽</Text>
+                            <TouchableOpacity onPress={()=>userStore.setBreed(0)}>
+                                <Text>家禽</Text>
+                            </TouchableOpacity>
                             </Body>
                             <CheckBox checked={userStore.animalType.indexOf(1)>-1} onPress={()=>userStore.setBreed(1)} />
                             <Body>
-                            <Text>家畜</Text>
+                            <TouchableOpacity onPress={()=>userStore.setBreed(1)}>
+                                <Text>家畜</Text>
+                            </TouchableOpacity>
                             </Body>
                         </Item>
                         <View style={{flexDirection:'row', margin:20}}>
-                            <CheckBox checked={this.state.agree} onPress={()=>this.setState({agree: !this.state.agree})} />
-                            <Text style={{marginLeft:15}}>同意</Text>
+                            <TouchableOpacity onPress={()=>this.setState({agree: !this.state.agree})} style={{flex:1,flexDirection:'row' }}>
+                                <CheckBox checked={this.state.agree} onPress={()=>this.setState({agree: !this.state.agree})} />
+                                <Text style={{marginLeft:15}}>同意</Text>
+                            </TouchableOpacity>
                             <Text style={{color:'#377cc3'}} onPress={()=>this.props.navigation.navigate('Web', {url: urls.pages.PROTOCOL, title:'用户协议'})}>许可协议</Text>
                         </View>
                     </Form>
