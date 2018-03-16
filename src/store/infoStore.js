@@ -104,16 +104,18 @@ class InfoStore {
     showModel=false;//是否显示回复层
 
     @observable
-    allow_comment=true;//是否允许回复
-
-    @observable
-    comment_count=5
-
-    @observable
-    comment_input_count=0;//回复的最大字数
-
-    @observable
-    comment_text_total_count=500;//回复的最大字数
+    data={
+        @observable
+        allow_comment:true,//是否允许回复
+        @observable
+        comment_count:5,
+        @observable
+        comment_input_count:0,//回复的最大字数
+        @observable
+        comment_text_total_count:500,//回复的最大字数
+        @observable
+        comment_content:''
+    };
 
     @action
     onShowModel(){
@@ -121,13 +123,20 @@ class InfoStore {
     }
 
     @action
-    onPostComment(){
-
+    onPostComment(code){
+        request.postJson(urls.apis.Content_Article_PostComment,{
+            ArticleCode:code,
+            Comment:this.data.comment_content
+        }).then(data => {
+            alert("1");
+        }).catch(err => {
+            alert(JSON.stringify(err));
+        });
     }
 
     @action
-    onChangText(){
-
+    onChangText(txt){
+        this.data.comment_content=txt;
     }
 
     @action

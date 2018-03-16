@@ -25,17 +25,6 @@ export default class InfoDetail extends Component {
         headerRight: <View></View>
     });
 
-    // 先禁用评论功能
-    // componentDidMount(){
-    //     const {navigation} = this.props;
-    //     var url = "http://192.168.0.101/RP.Imm.WebUI/api/info/GetArticle";//urls.apis.CMS_GetArticle
-    //     request.getJson(url,{ code: navigation.state.params.id }).then((res)=>{
-    //         infoStore.getArticle(res);
-    //     }).catch((err)=>{
-    //         tools.showToast("网络请求失败，请检查网络设置");
-    //     });
-    // }
-
     renderView = () => {
         const {infoStore} = this.props;
         return (<View style={style.bottom}>
@@ -52,13 +41,14 @@ export default class InfoDetail extends Component {
                 <Icon name="star-o" size={25} color="#008AF5"></Icon>
                 <Icon name="share-square-o" size={25} color="#008AF5"></Icon>
                 <View style={style.label}>
-                    <Text style={style.word}>{infoStore.comment_count}</Text>
+                    <Text style={style.word}>{infoStore.data.comment_count}</Text>
                 </View>
             </View>
         </View>);
     };
+
     renderReply = () => {
-        const {infoStore} = this.props;
+        const {navigation,infoStore} = this.props;
         return (
             <Modal animationType={'none'} transparent={true} visible={true} onRequestClose={()=>infoStore.onCloseModel()}>
                 <View style={{flex:1,backgroundColor:'rgba(0,0,0,0.5)',paddingTop:5}}>
@@ -69,11 +59,14 @@ export default class InfoDetail extends Component {
                     </TouchableOpacity>
                     <View style={{ flex:2,alignItems:'stretch',flexDirection:'row',backgroundColor:'white'}}>
                         <TextInput
+                            value={infoStore.data.comment_content}
                             underlineColorAndroid='transparent'
                             placeholder='说说你的看法'
                             returnKeyType="search"
                             placeholderTextColor="#969696"
-                            onChange={infoStore.onChangText}
+                            onChangeText={txt => {
+                                infoStore.onChangText(txt)
+                            }}
                             numberOfLines={5}
                             multiline={true}
                             autoFocus={true}
@@ -81,14 +74,15 @@ export default class InfoDetail extends Component {
                     </View>
                     <View style={{height:50 ,flexDirection:'row',justifyContent:'space-around',alignItems:'center',backgroundColor:'white'}}>
                         <View style={{width:200,flexDirection:'row',alignItems:'center'}}>
-                            <Text style={{}}>{infoStore.comment_input_count}</Text><Text style={{color:'red'}}>/{infoStore.comment_text_total_count}</Text>
+                            <Text style={{}}>{infoStore.data.comment_input_count}</Text><Text style={{color:'red'}}>/{infoStore.data.comment_text_total_count}</Text>
                         </View>
                         <View style={{width:30}}></View>
-                        <Button title="发布" disabled={!infoStore.allow_comment} onPress={() => infoStore.onPostComment()}></Button>
+                        <Button title="发布" disabled={!infoStore.data.allow_comment} onPress={() => infoStore.onPostComment(navigation.state.params.code)}></Button>
                     </View>
                 </View>
             </Modal>);
     };
+
     render() {
         const {navigation,infoStore} = this.props;
         let r = 'https://m.ringpu.com/ringpu/html_php/advice_and_college/d.php?code=' + navigation.state.params.code;
@@ -104,6 +98,7 @@ export default class InfoDetail extends Component {
             </View>
         );
     }
+
 }
  const style = StyleSheet.create({
         main:{
