@@ -1,7 +1,6 @@
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
 
 useStrict(true);
-
 class breedItem{
     code='';
     title='';
@@ -100,6 +99,41 @@ class InfoStore {
     labels = ["肉蛋行情","原材料价格","疫病流行咨询"];
     @observable
     currentLabel="肉蛋行情";
+
+    @observable
+    showModel=false;//是否显示回复层
+
+    @observable
+    allow_comment=true;//是否允许回复
+
+    @observable
+    comment_count=5
+
+    @observable
+    comment_input_count=0;//回复的最大字数
+
+    @observable
+    comment_text_total_count=500;//回复的最大字数
+
+    @action
+    onShowModel(){
+        this.showModel=true;
+    }
+
+    @action
+    onPostComment(){
+
+    }
+
+    @action
+    onChangText(){
+
+    }
+
+    @action
+    onCloseModel(){
+        this.showModel=false;
+    }
 
     @action
     onChanged(label){
