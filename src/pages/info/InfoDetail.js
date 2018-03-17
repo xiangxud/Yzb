@@ -43,19 +43,24 @@ export default class InfoDetail extends Component {
             </TouchableOpacity>;
         }
     }
-
+    renderCommentButton(){
+        const {infoStore} = this.props;
+        if( infoStore.data.exist_comment ){
+            return null;
+        }else{
+            return <TouchableOpacity onPress={() => infoStore.onShowModel()} style={{ flexDirection:'row',justifyContent:'center',alignItems:'center',paddingLeft:10,width:160}}>
+                <Icon name="edit" size={25} color="#008AF5"></Icon>
+                <Text style={style.textbox}>说说你的看法</Text>
+            </TouchableOpacity>;
+        }
+    }
     renderView = () => {
         const {infoStore} = this.props;
 
         return (<View style={style.bottom}>
-            <TextInput
-                onFocus={() => infoStore.onShowModel()}
-                underlineColorAndroid='transparent'
-                placeholder='说说你的看法'
-                returnKeyType="search"
-                placeholderTextColor="#969696"
-                style={style.textbox}>
-            </TextInput>
+            {
+                this.renderCommentButton()
+            }
             <View style={style.actions}>
                 <TouchableOpacity onPress={()=>{}}>
                     <Icon name="commenting-o" size={25} color="#008AF5"></Icon>
@@ -171,12 +176,7 @@ export default class InfoDetail extends Component {
             backgroundColor:'white'
         },
         textbox:{
-            borderColor:'#ccc',
-            width:165,
-            height:36,
-            borderWidth:1,
-            borderRadius: 4,
-            marginLeft:15
+            marginLeft:5,
         },
         label : {
             position:'absolute',
