@@ -108,14 +108,34 @@ class InfoStore {
         @observable
         allow_comment:true,//是否允许回复
         @observable
-        comment_count:5,
+        comment_count:"",
         @observable
-        comment_input_count:0,//回复的最大字数
+        comment_input_count:0,//已经回复的字数
         @observable
-        comment_text_total_count:500,//回复的最大字数
+        comment_text_total_count:10,//回复的最大字数
         @observable
-        comment_content:''
+        comment_content:'',//回复内容
+        @observable
+        exist:false,//本人是否已经回复
+        @observable
+        thumbUp:false//是否已经点赞
     };
+
+    @action
+    onIni(code){
+        request.getJson(urls.apis.Content_Article_GetArticleSummary,{code:code}).then(d=>{
+            this.onLayout(d);
+        },e=>{
+            alert( "异常：" + JSON.stringify(e) );
+        });
+    }
+
+    @action
+    onLayout(m){
+        this.data.comment_count=m.CommentCount;
+        this.data.exist=m.Exist;
+        this.data.thumbUp=m.ThumbUp;
+    }
 
     @action
     onShowModel(){
@@ -136,7 +156,11 @@ class InfoStore {
 
     @action
     onChangText(txt){
+        if(txt.length > this.data.comment_text_total_count){
+            txt = txt.substring(0,this.data.comment_text_total_count);
+        }
         this.data.comment_content=txt;
+        this.data.comment_input_count = txt.length;
     }
 
     @action
@@ -152,7 +176,6 @@ class InfoStore {
             data.onLoad();
         }
     }
-
 
     @action
     onFilter(txt){

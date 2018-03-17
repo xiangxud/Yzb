@@ -150,6 +150,8 @@ const urls = {
         IMM_REMOVE_CAMERA:apiPath + 'sty/RemoveCamera',
         //设置默认摄像头
         IMM_DEFAULT_CAMERA:apiPath + 'sty/ChangeCamera',
+        //获取文章汇总
+        Content_Article_GetArticleSummary:apiPath + 'Info/GetArticleSummary',
         //文章回复
         Content_Article_PostComment:apiPath + 'Info/PostArticleComment'
     },

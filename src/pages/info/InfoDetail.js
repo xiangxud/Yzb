@@ -25,8 +25,26 @@ export default class InfoDetail extends Component {
         headerRight: <View></View>
     });
 
+    componentWillMount(){
+        const {navigation,infoStore} = this.props;
+        infoStore.onIni(navigation.state.params.code);
+    }
+
+    renderThumbUp(){
+        const {infoStore} = this.props;
+
+        if(infoStore.data.thumbUp){
+            return <Icon name="star-o" size={25} color="#008AF5"></Icon>;
+        }else{
+            return <Icon name="star-o" size={25} color="#008AF5"></Icon>;
+        }
+    }
+
+
+
     renderView = () => {
         const {infoStore} = this.props;
+
         return (<View style={style.bottom}>
             <TextInput
                 onFocus={() => infoStore.onShowModel()}
@@ -37,12 +55,18 @@ export default class InfoDetail extends Component {
                 style={style.textbox}>
             </TextInput>
             <View style={style.actions}>
-                <Icon name="commenting-o" size={25} color="#008AF5"></Icon>
-                <Icon name="star-o" size={25} color="#008AF5"></Icon>
+                <TouchableOpacity onPress={()=>{}}>
+                    <Icon name="commenting-o" size={25} color="#008AF5"></Icon>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>{}}>
+                {
+                    this.renderThumbUp()
+                }
+                </TouchableOpacity>
                 <Icon name="share-square-o" size={25} color="#008AF5"></Icon>
-                <View style={style.label}>
+                <TouchableOpacity style={style.label}>
                     <Text style={style.word}>{infoStore.data.comment_count}</Text>
-                </View>
+                </TouchableOpacity>
             </View>
         </View>);
     };
@@ -98,7 +122,6 @@ export default class InfoDetail extends Component {
             </View>
         );
     }
-
 }
  const style = StyleSheet.create({
         main:{
@@ -144,14 +167,17 @@ export default class InfoDetail extends Component {
             position:'absolute',
             left:15,
             top:-3,
+            minWidth:20,
+            height:20,
+            borderWidth:1,
+            borderColor:'white',
+            borderRadius:5,
             alignItems:'center',
             justifyContent:'center',
             backgroundColor:'#008AF5',
-            borderWidth:3,
-            borderColor:'white',
-            borderRadius:10,
-            width:20,
-            height:20
+            paddingLeft:2,
+            paddingRight:2,
+            zIndex:2000
         },
         actions :{
             flex:1,
@@ -161,7 +187,7 @@ export default class InfoDetail extends Component {
             marginRight:20
         },
         word:{
-            fontSize:10,
+            fontSize:12,
             color:'white'
         }
 });
