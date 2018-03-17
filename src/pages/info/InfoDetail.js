@@ -7,6 +7,7 @@ import {
     Modal,
     WebView,
     TouchableOpacity,
+    ActivityIndicator,
     StyleSheet
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -31,16 +32,17 @@ export default class InfoDetail extends Component {
     }
 
     renderThumbUp(){
-        const {infoStore} = this.props;
-
-        if(infoStore.data.thumbUp){
-            return <Icon name="star-o" size={25} color="#008AF5"></Icon>;
+        const {navigation,infoStore} = this.props;
+        if(infoStore.data.exist_thumbUp){
+            return <TouchableOpacity onPress={()=>{ infoStore.onCancleThumbUp(navigation.state.params.code) }}>
+                <Icon name="star" size={25} color="#008AF5"></Icon>
+            </TouchableOpacity>;
         }else{
-            return <Icon name="star-o" size={25} color="#008AF5"></Icon>;
+            return <TouchableOpacity onPress={()=>{infoStore.onThumbUp(navigation.state.params.code)}}>
+                <Icon name="star-o" size={25} color="#008AF5"></Icon>
+            </TouchableOpacity>;
         }
     }
-
-
 
     renderView = () => {
         const {infoStore} = this.props;
@@ -58,12 +60,11 @@ export default class InfoDetail extends Component {
                 <TouchableOpacity onPress={()=>{}}>
                     <Icon name="commenting-o" size={25} color="#008AF5"></Icon>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{}}>
                 {
                     this.renderThumbUp()
                 }
-                </TouchableOpacity>
                 <Icon name="share-square-o" size={25} color="#008AF5"></Icon>
+
                 <TouchableOpacity style={style.label}>
                     <Text style={style.word}>{infoStore.data.comment_count}</Text>
                 </TouchableOpacity>
@@ -101,11 +102,25 @@ export default class InfoDetail extends Component {
                             <Text style={{}}>{infoStore.data.comment_input_count}</Text><Text style={{color:'red'}}>/{infoStore.data.comment_text_total_count}</Text>
                         </View>
                         <View style={{width:30}}></View>
-                        <Button title="发布" disabled={!infoStore.data.allow_comment} onPress={() => infoStore.onPostComment(navigation.state.params.code)}></Button>
+                        <Button title=" 取 消 "
+                                onPress={()=>{ infoStore.onCloseModel() }}></Button>
+                        <Button title=" 发 布 "
+                                disabled={!infoStore.data.allow_comment}
+                                onPress={() => infoStore.onPostComment(navigation.state.params.code)}
+                                style={{width:80}}></Button>
                     </View>
                 </View>
             </Modal>);
     };
+
+    renderBottom(){
+        const {navigation,infoStore} = this.props;
+        if(infoStore.data.ready){
+            return !infoStore.data.showModel ? this.renderView() : this.renderReply();
+        }else{
+            return <ActivityIndicator color={'#15856e'}></ActivityIndicator>;
+        }
+    }
 
     render() {
         const {navigation,infoStore} = this.props;
@@ -117,7 +132,7 @@ export default class InfoDetail extends Component {
                     </WebView>
                 </View>
                 {
-                    !infoStore.showModel ? this.renderView() : this.renderReply()
+                    this.renderBottom()
                 }
             </View>
         );

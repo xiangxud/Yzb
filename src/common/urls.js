@@ -153,7 +153,9 @@ const urls = {
         //获取文章汇总
         Content_Article_GetArticleSummary:apiPath + 'Info/GetArticleSummary',
         //文章回复
-        Content_Article_PostComment:apiPath + 'Info/PostArticleComment'
+        Content_Article_PostComment:apiPath + 'Info/PostArticleComment',
+        //点赞文章
+        Content_Article_ThumbUpArticle:apiPath + 'Info/ThumbUpArticle'
     },
     // 获取图片完整路径
     getImage(filePath, width, height){
