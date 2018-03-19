@@ -83,6 +83,8 @@ const urls = {
         CMS_ARTICLE_QUOTES:apiPath + 'info/getQuotes',
         //获得分页文章列表
         CMS_LIVE_LIST: apiPath + 'content/getLives',
+        //获取收藏的文章列表
+        CMS_ARTICLE_COLLECTION:apiPath + 'info/GetCollectionInfos',
 
         //用户------------------------------------------------------------------------
         //登录
