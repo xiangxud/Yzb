@@ -40,7 +40,7 @@ class LiveStore {
                     }
                     let ds = res.rows;
                     this.list.splice(this.list.length, 0, ...ds);
-                    alert(JSON.stringify(this.list))
+                    //alert(JSON.stringify(this.list))
                 });
             }).catch((err) => {
                 this.isFetching = false;

@@ -8,7 +8,7 @@ import {
     FlatList,
 } from 'react-native';
 import {Button, Icon, Segment, Text} from 'native-base';
-import {Container, Content, MaskLoading} from "../components";
+import {Container, Content, TitleBar, MaskLoading} from "../components";
 import {observer, inject} from 'mobx-react/native';
 
 var Dimensions = require('Dimensions');
@@ -20,7 +20,7 @@ const Video = observer(({v, index, navigation}) => {
             <View style={styles.innerView}>
                 <Image source={{uri: v.FaceUrl}} style={styles.face}/>
                 <Icon name={'logo-youtube'} style={{position:'absolute', fontSize:40, color:'#fff'}} />
-                <Text style={styles.sub}>{v.Duration}</Text>
+                <Text style={styles.dur}>{v.Duration}</Text>
             </View>
             <Text style={styles.title}>{v.Title}</Text>
         </View>
@@ -52,6 +52,10 @@ export default class Live extends Component{
                         <Text>家畜</Text>
                     </Button>
                 </Segment>
+                <TitleBar icon={'history'}
+                          iconColor={'gray'}
+                          title={'往期回顾'}
+                          showMore = {false} />
             </View>
         )
     }
@@ -71,7 +75,7 @@ export default class Live extends Component{
                             <Button full light onPress={()=>liveStore.fetchMore(true)}><Text>获取更多</Text></Button>
                         }
                         numColumns={2}
-                        onRefresh={()=>{liveStore.fetchMore()}}
+                        onRefresh={()=>{liveStore.fetchMore(true)}}
                         refreshing = {isFetching}
                     />
                     :
@@ -84,7 +88,7 @@ export default class Live extends Component{
                             <Button full light onPress={()=>liveStore.fetchMore(true)}><Text>获取更多</Text></Button>
                         }
                         numColumns={2}
-                        onRefresh={()=>{liveStore.fetchMore()}}
+                        onRefresh={()=>{liveStore.fetchMore(true)}}
                         refreshing = {isFetching}
                     />
                 }
@@ -96,8 +100,9 @@ export default class Live extends Component{
 const styles = StyleSheet.create({
     item:{
         width:screenW/2,
-        padding:5,
-        backgroundColor:'#fff'
+        //padding:5,
+        backgroundColor:'#fff',
+        height:screenW/2*226/416+40
     },
     innerView:{
         width:screenW/2,
@@ -125,12 +130,15 @@ const styles = StyleSheet.create({
         color:'#6f6f6f',
         textAlign:'left',
     },
-    sub:{
+    dur:{
         fontSize:12,
+        paddingLeft:3,
+        paddingRight:3,
+        color:'#fff',
+        backgroundColor:'#000',
         textAlign:'right',
-        color:'#909090',
         position:'absolute',
-        right:5,
+        right:2,
         bottom:0,
     },
 })
