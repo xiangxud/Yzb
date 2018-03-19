@@ -151,7 +151,13 @@ const urls = {
         //删除摄像头
         IMM_REMOVE_CAMERA:apiPath + 'sty/RemoveCamera',
         //设置默认摄像头
-        IMM_DEFAULT_CAMERA:apiPath + 'sty/ChangeCamera'
+        IMM_DEFAULT_CAMERA:apiPath + 'sty/ChangeCamera',
+        //获取文章汇总
+        Content_Article_GetArticleSummary:apiPath + 'Info/GetArticleSummary',
+        //文章回复
+        Content_Article_PostComment:apiPath + 'Info/PostArticleComment',
+        //点赞文章
+        Content_Article_ThumbUpArticle:apiPath + 'Info/ThumbUpArticle'
     },
     // 获取图片完整路径
     getImage(filePath, width, height){

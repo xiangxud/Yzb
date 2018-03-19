@@ -1,7 +1,7 @@
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
+import tools from "../common/tools";
 
 useStrict(true);
-
 class breedItem{
     code='';
     title='';
@@ -96,10 +96,130 @@ class breedItemCollection {
     }
 }
 
+class ArticleStoreModel
+{
+    @observable
+    showModel=false//是否显示回复层
+    @observable
+    ready=false
+    @observable
+    allow_comment=false//是否允许回复
+    @observable
+    comment_count=""
+    @observable
+    comment_input_count=0//已经回复的字数
+    @observable
+    comment_text_total_count=10//回复的最大字数
+    @observable
+    comment_content=''//回复内容
+    @observable
+    exist_comment=false//本人是否已经回复
+    @observable
+    exist_thumbUp=false//本人是否已经点赞
+    @observable
+    thumbUp_count=0
+}
+
 class InfoStore {
     labels = ["肉蛋行情","原材料价格","疫病流行咨询"];
     @observable
     currentLabel="肉蛋行情";
+
+
+
+    @observable
+    data=new ArticleStoreModel();
+
+    @action
+    onIni(code){
+        this.data=new ArticleStoreModel();
+        this.data.ready=false;
+        request.getJson(urls.apis.Content_Article_GetArticleSummary,{code:code}).then(d=>{
+            this.onLayout(d);
+        },e=>{
+            alert( "异常：" + JSON.stringify(e) );
+        });
+    }
+
+    @action
+    onLayout(m){
+        this.data.showModel=false;
+        this.data.ready=true;
+        this.data.exist_comment=m.ExistComment;//本人是否已经回复
+        this.data.comment_count=m.CommentCount;//总回复数
+        this.data.exist_thumbUp=m.ExistThumbUp;//本人是否已经点赞
+        this.data.thumbUp_count=m.ThumbUpCount;//总点赞数
+    }
+    
+    @action
+    onShowModel(){
+        this.data.showModel=true;
+    }
+
+    @action
+    onPostComment(code){
+        if(!this.data.comment_content || this.data.comment_content==""){
+            tools.showToast( "缺少回复内容");
+            return;
+        }
+        if(!code || code==""){
+            tools.showToast("数据不完整");
+            return;
+        }
+
+        request.postJson(urls.apis.Content_Article_PostComment,{
+            ArticleCode:code,
+            Comment:this.data.comment_content
+        }).then(data => {
+            tools.showToast("评论成功!")
+            this.onLayout(data);
+        }).catch(err => {
+            alert(JSON.stringify(err));
+        });
+    }
+
+    @action
+    onChangText(txt){
+        this.data.allow_comment=txt.length> 0;
+        if(txt.length > this.data.comment_text_total_count){
+            txt = txt.substring(0,this.data.comment_text_total_count);
+        }
+        this.data.comment_content=txt;
+        this.data.comment_input_count = txt.length;
+    }
+
+    @action
+    onCloseModel(){
+        this.data.showModel=false;
+    }
+
+    @action
+    onThumbUp(code){
+        request.getJson(urls.apis.Content_Article_ThumbUpArticle,{
+            code:code,
+            thumbUp:true
+        }).then(d=>{
+            runInAction(()=>{
+                this.data.exist_thumbUp=true;
+            })
+        },e=>{
+            //alert( JSON.stringify(e) );
+        });
+    }
+
+    @action
+    onCancleThumbUp(code){
+        request.getJson(urls.apis.Content_Article_ThumbUpArticle,{
+            code:code,
+            thumbUp:false
+        }).then(d=>{
+            runInAction(()=>{
+                this.data.exist_thumbUp=false;
+            })
+        },e=>{
+            //alert( JSON.stringify(e) );
+        });
+    }
 
     @action
     onChanged(label){
@@ -109,7 +229,6 @@ class InfoStore {
             data.onLoad();
         }
     }
-
 
     @action
     onFilter(txt){

@@ -7,6 +7,7 @@ import {
     Modal,
     WebView,
     TouchableOpacity,
+    ActivityIndicator,
     StyleSheet
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -25,68 +26,109 @@ export default class InfoDetail extends Component {
         headerRight: <View></View>
     });
 
-    // 先禁用评论功能
-    // componentDidMount(){
-    //     const {navigation} = this.props;
-    //     var url = "http://192.168.0.101/RP.Imm.WebUI/api/info/GetArticle";//urls.apis.CMS_GetArticle
-    //     request.getJson(url,{ code: navigation.state.params.id }).then((res)=>{
-    //         infoStore.getArticle(res);
-    //     }).catch((err)=>{
-    //         tools.showToast("网络请求失败，请检查网络设置");
-    //     });
-    // }
+    componentWillMount(){
+        const {navigation,infoStore} = this.props;
+        infoStore.onIni(navigation.state.params.code);
+    }
 
-    renderView = () => {
-        return (<View style={style.bottom}>
-            <TextInput
-                onFocus={infoStore.toogleModel}
-                underlineColorAndroid='transparent'
-                placeholder='说说你的看法'
-                returnKeyType="search"
-                placeholderTextColor="#969696"
-                style={style.textbox}>
-            </TextInput>
-            <View style={style.actions}>
-                <Icon name="commenting-o" size={25} color="#008AF5"></Icon>
+    renderThumbUp(){
+        const {navigation,infoStore} = this.props;
+        if(infoStore.data.exist_thumbUp){
+            return <TouchableOpacity onPress={()=>{ infoStore.onCancleThumbUp(navigation.state.params.code) }}>
+                <Icon name="star" size={25} color="#008AF5"></Icon>
+            </TouchableOpacity>;
+        }else{
+            return <TouchableOpacity onPress={()=>{infoStore.onThumbUp(navigation.state.params.code)}}>
                 <Icon name="star-o" size={25} color="#008AF5"></Icon>
+            </TouchableOpacity>;
+        }
+    }
+    renderCommentButton(){
+        const {infoStore} = this.props;
+        if( infoStore.data.exist_comment ){
+            return null;
+        }else{
+            return <TouchableOpacity onPress={() => infoStore.onShowModel()} style={{ flexDirection:'row',justifyContent:'center',alignItems:'center',paddingLeft:10,width:160}}>
+                <Icon name="edit" size={25} color="#008AF5"></Icon>
+                <Text style={style.textbox}>说说你的看法</Text>
+            </TouchableOpacity>;
+        }
+    }
+    renderView = () => {
+        const {infoStore} = this.props;
+
+        return (<View style={style.bottom}>
+            {
+                this.renderCommentButton()
+            }
+            <View style={style.actions}>
+                <TouchableOpacity onPress={()=>{}}>
+                    <Icon name="commenting-o" size={25} color="#008AF5"></Icon>
+                </TouchableOpacity>
+                {
+                    this.renderThumbUp()
+                }
                 <Icon name="share-square-o" size={25} color="#008AF5"></Icon>
-                <View style={style.label}>
-                    <Text style={style.word}>{infoStore.comment_text_total_count}</Text>
-                </View>
+
+                <TouchableOpacity style={style.label}>
+                    <Text style={style.word}>{infoStore.data.comment_count}</Text>
+                </TouchableOpacity>
             </View>
         </View>);
     };
+
     renderReply = () => {
-        return (<Modal animationType={'none'} transparent={true} visible={true} onRequestClose={infoStore.toogleModel}>
-                    <TouchableOpacity style={{flex:1}} onPress={infoStore.toogleModel}>
-                        <View style={{flex:1,backgroundColor:'rgba(0,0,0,0.5)'}}>
-                            <View style={{ flex:2,alignItems:'stretch',flexDirection:'row'}}>
-                            </View>
-                            <View style={{ flex:2,alignItems:'stretch',flexDirection:'row',backgroundColor:'white'}}>
-                                <TextInput
-                                    underlineColorAndroid='transparent'
-                                    placeholder='说说你的看法'
-                                    returnKeyType="search"
-                                    placeholderTextColor="#969696"
-                                    onChange={infoStore.onChangText}
-                                    numberOfLines={5}
-                                    multiline={true}
-                                    autoFocus={true}
-                                    style={style.tb} />
-                            </View>
-                            <View style={{height:50 ,flexDirection:'row',justifyContent:'space-around',alignItems:'center',backgroundColor:'white'}}>
-                                <View style={{width:200,flexDirection:'row',alignItems:'center'}}>
-                                    <Text style={{}}>{infoStore.comment_input_count}</Text><Text style={{color:'red'}}>/{infoStore.comment_text_total_count}</Text>
-                                </View>
-                                <View style={{width:30}}></View>
-                                <Button title="发布" disabled={!infoStore.allow_comment} onPress={infoStore.postComment}></Button>
-                            </View>
+        const {navigation,infoStore} = this.props;
+        return (
+            <Modal animationType={'none'} transparent={true} visible={true} onRequestClose={()=>infoStore.onCloseModel()}>
+                <View style={{flex:1,backgroundColor:'rgba(0,0,0,0.5)',paddingTop:5}}>
+                    <TouchableOpacity style={{ flex:2,alignItems:'stretch',flexDirection:'row'}} onPress={()=>infoStore.onCloseModel()}>
+                        <View style={{ flex:1,alignItems:'stretch',flexDirection:'row'}}>
+
                         </View>
                     </TouchableOpacity>
-                </Modal>);
+                    <View style={{ flex:2,alignItems:'stretch',flexDirection:'row',backgroundColor:'white'}}>
+                        <TextInput
+                            value={infoStore.data.comment_content}
+                            underlineColorAndroid='transparent'
+                            placeholder='说说你的看法'
+                            returnKeyType="search"
+                            placeholderTextColor="#969696"
+                            onChangeText={txt => {
+                                infoStore.onChangText(txt)
+                            }}
+                            numberOfLines={5}
+                            multiline={true}
+                            autoFocus={true}
+                            style={style.tb} />
+                    </View>
+                    <View style={{height:50 ,flexDirection:'row',justifyContent:'space-around',alignItems:'center',backgroundColor:'white'}}>
+                        <View style={{width:200,flexDirection:'row',alignItems:'center'}}>
+                            <Text style={{}}>{infoStore.data.comment_input_count}</Text><Text style={{color:'red'}}>/{infoStore.data.comment_text_total_count}</Text>
+                        </View>
+                        <View style={{width:30}}></View>
+                        <Button title=" 取 消 "
+                                onPress={()=>{ infoStore.onCloseModel() }}></Button>
+                        <Button title=" 发 布 "
+                                disabled={!infoStore.data.allow_comment}
+                                onPress={() => infoStore.onPostComment(navigation.state.params.code)}
+                                style={{width:80}}></Button>
+                    </View>
+                </View>
+            </Modal>);
     };
+
+    renderBottom(){
+        const {navigation,infoStore} = this.props;
+        if(infoStore.data.ready){
+            return !infoStore.data.showModel ? this.renderView() : this.renderReply();
+        }else{
+            return <ActivityIndicator color={'#15856e'}></ActivityIndicator>;
+        }
+    }
+
     render() {
-        const {navigation} = this.props;
+        const {navigation,infoStore} = this.props;
         let r = 'https://m.ringpu.com/ringpu/html_php/advice_and_college/d.php?code=' + navigation.state.params.code;
         return (
             <View style={style.main}>
@@ -95,7 +137,7 @@ export default class InfoDetail extends Component {
                     </WebView>
                 </View>
                 {
-                    //!infoStore.showModel ? this.renderView() : this.renderReply()
+                    this.renderBottom()
                 }
             </View>
         );
@@ -134,25 +176,23 @@ export default class InfoDetail extends Component {
             backgroundColor:'white'
         },
         textbox:{
-            borderColor:'#ccc',
-            width:165,
-            height:36,
-            borderWidth:1,
-            borderRadius: 4,
-            marginLeft:15
+            marginLeft:5,
         },
         label : {
             position:'absolute',
             left:15,
             top:-3,
+            minWidth:20,
+            height:20,
+            borderWidth:1,
+            borderColor:'white',
+            borderRadius:5,
             alignItems:'center',
             justifyContent:'center',
             backgroundColor:'#008AF5',
-            borderWidth:3,
-            borderColor:'white',
-            borderRadius:10,
-            width:20,
-            height:20
+            paddingLeft:2,
+            paddingRight:2,
+            zIndex:2000
         },
         actions :{
             flex:1,
@@ -162,7 +202,7 @@ export default class InfoDetail extends Component {
             marginRight:20
         },
         word:{
-            fontSize:10,
+            fontSize:12,
             color:'white'
         }
 });
