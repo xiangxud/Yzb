@@ -115,9 +115,9 @@ class ArticleStoreModel
     @observable
     exist_comment=false//本人是否已经回复
     @observable
-    exist_thumbUp=false//本人是否已经点赞
-    @observable
-    thumbUp_count=0
+    exist_collection=false//本人是否已经收藏
+    @observable//收藏数
+    collection_count=0
 }
 
 class InfoStore {
@@ -147,8 +147,8 @@ class InfoStore {
         this.data.ready=true;
         this.data.exist_comment=m.ExistComment;//本人是否已经回复
         this.data.comment_count=m.CommentCount;//总回复数
-        this.data.exist_thumbUp=m.ExistThumbUp;//本人是否已经点赞
-        this.data.thumbUp_count=m.ThumbUpCount;//总点赞数
+        this.data.exist_collection=m.ExistCollection;//本人是否已经点赞
+        this.data.collection_count=m.CollectionCount;//总点赞数
     }
     
     @action
@@ -194,13 +194,13 @@ class InfoStore {
     }
 
     @action
-    onThumbUp(code){
-        request.getJson(urls.apis.Content_Article_ThumbUpArticle,{
+    onCollect(code){
+        request.getJson(urls.apis.Content_Article_CollectArticle,{
             code:code,
-            thumbUp:true
+            collect:true
         }).then(d=>{
             runInAction(()=>{
-                this.data.exist_thumbUp=true;
+                this.data.exist_collection=true;
             })
         },e=>{
             //alert( JSON.stringify(e) );
@@ -208,13 +208,13 @@ class InfoStore {
     }
 
     @action
-    onCancleThumbUp(code){
-        request.getJson(urls.apis.Content_Article_ThumbUpArticle,{
+    onCancleCollect(code){
+        request.getJson(urls.apis.Content_Article_CollectArticle,{
             code:code,
-            thumbUp:false
+            collect:false
         }).then(d=>{
             runInAction(()=>{
-                this.data.exist_thumbUp=false;
+                this.data.exist_collection=false;
             })
         },e=>{
             //alert( JSON.stringify(e) );

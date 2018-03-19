@@ -33,6 +33,14 @@ export default class MyList extends PureComponent {
         params = params ? params : {};
         navigation && navigation.navigate(page, params)
     }
+    renderCollectionItem(){
+        let count=1;
+        if(count > 0){
+            return <Item icon="ios-bookmark" iconStyle={{color:'#ccc'}} goToPage={()=>this.goToPage('MyCollection')} text="我的收藏"/>
+        }else{
+            return <Item icon="ios-bookmark" iconStyle={{color:'#ccc'}} subtext={'暂无收藏'} text="我的收藏"/>
+        }
+    }
     render() {
         const {user} = this.props;
         return (
@@ -40,7 +48,9 @@ export default class MyList extends PureComponent {
                 <Item icon="ios-contact" iconStyle={{color:'red'}} goToPage={()=>this.goToPage('MyInfo')} text="个人资料" bordered/>
                 <Item icon="ios-ribbon" iconStyle={{color:'#ccb500'}} text="我的积分" subtext={user.score && user.score !== 0 ? user.score : '0'}/>
                 <SeparatorArea style={{height: 15}}/>
-                <Item icon="ios-bookmark" iconStyle={{color:'#ccc'}} subtext={'暂无收藏'} text="我的收藏"/>
+                {
+                    this.renderCollectionItem()
+                }
                 <SeparatorArea style={{height: 15}}/>
                 <Item icon="ios-planet" iconStyle={{color:'#00859c'}} goToPage={()=>this.goToPage('About')} text="关于养殖宝"/>
             </View>

@@ -11,6 +11,7 @@ import Login from '../pages/uc/Login';
 import Register from '../pages/uc/Register';
 import FindPassword from '../pages/uc/FindPassword';
 import Uc from '../pages/Uc';
+import Collection from '../pages/uc/myCollection'
 
 import BHStart from '../pages/bohai/BHStart';
 import BHList from '../pages/bohai/BHList';
@@ -200,6 +201,7 @@ const RootNavigator = StackNavigator({
     Didi:{ screen: Didi },
     VetInfo:{ screen: VetInfo },
     About:{ screen: About },
+    MyCollection:{screen:Collection},
     MyInfo:{ screen: MyInfo },
     Quotes:{ screen: Quotes },
     ChooseFarm:{ screen: ChooseFarm },

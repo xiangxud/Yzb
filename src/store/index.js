@@ -11,6 +11,7 @@ import outPetStore from './outPetStore'
 import inPetStore from './inPetStore'
 import sensorHistoryStore from './sensorHistoryStore'
 import liveStore from './liveStore'
+import myCollectionStore from './myCollectionStore'
 
 export default {
     app: new App(),
@@ -26,4 +27,5 @@ export default {
     inPetStore,
     sensorHistoryStore,
     liveStore,
+    myCollectionStore
 }

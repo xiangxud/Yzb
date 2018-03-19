@@ -83,6 +83,8 @@ const urls = {
         CMS_ARTICLE_QUOTES:apiPath + 'info/getQuotes',
         //获得分页文章列表
         CMS_LIVE_LIST: apiPath + 'content/getLives',
+        //获取收藏的文章列表
+        CMS_ARTICLE_COLLECTION:apiPath + 'info/GetCollectionInfos',
 
         //用户------------------------------------------------------------------------
         //登录
@@ -157,7 +159,7 @@ const urls = {
         //文章回复
         Content_Article_PostComment:apiPath + 'Info/PostArticleComment',
         //点赞文章
-        Content_Article_ThumbUpArticle:apiPath + 'Info/ThumbUpArticle'
+        Content_Article_CollectArticle:apiPath + 'Info/CollectArticle'
     },
     // 获取图片完整路径
     getImage(filePath, width, height){

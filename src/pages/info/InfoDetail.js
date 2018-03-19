@@ -25,20 +25,18 @@ export default class InfoDetail extends Component {
         headerTitle: navigation.state.params.title,
         headerRight: <View></View>
     });
-
     componentWillMount(){
         const {navigation,infoStore} = this.props;
         infoStore.onIni(navigation.state.params.code);
     }
-
-    renderThumbUp(){
+    renderCollection(){
         const {navigation,infoStore} = this.props;
-        if(infoStore.data.exist_thumbUp){
-            return <TouchableOpacity onPress={()=>{ infoStore.onCancleThumbUp(navigation.state.params.code) }}>
+        if(infoStore.data.exist_collection){
+            return <TouchableOpacity onPress={()=>{ infoStore.onCancleCollect(navigation.state.params.code) }}>
                 <Icon name="star" size={25} color="#008AF5"></Icon>
             </TouchableOpacity>;
         }else{
-            return <TouchableOpacity onPress={()=>{infoStore.onThumbUp(navigation.state.params.code)}}>
+            return <TouchableOpacity onPress={()=>{infoStore.onCollect(navigation.state.params.code)}}>
                 <Icon name="star-o" size={25} color="#008AF5"></Icon>
             </TouchableOpacity>;
         }
@@ -66,7 +64,7 @@ export default class InfoDetail extends Component {
                     <Icon name="commenting-o" size={25} color="#008AF5"></Icon>
                 </TouchableOpacity>
                 {
-                    this.renderThumbUp()
+                    this.renderCollection()
                 }
                 <Icon name="share-square-o" size={25} color="#008AF5"></Icon>
 
