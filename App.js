@@ -18,6 +18,7 @@ import stores from './src/store';
 import NetInfoDecorator from './src/common/NetInfoDecorator';
 import YzbApp from './src';
 import { Root } from 'native-base';
+import *as wechat from 'react-native-wechat'
 
 if (!__DEV__) {
     global.console = {
@@ -56,6 +57,7 @@ export default class App extends Component<{}> {
 
     componentDidMount(){
         codePush.allowRestart();//在加载完了可以允许重启
+        wechat.registerApp('com.yzb')
     }
     sync() {
         codePush.sync();

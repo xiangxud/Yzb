@@ -13,6 +13,8 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {observer,inject} from 'mobx-react/native';
 import {action,observable} from 'mobx';
+import *as wechat from 'react-native-wechat'
+import tools from "../../common/tools";
 
 @inject('infoStore')
 @observer
@@ -29,6 +31,46 @@ export default class InfoDetail extends Component {
         const {navigation,infoStore} = this.props;
         infoStore.onIni(navigation.state.params.code);
     }
+    onShare(){
+        wechat.isWXAppInstalled().then(isInstalled=>{
+            if(isInstalled){
+                wechat.openWXApp().then(()=>{
+
+                    this.onShareToWechat();
+
+                });
+
+            }else {
+                tools.showToast( "没有安装微信软件，请您安装微信之后再试");
+            }
+        })
+    }
+
+    onShareToWechat(){
+        const {navigation} = this.props;
+        let title = navigation.state.params.title;
+        let r = 'https://m.ringpu.com/ringpu/html_php/advice_and_college/d.php?code=' + navigation.state.params.code;
+
+        wechat.shareToTimeline({
+            type: 'news',
+            title: title,
+            description: 'share web image to time line',
+            mediaTagName: 'email signature',
+            messageAction: undefined,
+            messageExt: undefined,
+            webpageUrl: r
+        }).then((success)=>{
+            console.log(success)
+        }).catch((error)=>{
+            console.log(error)
+        })
+
+
+    }
+
+
+
+
     renderCollection(){
         const {navigation,infoStore} = this.props;
         if(infoStore.data.exist_collection){
@@ -66,7 +108,9 @@ export default class InfoDetail extends Component {
                 {
                     this.renderCollection()
                 }
-                <Icon name="share-square-o" size={25} color="#008AF5"></Icon>
+                <TouchableOpacity onPress={()=>{ this.onShare() }}>
+                    <Icon name="share-square-o" size={25} color="#008AF5"></Icon>
+                </TouchableOpacity>
 
                 <TouchableOpacity style={style.label}>
                     <Text style={style.word}>{infoStore.data.comment_count}</Text>
