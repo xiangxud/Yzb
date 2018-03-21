@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import {observer} from 'mobx-react/native';
 import {Text} from 'native-base';
-import {WebView} from '../../components'
+import Chart from './Charts'
 
 const EnvironmentMonitor = observer(()=>{
     let errRender=e=>{
@@ -16,12 +16,16 @@ const EnvironmentMonitor = observer(()=>{
     let rd = new Date();
     return (
         <View style={styles.container}>
-            <WebView
-                uri={urls.webPath + 'yzb/monitor/em?rd='+ rd}
-                style={{flex:1}}
+            <Chart
+                temperature={29}
+                humidity={60}
+                co2={0.11}
                 startInLoadingState={true}
-                onError={(e)=>errRender(e)}
-                canBack={false} />
+                javaScriptEnabled={true}
+                domStorageEnabled={true}
+                scalesPageToFit={false}
+                scrollEnabled={true}
+            />
             <View style={styles.reportItems}>
                 <Text style={styles.sTitle}>栋舍湿度</Text>
                 <Text style={styles.sTitle}>栋舍温度</Text>
