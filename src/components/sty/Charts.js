@@ -45,7 +45,7 @@ export default class charts extends Component{
         //     const sourceIOS = { uri: `file://${_source.uri}?t=${temperature}&h=${humidity}&c=${co2}` };
         //     source = Platform.OS === 'ios' ? sourceIOS : sourceAndroid;
         // }
-        return <WebView source={source} style={{flex:1,backgroundColor:'#ffffff'}} >
+        return <WebView source={source} style={{flex:1,backgroundColor:'#ffffff',height:120}} >
         </WebView>
     }
 }

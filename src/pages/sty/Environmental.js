@@ -35,7 +35,8 @@ export default class Environmental extends Component {
         this.props.navigation.navigate('EnvironmentalSetting');
     }
     renderListHeader =()=>{
-        const {now} = this.props.styStore.environmental.data.now;
+        const {now} = this.props.styStore.environmental.data;
+
         return (
             <View>
                 <EnvironmentMonitor data={now}/>

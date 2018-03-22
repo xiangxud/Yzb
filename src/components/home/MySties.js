@@ -13,6 +13,8 @@ import {
 import {Icon, Text, Button} from 'native-base';
 import {observer} from 'mobx-react/native';
 import {WebView, TitleBar} from '../';
+import Chart from '../sty/Charts'
+
 var {height, width} = Dimensions.get('window');
 
 const Sty = observer(({sty, getSty, isCurrent}) =>{
@@ -54,10 +56,21 @@ export default class MySties extends Component {
                 </ScrollView>
                 {store.currentSty && store.currentSty.id?
                     <View>
-                        {store.currentSty.camera_url?
-                        <WebView uri={`${urls.webPath}yzb/monitor/live?url=${store.currentSty.camera_url}`} canBack={false} style={{ height:200, }} />
-                            :null}
-                        <WebView uri={`${urls.webPath}yzb/monitor/em?rd=${rd}`} canBack={false} style={{ height:120, }} />
+                        {
+                            store.currentSty.camera_url ? <WebView uri={`${urls.webPath}yzb/monitor/live?url=${store.currentSty.camera_url}`} canBack={false} style={{ height:200, }} />:null
+                        }
+                        {
+                            store && store.currentSty && store.currentSty.Env ?
+                                <Chart
+                                    temperature={store.currentSty.Env.Temperature}
+                                    humidity={store.currentSty.Env.Humidity}
+                                    co2={store.currentSty.Env.O2c}
+                                    startInLoadingState={true}
+                                    javaScriptEnabled={true}
+                                    domStorageEnabled={true}
+                                    scalesPageToFit={false}
+                                    scrollEnabled={true} />:null
+                        }
                         <View style={styles.reportItems}>
                             <Text style={styles.sTitle}>栋舍湿度</Text>
                             <Text style={styles.sTitle}>栋舍温度</Text>

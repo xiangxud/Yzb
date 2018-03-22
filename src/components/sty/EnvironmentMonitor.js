@@ -7,7 +7,7 @@ import {observer} from 'mobx-react/native';
 import {Text} from 'native-base';
 import Chart from './Charts'
 
-const EnvironmentMonitor = observer(()=>{
+const EnvironmentMonitor = observer(({data})=>{
     let errRender=e=>{
         return <View>
             <Text>Error:{e}</Text>
@@ -17,9 +17,9 @@ const EnvironmentMonitor = observer(()=>{
     return (
         <View style={styles.container}>
             <Chart
-                temperature={29}
-                humidity={60}
-                co2={0.11}
+                temperature={data.temperature}
+                humidity={data.humidity}
+                co2={data.o2c}
                 startInLoadingState={true}
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
