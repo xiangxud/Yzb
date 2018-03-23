@@ -12,6 +12,7 @@ import inPetStore from './inPetStore'
 import sensorHistoryStore from './sensorHistoryStore'
 import liveStore from './liveStore'
 import myCollectionStore from './myCollectionStore'
+import styReportStore from './styReportStore'
 
 export default {
     app: new App(),
@@ -27,5 +28,6 @@ export default {
     inPetStore,
     sensorHistoryStore,
     liveStore,
-    myCollectionStore
+    myCollectionStore,
+    styReportStore
 }

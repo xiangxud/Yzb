@@ -8,15 +8,19 @@ import {
     StyleSheet
 } from 'react-native';
 import {observer, inject} from 'mobx-react/native';
-import {Container, Content, Button, Text, Icon} from 'native-base';
+import {Container, Content, Button, Spinner,Text, Icon} from 'native-base';
 import {TitleBar, SeparatorArea} from '../../components';
 
+@inject('styReportStore')
+@observer
 export default class report extends Component{
     static navigationOptions = ({navigation}) => ({
         headerTitle: '报表分析',
         headerRight: <Button transparent light onPress={navigation.state.params ? navigation.state.params.inputPress : null}><Text>筛选</Text></Button>
     })
     componentDidMount() {
+        const {styReportStore, navigation} = this.props;
+        styReportStore.onIni(navigation.state.params.code);
         this.props.navigation.setParams({
             inputPress: this.inputPress
         });
@@ -47,12 +51,12 @@ export default class report extends Component{
         return (
             <View style={styles.row}>
                 <View style={styles.dt}>
-                    <Text style={styles.year}>{item.year}</Text>
-                    <Text style={styles.day}>{item.day}</Text>
+                    <Text style={styles.year}>{item.Daily.ToDate().Format("yyyy")}年</Text>
+                    <Text style={styles.day}>{item.Daily.ToDate().Format("MM-dd")}</Text>
                 </View>
                 <View style={{flex:1,}}>
-                    <Text>补栏14头，温度：{item.temperature}</Text>
-                    <Text>风机数量：33，通风方式：自然风</Text>
+                    <Text>补栏 {item.ToDayAddPet?item.ToDayAddPet:0} 头，温度：{item.Temperature}℃</Text>
+                    <Text>风机数量：{item.WmCount?item.WmCount:0}，通风方式：{item.WindMode}</Text>
                 </View>
             </View>
         );
@@ -60,29 +64,31 @@ export default class report extends Component{
     renderSep =()=>{
         return <View style={{borderBottomColor:'gray', borderBottomWidth:StyleSheet.hairlineWidth}}/>;
     }
+    renderBody=()=>{
+        const {styReportStore, navigation} = this.props;
+        return <Content>
+            <FlatList
+                style={styles.his}
+                data={styReportStore.data.Records}
+                renderItem={({ item }) => this.renderRow(item) }
+                ListHeaderComponent={ this.renderListHeader() }
+                ListFooterComponent={
+                    <Button full light onPress={()=>{}}><Text>查看更多</Text></Button>
+                }
+                ItemSeparatorComponent={ this.renderSep }
+                keyExtractor={ (item, index) => index }
+                refreshing = {styReportStore.loading}
+            />
+            <Button block danger onPress={()=>this.goto()}><Text>重试错误</Text></Button>
+        </Content>
+    }
     render(){
-        let list = [
-            {year:'2018年', day:'3月8日',temperature:24,humidity:64.2,co2:88.3},
-            {year:'2018年', day:'2月5日',temperature:34,humidity:64.3,co2:79.5},
-        ];
-        let isFetching = false;
+        const {styReportStore, navigation} = this.props;
         return (
             <Container>
-                <Content>
-                    <FlatList
-                        style={styles.his}
-                        data={list.slice()}
-                        renderItem={({ item }) => this.renderRow(item) }
-                        ListHeaderComponent={ this.renderListHeader() }
-                        ListFooterComponent={
-                            <Button full light onPress={()=>{}}><Text>查看更多</Text></Button>
-                        }
-                        ItemSeparatorComponent={ this.renderSep }
-                        keyExtractor={ (item, index) => index }
-                        refreshing = {isFetching}
-                    />
-                    <Button block danger onPress={()=>this.goto()}><Text>重试错误</Text></Button>
-                </Content>
+                    {
+                        styReportStore.loadFinished ? this.renderBody() : <Content><Spinner /></Content>
+                    }
             </Container>
         );
     }

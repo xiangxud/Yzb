@@ -134,6 +134,9 @@ const urls = {
         IMM_GET_STY_BASE:apiPath + 'sty/Get',
         //栋舍提交
         IMM_POST_STY:apiPath + 'sty/modify',
+
+        IMM_STY_DAYREPORT:apiPath + 'sty/GetDayRecords',
+
         //获取免疫提醒
         IMM_GET_DETAIL:apiPath + 'immPlan/PostQuery',
         //获取出栏配置
@@ -159,7 +162,8 @@ const urls = {
         //文章回复
         Content_Article_PostComment:apiPath + 'Info/PostArticleComment',
         //点赞文章
-        Content_Article_CollectArticle:apiPath + 'Info/CollectArticle'
+        Content_Article_CollectArticle:apiPath + 'Info/CollectArticle',
+
     },
     // 获取图片完整路径
     getImage(filePath, width, height){
