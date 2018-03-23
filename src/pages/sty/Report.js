@@ -5,6 +5,7 @@ import {
     WebView,
     FlatList,
     TouchableOpacity,
+    ScrollView,
     StyleSheet
 } from 'react-native';
 import {observer, inject} from 'mobx-react/native';
@@ -18,6 +19,9 @@ export default class report extends Component{
         headerTitle: '报表分析',
         headerRight: <Button transparent light onPress={navigation.state.params ? navigation.state.params.inputPress : null}><Text>筛选</Text></Button>
     })
+    constructor(props){
+        super(props);
+    }
     componentDidMount() {
         const {styReportStore, navigation} = this.props;
         styReportStore.onIni(navigation.state.params.code);
@@ -31,11 +35,10 @@ export default class report extends Component{
     renderListHeader =()=>{
         return (
             <View>
-                <SeparatorArea/>
                 <TitleBar icon={'line-chart'}
                           iconColor={'red'}
                           title={'环境监测记录'}
-                          showMore={false}/>
+                          showMore={false} />
                 <View style={styles.canvas}>
                     <Text>H5图表</Text>
                 </View>
@@ -64,45 +67,54 @@ export default class report extends Component{
     renderSep =()=>{
         return <View style={{borderBottomColor:'gray', borderBottomWidth:StyleSheet.hairlineWidth}}/>;
     }
-    renderBody=()=>{
+    renderListFooter=()=>{
         const {styReportStore, navigation} = this.props;
-        return <Content>
-            <FlatList
-                style={styles.his}
-                data={styReportStore.data.Records}
-                renderItem={({ item }) => this.renderRow(item) }
-                ListHeaderComponent={ this.renderListHeader() }
-                ListFooterComponent={
-                    <Button full light onPress={()=>{}}><Text>查看更多</Text></Button>
-                }
-                ItemSeparatorComponent={ this.renderSep }
-                keyExtractor={ (item, index) => index }
-                refreshing = {styReportStore.loading}
-            />
-            <Button block danger onPress={()=>this.goto()}><Text>重试错误</Text></Button>
-        </Content>
+        if(styReportStore.end){
+            return <View></View>
+        }
+        return <TouchableOpacity  style={styles.footer} onPress={()=>{styReportStore.onLoad(navigation.state.params.code);}}>
+                <Text>点击查看更多</Text>
+         </TouchableOpacity>
     }
     render(){
         const {styReportStore, navigation} = this.props;
         return (
-            <Container>
-                    {
-                        styReportStore.loadFinished ? this.renderBody() : <Content><Spinner /></Content>
+            <View style={{flex:1}}>
+                <FlatList
+                    style={styles.his}
+                    data={styReportStore.data.Records}
+                    renderItem={({ item }) => this.renderRow(item) }
+                    ListHeaderComponent={ this.renderListHeader() }
+                    ListFooterComponent={
+                        this.renderListFooter()
                     }
-            </Container>
+                    ItemSeparatorComponent={ this.renderSep }
+                    keyExtractor={ (item, index) => index }
+                    scrollEventThrottle={1}
+                    refreshing = {styReportStore.loading}
+                    onRefresh={()=>{
+                        styReportStore.onIni(navigation.state.params.code);
+                    }}
+                    onEndReachedThreshold={0}
+                    onEndReached={()=>{
+                        styReportStore.onLoad(navigation.state.params.code);
+                    }}
+                    ListEmptyComponent={()=><View style={{height:100, justifyContent:'center', alignItems:'center'}}><Text style={{color:'gray'}}>暂无免疫提醒</Text></View>}
+                />
+            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
     canvas: {
-        height:300,
+        height:250,
         backgroundColor:'#e69d63',
         justifyContent:'center',
         alignItems:'center'
     },
     his: {
-        flex: 1,
+        flex:1,
     },
     row:{
         flexDirection:'row',
@@ -121,5 +133,8 @@ const styles = StyleSheet.create({
     day:{
         fontSize:20,
         fontWeight:'bold'
+    },
+    footer:{
+        height:35, justifyContent:'center' , alignItems:'center'
     }
 })

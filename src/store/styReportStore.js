@@ -27,11 +27,21 @@ class styReportStore {
     }
     @action onIni=(id)=>{
         this.queryObj.id=id;
+        this.queryObj.pageIndex=0;
+        this.end=false;
+        this.getData().then(this.sucess.bind(this),this.failed.bind(this));
+    }
+    @action onLoad=id=>{
+        if( this.loading || this.end) {
+            return;
+        }
+        this.queryObj.pageIndex++;
         this.getData().then(this.sucess.bind(this),this.failed.bind(this));
     }
     @action sucess=r=>{
         this.loading=false;//加载完成
         this.loadFinished=true;//加载完成
+        this.data={};
         this.onShallCopy(this.data,r);
         if(this.data.Records.length < this.queryObj.pageSize){
             this.end=true;
@@ -40,7 +50,7 @@ class styReportStore {
     @action failed=e=>{
         this.loading=false;
         this.loadFinished=true;//加载完成
-        alert(JSON.stringify(e));
+        tools.showToast("请求数据异常");
     }
     @action getData=()=>{
         this.queryObj.pageIndex++;
