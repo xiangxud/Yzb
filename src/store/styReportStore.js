@@ -12,67 +12,119 @@ class styReportStore {
         pageSize:25,
         id:''
     }
-    option = {
-        title: {
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎'],
-            height:300
-        },
-        grid: {
-            left: '1%',
-            right: '1%',
-            bottom: '1%',
-            containLabel: true
-        },
-        toolbox: {
-            feature: {
+
+    reportData={
+        tem:{
+            label:'温度',
+            data:{
+                title: {
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data:['室内','中区','室外'],
+                    height:300
+                },
+                grid: {
+                    left: '1%',
+                    right: '1%',
+                    bottom: '1%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['23:00','00:00','01:00','02:00','03:00','04:00','07:00']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name:'室内',
+                        type:'line',
+                        stack: '室内',
+                        data:[20.5, 21.2,22.5, 20.3, 20.1, 22.6, 25.0]
+                    },
+                    {
+                        name:'中区',
+                        type:'line',
+                        stack: '中区',
+                        data:[22.5, 22.2,25.5, 21.3, 19.1, 18.6, 19.0]
+                    },
+                    {
+                        name:'室外',
+                        type:'line',
+                        stack: '室外',
+                        data:[10, 11.2,12.5, 8.3, 10.1, 15.6, 7.0]
+                    }
+                ]
             }
         },
-        xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: ['周一','周二','周三','周四','周五','周六','周日']
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [
-            {
-                name:'邮件营销',
-                type:'line',
-                stack: '总量',
-                data:[120, 132, 101, 134, 90, 230, 210]
-            },
-            {
-                name:'联盟广告',
-                type:'line',
-                stack: '总量',
-                data:[220, 182, 191, 234, 290, 330, 310]
-            },
-            {
-                name:'视频广告',
-                type:'line',
-                stack: '总量',
-                data:[150, 232, 201, 154, 190, 330, 410]
-            },
-            {
-                name:'直接访问',
-                type:'line',
-                stack: '总量',
-                data:[320, 332, 301, 334, 390, 330, 320]
-            },
-            {
-                name:'搜索引擎',
-                type:'line',
-                stack: '总量',
-                data:[820, 932, 901, 934, 1290, 1330, 1320]
+        hum:{
+            label:'湿度',
+            data:{
+                title: {
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data:['室内','中区','室外'],
+                    height:300
+                },
+                grid: {
+                    left: '1%',
+                    right: '1%',
+                    bottom: '1%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['23:00','00:00','01:00','02:00','03:00','04:00','07:00']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name:'室内',
+                        type:'line',
+                        stack: '室内',
+                        data:[20.5, 21.2,22.5, 20.3, 20.1, 22.6, 25.0]
+                    },
+                    {
+                        name:'中区',
+                        type:'line',
+                        stack: '中区',
+                        data:[22.5, 22.2,25.5, 21.3, 19.1, 18.6, 19.0]
+                    },
+                    {
+                        name:'室外',
+                        type:'line',
+                        stack: '室外',
+                        data:[10, 11.2,12.5, 8.3, 10.1, 15.6, 7.0]
+                    }
+                ]
             }
-        ]
-    };
+        }
+    }
+    @observable
+    currReport='tem'
+
+    @action onChangedReport=(r)=>{
+        this.currReport=r;
+    }
 
     @observable
     loading=false;

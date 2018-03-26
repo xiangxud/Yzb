@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {observer, inject} from 'mobx-react/native';
 import {Container, Content, Button, Spinner,Text, Icon} from 'native-base';
-import {TitleBar,EChart,SeparatorArea} from '../../components';
+import {TitleBar,ActionTitleBar,EChart,SeparatorArea} from '../../components';
 
 @inject('styReportStore')
 @observer
@@ -32,18 +32,38 @@ export default class report extends Component{
     inputPress =()=>{
         alert('填写报告');
     }
+    reports=[{
+        name:'tem',
+        text:'温度',
+        icon:'ios-thermometer',
+        onPress:()=>{
+            const {styReportStore} = this.props;
+            styReportStore.onChangedReport("tem");
+        }
+    },{
+        name:'hum',
+        text:'湿度',
+        icon:'ios-water',
+        onPress:()=>{
+            const {styReportStore} = this.props;
+            styReportStore.onChangedReport("hum");
+        }
+    }];
     renderListHeader =()=>{
         const {styReportStore} = this.props;
 
 
         return (
             <View>
-                <TitleBar icon={'line-chart'}
-                          iconColor={'red'}
-                          title={'环境监测记录'}
-                          showMore={false} />
+                <ActionTitleBar
+                    icon={'ios-stats'}
+                    iconColor={'red'}
+                    title={'环境监测记录'}
+                    actions={this.reports}
+                    actionLabel={styReportStore.reportData[styReportStore.currReport].label}
+                    showMore={false} />
                 <View style={styles.canvas}>
-                    <EChart data={styReportStore.option} style={{flex:1}}></EChart>
+                    <EChart data={styReportStore.reportData[styReportStore.currReport].data} style={{flex:1}}></EChart>
                 </View>
                 <SeparatorArea/>
                 <TitleBar icon={'file-text'}

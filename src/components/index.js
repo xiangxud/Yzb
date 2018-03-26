@@ -9,6 +9,7 @@ import PullView from "./common/PullView";
 import Modal from "./common/Modal";
 import WebView from "./common/WebView";
 import TitleBar from "./common/TitleBar";
+import ActionTitleBar from "./common/ActionTitleBar";
 import EChart from './common/echart'
 
 export {
@@ -23,5 +24,6 @@ export {
     Modal,
     WebView,
     TitleBar,
+    ActionTitleBar,
     EChart
 }
