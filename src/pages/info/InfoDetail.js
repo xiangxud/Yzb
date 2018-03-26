@@ -32,44 +32,59 @@ export default class InfoDetail extends Component {
         infoStore.onIni(navigation.state.params.code);
     }
     onShare(){
+        const {navigation,infoStore} = this.props;
+        infoStore.onShowShare();
+    }
+    onCheckWechatInstall(rollback){
         wechat.isWXAppInstalled().then(isInstalled=>{
             if(isInstalled){
                 wechat.openWXApp().then(()=>{
-
-                    this.onShareToWechat();
-
+                    rollback();
                 });
-
             }else {
                 tools.showToast( "没有安装微信软件，请您安装微信之后再试");
             }
         })
     }
-
-    onShareToWechat(){
-        const {navigation} = this.props;
-        let title = navigation.state.params.title;
-        let r = 'https://m.ringpu.com/ringpu/html_php/advice_and_college/d.php?code=' + navigation.state.params.code;
-
-        wechat.shareToTimeline({
-            type: 'news',
-            title: title,
-            description: 'share web image to time line',
-            mediaTagName: 'email signature',
-            messageAction: undefined,
-            messageExt: undefined,
-            webpageUrl: r
-        }).then((success)=>{
-            console.log(success)
-        }).catch((error)=>{
-            console.log(error)
-        })
-
-
+    onShareFriends(){
+        this.onCheckWechatInstall(()=>{
+            const {navigation,infoStore} = this.props;
+            let title = navigation.state.params.title;
+            let r = 'https://m.ringpu.com/ringpu/html_php/advice_and_college/d.php?code=' + navigation.state.params.code;
+            wechat.shareToTimeline({
+                type: 'news',
+                title: title,
+                description: 'share web image to time line',
+                mediaTagName: 'email signature',
+                messageAction: undefined,
+                messageExt: undefined,
+                webpageUrl: r
+            }).then((success)=>{
+                infoStore.onCloseShare();
+            }).catch((error)=>{
+                tools.showToast("分享失败");
+            })
+        });
     }
+    onShareWechat(){
+        this.onCheckWechatInstall(()=>{
+            const {navigation,infoStore} = this.props;
+            let title = navigation.state.params.title;
+            let r = 'https://m.ringpu.com/ringpu/html_php/advice_and_college/d.php?code=' + navigation.state.params.code;
 
-
-
+            wechat.shareToSession({
+                title:title,
+                description: '分享自:养殖宝文章',
+                thumbImage: 'https://mmbiz.qlogo.cn/mmbiz_png/ozr76xD72K8iauZ3SuXgyJrc3KdvWuXVLInH2MticV7ONic6qavUwI3zMFEPibuDkndTd3amBJXOeu6EfoOKaklqKg/0?wx_fmt=png',
+                type: 'news',
+                webpageUrl: r
+            }).then(success=>{
+                infoStore.onCloseShare();
+            }).catch((error) => {
+                tools.showToast("分享失败");
+            });
+        });
+    }
 
     renderCollection(){
         const {navigation,infoStore} = this.props;
@@ -96,7 +111,6 @@ export default class InfoDetail extends Component {
     }
     renderView = () => {
         const {infoStore} = this.props;
-
         return (<View style={style.bottom}>
             {
                 this.renderCommentButton()
@@ -118,6 +132,29 @@ export default class InfoDetail extends Component {
             </View>
         </View>);
     };
+
+
+    renderShare=()=>{
+        const {navigation,infoStore} = this.props;
+        return(<Modal animationType={'none'} transparent={true} visible={true} onRequestClose={()=>infoStore.onCloseShare()}>
+            <View style={{flex:1,backgroundColor:'rgba(0,0,0,0.5)',paddingTop:5}}>
+                <TouchableOpacity style={{ flex:1,alignItems:'stretch',flexDirection:'row'}} onPress={()=>infoStore.onCloseShare()}>
+                    <View style={{ flex:1,alignItems:'stretch',flexDirection:'row'}}>
+                    </View>
+                </TouchableOpacity>
+                <View style={{ height:100,alignItems:'center', justifyContent:'flex-start' , flexDirection:'row',backgroundColor:'white'}}>
+                    <TouchableOpacity onPress={this.onShareWechat.bind(this)} style={{alignItems:'center', marginLeft:10}}>
+                        <Icon name="wechat" style={{ fontSize:30 , color:'#2ba246' }}></Icon>
+                        <Text>微信</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.onShareFriends.bind(this)} style={{alignItems:'center', marginLeft:10 }}>
+                        <Icon name="chrome" style={{ fontSize:30 , color:'#2ba246' }}></Icon>
+                        <Text>朋友圈</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>);
+    }
 
     renderReply = () => {
         const {navigation,infoStore} = this.props;
@@ -163,7 +200,13 @@ export default class InfoDetail extends Component {
     renderBottom(){
         const {navigation,infoStore} = this.props;
         if(infoStore.data.ready){
-            return !infoStore.data.showModel ? this.renderView() : this.renderReply();
+            if(infoStore.data.showMode){
+                return this.renderReply();
+            }
+            if(infoStore.data.showShareModel){
+                return this.renderShare();
+            }
+            return this.renderView();
         }else{
             return <ActivityIndicator color={'#15856e'}></ActivityIndicator>;
         }

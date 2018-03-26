@@ -101,6 +101,9 @@ class ArticleStoreModel
     @observable
     showModel=false//是否显示回复层
     @observable
+    showShareModel=false//是否显示分享层
+
+    @observable
     ready=false
     @observable
     allow_comment=false//是否允许回复
@@ -144,6 +147,7 @@ class InfoStore {
     @action
     onLayout(m){
         this.data.showModel=false;
+        this.data.showShareModel=false;
         this.data.ready=true;
         this.data.exist_comment=m.ExistComment;//本人是否已经回复
         this.data.comment_count=m.CommentCount;//总回复数
@@ -153,8 +157,26 @@ class InfoStore {
     
     @action
     onShowModel(){
+        this.data.showShareModel=false;
         this.data.showModel=true;
     }
+    @action
+    onCloseModel(){
+        this.data.showModel=false;
+        this.data.showShareModel=false;
+    }
+
+    @action
+    onShowShare(){
+        this.data.showModel=false;
+        this.data.showShareModel=true;
+    }
+    @action
+    onCloseShare(){
+        this.data.showModel=false;
+        this.data.showShareModel=false;
+    }
+
 
     @action
     onPostComment(code){
@@ -186,11 +208,6 @@ class InfoStore {
         }
         this.data.comment_content=txt;
         this.data.comment_input_count = txt.length;
-    }
-
-    @action
-    onCloseModel(){
-        this.data.showModel=false;
     }
 
     @action
