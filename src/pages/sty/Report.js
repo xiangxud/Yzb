@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {observer, inject} from 'mobx-react/native';
 import {Container, Content, Button, Spinner,Text, Icon} from 'native-base';
-import {TitleBar, SeparatorArea} from '../../components';
+import {TitleBar,EChart,SeparatorArea} from '../../components';
 
 @inject('styReportStore')
 @observer
@@ -40,7 +40,7 @@ export default class report extends Component{
                           title={'环境监测记录'}
                           showMore={false} />
                 <View style={styles.canvas}>
-                    <Text>H5图表</Text>
+                    <EChart data={{id:5}} style={{flex:1}}></EChart>
                 </View>
                 <SeparatorArea/>
                 <TitleBar icon={'file-text'}
