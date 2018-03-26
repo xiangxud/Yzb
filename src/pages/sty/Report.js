@@ -33,6 +33,9 @@ export default class report extends Component{
         alert('填写报告');
     }
     renderListHeader =()=>{
+        const {styReportStore} = this.props;
+
+
         return (
             <View>
                 <TitleBar icon={'line-chart'}
@@ -40,7 +43,7 @@ export default class report extends Component{
                           title={'环境监测记录'}
                           showMore={false} />
                 <View style={styles.canvas}>
-                    <EChart data={{id:5}} style={{flex:1}}></EChart>
+                    <EChart data={styReportStore.option} style={{flex:1}}></EChart>
                 </View>
                 <SeparatorArea/>
                 <TitleBar icon={'file-text'}
@@ -109,9 +112,8 @@ export default class report extends Component{
 const styles = StyleSheet.create({
     canvas: {
         height:250,
-        backgroundColor:'#e69d63',
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'stretch'
     },
     his: {
         flex:1,

@@ -13,7 +13,7 @@ export default class EChart extends PureComponent {
     }
     onMessage(e){
         let {data} = this.props;
-        this.webView.postMessage(data);
+        this.webView.postMessage(JSON.stringify(data));
     }
     render() {
         let {data,style,...other} = this.props;
@@ -25,13 +25,11 @@ export default class EChart extends PureComponent {
             style=[style];
         }
 
-        const sourceIOS =
-            {
+        const sourceIOS = {
                 uri:`../../resource/web/main.html`,
                 baseUrl:'../../resource/web/'
             };
-        const sourceAndroid =
-            {
+        const sourceAndroid = {
                 uri:`file:///android_asset/web/main.html`,
                 baseUrl:'file:///android_asset/web/'
             };

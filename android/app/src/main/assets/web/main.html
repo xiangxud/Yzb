@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width,height=device-height; initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
     <script src="echarts.min.js"></script>
     <Style type="text/css">
         body {
             margin: 0;
             padding: 0;
+            height:100%;
         }
         .container {
             display: flex;
             width:100%;
-            height:200px;
-            backgroundColor:'red';
+            height:100%;
         }
         .loadding{
             max-width:100%;
@@ -24,7 +24,8 @@
     </Style>
 </head>
 <body>
-    <div class="container">
+    <div id="main" class="container dashboard">
+        <img src="loading.gif" class="loadding" />
     </div>
     <script src="loadChart.js?o=1"></script>
 </body>
