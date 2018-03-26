@@ -57,7 +57,7 @@ export default class App extends Component<{}> {
 
     componentDidMount(){
         codePush.allowRestart();//在加载完了可以允许重启
-        wechat.registerApp('com.yzb')
+        wechat.registerApp('wxfeaf8f8278e018f1')
     }
     sync() {
         codePush.sync();
