@@ -6,61 +6,47 @@ import {
     Text,
     View,
     StyleSheet,
-    TouchableHighlight,
+    TouchableWithoutFeedback,
     Image,
     Dimensions
 } from 'react-native';
-import {observer, inject} from 'mobx-react/native'
+import {observer} from 'mobx-react/native'
 import Swiper from 'react-native-swiper';
 var {height, width} = Dimensions.get('window');
-@inject('homeStore')
-@observer
-export default class SwiperBanner extends Component {
-    render() {
+
+const SwiperBanner = observer(({ds, onItemsPress})=> {
         return (
             <Swiper style={styles.wrapper}
                     showsButtons={false}
-                    paginationStyle={{bottom:5}}
+                    paginationStyle={styles.paginationStyle}
                     activeDotColor={'#009688'}
                     autoplay={true}>
-                <View style={styles.slide1}>
-                    <Image source={require('../../resource/banner_home_1.jpg')} style={{width: width, height:120,}} />
-                </View>
-                <View style={styles.slide2}>
-                    <Image source={require('../../resource/banner_home_2.jpg')} style={{width: width, height:120,}} />
-                </View>
-                <View style={styles.slide3}>
-                    <Image source={require('../../resource/banner_home_3.jpg')} style={{width: width, height:120,}} />
-                </View>
+                {ds.map((item, i)=>
+                <TouchableWithoutFeedback key={i} onPress={e => onItemsPress(item)} style={styles.slide}>
+                    <Image source={{uri: item.img}} style={{width: width, height:120,}} />
+                </TouchableWithoutFeedback>
+                )}
             </Swiper>
         )
-    }
-}
+});
 
-var styles = StyleSheet.create({
+export default SwiperBanner;
+
+const styles = StyleSheet.create({
     wrapper: {
     },
-    slide1: {
+    slide: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#9DD6EB',
     },
-    slide2: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#97CAE5',
-    },
-    slide3: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#92BBD9',
-    },
     text: {
         color: '#fff',
         fontSize: 30,
         fontWeight: 'bold',
+    },
+    paginationStyle:{
+        bottom:5
     }
-})
+});

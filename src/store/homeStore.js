@@ -5,6 +5,7 @@ import {observable, computed, action, runInAction, useStrict} from 'mobx'
 
 useStrict(true);
 class HomeStore {
+    @observable banners = [];
     @observable fields = {
         out: 0, //出栏
         in: 0, //入栏
@@ -28,9 +29,10 @@ class HomeStore {
         this.pageIndex = 1
         this.isFetching = true;
         request.getJson(urls.apis.HOME_ALL, {}).then((res) => {
-            const {fields, sties, reminds, news, farm} = res;
+            const {banners, fields, sties, reminds, news, farm} = res;
             runInAction(() => {
                 this.isFetching = false;
+                this.banners = banners;
                 this.fields = fields;
                 this.sties = sties;
                 this.farm = farm;

@@ -41,6 +41,9 @@ export default class HomePage extends Component {
     componentDidMount(){
         homeStore.fetchHomeData()
     }
+    onBannerPress =(item)=>{
+        alert(item.link);
+    }
     remindMore=(t)=>{
     }
     detailPress=(id)=>{
@@ -79,14 +82,14 @@ export default class HomePage extends Component {
     }
 
     renderListHeader(){
-        const {isFetching, reminds, fields, sties} = homeStore;
+        const {isFetching, reminds, banners, fields, sties} = homeStore;
         return (
             <View style={styles.container}>
                 <MaskLoading show={isFetching}/>
-                <View style={{height:120, backgroundColor:'#ffc'}}>
-                    <SwiperBanner />
+                <View style={styles.bannerWrap}>
+                    <SwiperBanner ds={banners} onItemsPress={(item)=>this.onBannerPress(item)}/>
                 </View>
-                <View style={{marginTop:10, marginBottom:10, backgroundColor:'#fff', height:80, flexDirection:'row'}}>
+                <View style={styles.mainButtons}>
                     <TouchableHighlight underlayColor={'#f9f3f9'} onPress={()=> this.props.navigation.navigate('BHStart') } style={styles.homeBigButton}>
                         <View style={styles.homeBigButtonInner}>
                             <Icon name='medkit' color={'#8bc34a'} size={34} />
@@ -149,12 +152,10 @@ export default class HomePage extends Component {
 }
 
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
-    },
-    homeBigButton:{
-        flex: 1,
-    },
+    container:{ flex:1, },
+    bannerWrap:{ height:120, },
+    homeBigButton:{ flex: 1,},
+    mainButtons:{ marginTop:10, marginBottom:10, backgroundColor:'#fff', height:80, flexDirection:'row' },
     homeBigButtonInner:{
         alignItems:'center',
         justifyContent:'center',
