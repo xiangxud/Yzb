@@ -7,6 +7,7 @@ import styStore from './styStore'
 import addStyStore from './addStyStore'
 import editStyStore from './editStyStore'
 import bohaiStore from './bohaiStore'
+import addFarmStore from './addFarmStore'
 import outPetStore from './outPetStore'
 import inPetStore from './inPetStore'
 import sensorHistoryStore from './sensorHistoryStore'
@@ -24,6 +25,7 @@ export default {
     addStyStore,
     editStyStore,
     bohaiStore,
+    addFarmStore,
     outPetStore,
     inPetStore,
     sensorHistoryStore,

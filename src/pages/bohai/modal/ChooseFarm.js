@@ -5,6 +5,7 @@ import React, {Component} from 'react'
 import {
     View,
     Text,
+    Alert,
     StyleSheet,
     ScrollView,
     FlatList,
@@ -17,7 +18,7 @@ import {observer, inject} from 'mobx-react/native'
 //import { Icon } from 'native-base'
 import Search from 'react-native-search-box';
 import Selector from '../../../components/bohai/Selector';
-class FarmStore{
+class FarmsStore{
     @observable page = 1;
     @observable farms = [];
     @observable isFetching = true;
@@ -34,7 +35,7 @@ class FarmStore{
         this.isFetching = r;
     }
 }
-farmStore = new FarmStore();
+farmsStore = new FarmsStore();
 
 @inject('bohaiStore')
 @observer
@@ -43,7 +44,7 @@ export default class Info extends Component {
     static navigationOptions = ({navigation})=>({
         headerTitle: '选择养殖场',
         headerRight: <Text onPress={navigation.state.params? navigation.state.params.openAdd: null} style={{padding:5, color:'#fff'}}>
-
+            添加养殖场
         </Text>,
     });
 
@@ -54,7 +55,17 @@ export default class Info extends Component {
     }
 
     openAddFarm = () =>{
-        alert('添加养殖场');
+        Alert.alert(
+            '您确定要添加新的养殖场吗？',
+            '您可以先更改搜索关键字来搜索系统已存在的养殖场，不再试试吗?',
+            [
+                {text: '再找找吧', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: '没找到，去添加', onPress: () => {
+                    this.props.navigation.navigate("AddFarm");
+                }},
+            ],
+            { cancelable: true }
+        );
     }
 
     fetchData = (kw) =>{
@@ -63,9 +74,9 @@ export default class Info extends Component {
             tools.showToast('请输入至少两个汉字');
             return;
         }
-        farmStore.setLoading(true);
+        farmsStore.setLoading(true);
         request.getJson(urls.apis.BH_FARMS, {kw: kw}).then((res)=>{
-            farmStore.mapInfo(res);
+            farmsStore.mapInfo(res);
         }).catch((err)=>{
             tools.showToast(JSON.stringify(err));
         });
@@ -78,16 +89,6 @@ export default class Info extends Component {
     }
 
     renderRow = (info) =>{
-        // return (
-        //     <TouchableNativeFeedback
-        //         onPress={()=>{this.newsPress(info)}}
-        //         background={TouchableNativeFeedback.SelectableBackground()}>
-        //         <View style={styles.newsItem}>
-        //             <Text style={styles.newsItemTitle}>
-        //                 {info}
-        //             </Text>
-        //         </View>
-        //     </TouchableNativeFeedback>)
         return <Selector onPress={()=>this.newsPress(info)} value={info} />
     }
 
@@ -98,7 +99,7 @@ export default class Info extends Component {
                        onSearch={this.fetchData}/>
     }
     render() {
-        const {farms, isFetching} = farmStore;
+        const {farms, isFetching} = farmsStore;
         return (
             <FlatList
                 style={styles.container}

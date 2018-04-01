@@ -18,6 +18,7 @@ import BHList from '../pages/bohai/BHList';
 import BHApply from '../pages/bohai/BHApply';
 import BHDetail from '../pages/bohai/BHDetail';
 import ChooseFarm from '../pages/bohai/modal/ChooseFarm';
+import AddFarm from '../pages/bohai/modal/AddFarm';
 
 import Didi from '../pages/didi/Didi';
 import VetInfo from '../pages/didi/VetInfo';
@@ -39,8 +40,8 @@ import editSty from '../pages/sty/edit';
 import outPet from '../pages/sty/outPet'
 import inPet from '../pages/sty/inPet'
 import stySetting from '../pages/sty/setting';
-import cameraAdd from '../pages/sty/camera/add'
-import cameraEdit from '../pages/sty/camera/edit'
+import cameraAdd from '../pages/sty/camera/add';
+import cameraEdit from '../pages/sty/camera/edit';
 
 //主菜单
 const TabNavigation = TabNavigator({
@@ -194,6 +195,9 @@ const RootNavigator = StackNavigator({
     BHStart:{ screen: BHStart },
     BHApply:{ screen: BHApply },
     BHList:{ screen: BHList },
+    AddFarm:{ screen: AddFarm },
+    ChooseFarm:{ screen: ChooseFarm },
+    BHDetail:{ screen: BHDetail },
     MonitorPlay:{ screen: MonitorPlay },
     Web:{ screen: Web },
     CameraAdd:{screen:cameraAdd},
@@ -204,8 +208,6 @@ const RootNavigator = StackNavigator({
     MyCollection:{screen:Collection},
     MyInfo:{ screen: MyInfo },
     Quotes:{ screen: Quotes },
-    ChooseFarm:{ screen: ChooseFarm },
-    BHDetail:{ screen: BHDetail },
     EnvironmentalSetting:{ screen: EnvironmentalSetting },
 }, {
     initialRouteName: 'Welcome', // 默认显示界面!global.user.loginState?'Login':'Main'

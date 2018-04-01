@@ -111,8 +111,10 @@ const urls = {
 
 
         //渤海监测-----------------------------------------------------------
+        BH_GET_FARM_PARAMS: apiPath + 'bh/getFarmParams',
+        BH_POST_SAVE_FARM: apiPath + 'bh/saveFarm',
         //获取所有养殖场（搜索）
-        BH_FARMS: apiPath + 'bh/getfarms',
+        BH_FARMS: apiPath + 'bh/getFarms',
         BH_BREEDS: apiPath + 'bh/getPoultryBreeds',
         BH_TEST_TYPES: apiPath + 'bh/getTestTypeDetails',
         BH_APPROVE_USERS: apiPath + 'bh/getApprovers',
@@ -125,44 +127,44 @@ const urls = {
 
         //免疫宝-------------------------------------------------------------
         //栋舍信息
-        IMM_STY_BASIC: apiPath + 'sty/GetStyHome',
+        IMM_STY_BASIC: apiPath + 'sty/getStyHome',
         //字典列表
-        IMM_DICTIONARY:apiPath + 'dictionary/Get',
+        IMM_DICTIONARY:apiPath + 'dictionary/get',
         //栋舍创建
-        IMM_STY_ADD:apiPath + 'sty/Post',
+        IMM_STY_ADD:apiPath + 'sty/post',
         //获取栋舍详情
-        IMM_GET_STY_BASE:apiPath + 'sty/Get',
+        IMM_GET_STY_BASE:apiPath + 'sty/get',
         //栋舍提交
         IMM_POST_STY:apiPath + 'sty/modify',
 
-        IMM_STY_DAYREPORT:apiPath + 'sty/GetDayRecords',
+        IMM_STY_DAYREPORT:apiPath + 'sty/getDayRecords',
 
         //获取免疫提醒
-        IMM_GET_DETAIL:apiPath + 'immPlan/PostQuery',
+        IMM_GET_DETAIL:apiPath + 'immPlan/postQuery',
         //获取出栏配置
-        IMM_GET_OUT_PET_CONFIG:apiPath + 'sty/GetOutPetConfig',
+        IMM_GET_OUT_PET_CONFIG:apiPath + 'sty/getOutPetConfig',
         //获取栋舍的历史环控数据
-        IMM_GET_GetSensorHistory:apiPath + 'sty/GetSensorHistory',
+        IMM_GET_GetSensorHistory:apiPath + 'sty/getSensorHistory',
         //出栏
-        IMM_POST_REMOVE_PET:apiPath + 'sty/PostRoutine',
+        IMM_POST_REMOVE_PET:apiPath + 'sty/postRoutine',
         //出栏
-        IMM_POST_ADD_PET:apiPath + 'sty/PostAddPet',
+        IMM_POST_ADD_PET:apiPath + 'sty/postAddPet',
         //执行
-        IMM_POST_IMPLEMENT:apiPath + 'immPlan/PostImplement',
+        IMM_POST_IMPLEMENT:apiPath + 'immPlan/postImplement',
         //增加摄像头
-        IMM_POST_CAMERA:apiPath + 'sty/PostCamera',
+        IMM_POST_CAMERA:apiPath + 'sty/postCamera',
         //修改摄像头
-        IMM_UPDATE_CAMERA:apiPath + 'sty/UpdateCamera',
+        IMM_UPDATE_CAMERA:apiPath + 'sty/updateCamera',
         //删除摄像头
-        IMM_REMOVE_CAMERA:apiPath + 'sty/RemoveCamera',
+        IMM_REMOVE_CAMERA:apiPath + 'sty/removeCamera',
         //设置默认摄像头
-        IMM_DEFAULT_CAMERA:apiPath + 'sty/ChangeCamera',
+        IMM_DEFAULT_CAMERA:apiPath + 'sty/changeCamera',
         //获取文章汇总
-        Content_Article_GetArticleSummary:apiPath + 'Info/GetArticleSummary',
+        Content_Article_GetArticleSummary:apiPath + 'Info/getArticleSummary',
         //文章回复
-        Content_Article_PostComment:apiPath + 'Info/PostArticleComment',
+        Content_Article_PostComment:apiPath + 'Info/postArticleComment',
         //点赞文章
-        Content_Article_CollectArticle:apiPath + 'Info/CollectArticle',
+        Content_Article_CollectArticle:apiPath + 'Info/collectArticle',
 
     },
     // 获取图片完整路径

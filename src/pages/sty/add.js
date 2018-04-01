@@ -10,6 +10,7 @@ import {ValidateInput,ValidateInputInt,ValidateInputDate,ValidateChooseItem,Read
 export default class Add extends Component{
     static navigationOptions = ({navigation})=>({
         headerTitle: '添加栋舍',
+        headerRight: <View/>
     });
     constructor(props){
         super(props);
