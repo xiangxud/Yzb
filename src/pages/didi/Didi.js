@@ -102,11 +102,7 @@ export default class Didi extends Component {
                                 <View style={styles.profile}>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                         <Text style={{fontSize: 18}}>{current.name}</Text>
-                                        <Text style={{
-                                            fontSize: 14,
-                                            color: '#ccc',
-                                            marginLeft: 5
-                                        }}>手机{current.phone}</Text>
+                                        <Text style={styles.phone}>手机{current.phone}</Text>
                                     </View>
                                     <Text
                                         style={{marginTop: 5}}>专长：{current.major_skill ? current.major_skill : '未知'}</Text>
@@ -208,6 +204,11 @@ const styles = StyleSheet.create({
     profile:{
         flex:1,
         marginLeft:10,
+    },
+    phone:{
+        fontSize: 14,
+        color: '#909090',
+        marginLeft: 5
     },
     noCurrent:{
         height:80,

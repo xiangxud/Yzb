@@ -26,20 +26,20 @@ export default class VetInfo extends Component {
                     <View style={styles.cardContainer}>
                         <Image source={{uri: vet.head_photo}} style={styles.head}/>
                         <View style={styles.userProfile}>
-                            <Text style={{fontSize:18, fontWeight:'bold',}}>
-                                <Icon name={'ios-contact'} style={{fontSize:20}} /> { vet.name }
+                            <Text style={{fontSize:20, fontWeight:'bold', color:'#459d26'}}>
+                                { vet.name }
                             </Text>
-                            <Text style={{fontSize:14, marginTop:5, color:'#ccc'}}>
-                                <Icon name={'ios-people'} style={{fontSize:16}} /> 已服务{vet.service_count}人
+                            <Text style={styles.item_line}>
+                                已服务{vet.service_count}人
                             </Text>
-                            <Text style={{fontSize:14, marginTop:5, color:'#ccc'}}>
-                                <Icon name={'ios-star-half'} style={{fontSize:16}} /> 服务评分：{vet.star?vet.star:'暂无评分'}
+                            <Text style={styles.item_line}>
+                                服务评分：{vet.star? vet.star: '暂无评分'}
                             </Text>
                         </View>
                     </View>
                     <View style={styles.descContainer}>
                         <Text>
-                            从事临床生产经验：{vet.clinic_year?vet.clinic_year:'未知'}
+                            从事临床生产经验：{vet.clinic_year? vet.clinic_year: '未知'}
                         </Text>
                         <Text>
                             专长：{vet.major_skill}
@@ -51,11 +51,11 @@ export default class VetInfo extends Component {
                         </Text>
                     </View>
                     <View style={{margin:20}}>
-                        <Button block success large onPress={()=>{Linking.canOpenURL('tel:'+vet.phone).then(supported => {
+                        <Button block success large onPress={()=>{Linking.canOpenURL('tel:' + vet.phone).then(supported => {
                             if(supported){
-                                Linking.openURL('tel:'+vet.phone);
+                                Linking.openURL('tel:' + vet.phone);
                             }else{
-                                tools.showToast('无法拨打电话'+vet.phone);
+                                tools.showToast('无法拨打电话' + vet.phone);
                             }
                         })}}>
                             <Icon name={'ios-call-outline'} style={{color:'#fff'}}/>
@@ -83,6 +83,11 @@ const styles = StyleSheet.create({
     profile: {
         flex:1,
         justifyContent:'center',
+    },
+    item_line:{
+        fontSize:14,
+        marginTop:5,
+        color:'#6f6f6f'
     },
     descContainer:{
         marginTop:20,

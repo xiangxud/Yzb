@@ -41,8 +41,8 @@ export default class HomePage extends Component {
     componentDidMount(){
         homeStore.fetchHomeData()
     }
-    onBannerPress =(item)=>{
-        alert(item.link);
+    onBannerPress = (item) =>{
+        //alert(item.link);
     }
     remindMore=(t)=>{
     }
