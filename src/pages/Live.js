@@ -18,7 +18,12 @@ const Video = observer(({v, index, navigation}) => {
     return <TouchableOpacity onPress={()=> navigation.navigate('Web', {title: v.Title, url:v.Url})} key={index}>
         <View style={styles.item}>
             <View style={styles.innerView}>
-                <Image source={{uri: v.FaceUrl}} style={styles.face}/>
+                {
+                    (v.FaceUrl && v.FaceUrl!='')?
+                    <Image source={{uri: v.FaceUrl}} style={styles.face}/>
+                    :
+                    <Image source={require('../resource/live_no_face.jpg')} style={styles.face}/>
+                }
                 <Icon name={'logo-youtube'} style={{position:'absolute', fontSize:40, color:'#fff'}} />
                 <Text style={styles.dur}>{v.Duration}</Text>
             </View>
@@ -45,10 +50,10 @@ export default class Live extends Component{
             <View>
                 <Image source={{uri: 'https://m.ringpu.com/ringpu/public/images/live/live-bigimg-20171201.jpg'}} style={styles.topBanner}/>
                 <Segment style={{backgroundColor:'#1fa8ec', marginTop:10}}>
-                    <Button first active={current===true} onPress={()=>liveStore.switch()}>
+                    <Button first active={current===1} onPress={()=>liveStore.switch()}>
                         <Text>家禽</Text>
                     </Button>
-                    <Button last active={current===false} onPress={()=>liveStore.switch()}>
+                    <Button last active={current===2} onPress={()=>liveStore.switch()}>
                         <Text>家畜</Text>
                     </Button>
                 </Segment>
@@ -61,35 +66,35 @@ export default class Live extends Component{
     }
     render(){
         const {navigation} = this.props;
-        const {currentType, list, isFetching} = liveStore;
+        const {currentType, list1, list2, isFetching1, isFetching2} = liveStore;
         return (<Container>
             <Content gray>
-                <MaskLoading show={isFetching} text={'加载中,请稍后...'}/>
-                {currentType === true ?
+                <MaskLoading show={isFetching1 || isFetching2}/>
+                {currentType === 1 ?
                     <FlatList
-                        data={list.slice()}
+                        data={list1.slice()}
                         keyExtractor={ (item, index) => index }
                         renderItem={({ item, index }) => <Video v={item} index={index} navigation={navigation} /> }
                         ListHeaderComponent={ this.renderListHeader(currentType) }
                         ListFooterComponent={
-                            <Button full light onPress={()=>liveStore.fetchMore(true)}><Text>获取更多</Text></Button>
+                            <Button full light onPress={()=>liveStore.fetchMore1(true)}><Text>获取更多</Text></Button>
                         }
                         numColumns={2}
-                        onRefresh={()=>{liveStore.fetchMore(true)}}
-                        refreshing = {isFetching}
+                        onRefresh={()=>{liveStore.fetchMore1()}}
+                        refreshing = {isFetching1}
                     />
                     :
                     <FlatList
-                        data={list.slice()}
+                        data={list2.slice()}
                         keyExtractor={ (item, index) => index }
                         renderItem={({ item, index }) => <Video v={item} index={index} navigation={navigation} /> }
                         ListHeaderComponent={ this.renderListHeader(currentType) }
                         ListFooterComponent={
-                            <Button full light onPress={()=>liveStore.fetchMore(true)}><Text>获取更多</Text></Button>
+                            <Button full light onPress={()=>liveStore.fetchMore2(true)}><Text>获取更多</Text></Button>
                         }
                         numColumns={2}
-                        onRefresh={()=>{liveStore.fetchMore(true)}}
-                        refreshing = {isFetching}
+                        onRefresh={()=>{liveStore.fetchMore2()}}
+                        refreshing = {isFetching2}
                     />
                 }
             </Content>
