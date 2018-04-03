@@ -6,7 +6,7 @@ import {
     StyleSheet,
     TouchableOpacity
 } from 'react-native'
-import {Container, Content, Footer, FooterTab, Button,Text} from 'native-base';
+import {Container, Content, Footer, FooterTab, Button, Text} from 'native-base';
 import {observer} from 'mobx-react/native';
 
 @observer
@@ -16,7 +16,7 @@ export default class FootBar extends Component {
     }
 
     static defaultProps = {
-        buttons:[{ title:'提交' , default:true, onPress:()=>{}}]
+        buttons:[{ title: '提交' , default: true, onPress: () => {}}]
     };
 
 

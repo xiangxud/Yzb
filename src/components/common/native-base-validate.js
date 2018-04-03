@@ -91,18 +91,17 @@ const ValidateInputInt = observer(function ValidateInputInt({label, data , name 
     }
 });
 
-const ValidateChooseItem = observer(function ValidateChooseItem({label, data , name ,getOptions,selectOptions,optionslabel,IsValidate, placeholder,onChange,...props}){
+const ValidateChooseItem = observer(function ValidateChooseItem({label, data , name ,getOptions, selectOptions, optionslabel, IsValidate, placeholder, onChange, ...props}){
     let onPress =() => {
-        let options = getOptions?getOptions():[];
+        let options = getOptions? getOptions(): [];
         if(selectOptions){
             selectOptions.forEach(o=> options.push(o));
         }
-
         ActionSheet.show(
             {
                 options: options,
                 title: optionslabel,
-                cancelButtonIndex:-1
+                cancelButtonIndex: -1
             },
             (index) => {
                 if( index >= 0 && index < options.length ){
@@ -112,6 +111,53 @@ const ValidateChooseItem = observer(function ValidateChooseItem({label, data , n
         )
     }
     if(IsValidate && validateHepler.getMess(data,name)){
+        return (
+            <Item error onPress={onPress} fixedLabel {...props}>
+                <Label>{label}</Label>
+                <Input editable={false} value={data[name]} placeholder={placeholder} placeholderTextColor='#b1b1b1' />
+                <Icon style={style.ico} active name="ios-arrow-forward" />
+                <Icon name='close-circle' />
+            </Item>
+        )
+    }else {
+        return (
+            <Item onPress={onPress} fixedLabel {...props}>
+                <Label>{label}</Label>
+                <Input editable={false} value={data[name]} placeholder={placeholder} placeholderTextColor='#b1b1b1' />
+                <Icon style={style.ico} active name="ios-arrow-forward" />
+            </Item>
+        )
+    }
+});
+
+const ValidateChooseItemEx = observer(({label, data, name, getOptions, selectOptions, optionslabel, IsValidate, placeholder, onChange, ...props})=>{
+    let onPress =() => {
+        let options = getOptions? getOptions(): [];
+        let values = [], texts = [];
+        options.forEach((item)=>{
+            values.push(item.value);
+            texts.push(item.text);
+        })
+        if(selectOptions){
+            selectOptions.forEach(o=> {
+                texts.push(o.text);
+                values.push(o);
+                options.push(o);
+            });
+        }
+        ActionSheet.show({
+                options: texts,
+                title: optionslabel,
+                cancelButtonIndex: 0
+            },
+            (index) => {
+                if(index >= 0 && index < options.length){
+                    onChange(options[index]);
+                }
+            }
+        )
+    }
+    if(IsValidate && validateHepler.getMess(data, name)){
         return (
             <Item error onPress={onPress} fixedLabel {...props}>
                 <Label>{label}</Label>
@@ -239,4 +285,12 @@ class ValidateRadioInput extends Component{
     }
 }
 
-export { ValidateInput,ValidateInputInt,ValidateInputDate,ReadOnlyInput,ValidateChooseItem,ValidateRadioInput }
+export {
+    ValidateInput,
+    ValidateInputInt,
+    ValidateInputDate,
+    ReadOnlyInput,
+    ValidateChooseItem,
+    ValidateChooseItemEx,
+    ValidateRadioInput
+}

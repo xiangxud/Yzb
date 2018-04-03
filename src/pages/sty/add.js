@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import { Container, Header, Content, Form,Separator,Icon,Root,ListItem,Text,Toast} from 'native-base';
-import {observer,inject} from 'mobx-react/native';
-import FootBar from '../../components/sty/FootBar'
+import {observer, inject} from 'mobx-react/native';
+import FootBar from '../../components/sty/FootBar';
 import {ValidateInput,ValidateInputInt,ValidateInputDate,ValidateChooseItem,ReadOnlyInput} from '../../components/common/native-base-validate'
 
 @inject('addStyStore')

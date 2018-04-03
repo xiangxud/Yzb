@@ -8,13 +8,12 @@ import {
     StyleSheet,
     Alert,
 } from 'react-native'
-import {Container, Content, Footer, FooterTab, Button, List, ListItem, Body, Text, Icon, Right} from 'native-base';
-//import Modal from 'react-native-modalbox';
+import {Container, Content, Footer, FooterTab, Button, List, ListItem, Form, Text, Item, Label, Input, Icon, Right, ActionSheet} from 'native-base';
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
 import {observer, inject} from 'mobx-react/native';
-import { Col, Row, Grid } from 'react-native-easy-grid';
 import {MaskLoading} from '../../../components';
-import {ValidateInput,ValidateInputInt,ValidateInputDate,ValidateChooseItem,ReadOnlyInput} from '../../../components/common/native-base-validate'
+import FootBar from '../../../components/sty/FootBar';
+import {ValidateInput, ValidateChooseItem, ValidateChooseItemEx} from '../../../components/common/native-base-validate'
 
 @inject('addFarmStore')
 @observer
@@ -28,109 +27,95 @@ export default class AddFarm extends Component {
     });
 
     buttons=[];
-    componentDidMount () {
-        const {addStyStore,navigation} = this.props;
+    componentWillMount () {
+        const {addFarmStore, navigation} = this.props;
         //1、初始化数据
-        addStyStore.onIni(navigation.state.params.farm);
+        addFarmStore.onIni();
         //2、底部菜单
         this.buttons.push({
-            title:'下一步' ,
-            onPress:this.next.bind(this)
-        });
-        /*
-        var timer = setTimeout(()=> {
-            this.fetchData((res) => {
-                if (res === true) {
-                    bohaiStore.setSales(true);
-                    let animalType = this.props.navigation.state.params.type;
-                    if (animalType) {
-                        bohaiStore.set('animalType', animalType);
-                    }
-                    this._fetch();
-                    bohaiStore.setFetch(false);
-                } else {
-                    tools.showToast('您还不是瑞普用户,不能提交申请');
-                    bohaiStore.setSales(false);
-                    bohaiStore.setFetch(false);
-                }
-            }, (err) => {
-                tools.showToast(err.message);
-                bohaiStore.setSales(false);
-                bohaiStore.setFetch(false);
-            });
-        }, 200);
-        */
-    }
-    fetchData(success, failed){
-        request.getJson(urls.apis.BH_IS_SALES, {phone: userStore.phone}).then((res)=>{
-            success(res);
-        }).catch((err)=>{
-            failed(err.message);
+            title:'保存养殖场' ,
+            onPress: this.savePress.bind(this)
         });
     }
 
-    _fetch = () => {
-        if(bohaiStore.data.animalType==='家禽') {
-            request.getJson(urls.apis.BH_BREEDS, null).then((res) => {
-                bohaiStore.setBreeds(res);
-            }).catch((err) => tools.showToast(err.message));
-        }
-        request.getJson(urls.apis.BH_TEST_TYPES, null).then((res)=>{
-            bohaiStore.setTestItems(res);
-        }).catch((err)=>tools.showToast(err.message));
-    }
     componentWillUnmount(){
-        this.timer && clearTimeout(this.timer);
+        //this.timer && clearTimeout(this.timer);
+    }
+    getProvinces = () =>{
+        const {addFarmStore} = this.props;
+        let options = [];
+        addFarmStore.params.provinces.forEach((o)=>{
+            options.push(o.p);
+        });
+        return options;
+    }
+    getCities =()=>{
+        const {addFarmStore} = this.props;
+        let cities = [];
+        addFarmStore.params.provinces.forEach((o)=>{
+            if(o.p===addFarmStore.data.province) {
+                o.c.forEach((city)=>{
+                    cities.push(city.n);
+                });
+            }
+        });
+        return cities;
+    }
+    getSales = () =>{
+        const {addFarmStore} = this.props;
+        let options = [];
+        addFarmStore.params.sales.forEach((o)=>{
+            options.push({text: o.realName, value: o.id});
+        });
+        return options;
     }
 
+    savePress(){
+        const {addFarmStore, navigation} = this.props;
+        let mess = addFarmStore.onValidate();
+        if(mess.length > 0){
+            tools.showToast('数据项存在错误，请更正');
+            return ;
+        }
+        addFarmStore.onCommit((data)=>{
+            tools.showToast('保存成功');
+            navigation.goBack();
+        },(err)=>{
+            tools.showToast('产生错误:'+err);
+        });
+    }
+    onUpdateData(u){
+        const {addFarmStore} = this.props;
+        addFarmStore.onChangedData(u);
+    }
     render() {
-        const { isFetching} = bohaiStore;
+        const {addFarmStore} = this.props;
         return (
             <Container>
-                <MaskLoading show={isFetching}/>
+                <MaskLoading show={addFarmStore.isFetching}/>
                 <Content>
                     <Form>
-                        <ValidateInput label="养殖场名称" data={farmAddStore.data} name="name" placeholder="请输入栋舍栏位" IsValidate={addStyStore.IsValidate} onChange={(e)=>{this.onUpdateData({name:e})}} />
-                        <Item fixedLabel style={styles.pdR}>
-                            <Label>养殖场名称<Text style={styles.required}>*</Text></Label>
-                            <Input placeholder="请输入母猪存栏数"
-                                   maxLength={8}
-                                   keyboardType={'numeric'}
-                                   value={store.data.livestockTotalCount ? store.data.livestockTotalCount.toString() : ''}
-                                   onChangeText={(text) => store.set('livestockTotalCount', text)}/>
-                        </Item>
-
-                        <Item fixedLabel style={styles.pdR}>
-                            <Label>养殖场联系人<Text style={styles.required}>*</Text></Label>
-                            <Input placeholder="请输入年出栏肥猪数"
-                                   maxLength={8}
-                                   keyboardType={'numeric'}
-                                   value={store.data.livestockYearCount ? store.data.livestockYearCount.toString() : ''}
-                                   onChangeText={(text) => store.set('livestockYearCount', text)}/>
-                        </Item>
-                        <Item fixedLabel onPress={() => this.props.openPigBreed()}>
-                            <Label>联系方式<Text style={styles.required}>*</Text></Label>
-                            <Input placeholder="请选择饲养品种" editable={false} value={store.livestockBreeds} multiline={true}/>
-                            <Icon name={'ios-arrow-forward'} style={styles.arrow}/>
-                        </Item>
-                        <Item fixedLabel last onPress={() => this.props.openPigGender()}>
-                            <Label>邮箱<Text style={styles.required}>*</Text></Label>
-                            <Input placeholder="请选择送检猪类别" editable={false} value={store.livestockGenders}/>
-                            <Icon name={'ios-arrow-forward'} style={styles.arrow}/>
-                        </Item>
+                        <ValidateInput label="养殖场名称" data={addFarmStore.data} name="farmName" placeholder="请输入养殖场名称" IsValidate={addFarmStore.IsValidate} onChange={(txt)=>{this.onUpdateData({farmName: txt})}} />
+                        <ValidateInput label="养殖场联系人" data={addFarmStore.data} name="contactPerson" placeholder="请输入养殖场联系人" IsValidate={addFarmStore.IsValidate} onChange={(txt)=>{this.onUpdateData({contactPerson: txt})}} />
+                        <ValidateInput label="联系方式" data={addFarmStore.data} name="contactPhone" placeholder="请输入联系方式" IsValidate={addFarmStore.IsValidate} onChange={(txt)=>{this.onUpdateData({contactPhone: txt})}} />
+                        <ValidateInput label="邮箱" data={addFarmStore.data} name="emailNo" placeholder="请输入邮箱" IsValidate={addFarmStore.IsValidate} onChange={(txt)=>{this.onUpdateData({emailNo: txt})}} />
+                        <ValidateChooseItem label="所在省" data={addFarmStore.data} name="province" IsValidate={addFarmStore.IsValidate} getOptions={this.getProvinces.bind(this)} optionslabel="请选择省" placeholder="请选择" onChange={(txt)=>{this.onUpdateData({province: txt, city: ''})}} />
+                        <ValidateChooseItem label="所在市" data={addFarmStore.data} name="city" IsValidate={addFarmStore.IsValidate} getOptions={this.getCities.bind(this)} optionslabel="请选择市" placeholder="请选择" onChange={(txt)=>{this.onUpdateData({city: txt})}} />
+                        <ValidateInput label="详细地址" data={addFarmStore.data} name="address" placeholder="请输详细地址" IsValidate={addFarmStore.IsValidate} onChange={(txt)=>{this.onUpdateData({address: txt})}} />
+                        <ValidateChooseItemEx label="销售" data={addFarmStore.data} name="sales" IsValidate={addFarmStore.IsValidate} getOptions={this.getSales.bind(this)} optionslabel="请选择销售" placeholder="请选择" onChange={(o)=>{this.onUpdateData({salesId: o.value, sales: o.text})}} />
                     </Form>
                 </Content>
+                <FootBar buttons={this.buttons}></FootBar>
             </Container>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    modal:{
-
-    },
-    modal1:{
-        //height:350,
+    ico:{
+        width:28,
+        color:'#b1b1b1',
+        fontSize:14
     },
     noAccess:{
         flex:1,

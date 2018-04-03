@@ -7,6 +7,8 @@ useStrict(true);
 class AddFarmStore extends storeBase{
     @observable sales = [];//销售列表
     @observable area = [];//地区
+    @observable params = null;
+
     @observable
     data = {
         @observable
@@ -34,6 +36,9 @@ class AddFarmStore extends storeBase{
         city: '',
 
         @observable
+        provinceCity: '',
+
+        @observable
         @validate(/\S+$/, '养殖场详细地址不能为空')
         address: '',
 
@@ -41,19 +46,21 @@ class AddFarmStore extends storeBase{
         @validate(/\S+$/, '请选择销售')
         salesId: '',
 
-        @observable sales: '',
+        @observable
+        @validate(/\S+$/, '请选择销售')
+        sales: '',
     }
 
     @action
     onChangedData = (uo) => {
         Object.assign(this.data, this.data, uo);
     }
-
     @action
-    onIni = (farm) => {
-        this.farm=farm;
+    onIni = () => {
         this.getParams((data)=>{
-            this.area = data;
+            runInAction(()=>{
+                this.params = data.data;
+            });
         },(err)=>{
             alert(err);
         })
@@ -69,37 +76,8 @@ class AddFarmStore extends storeBase{
     }
 
     @action
-    getStyFromApi = (code, callback, failed) => {
-        request.getJson(urls.apis.IMM_GET_STY_BASE,{id:code}).then(data=>{
-            callback(data);
-        }).catch(err => {
-            failed(err);
-        });
-    }
-
-    @action
-    onUpdateSty = (callback, failed) => {
-        let item = {
-            StyId: this.data.code,
-            Name: this.data.name,
-            Day: this.data.day,
-            Genus: this.data.genus,
-            Number: this.data.number,
-            AddDate: this.data.addDate,
-            BatchNumber: this.data.batchNumber,
-            EquNum:this.data.equNum
-        };
-        request.postJson(urls.apis.IMM_POST_STY,item).then(data=>{
-            callback(data);
-        }).catch(err => {
-            failed(err);
-        });
-    }
-
-
-    @action
     onCommit(callback, failed) {
-        request.postJson(urls.apis.BH_POST_SAVE_FARM,{
+        let dt = {
             farmName: this.data.farmName,
             farmCode: null,
             contactPerson: this.data.contactPerson,
@@ -110,7 +88,8 @@ class AddFarmStore extends storeBase{
             address: this.data.address,
             sales: this.data.sales,
             salesId: this.data.salesId,
-        }).then((data)=>{
+        };
+        request.postJson(urls.apis.BH_POST_SAVE_FARM, dt).then((data)=>{
             callback(data);
         }).catch((err)=>{
             failed(err);

@@ -59,8 +59,8 @@ export default class Info extends Component {
             '您确定要添加新的养殖场吗？',
             '您可以先更改搜索关键字来搜索系统已存在的养殖场，不再试试吗?',
             [
-                {text: '再找找吧', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                {text: '没找到，去添加', onPress: () => {
+                {text: '再找找', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: '现在添加', onPress: () => {
                     this.props.navigation.navigate("AddFarm");
                 }},
             ],
