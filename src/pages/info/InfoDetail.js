@@ -13,7 +13,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {observer,inject} from 'mobx-react/native';
 import {action,observable} from 'mobx';
-import *as wechat from 'react-native-wechat'
+//import *as wechat from 'react-native-wechat'
 import tools from "../../common/tools";
 
 @inject('infoStore')
@@ -35,6 +35,7 @@ export default class InfoDetail extends Component {
         const {navigation,infoStore} = this.props;
         infoStore.onShowShare();
     }
+    /*
     onCheckWechatInstall(rollback){
         wechat.isWXAppInstalled().then(isInstalled=>{
             if(isInstalled){
@@ -84,7 +85,13 @@ export default class InfoDetail extends Component {
                 tools.showToast("分享失败");
             });
         });
-    }
+    }*/
+    onShareWechat(){
+
+    };
+    onShareFriends(){
+
+    };
 
     renderCollection(){
         const {navigation,infoStore} = this.props;
