@@ -143,7 +143,7 @@ export default class HomePage extends Component {
                 ListFooterComponent={
                     <Button full light onPress={()=>this.props.navigation.navigate('InfoTab')}><Text>查看更多</Text></Button>
                 }
-                keyExtractor={ (item, index) => index }
+                keyExtractor={ (item, index) => index.toString() }
                 onRefresh={()=>{homeStore.fetchHomeData()}}
                 refreshing = {isFetching}
             />

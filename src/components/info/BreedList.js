@@ -67,7 +67,7 @@ export default class BreedList extends Component{
                           this.props.source.onLoad();
                           return true;
                       }}
-                      keyExtractor={(item,key) => key}>
+                      keyExtractor={(item, index) => index.toString()}>
             </FlatList>
             {/*<MaskLoading show={this.props.source.isLoading} text={''}/>*/}
         </View>
