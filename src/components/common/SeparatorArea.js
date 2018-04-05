@@ -1,9 +1,9 @@
 import React from 'react';
-import {View,StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 
 const SeparatorArea = props => {
     return (
-        <View style={[props.vertical?styles.VSeparatorArea:styles.separatorArea,props.style]}/>
+        <View style={[props.vertical? styles.VSeparatorArea: styles.separatorArea, props.style]}/>
     );
 }
 

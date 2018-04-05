@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
-import{
+import {
     View,
-    StyleSheet,
     FlatList,
-    TouchableNativeFeedback,
+    StyleSheet,
 } from 'react-native';
-import { SwipeRow, Button, Text,Spinner, Icon } from 'native-base';
+import {Container, Content, SwipeRow, Button, Text, Spinner, Icon } from 'native-base';
 import {observer} from 'mobx-react/native';
-import {TitleBar} from '../../components';
+import {TitleBar, Separator} from '../../components';
 
 @observer
 export default class ImmList extends Component{
@@ -20,27 +19,27 @@ export default class ImmList extends Component{
     renderRow = (info) =>{
         return (
             <SwipeRow rightOpenValue={-150}
-                      style={{flex:1,paddingTop:0,paddingBottom:0}}
+                      style={styles.swipeRow}
                       list={{}}
                       right={
-                          <View style={style.actions}>
-                              <Button info style={style.action}><Text>执行</Text></Button>
-                              <Button info style={style.action}><Text>忽略</Text></Button>
+                          <View style={styles.actions}>
+                              <Button info style={styles.action}><Text>执行</Text></Button>
+                              <Button info style={styles.action}><Text>忽略</Text></Button>
                           </View>
                       }
                       body={
-                          <View style={style.row}>
-                              <View style={style.frist}>
-                                  <Text style={style.immTitle} numberOfLines={1}>
+                          <View style={styles.row}>
+                              <View style={styles.frist}>
+                                  <Text style={styles.immTitle} numberOfLines={1}>
                                       {info.item.VaccineName}
                                   </Text>
-                                  <Text style={style.immTime} numberOfLines={1}>
+                                  <Text style={styles.immTime} numberOfLines={1}>
                                       {info.item.ImmuneTime.ToDate().Format("yyyy-MM-dd")}
                                   </Text>
                               </View>
                               <View style={style.second}>
-                                  <Text style={style.block}>{info.item.VaccineMethod}</Text>
-                                  <Text style={style.block}>{info.item.Dose}</Text>
+                                  <Text style={styles.block}>{info.item.VaccineMethod}</Text>
+                                  <Text style={styles.block}>{info.item.Dose}</Text>
                               </View>
                           </View>
                       }
@@ -48,10 +47,7 @@ export default class ImmList extends Component{
             </SwipeRow>)
     }
 
-    _separator=()=>{
-        return <View style={{ height: 1, backgroundColor: '#e2e2e2' }}/>;
-    }
-    _renderFooter(){
+    ListFooter(){
         return <View />
     }
     renderList(){
@@ -65,27 +61,31 @@ export default class ImmList extends Component{
         return <FlatList data={array}
                          renderItem={this.renderRow}
                          onEndReachedThreshold={0}
-                         ItemSeparatorComponent={this._separator}
-                         ListFooterComponent={this._renderFooter}
-                         ListEmptyComponent={()=><View style={{height:100, justifyContent:'center', alignItems:'center'}}><Text style={{color:'gray'}}>暂无免疫提醒</Text></View>}
+                         ItemSeparatorComponent={()=><Separator/>}
+                         ListFooterComponent={this.ListFooter}
+                         ListEmptyComponent={()=><View style={styles.emptyTips}><Text style={{color:'gray'}}>暂无免疫提醒</Text></View>}
                          refreshing={!this.props.collection.collection.end}
-                         keyExtractor={(item,key) => key}>
+                         keyExtractor={(item, index) => index.toString()}>
         </FlatList>;
     }
     render(){
-        return <View style={style.container}>
-            <TitleBar icon={'bell-o'}
-                      title='免疫提醒'
-                      morePress={this.props.onMore}
-                      sub={<Text style={style.count}>({this.props.collection.collection.count})</Text>}/>
-            {
-                this.props.collection.collection.end?this.renderList():<Spinner />
-            }
-        </View>
+        return (
+        <Container>
+            <Content>
+                <TitleBar icon={'bell-o'}
+                          title='免疫提醒'
+                          morePress={this.props.onMore}
+                          sub={<Text style={styles.count}>({this.props.collection.collection.count})</Text>}/>
+                {
+                    this.props.collection.collection.end? this.renderList(): <Spinner />
+                }
+            </Content>
+        </Container>
+        )
     }
 };
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
     container:{
         flex:1,
         marginTop:10,
@@ -94,6 +94,12 @@ const style = StyleSheet.create({
     count:{
         marginLeft:2,
         color:'#ababab'
+    },
+    swipeRow:{flex:1,paddingTop:0,paddingBottom:0},
+    emptyTips:{
+        height:100,
+        justifyContent:'center',
+        alignItems:'center'
     },
     more:{
         alignSelf:'center',
