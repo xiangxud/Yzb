@@ -28,7 +28,7 @@ import About from '../pages/uc/About';
 import MyInfo from '../pages/uc/MyInfo';
 import Sty from '../pages/sty';
 import Imm from '../pages/sty/Imm';
-import Monitor from '../pages/sty/Monitor';
+
 import MonitorPlay from '../pages/sty/MonitorPlay';
 import Environmental from '../pages/sty/Environmental';
 import EnvironmentalSetting from '../pages/sty/EnvironmentalSetting';
