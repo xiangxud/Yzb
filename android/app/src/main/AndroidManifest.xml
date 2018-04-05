@@ -38,11 +38,10 @@
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-        <!--暂时封闭 -->
-        <!--<activity-->
-                <!--android:name=".wxapi.WXEntryActivity"-->
-                <!--android:label="@string/app_name"-->
-                <!--android:exported="true"-->
-        <!--/>-->
+      <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:label="@string/app_name"
+            android:exported="true"
+      />
     </application>
 </manifest>

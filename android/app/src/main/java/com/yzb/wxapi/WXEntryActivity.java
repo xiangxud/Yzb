@@ -1,5 +1,5 @@
 /**
-//暂时封闭
+//暂时封闭*/
 package com.yzb.wxapi;
 
 import android.app.Activity;
@@ -14,4 +14,3 @@ public class WXEntryActivity extends Activity {
         finish();
     }
 }
-*/

@@ -171,7 +171,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.react:react-native:+'
     // From node_modules
-    //暂时封闭 compile project(':RCTWeChat')
+    compile project(':RCTWeChat')
     // 如果你需要支持Android4.0(API level 14)之前的版本
     compile 'com.facebook.fresco:animated-base-support:1.3.0'
     // 如果你需要支持GIF动图

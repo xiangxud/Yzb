@@ -205,7 +205,7 @@ export default class InfoDetail extends Component {
     };
 
     renderBottom(){
-        const {navigation,infoStore} = this.props;
+        const {navigation, infoStore} = this.props;
         if(infoStore.data.ready){
             if(infoStore.data.showMode){
                 return this.renderReply();
@@ -220,7 +220,7 @@ export default class InfoDetail extends Component {
     }
 
     render() {
-        const {navigation,infoStore} = this.props;
+        const {navigation, infoStore} = this.props;
         let r = 'https://m.ringpu.com/ringpu/html_php/advice_and_college/d.php?code=' + navigation.state.params.code;
         return (
             <View style={style.main}>
