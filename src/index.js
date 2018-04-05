@@ -13,8 +13,8 @@ let routes = [];
 let lastBackPressed = null;
 
 @observer class YzbApp extends Component {
-    constructor(props, context) {
-        super(props, context);
+    constructor(props) {
+        super(props);
     }
 
     componentDidMount() {
