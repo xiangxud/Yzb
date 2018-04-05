@@ -52,7 +52,6 @@ class LiveStore {
                 runInAction(() => {
                     this.isFetching1 = false;
                 });
-                alert(JSON.stringify(err))
                 tools.showToast(err.message)
             });
         }
