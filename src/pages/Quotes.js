@@ -16,69 +16,65 @@ import {observer, inject} from 'mobx-react/native'
 import {Icon} from 'native-base'
 import {Loading} from '../components'
 
-class QuoteStore{
-
+class QuoteStore {
     @observable page = 1;
     @observable infos = [];
     @observable isFetching = true;
     @observable more = true;
+
     @action
-    mapInfo(list){
-        if(this.page === 1){
+    mapInfo(list) {
+        if (this.page === 1) {
             this.infos.replace(list)
-        }else{
+        } else {
             this.infos.splice(this.infos.length, 0, ...list);
         }
         this.isFetching = false;
-        list.length<15 ? this.more = false : this.page++;
+        list.length < 15 ? this.more = false : this.page++;
     }
-
     @action
-    setLoading=()=>{
+    setLoading = () => {
         this.isFetching = true;
     }
 }
-
 quoteStore = new QuoteStore();
-
 
 @observer
 export default class Quotes extends Component {
-
     static navigationOptions = {
         headerTitle: '行情动态',
-        headerRight: <View />
+        headerRight: <View/>
     }
-    /*
-    * <View style={styles.header}>
+
+    /** <View style={styles.header}>
                             <Text style={styles.headerText}>
                                 <Icon name={'ios-locate-outline'} style={{fontSize:18}}/> 天津11月28日行情
                             </Text>
                         </View>
-                        <View>
-
-                        </View>*/
-    componentDidMount(){
+                        <View></View>*/
+    componentDidMount() {
         this.fetchData();
     }
 
-    fetchData = () =>{
-        request.getJson(urls.apis.CMS_ARTICLE_QUOTES, {page: quoteStore.page}).then((res)=>{
+    fetchData = () => {
+        request.getJson(urls.apis.CMS_ARTICLE_QUOTES, {page: quoteStore.page}).then((res) => {
             quoteStore.mapInfo(res);
-        }).catch((err)=>{
+        }).catch((err) => {
             tools.showToast(JSON.stringify(err));
         });
     }
 
-    newsPress =(info) =>{
+    newsPress = (info) => {
         const {navigation} = this.props;
-        navigation.navigate("InfoDetail",{ code : info.code , title: info.title })
+        navigation.navigate("InfoDetail", {code: info.code, title: info.title})
     }
 
-    renderRow = (info) =>{
+    renderRow = (info) => {
         return (
             <TouchableNativeFeedback
-                onPress={()=>{this.newsPress(info)}}
+                onPress={() => {
+                    this.newsPress(info)
+                }}
                 background={TouchableNativeFeedback.SelectableBackground()}>
                 <View style={styles.newsItem}>
                     <Text style={styles.newsItemTitle}>
@@ -97,48 +93,50 @@ export default class Quotes extends Component {
             <FlatList
                 style={styles.container}
                 data={infos.slice()}
-                renderItem={({ item }) => this.renderRow(item) }
+                renderItem={({item}) => this.renderRow(item)}
 
-                ListFooterComponent={()=>{return <Loading isShow={isFetching}/>}}
-                refreshing = {isFetching}
+                ListFooterComponent={() => {
+                    return <Loading isShow={isFetching}/>
+                }}
+                refreshing={isFetching}
                 onEndReachedThreshold={0.1}
                 onEndReached={() => {
                     if (more > 0) {
                         this.fetchData()
                     }
                 }}
-                keyExtractor={(item,key) => key}
+                keyExtractor={(item, index) => index.toString()}
             />
         )
     }
 }
 
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
-    },
-    homeBigButton:{
+    container: {
         flex: 1,
     },
-    homeBigButtonInner:{
-        alignItems:'center',
-        justifyContent:'center',
-        height:80
+    homeBigButton: {
+        flex: 1,
     },
-    newsItem:{
-        backgroundColor:'#fff',
-        justifyContent:'center',
-        padding:10,
-        borderBottomWidth:StyleSheet.hairlineWidth,
-        borderBottomColor:'#ccc'
+    homeBigButtonInner: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 80
     },
-    newsItemTitle:{
-        fontSize:20
+    newsItem: {
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        padding: 10,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: '#ccc'
     },
-    newsItemDesc:{
-        fontSize:12, color:'#ccc'
+    newsItemTitle: {
+        fontSize: 20
     },
-    loading:{
-        margin:32,
+    newsItemDesc: {
+        fontSize: 12, color: '#ccc'
+    },
+    loading: {
+        margin: 32,
     }
 });

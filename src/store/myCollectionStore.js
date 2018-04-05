@@ -2,55 +2,62 @@ import {action, computed, observable, reaction, runInAction, useStrict} from 'mo
 import tools from "../common/tools";
 
 useStrict(true);
-class breedItem{
-    code='';
-    title='';
-    publised= new Date();
-    source='';
-    comments=0;
-    publishFormate='';
+
+class breedItem {
+    code = '';
+    title = '';
+    publised = new Date();
+    source = '';
+    comments = 0;
+    publishFormate = '';
 }
+
 class breedItemCollection {
-    constructor(type){
+    constructor(type) {
         //this.datatype = type;
-        runInAction(()=>{
+        runInAction(() => {
             this.datatype = "肉蛋行情";
         });
     }
 
-    @observable searchTxt='';
-    @observable source=[];
-    @observable datatype='';
-    @observable pageIndex=1;
-    @observable more= true;
-    @observable end= false;
+    @observable searchTxt = '';
+    @observable source = [];
+    @observable datatype = '';
+    @observable pageIndex = 1;
+    @observable more = true;
+    @observable end = false;
     @observable isLoading = true;
-    @observable pageSize=10;
-    @observable go=true;
+    @observable pageSize = 10;
+    @observable go = true;
 
     @action
-    onLoad(){
-        this.source=[];
+    onLoad() {
+        this.source = [];
         this.end = false;
         this.pageIndex = 1;
         this.isLoading = true;
-        this.onLoadFromApi(this.pageIndex, (items)=>{
+        this.onLoadFromApi(this.pageIndex, (items) => {
             this.onParse(items);
             this.onCloseEnd();
-        },(err)=>{
+        }, (err) => {
             this.onCloseEnd();
         });
     };
 
     @action
-    onFilter(txt){
+    onFilter(txt) {
         this.searchTxt = txt;
         this.onLoad();
     }
 
     @action
-    onLoadFromApi(index, callback, falied){
-        request.getJson(urls.apis.CMS_ARTICLE_COLLECTION,{page: index, size: this.pageSize, type: this.datatype, txt:this.searchTxt}).then((data) => {
+    onLoadFromApi(index, callback, falied) {
+        request.getJson(urls.apis.CMS_ARTICLE_COLLECTION, {
+            page: index,
+            size: this.pageSize,
+            type: this.datatype,
+            txt: this.searchTxt
+        }).then((data) => {
             callback(data);
         }).catch((err) => {
             tools.showToast('没有更多内容了');
@@ -72,10 +79,10 @@ class breedItemCollection {
     }
 
     @action
-    onMore(){
-        if(!this.more){
+    onMore() {
+        if (!this.more) {
             return;
-        }else {
+        } else {
             this.end = false;
             this.onLoadFromApi(this.pageIndex + 1, (items) => {
                 this.onParse(items);
@@ -85,7 +92,7 @@ class breedItemCollection {
                 this.pageIndex++;
                 this.onCloseEnd();
             }, (err) => {
-                runInAction(()=>{
+                runInAction(() => {
                     this.onCloseEnd();
                     this.more = false;
                 });
@@ -94,42 +101,43 @@ class breedItemCollection {
     }
 
     @action
-    onCloseEnd(){
+    onCloseEnd() {
         this.end = true;
         this.isLoading = false;
     }
 }
 
-class myCollectionStore{
-    index=0
+class myCollectionStore {
+    index = 0
     //分类
-    labels=['咨询']
-    currentLabel="";
-    //咨询
-    infos={
-    }
+    labels = ['文章']
+    currentLabel = "";
+
     @action
-    onChanged(label){
+    onChanged(label) {
         this.currentLabel = label;
         let data = this.onGetCurrentCollection();
-        if( data != null && data.source.length == 0 ) {
+        if (data != null && data.source.length == 0) {
             data.onLoad();
         }
     }
+
     @observable
     data0 = new breedItemCollection(this.labels[0]);
+
     @action
-    onGetCurrentCollection(){
-        if( this.currentLabel ==  this.labels[0]){
+    onGetCurrentCollection() {
+        if (this.currentLabel == this.labels[0]) {
             return this.data0;
         }
-        if( this.currentLabel ==  this.labels[1]){
+        if (this.currentLabel == this.labels[1]) {
             return this.data1;
         }
-        if( this.currentLabel ==  this.labels[2]){
+        if (this.currentLabel == this.labels[2]) {
             return this.data2;
         }
         return null;
     }
 }
+
 export default new myCollectionStore();
