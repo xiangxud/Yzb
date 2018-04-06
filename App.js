@@ -18,7 +18,7 @@ import stores from './src/store';
 import NetInfoDecorator from './src/common/NetInfoDecorator';
 import YzbApp from './src';
 import { Root } from 'native-base';
-//import *as wechat from 'react-native-wechat'
+import *as wechat from 'react-native-wechat'
 
 if (!__DEV__) {
     global.console = {
@@ -57,7 +57,10 @@ export default class App extends Component<{}> {
 
     componentDidMount(){
         codePush.allowRestart();//在加载完了可以允许重启
-        //wechat.registerApp('wxfeaf8f8278e018f1')
+        //建议在应用启动时初始化，初始化之前无法使用此模块的其他方法。WeChat模块只需要初始化一次。
+        //release版本为养殖宝公众号的app id
+        let app_id = __DEV__ ? 'wxfeaf8f8278e018f1': 'wxefcfed6d15fb76e4';
+        wechat.registerApp(app_id)
     }
     sync() {
         codePush.sync();
@@ -86,14 +89,12 @@ export default class App extends Component<{}> {
         });
         return (
             <Root>
-                <View style={{flex: 1}}>
-                    <Provider {...stores}>
-                        <YzbApp />
-                    </Provider>
-                    <Animated.View style={[styles.netInfoView, {top: positionY}]}>
-                        <Text style={styles.netInfoPrompt}>网络异常，请检查网络稍后重试~</Text>
-                    </Animated.View>
-                </View>
+                <Provider {...stores}>
+                    <YzbApp />
+                </Provider>
+                <Animated.View style={[styles.netInfoView, {top: positionY}]}>
+                    <Text style={styles.netInfoPrompt}>网络异常，请检查网络稍后重试~</Text>
+                </Animated.View>
             </Root>
         )
     }

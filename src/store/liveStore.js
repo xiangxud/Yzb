@@ -2,19 +2,25 @@ import {action, computed, observable, reaction, runInAction, useStrict} from 'mo
 
 useStrict(true);
 class LiveStore {
+    @observable pageIndex = 0;
     @observable pageIndex1 = 0;
     @observable pageIndex2 = 0;
+
     @observable currentType = 1;
 
+    @observable list = [];
     @observable list1 = [];
     @observable list2 = [];
 
+    @observable isNoMore = false;
     @observable isNoMore1 = false;
     @observable isNoMore2 = false;
 
+    @observable isFetching = false;
     @observable isFetching1 = true;
     @observable isFetching2 = true;
 
+    @observable kw = '';
     constructor(type){
         this.datatype = type;
     }
@@ -31,6 +37,33 @@ class LiveStore {
         ];*/
         this.fetchMore1();
         this.fetchMore2();
+    }
+    @action fetchMore = async(next, kw) =>{
+        if(kw){
+            this.kw = kw;
+        }
+        if(!this.isNoMore || next) {
+            this.isFetching = true;
+            if(!next){
+                this.pageIndex = 1;
+            }else {
+                this.pageIndex = this.pageIndex + 1;
+            }
+            request.getJson(urls.apis.CMS_LIVE_LIST, {page: this.pageIndex, t: -1, kw: this.kw}).then((res) => {
+                runInAction(() => {
+                    this.isFetching = false;
+                    this.isNoMore = this.pageIndex === res.pagecount;
+
+                    let ds = res.rows;
+                    this.list.splice(this.list.length, 0, ...ds);
+                });
+            }).catch((err) => {
+                runInAction(() => {
+                    this.isFetching = false;
+                });
+                tools.showToast(err.message)
+            });
+        }
     }
     @action fetchMore1 = async (next) => {
         if(!this.isNoMore1 || next) {

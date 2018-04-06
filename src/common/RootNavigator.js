@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Welcome from '../pages/Welcome';
 import HomePage from '../pages/HomePage';
 import Live from '../pages/Live';
+import LiveSearch from '../pages/live/LiveSearch';
 import Info from '../pages/Info';
 import InfoDetail from '../pages/info/InfoDetail';
 
@@ -204,6 +205,7 @@ const RootNavigator = StackNavigator({
     CameraEdit: {screen: cameraEdit},
     Didi: {screen: Didi},
     VetInfo: {screen: VetInfo},
+    LiveSearch: {screen: LiveSearch},
     About: {screen: About},
     MyCollection: {screen: MyCollection},
     MyInfo: {screen: MyInfo},
