@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {TouchableOpacity, Image} from "react-native";
-import {Thumbnail, Text, View} from "native-base";
+import {Thumbnail, Icon, Text, View, Button} from "native-base";
 //import ImagePicker from "react-native-image-picker";
 import {observer, inject} from "mobx-react/native";
 
@@ -30,6 +30,10 @@ export default class MyPhoto extends Component {
         //     }
         // })
     }
+    changePhone = () => {
+        const {navigation} = this.props;
+        navigation.navigate('ChangePhone')
+    }
 
     render() {
         const {loginUser} = this.props.userStore;
@@ -39,16 +43,19 @@ export default class MyPhoto extends Component {
                     <Image style={styles.myPhoto} source={loginUser.photo ? {uri: loginUser.photo} : defaultPhoto}/>
                 </TouchableOpacity>
                 <View style={styles.myInfo}>
-                    <Text style={[styles.myName, {fontSize:18, color:'#15856e'}]}>{loginUser.name}</Text>
-                    <Text style={[styles.myName, styles.gray]}>手机：{loginUser.phone}</Text>
-                    <Text style={[styles.myName, styles.gray]}>公司：{loginUser.company}</Text>
+                    <Text style={[styles.myName, {fontSize: 18, color: '#15856e'}]}>{loginUser.name}</Text>
+                    <Text style={[styles.myName, styles.gray]} onPress={() => this.changePhone()}>
+                        手机：{loginUser.phone}
+                        <Icon name={'ios-refresh-circle'} style={{fontSize: 16, color: '#dd3215'}}/>
+                    </Text>
+                    <Text style={[styles.myName, styles.gray]}>{loginUser.company}</Text>
                 </View>
             </View>
         )
     }
 }
 
-const styles =  {
+const styles = {
     myCover: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -68,7 +75,7 @@ const styles =  {
     myName: {
         fontSize: 16,
     },
-    gray:{
-        color:'#777'
+    gray: {
+        color: '#777'
     }
 };

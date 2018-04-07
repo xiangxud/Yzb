@@ -1,9 +1,10 @@
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
 import validate from 'mobx-form-validate';
-import { persist } from 'mobx-persist'
+import {persist} from 'mobx-persist'
 import hydrate from "../common/hydrate";
 import _ from "lodash";
-const ENUM_BREED = ['家禽','家畜','家禽家畜'];
+
+const ENUM_BREED = ['家禽', '家畜', '家禽家畜'];
 useStrict(true);
 // class UserProfile{
 //     @observable id = null;
@@ -26,34 +27,34 @@ class UserStore {
     //loginForm
     @observable
     @validate(/^1(3|4|5|7|8)\d{9}$/, '请输入正确的手机号')
-    loginPhone='18307722503';
+    loginPhone = '18307722503';
 
     @observable
     @validate(/^[\w]{6,16}$/, '请输入至少6位密码')
-    loginPassword='123456';
+    loginPassword = '123456';
 
     @observable
     @validate(/^[\w]{6,16}$/, '请输入至少6位密码')
-    registerPassword='';
+    registerPassword = '';
 
     @observable
     @validate(/^[\w]{6,16}$/, '请输入正确的重复密码')
-    registerPasswordRepeat='';
+    registerPasswordRepeat = '';
 
     @observable
     @validate(/\d{6}$/, '请输入6位数字验证码')
-    validateCode='';
+    validateCode = '';
 
     @observable
-    name='';
+    name = '';
 
     @observable
-    farmName=''
+    farmName = ''
     //养殖类型
     @observable animalType = [];
     //用户类型
-    @observable userType=1;
-    @observable userTypeLabel="养殖场";
+    @observable userType = 1;
+    @observable userTypeLabel = "养殖场";
 
     //userSession
     @observable hydrated = false;
@@ -74,62 +75,83 @@ class UserStore {
     @observable loading = false;
 
     //#####################################登录注册
-    @action setLoginPhone = _.debounce((phone)=>{ this.loginPhone = phone; }, 400)
-    @action setLoginPassword = _.debounce((pwd)=>{ this.loginPassword = pwd; }, 400)
-    @action setRegisterPassword = _.debounce((pwd)=>{ this.registerPassword = pwd; }, 400)
-    @action setRegisterPasswordRepeat = _.debounce((pwd)=>{ this.registerPasswordRepeat = pwd; }, 400)
-    @action setValidateCode = _.debounce((code)=>{ this.validateCode = code; }, 400)
-    @action setName = _.debounce((v)=>{ this.name = v }, 400)
-    @action setFarm = _.debounce((v)=>{ this.farmName = v }, 400)
+    @action setLoginPhone = _.debounce((phone) => {
+        this.loginPhone = phone;
+    }, 400)
+    @action setLoginPassword = _.debounce((pwd) => {
+        this.loginPassword = pwd;
+    }, 400)
+    @action setRegisterPassword = _.debounce((pwd) => {
+        this.registerPassword = pwd;
+    }, 400)
+    @action setRegisterPasswordRepeat = _.debounce((pwd) => {
+        this.registerPasswordRepeat = pwd;
+    }, 400)
+    @action setValidateCode = _.debounce((code) => {
+        this.validateCode = code;
+    }, 400)
+    @action setName = _.debounce((v) => {
+        this.name = v
+    }, 400)
+    @action setFarm = _.debounce((v) => {
+        this.farmName = v
+    }, 400)
     //#######################################
 
-    userTypeOptions=[{label:'养殖场',value:1},{label:'经销商',value:2},{label:'业务员',value:3}];
-    onGetUserTypeOptions=()=>{
-        options=[];
+    userTypeOptions = [{label: '养殖场', value: 1}, {label: '经销商', value: 2}, {label: '业务员', value: 3}];
+    onGetUserTypeOptions = () => {
+        options = [];
         this.userTypeOptions.forEach(
-            item=>options.push(item.label)
+            item => options.push(item.label)
         );
         return options;
     };
 
-    @action setLoginUser = (u) =>{
+    @action setLoginUser = (u) => {
         this.loginUser = u;
     }
-    @action setCurrentUser(){
-        if(!this.currentUser || !this.currentUser.id) {
+
+    @action
+    setCurrentUser() {
+        if (!this.currentUser || !this.currentUser.id) {
             //Object.assign(this.currentUser, this.currentUser, this.loginUser);
 
             //alert(JSON.stringify(this.currentUser))
             this.currentUser = {
-                id : this.loginUser.id,
-                name : this.loginUser.name,
-                nick : this.loginUser.nick,
-                company : this.loginUser.company,
-                photo : this.loginUser.photo,
-                seq : this.loginUser.seq,
-                breed : this.loginUser.breed>=0 && this.loginUser.breed <=2 ? ENUM_BREED[this.loginUser.breed] : '',
-                phone : this.loginUser.phone,
-                province : this.loginUser.province,
-                city : this.loginUser.city,
-                district : this.loginUser.district,
-                address : this.loginUser.address,
-                score : this.loginUser.score,
-                sex : this.loginUser.sex,
+                id: this.loginUser.id,
+                name: this.loginUser.name,
+                nick: this.loginUser.nick,
+                company: this.loginUser.company,
+                photo: this.loginUser.photo,
+                seq: this.loginUser.seq,
+                breed: this.loginUser.breed >= 0 && this.loginUser.breed <= 2 ? ENUM_BREED[this.loginUser.breed] : '',
+                phone: this.loginUser.phone,
+                province: this.loginUser.province,
+                city: this.loginUser.city,
+                district: this.loginUser.district,
+                address: this.loginUser.address,
+                score: this.loginUser.score,
+                sex: this.loginUser.sex,
             };
         }
     }
-    @action setProfile(f, v){
+
+    @action
+    setProfile(f, v) {
         this.currentUser[f] = v;
     }
-    @action setLoading(){
+
+    @action
+    setLoading() {
         this.loading = !this.loading;
     }
+
     @action setBreed = (t) => {
         let i = this.animalType.indexOf(t);
-        if(i > -1){
+        if (i > -1) {
             this.animalType.splice(i, 1);
         }
-        else{
+        else {
             this.animalType.push(t);
         }
     }
@@ -137,7 +159,7 @@ class UserStore {
         let reg_data = {
             phone: this.loginPhone,
             vcode: this.validateCode,
-            userType:this.userType,
+            userType: this.userType,
             password: this.registerPassword,
             name: this.name,
             farm_name: this.farmName,
@@ -157,10 +179,10 @@ class UserStore {
             vcode: this.validateCode,
             password: this.registerPassword,
         };
-        request.getJson(urls.apis.USER_RESET_PASSWORD, reg_data).then((res)=>{
+        request.getJson(urls.apis.USER_RESET_PASSWORD, reg_data).then((res) => {
             this.loginPassword = this.registerPassword;
             success(res)
-        }).catch((err)=>
+        }).catch((err) =>
             error(err)
         )
     }
@@ -168,7 +190,7 @@ class UserStore {
     @action login = (callback) => {
         this.loading = true;
         //alert(`${this.password}-${this.phone}`)
-        this._login(this.loginPhone, this.loginPassword, (token)=>{
+        this._login(this.loginPhone, this.loginPassword, (token) => {
             runInAction(() => {
                 this.token = token;
                 this.phone = this.loginPhone;
@@ -182,7 +204,7 @@ class UserStore {
                     callback(true, err.message);
                 });
             })
-        }, (err)=>{
+        }, (err) => {
             this.setLoading();
             callback(false, err);
         });
@@ -191,31 +213,36 @@ class UserStore {
     @action relogin = (callback) => {
         this.login(callback)
     };
-    @action onUpdateUserType=label=>{
-        let o = this.userTypeOptions.fristOne(item=>item.label==label);
-        if(o!=null){
-            this.userType=o.value;
-            this.userTypeLabel=o.label;
+    @action onUpdateUserType = label => {
+        let o = this.userTypeOptions.fristOne(item => item.label == label);
+        if (o != null) {
+            this.userType = o.value;
+            this.userTypeLabel = o.label;
         }
     };
+
     _login(phone, password, success, failed) {
         request.postJson(urls.apis.USER_LOGIN, {
             phone: phone,
             password: password
         }).then((data) => {
             success(data);
-        }).catch((error)=>{
+        }).catch((error) => {
             failed(error)
         });
     }
-    @action fetchLoginUser(success, failed){
+
+    @action
+    fetchLoginUser(success, failed) {
         request.getJson(urls.apis.USER_GET_MINE).then((data) => {
             success(data);
-        }).catch((res)=>{
+        }).catch((res) => {
             failed(res);
         });
     };
-    @action updateUserPhoto(uri, fileName) {
+
+    @action
+    updateUserPhoto(uri, fileName) {
         let formData = new FormData();
         formData.append("filename", {
             uri: uri,
@@ -233,7 +260,9 @@ class UserStore {
                 }
             })
     }
-    @action updateUserInfo(property, value) {
+
+    @action
+    updateUserInfo(property, value) {
         let user0 = {...this.loginUser};
         user0[property] = value;
         this.loginUser = user0;
@@ -249,7 +278,9 @@ class UserStore {
             }
         })
     }
-    @action getposition() {
+
+    @action
+    getposition() {
         Geolocation.getCurrentPosition(
             location => {
                 var result = "速度：" + location.coords.speed +
@@ -287,7 +318,9 @@ class UserStore {
             }
         );
     }
-    @action logout() {
+
+    @action
+    logout() {
         this.isLogin = false;
         this.password = '';
         this.token = {access_token: ''};
@@ -295,9 +328,11 @@ class UserStore {
         this.currentUser = {}
         return true;
     }
-    @computed get addr(){
-        return (this.currentUser.province || this.currentUser.city || this.currentUser.district)?
-            `${this.currentUser.province||''} ${this.currentUser.city||''} ${this.currentUser.district||''}`: '点击设置';
+
+    @computed
+    get addr() {
+        return (this.currentUser.province || this.currentUser.city || this.currentUser.district) ?
+            `${this.currentUser.province || ''} ${this.currentUser.city || ''} ${this.currentUser.district || ''}` : '点击设置';
     }
 }
 

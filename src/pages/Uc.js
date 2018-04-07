@@ -44,7 +44,7 @@ export default class Uc extends Component {
         return (
             <Container>
                 <Content>
-                    <UserHead />
+                    <UserHead navigation={this.props.navigation} />
                     <MyList navigation={this.props.navigation} user={loginUser} />
                     {__DEV__?
                         <TouchableOpacity

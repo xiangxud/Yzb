@@ -58,7 +58,6 @@ const urls = {
 
 
         // 我的收藏 ----------------------------------------------------------------------
-
         //获取我的收藏列表
         COLLECTION_COLLECTION_LIST: apiPath + 'user/getMyCollectionList',
         //删除(取消)我的收藏
@@ -91,6 +90,8 @@ const urls = {
         USER_LOGIN: apiPath + "auth/login",
         //发送验证码
         USER_GET_PHONE_CODE: apiPath + 'auth/getValidateCode',
+        USER_GET_REBIND_CODE: apiPath + 'uc/getVcode',
+        USER_REBIND: apiPath + 'uc/bind',
         //注册
         USER_REGISTER: apiPath + "auth/register",
         //获取用户信息
@@ -104,8 +105,8 @@ const urls = {
         //签到
         //USER_SIGN: apiPath + "user/signIn",
 
-        //获取用户信息
-        //USER_DETAIL: apiPath + 'user/accountInfo',
+        //获取积分记录
+        USER_SCORE_RECORD: apiPath + 'operateLog/getScoreRecord',
         //搜索用户
         //USER_SEARCH: apiPath + 'user/searchUser',
 

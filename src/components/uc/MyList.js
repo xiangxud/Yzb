@@ -46,7 +46,7 @@ export default class MyList extends PureComponent {
         return (
             <View style={{backgroundColor:'#E3E7F3'}}>
                 <Item icon="ios-contact" iconStyle={{color:'red'}} goToPage={()=>this.goToPage('MyInfo')} text="个人资料" bordered/>
-                <Item icon="ios-ribbon" iconStyle={{color:'#ccb500'}} text="我的积分" subtext={user.score && user.score !== 0 ? user.score : '0'}/>
+                <Item icon="ios-ribbon" iconStyle={{color:'#ccb500'}} goToPage={()=>this.goToPage('ScoreRecord')} text="我的积分" subtext={user.score && user.score !== 0 ? user.score : '0'}/>
                 <SeparatorArea style={{height: 15}}/>
                 {
                     this.renderCollectionItem()

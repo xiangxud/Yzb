@@ -13,88 +13,78 @@ import {
 
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
 import {observer, inject} from 'mobx-react/native'
-import {Icon} from 'native-base'
-import {Loading} from '../components'
+import {Loading} from '../../components'
 
-class QuoteStore {
+class ScoreRecordStore {
     @observable page = 1;
-    @observable infos = [];
+    @observable list = [];
     @observable isFetching = true;
     @observable more = true;
 
     @action
     mapInfo(list) {
         if (this.page === 1) {
-            this.infos.replace(list)
+            this.list.replace(list)
         } else {
-            this.infos.splice(this.infos.length, 0, ...list);
+            this.list.splice(this.list.length, 0, ...list);
         }
         this.isFetching = false;
         list.length < 15 ? this.more = false : this.page++;
     }
+
     @action
     setLoading = () => {
         this.isFetching = true;
     }
+    @action
+    getData = () => {
+        //page: this.page
+        request.getJson(urls.apis.USER_SCORE_RECORD, {}).then((res) => {
+            runInAction(() => {
+                this.mapInfo(res);
+            })
+        }).catch((err) => {
+            tools.showToast('数据处理错误');
+        });
+    }
 }
-quoteStore = new QuoteStore();
+
+scoreRecordStore = new ScoreRecordStore();
 
 @observer
-export default class Quotes extends Component {
+export default class ScoreRecord extends Component {
     static navigationOptions = {
-        headerTitle: '行情动态',
+        headerTitle: '积分详情',
         headerRight: <View/>
     }
 
-    /** <View style={styles.header}>
-                            <Text style={styles.headerText}>
-                                <Icon name={'ios-locate-outline'} style={{fontSize:18}}/> 天津11月28日行情
-                            </Text>
-                        </View>
-                        <View></View>*/
     componentDidMount() {
         this.fetchData();
     }
 
     fetchData = () => {
-        request.getJson(urls.apis.CMS_ARTICLE_QUOTES, {page: quoteStore.page}).then((res) => {
-            quoteStore.mapInfo(res);
-        }).catch((err) => {
-            tools.showToast('获取数据失败，请稍后重试');
-        });
+        scoreRecordStore.getData();
     }
 
-    newsPress = (info) => {
-        const {navigation} = this.props;
-        navigation.navigate("InfoDetail", {code: info.code, title: info.title})
-    }
-
-    renderRow = (info) => {
+    renderRow = (item) => {
         return (
-            <TouchableNativeFeedback
-                onPress={() => {
-                    this.newsPress(info)
-                }}
-                background={TouchableNativeFeedback.SelectableBackground()}>
-                <View style={styles.newsItem}>
-                    <Text style={styles.newsItemTitle}>
-                        {info.title}
-                    </Text>
-                    <Text style={styles.newsItemDesc}>
-                        {info.copy_from} {info.formate}
-                    </Text>
-                </View>
-            </TouchableNativeFeedback>)
+            <View style={styles.newsItem}>
+                <Text style={styles.newsItemTitle}>
+                    {item.Data0}
+                </Text>
+                <Text style={styles.newsItemDesc}>
+                    {`于` + item.CreatedAt + `获得` + item.Data2 + `分`}
+                </Text>
+            </View>)
     }
 
     render() {
-        const {infos, isFetching, more} = quoteStore;
+        const {list, isFetching, more} = scoreRecordStore;
         return (
             <FlatList
                 style={styles.container}
-                data={infos.slice()}
+                data={list.slice()}
                 renderItem={({item}) => this.renderRow(item)}
-
                 ListFooterComponent={() => {
                     return <Loading isShow={isFetching}/>
                 }}

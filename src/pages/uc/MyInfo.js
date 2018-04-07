@@ -130,7 +130,7 @@ export default class MyInfo extends Component {
                                 {currentUser.sex||'未知'}
                             </Text>
                         </Item>
-                        <Item fixedLabel last>
+                        <Item fixedLabel>
                             <Label>养殖场名称</Label>
                             <Input placeholder="公司名称"
                                    maxLength={120}
@@ -138,7 +138,7 @@ export default class MyInfo extends Component {
                                    value={currentUser.company || ''}
                                    onChangeText={(text) => userStore.setProfile('company', text)} />
                         </Item>
-                        <Item fixedLabel last>
+                        <Item fixedLabel>
                             <Label>养殖类型</Label>
                             <Input placeholder="养殖类型"
                                    maxLength={120}

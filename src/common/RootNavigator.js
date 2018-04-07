@@ -27,6 +27,8 @@ import VetInfo from '../pages/didi/VetInfo';
 import Web from '../pages/Web';
 import About from '../pages/uc/About';
 import MyInfo from '../pages/uc/MyInfo';
+import ScoreRecord from '../pages/uc/ScoreRecord';
+import ChangePhone from '../pages/uc/ChangePhone';
 import Sty from '../pages/sty';
 import Imm from '../pages/sty/Imm';
 
@@ -207,6 +209,8 @@ const RootNavigator = StackNavigator({
     VetInfo: {screen: VetInfo},
     LiveSearch: {screen: LiveSearch},
     About: {screen: About},
+    ChangePhone: {screen: ChangePhone},
+    ScoreRecord: {screen: ScoreRecord},
     MyCollection: {screen: MyCollection},
     MyInfo: {screen: MyInfo},
     Quotes: {screen: Quotes},
