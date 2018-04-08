@@ -1,16 +1,16 @@
 // 接口服务器地址
-const apiPath = 'http://120.24.89.243/imm/api/'; // 开发服务器（外网）
-// const apiPath = 'http://103.254.113.10:9090/api/'; // 生产服务器（外网）
-//const apiPath = 'http://192.168.0.103/RP.Imm.WebUI/api/';
+// const apiPath = 'http://120.24.89.243/imm/api/'; // 开发服务器（外网）
+const apiPath = 'http://imm.ringpu.com/breed/api/'; // 生产服务器（外网）
+// const apiPath = 'http://192.168.0.103/RP.Imm.WebUI/api/';
 
 // web服务器地址
- const webPath = 'http://120.24.89.243/imm/'; // 开发服务器（外网）
-//const webPath = 'http://103.254.113.10:9090/web/'; // 生产服务器（外网）
+// const webPath = 'http://120.24.89.243/imm/'; // 开发服务器（外网）
+const webPath = 'http://imm.ringpu.com/breed/'; // 生产服务器（外网）
 //
 // 其他
 // const apiPath = 'http://192.168.0.103:2000/'; // 周明刚
 // const webPath = 'http://192.168.0.204:3000/'; // 王启志
-const bohaiApi = 'http://120.24.89.243:8092/api/'
+// const bohaiApi = 'http://120.24.89.243:8092/api/'
 
 
 

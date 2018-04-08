@@ -76,7 +76,8 @@ export default class FindPassword extends Component {
             userStore.setLoading();
             this._countDownAction();
             userStore.setValidateCode(res);
-            tools.showToast('验证码：' + res);
+            //tools.showToast('验证码：' + res);
+            tools.showToast('验证码已发送，请注意查收手机短信');
         }).catch((err) => {
             userStore.setLoading();
             tools.showToast(err.message);
