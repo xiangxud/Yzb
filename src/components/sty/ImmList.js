@@ -37,7 +37,7 @@ export default class ImmList extends Component{
                                       {info.item.ImmuneTime.ToDate().Format("yyyy-MM-dd")}
                                   </Text>
                               </View>
-                              <View style={style.second}>
+                              <View style={styles.second}>
                                   <Text style={styles.block}>{info.item.VaccineMethod}</Text>
                                   <Text style={styles.block}>{info.item.Dose}</Text>
                               </View>

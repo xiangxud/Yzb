@@ -20,6 +20,8 @@ export default class VetInfo extends Component {
 
     render() {
         const { vet } = this.props.navigation.state.params;
+        const {navigation} = this.props;
+
         return (
             <Container>
                 <Content gray>
@@ -60,6 +62,14 @@ export default class VetInfo extends Component {
                         })}}>
                             <Icon name={'ios-call-outline'} style={{color:'#fff'}}/>
                             <Text>给他打电话</Text>
+                        </Button>
+                    </View>
+                    <View style={{marginLeft:20,marginRight:20,marginTop:0}}>
+                        <Button block success large onPress={()=>{
+                            navigation.navigate("ConnVideocam");
+                        }}>
+                            <Icon name={'ios-videocam-outline'} style={{color:'#fff'}}/>
+                            <Text>智能头盔远程视频服务</Text>
                         </Button>
                     </View>
                 </Content>

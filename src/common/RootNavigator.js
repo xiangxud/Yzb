@@ -23,6 +23,7 @@ import AddFarm from '../pages/bohai/modal/AddFarm';
 
 import Didi from '../pages/didi/Didi';
 import VetInfo from '../pages/didi/VetInfo';
+import ConnVideocam from '../pages/didi/ConnVideocam';
 
 import Web from '../pages/Web';
 import About from '../pages/uc/About';
@@ -207,6 +208,7 @@ const RootNavigator = StackNavigator({
     CameraEdit: {screen: cameraEdit},
     Didi: {screen: Didi},
     VetInfo: {screen: VetInfo},
+    ConnVideocam:{ screen:ConnVideocam },
     LiveSearch: {screen: LiveSearch},
     About: {screen: About},
     ChangePhone: {screen: ChangePhone},

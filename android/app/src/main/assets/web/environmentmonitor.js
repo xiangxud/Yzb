@@ -189,11 +189,9 @@ var interval = setInterval(function () {
             var h = toNumber(getQueryStringByName("h"),0);//湿度
             var o = toNumber(getQueryStringByName("o"),0);//二氧化碳
 
-
-
             load(t,h,o);
         }catch(e){
         }
         clearInterval(interval);
     }
-},500);
+},1000);
