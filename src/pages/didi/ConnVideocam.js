@@ -10,7 +10,7 @@ import {
     Linking,
 } from 'react-native';
 import {Container, Content} from "../../components";
-import {Button, Icon, Text,} from 'native-base';
+import {Button, Icon, Text, Footer } from 'native-base';
 
 export default class VetInfo extends Component {
     static navigationOptions = ({navigation})=>({
@@ -24,21 +24,16 @@ export default class VetInfo extends Component {
         return (
             <Container>
                 <Content gray>
-
                     <View style={styles.loaddingContainer}>
                         <Text>正在连接智能头盔...</Text>
                     </View>
                     <View style={styles.cardContainer}>
                         <Image source={defaultPhoto} style={styles.img} resizeMode="contain" ></Image>
-                    </View>
-                    <View style={styles.content}>
                         <Image source={codePhoto} style={styles.codeImg} resizeMode="contain" ></Image>
-                        <Button block success onPress={()=>{ alert("正在建设中...") }}>
-
-                            <Text>我要购买智能头盔</Text>
-
-                        </Button>
                     </View>
+                    <Button block success full onPress={()=>{ alert("正在建设中...") }}>
+                        <Text>我要购买智能头盔</Text>
+                    </Button>
                 </Content>
             </Container>
         )
@@ -56,7 +51,8 @@ const styles = StyleSheet.create({
     },
     cardContainer: {
         alignItems:'center',
-        justifyContent:'center',
+        justifyContent:'space-around',
+        alignContent:'center',
         flex:1
     },
     content: {
@@ -65,10 +61,10 @@ const styles = StyleSheet.create({
         flex:2,
     },
     img:{
-        width:width - 150,
+        width:width - 200,
     },
     codeImg:{
-        width:width - 150,
+        width:width - 200,
     },
     connSty:{
 
