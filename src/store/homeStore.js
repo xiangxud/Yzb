@@ -2,6 +2,7 @@
  * Created by TomChow on 2017/11/13.
  */
 import {observable, computed, action, runInAction, useStrict} from 'mobx'
+import userStore from './userStore'
 
 useStrict(true);
 class HomeStore {
@@ -29,13 +30,14 @@ class HomeStore {
         this.pageIndex = 1
         this.isFetching = true;
         request.getJson(urls.apis.HOME_ALL, {}).then((res) => {
-            const {banners, fields, sties, reminds, news, farm} = res;
+            const {banners, fields, sties, reminds, news, farm,ContentLabels,AllLabels} = res;
             runInAction(() => {
                 this.isFetching = false;
                 this.banners = banners;
                 this.fields = fields;
                 this.sties = sties;
                 this.farm = farm;
+                userStore.settingContentLables(ContentLabels,AllLabels);
                 this.reminds.replace(reminds);
                 this.news.replace(news);
                 if(sties && sties.length){

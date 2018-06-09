@@ -201,3 +201,13 @@ Array.prototype.removeItem = function (findIndexHandler) {
     }
     return this;
 }
+Array.prototype.extendMap=function(handler){
+    let result = [];
+    for( var i=0;i<this.length;i++){
+        let o = handler?handler(this[i]):this[i];
+        if(o!=null && o!=undefined){
+            result.push( o );
+        }
+    }
+    return result;
+}

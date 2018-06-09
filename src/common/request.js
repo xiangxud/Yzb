@@ -109,7 +109,6 @@ const request = {
                 body = params;
             }
         }
-debugger;
         return new Promise(function (resolve, reject) {
             fetch(url, {
                 method: 'POST',
@@ -123,8 +122,8 @@ debugger;
                         reject(responseData.message)
                     }
                 }).catch((error) => {
-                    tools.showToast('数据服务器异常，请稍后再试!');
-                    //reject(error);
+                    tools.showToast("数据提交失败，请稍后再试");
+                    reject(error);
                 }).done();
         })
     },
