@@ -43,6 +43,7 @@ class HomeStore {
                 }
             });
         }, (err)=>{
+            tools.showToast(err.message);
             runInAction(() => {
                 this.isFetching = false;
             });
