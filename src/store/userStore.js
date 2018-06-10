@@ -3,6 +3,7 @@ import validate from 'mobx-form-validate';
 import {persist} from 'mobx-persist'
 import hydrate from "../common/hydrate";
 import _ from "lodash";
+import tools from "../common/tools";
 
 const ENUM_BREED = ['家禽', '家畜', '家禽家畜'];
 useStrict(true);
@@ -24,6 +25,10 @@ useStrict(true);
 // }
 
 class UserStore {
+    @observable ContentLables=[];//头条显示的栏目数
+    AllLabels=[];//所有的显示项目
+
+
     //loginForm
     @observable
     @validate(/^1(3|4|5|7|8)\d{9}$/, '请输入正确的手机号')
@@ -74,6 +79,16 @@ class UserStore {
     @observable currentUser = {};
     @observable loading = false;
 
+    @action settingContentLables(value,all){
+        this.ContentLables = value;
+        this.AllLabels=all;
+    }
+    postContentLables(value,success,error){
+        request.postJson(urls.apis.UPDATE_USERLABLES, { PS:value }).then((res) => {
+            this.settingContentLables(value,this.AllLabels);
+            success(res)
+        }).catch((err) =>{ return error(err);})
+    }
     //#####################################登录注册
     @action setLoginPhone = _.debounce((phone) => {
         this.loginPhone = phone;

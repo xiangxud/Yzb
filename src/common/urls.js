@@ -62,10 +62,6 @@ const urls = {
         COLLECTION_COLLECTION_LIST: apiPath + 'user/getMyCollectionList',
         //删除(取消)我的收藏
         COLLECTION_DELETE_COLLECTION: apiPath + 'user/deleteMyCollection',
-
-
-
-
         //搜索------------------------------------------------------------------------
         //全部搜索
         SEARCH_ALL: apiPath + 'search/searchAll',
@@ -92,6 +88,7 @@ const urls = {
         USER_GET_PHONE_CODE: apiPath + 'auth/getValidateCode',
         USER_GET_REBIND_CODE: apiPath + 'uc/getVcode',
         USER_REBIND: apiPath + 'uc/bind',
+        UPDATE_USERLABLES:apiPath + 'uc/PostUserLables',
         //注册
         USER_REGISTER: apiPath + "auth/register",
         //获取用户信息

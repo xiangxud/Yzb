@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {
     View,
+    TouchableOpacity
 } from 'react-native';
 import {observer, inject} from 'mobx-react/native';
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import BreedList from '../components/info/BreedList';
+import { Icon} from 'native-base';
 //import infoStore from '../store/infoStore';
 
 @inject('infoStore')
@@ -12,6 +14,7 @@ import BreedList from '../components/info/BreedList';
 export default class Info extends Component{
     static navigationOptions = ({navigation})=>({
         headerTitle: '养殖头条',
+        headerRight:<TouchableOpacity onPress={()=>navigation.navigate('SettingColumn')}><Icon name="md-settings" style={{ fontSize:20,color:'#ffffff', marginRight:5}}></Icon></TouchableOpacity>
             /*(<SearchBar goBack={navigation.goBack} navigate={navigation.navigate} onChanged={
             (txt)=> navigation.state.params.onChanged(txt)
         } Title="养殖头条"></SearchBar>)*/

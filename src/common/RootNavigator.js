@@ -46,8 +46,9 @@ import inPet from '../pages/sty/inPet'
 import stySetting from '../pages/sty/setting';
 import cameraAdd from '../pages/sty/camera/add';
 import cameraEdit from '../pages/sty/camera/edit';
+import CustomTab from '../pages/info/customTab';
+import SettingColumn from '../pages/info/settingColumn';
 
-//主菜单
 const TabNavigation = TabNavigator({
     HomeTab: {
         screen: HomePage,
@@ -187,6 +188,8 @@ const RootNavigator = StackNavigator({
     Welcome: {screen: Welcome},
     Main: {screen: TabNavigation},
     InfoDetail: {screen: InfoDetail},
+    CustomTab:{screen:CustomTab},
+    SettingColumn:{screen:SettingColumn},
     Login: {screen: Login},
     Register: {screen: Register},
     FindPassword: {screen: FindPassword},
