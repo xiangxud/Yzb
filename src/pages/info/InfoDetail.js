@@ -221,7 +221,8 @@ export default class InfoDetail extends Component {
 
     render() {
         const {navigation, infoStore} = this.props;
-        let r = 'https://m.ringpu.com/ringpu/html_php/advice_and_college/d.php?code=' + navigation.state.params.code;
+        //'https://m.ringpu.com/ringpu/html_php/advice_and_college/d.php?code=' + navigation.state.params.code;
+        let r = urls.webPath + 'yzb/app/infoview/' + navigation.state.params.code;
         return (
             <View style={style.main}>
                 <View style={style.vbc}>

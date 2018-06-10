@@ -76,8 +76,9 @@ const urls = {
         //获取文章列表
         CMS_ARTICLE_LIST:apiPath + "info/fetchInfos",
         CMS_ARTICLE_QUOTES:apiPath + 'info/getQuotes',
-        //获得分页文章列表
+        //获取直播
         CMS_LIVE_LIST: apiPath + 'content/getLives',
+        CMS_LIVE_FOCUS: apiPath + 'content/getFocusLive',
         //获取收藏的文章列表
         CMS_ARTICLE_COLLECTION:apiPath + 'info/GetCollectionInfos',
 
