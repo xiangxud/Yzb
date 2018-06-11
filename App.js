@@ -10,7 +10,8 @@ import {
     Animated,
     StyleSheet,
     Text,
-    View
+    View,
+    YellowBox
 } from 'react-native';
 import {Provider} from 'mobx-react/native';
 import codePush from "react-native-code-push";
@@ -25,6 +26,7 @@ if (!__DEV__) {
         log: () => {}
     }
 }
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 @NetInfoDecorator
 export default class App extends Component<{}> {

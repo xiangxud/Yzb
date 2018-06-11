@@ -7,7 +7,7 @@ import {
     Image,
     Dimensions,
     StyleSheet,
-    TouchableOpacity
+    TouchableWithoutFeedback
 } from 'react-native';
 import {Icon, Text} from 'native-base';
 import {observer} from 'mobx-react/native'
@@ -15,7 +15,7 @@ import {observer} from 'mobx-react/native'
 const screenW = Dimensions.get('window').width;
 
 const VideoItem = observer(({v, index, navigation}) => {
-    return <TouchableOpacity onPress={()=> navigation.navigate('Web', {title: v.Title, url:v.Url})} key={index}>
+    return <TouchableWithoutFeedback onPress={()=> navigation.navigate('Web', {title: v.Title, url:v.Url})} key={index}>
         <View style={styles.item}>
             <View style={styles.innerView}>
                 {
@@ -29,7 +29,7 @@ const VideoItem = observer(({v, index, navigation}) => {
             </View>
             <Text style={styles.title}>{v.Title}</Text>
         </View>
-    </TouchableOpacity>;
+    </TouchableWithoutFeedback>;
 });
 
 export default VideoItem

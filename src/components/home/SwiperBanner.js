@@ -22,7 +22,7 @@ const SwiperBanner = observer(({ds, onItemsPress})=> {
                     activeDotColor={'#009688'}
                     autoplay={true}>
                 {ds.map((item, i)=>
-                <TouchableWithoutFeedback key={i} onPress={e => onItemsPress(item)} style={styles.slide}>
+                <TouchableWithoutFeedback key={i.toString()} onPress={e => onItemsPress(item)} style={styles.slide}>
                     <Image source={{uri: item.img}} style={{width: width, height:120,}} />
                 </TouchableWithoutFeedback>
                 )}

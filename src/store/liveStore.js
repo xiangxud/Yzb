@@ -8,6 +8,7 @@ class LiveStore {
 
     @observable currentType = 1;
 
+    @observable focus_live = null;
     @observable list = [];
     @observable list1 = [];
     @observable list2 = [];
@@ -35,8 +36,21 @@ class LiveStore {
             {url:'https://v.qq.com/x/page/c0386w6ppdr.html',photo:'https://m.ringpu.com/ringpu/public/images/live/live-106.jpg', title: '赵继勋教授-白羽商品肉鸡养殖的几个关键点-7', duration: '3:00'},
             {url:'https://v.qq.com/x/page/c0386w6ppdr.html',photo:'https://m.ringpu.com/ringpu/public/images/live/live-106.jpg', title: '赵继勋教授-白羽商品肉鸡养殖的几个关键点-8', duration: '3:00'},
         ];*/
+        this.fetchFocus();
         this.fetchMore1();
         this.fetchMore2();
+    }
+    @action fetchFocus = async() =>{
+        if(this.focusLive != null){
+            return;
+        }
+        request.getJson(urls.apis.CMS_LIVE_FOCUS).then((res)=>{
+            runInAction(() => {
+                this.focus_live = res;
+            });
+        }).catch((err)=>{
+
+        })
     }
     @action fetchMore = async(next, kw) =>{
         if(kw){

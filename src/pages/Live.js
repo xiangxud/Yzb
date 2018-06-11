@@ -5,6 +5,7 @@ import {
     FlatList,
     Dimensions,
     StyleSheet,
+    TouchableWithoutFeedback
 } from 'react-native';
 
 import {Button, Icon, Segment, Text} from 'native-base';
@@ -32,10 +33,19 @@ export default class Live extends Component {
     }
 
     renderListHeader = (current) => {
+        const { focus_live } = liveStore;
         return (
             <View>
-                <Image source={{uri: 'https://m.ringpu.com/ringpu/public/images/live/live-bigimg-20171201.jpg'}}
-                       style={styles.topBanner}/>
+                {
+                    focus_live && focus_live.faceurl ?
+                    <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate('Web', {title: focus_live.title, url: focus_live.url})}>
+                        <Image source={{uri: focus_live.faceurl}} style={styles.topBanner}/>
+                    </TouchableWithoutFeedback>
+                    :
+                    <View style={[styles.topBanner, {}]}>
+                        <Text>暂无最新直播</Text>
+                    </View>
+                }
                 <Segment style={{backgroundColor: '#1fa8ec', marginTop: 10}}>
                     <Button first active={current === 1} onPress={() => liveStore.switch()}>
                         <Text>家禽</Text>
@@ -101,5 +111,7 @@ const styles = StyleSheet.create({
     topBanner: {
         width: screenW,
         height: screenW * 4 / 9,
+        justifyContent: 'center',
+        alignItems:'center',
     },
 })

@@ -224,7 +224,7 @@ const RootNavigator = StackNavigator({
     initialRouteName: 'Welcome', // 默认显示界面!global.user.loginState?'Login':'Main'
     navigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
         headerStyle: {elevation: 0, shadowOpacity: 0, height: 48, backgroundColor: "#009688"},
-        headerTitleStyle: {color: '#fff', fontSize: 18, alignSelf: 'center'}, //alignSelf:'center'  文字居中
+        headerTitleStyle: {color: '#fff', fontSize: 18, alignSelf: 'center', flex:1, textAlign: 'center'}, //alignSelf:'center'  文字居中
         headerBackTitleStyle: {color: '#fff', fontSize: 12},
         headerTintColor: '#fff',
         gesturesEnabled: true,//是否支持滑动返回收拾，iOS默认支持，安卓默认关闭

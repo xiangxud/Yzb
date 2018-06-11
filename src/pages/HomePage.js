@@ -45,7 +45,14 @@ export default class HomePage extends Component {
     }
 
     onBannerPress = (item) => {
-        //alert(item.link);
+        const {navigation} = this.props;
+        if(item.type === 1){
+            //文章
+            navigation.navigate("InfoDetail", {code: item.link, title: item.title});
+        }else if(item.type === 2){
+            //链接
+            navigation.navigate("Web", {url: item.link, title: item.title});
+        }//alert(item.link);
     }
     remindMore = (t) => {
     }
