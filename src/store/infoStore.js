@@ -276,6 +276,10 @@ class InfoStore {
     data1 = new breedItemCollection(this.labels[1]);
     @observable
     data2 = new breedItemCollection(this.labels[2]);
+
+    createCollection(name){
+        return new breedItemCollection(name);
+    }
 }
 
 infoStore = new InfoStore();
