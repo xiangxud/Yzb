@@ -1,11 +1,3 @@
-/**
- * Day 18
- * Sortable List
- * has some performance issue or potential bug
- * little lag when drag
- * To be made to plugin
- */
-
 'use strict';
 
 import React, { Component } from 'react';
@@ -82,7 +74,7 @@ export default class CustomTab extends Component {
                 this.prev_top = this._width / 2 * this.topIndex;
             },
             onPanResponderMove: (evt, gestureState) => {
-                if (this.index >= 0) {
+                if (this.index >= 0 && this.index < this.items.length ) {
                     this.left = this.prev_left + gestureState.dx;
                     this.top = this.prev_top + gestureState.dy;
                     let box = this.refs[this.items[this.index].id];
@@ -93,6 +85,10 @@ export default class CustomTab extends Component {
             },
             onPanResponderTerminationRequest: (evt, gestureState) => true,
             onPanResponderRelease: (evt, gestureState) => {
+                if(this.index <0 || this.index >= this.items.length){
+                    this.forceUpdate();
+                    return;
+                }
                 if (this.index >= 0) {
                     const { pageX, pageY } = evt.nativeEvent;
                     this.finalTopIndex = Math.floor((pageY - this.offset) / (this._width / 2)) -1;
@@ -101,7 +97,9 @@ export default class CustomTab extends Component {
                     this.prev_left = this._width * this.finalTopIndex;
                     this.prev_top = this._width / 2 * this.finalTopIndex;
 
-                    if (index >= 0 && this.items[index]) {
+                    tools.showToast(JSON.stringify({ index : index , my : this.index }));
+
+                    if (index >= 0 && index < this.items.length && this.items[index]) {
                         if (index > this.index) {
                             this.moveBack(this.index,index);
                         } else if (index < this.index) {
@@ -208,6 +206,10 @@ export default class CustomTab extends Component {
             tools.showToast("必须保留至少一个栏目");
             return;
         }
+        if( index <0 || index >= this.items.length ){
+            tools.showToast("应用出错");
+            return;
+        }
         //1、移除
         let item = this.items[index];
         this.items.removeItem(o=>o.id==item.id);
@@ -250,6 +252,9 @@ export default class CustomTab extends Component {
         });
     }
     renderBoxs=function(){
+        //alert(JSON.stringify(this.items));
+
+
         return this.items.map((item, index) => {
             let top = Math.floor(index / 4) * (this._width / 2);
             let left = (index % 4) * this._width;
