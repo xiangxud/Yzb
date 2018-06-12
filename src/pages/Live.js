@@ -8,7 +8,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 
-import {Button, Icon, Segment, Text} from 'native-base';
+import {Button, Icon, Text} from 'native-base';
 import {observer, inject} from 'mobx-react/native';
 import {Container, Content, TitleBar, MaskLoading} from "../components";
 import LiveItem from '../components/live/LiveItem';
@@ -32,7 +32,7 @@ export default class Live extends Component {
         liveStore.load();
     }
 
-    renderListHeader = (current) => {
+    renderListHeader = () => {
         const { focus_live } = liveStore;
         return (
             <View>
@@ -46,14 +46,6 @@ export default class Live extends Component {
                         <Text>暂无最新直播</Text>
                     </View>
                 }
-                <Segment style={{backgroundColor: '#1fa8ec', marginTop: 10}}>
-                    <Button first active={current === 1} onPress={() => liveStore.switch()}>
-                        <Text>家禽</Text>
-                    </Button>
-                    <Button last active={current === 2} onPress={() => liveStore.switch()}>
-                        <Text>家畜</Text>
-                    </Button>
-                </Segment>
                 <TitleBar icon={'history'}
                           iconColor={'gray'}
                           title={'往期回顾'}
@@ -64,41 +56,24 @@ export default class Live extends Component {
 
     render() {
         const {navigation} = this.props;
-        const {currentType, list1, list2, isFetching1, isFetching2} = liveStore;
+        const {list1, isFetching1} = liveStore;
         return (<Container>
             <Content gray>
-                <MaskLoading show={isFetching1 || isFetching2}/>
-                {currentType === 1 ?
-                    <FlatList
-                        data={list1.slice()}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={({item, index}) => <LiveItem v={item} index={index.toString()} navigation={navigation}/>}
-                        ListHeaderComponent={this.renderListHeader(currentType)}
-                        ListFooterComponent={
-                            <Button full light onPress={() => liveStore.fetchMore1(true)}><Text>获取更多</Text></Button>
-                        }
-                        numColumns={2}
-                        onRefresh={() => {
-                            liveStore.fetchMore1()
-                        }}
-                        refreshing={isFetching1}
-                    />
-                    :
-                    <FlatList
-                        data={list2.slice()}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={({item, index}) => <LiveItem v={item} index={index.toString()} navigation={navigation}/>}
-                        ListHeaderComponent={this.renderListHeader(currentType)}
-                        ListFooterComponent={
-                            <Button full light onPress={() => liveStore.fetchMore2(true)}><Text>获取更多</Text></Button>
-                        }
-                        numColumns={2}
-                        onRefresh={() => {
-                            liveStore.fetchMore2()
-                        }}
-                        refreshing={isFetching2}
-                    />
-                }
+                <MaskLoading show={isFetching1}/>
+                <FlatList
+                    data={list1.slice()}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({item, index}) => <LiveItem v={item} index={index.toString()} navigation={navigation}/>}
+                    ListHeaderComponent={this.renderListHeader()}
+                    ListFooterComponent={
+                        <Button full light onPress={() => liveStore.fetchMore1(true)}><Text>获取更多</Text></Button>
+                    }
+                    numColumns={2}
+                    onRefresh={() => {
+                        liveStore.fetchMore1()
+                    }}
+                    refreshing={isFetching1}
+                />
             </Content>
         </Container>);
     }

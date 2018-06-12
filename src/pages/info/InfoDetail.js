@@ -29,11 +29,11 @@ export default class InfoDetail extends Component {
     });
     componentWillMount(){
         const {navigation,infoStore} = this.props;
-        infoStore.onIni(navigation.state.params.code);
+        //infoStore.onIni(navigation.state.params.code);
     }
     onShare(){
         const {navigation,infoStore} = this.props;
-        infoStore.onShowShare();
+        //infoStore.onShowShare();
     }
     /*
     onCheckWechatInstall(rollback){
@@ -95,22 +95,16 @@ export default class InfoDetail extends Component {
 
     renderCollection(){
         const {navigation,infoStore} = this.props;
-        if(infoStore.data.exist_collection){
-            return <TouchableOpacity onPress={()=>{ infoStore.onCancleCollect(navigation.state.params.code) }}>
-                <Icon name="star" size={25} color="#008AF5"></Icon>
-            </TouchableOpacity>;
-        }else{
-            return <TouchableOpacity onPress={()=>{infoStore.onCollect(navigation.state.params.code)}}>
-                <Icon name="star-o" size={25} color="#008AF5"></Icon>
-            </TouchableOpacity>;
-        }
+        return <TouchableOpacity onPress={() => infoStore.onCollect(navigation.state.params.code)}>
+            <Icon name={infoStore.data.collected? 'star': 'star-o'} size={25} color="#008AF5"></Icon>
+        </TouchableOpacity>;
     }
     renderCommentButton(){
         const {infoStore} = this.props;
-        if( infoStore.data.exist_comment ){
+        if( infoStore.data ){
             return null;
         }else{
-            return <TouchableOpacity onPress={() => infoStore.onShowModel()} style={{ flexDirection:'row',justifyContent:'center',alignItems:'center',paddingLeft:10,width:160}}>
+            return <TouchableOpacity onPress={() => infoStore.onShowModel()} style={{ flexDirection:'row', justifyContent:'center', alignItems:'center',paddingLeft:10,width:160}}>
                 <Icon name="edit" size={25} color="#008AF5"></Icon>
                 <Text style={style.textbox}>说说你的看法</Text>
             </TouchableOpacity>;
@@ -134,7 +128,7 @@ export default class InfoDetail extends Component {
                 </TouchableOpacity>
 
                 <TouchableOpacity style={style.label}>
-                    <Text style={style.word}>{infoStore.data.comment_count}</Text>
+                    <Text style={style.word}>{infoStore.data}</Text>
                 </TouchableOpacity>
             </View>
         </View>);
@@ -142,7 +136,7 @@ export default class InfoDetail extends Component {
 
 
     renderShare=()=>{
-        const {navigation,infoStore} = this.props;
+        const {navigation, infoStore} = this.props;
         return(<Modal animationType={'none'} transparent={true} visible={true} onRequestClose={()=>infoStore.onCloseShare()}>
             <View style={{flex:1,backgroundColor:'rgba(0,0,0,0.5)',paddingTop:5}}>
                 <TouchableOpacity style={{ flex:1,alignItems:'stretch',flexDirection:'row'}} onPress={()=>infoStore.onCloseShare()}>
@@ -164,7 +158,7 @@ export default class InfoDetail extends Component {
     }
 
     renderReply = () => {
-        const {navigation,infoStore} = this.props;
+        const {navigation, infoStore} = this.props;
         return (
             <Modal animationType={'none'} transparent={true} visible={true} onRequestClose={()=>infoStore.onCloseModel()}>
                 <View style={{flex:1,backgroundColor:'rgba(0,0,0,0.5)',paddingTop:5}}>
@@ -181,7 +175,7 @@ export default class InfoDetail extends Component {
                             returnKeyType="search"
                             placeholderTextColor="#969696"
                             onChangeText={txt => {
-                                infoStore.onChangText(txt)
+                                //infoStore.onChangText(txt)
                             }}
                             numberOfLines={5}
                             multiline={true}
@@ -190,14 +184,14 @@ export default class InfoDetail extends Component {
                     </View>
                     <View style={{height:50 ,flexDirection:'row',justifyContent:'space-around',alignItems:'center',backgroundColor:'white'}}>
                         <View style={{width:200,flexDirection:'row',alignItems:'center'}}>
-                            <Text style={{}}>{infoStore.data.comment_input_count}</Text><Text style={{color:'red'}}>/{infoStore.data.comment_text_total_count}</Text>
+                            <Text style={{}}>{infoStore.data}</Text><Text style={{color:'red'}}>/{infoStore.data}</Text>
                         </View>
                         <View style={{width:30}}></View>
                         <Button title=" 取 消 "
                                 onPress={()=>{ infoStore.onCloseModel() }}></Button>
                         <Button title=" 发 布 "
                                 disabled={!infoStore.data.allow_comment}
-                                onPress={() => infoStore.onPostComment(navigation.state.params.code)}
+                                onPress={() => {}}
                                 style={{width:80}}></Button>
                     </View>
                 </View>
@@ -206,11 +200,11 @@ export default class InfoDetail extends Component {
 
     renderBottom(){
         const {navigation, infoStore} = this.props;
-        if(infoStore.data.ready){
-            if(infoStore.data.showMode){
+        if(infoStore.data){
+            if(infoStore.data){
                 return this.renderReply();
             }
-            if(infoStore.data.showShareModel){
+            if(infoStore.data){
                 return this.renderShare();
             }
             return this.renderView();
@@ -222,16 +216,13 @@ export default class InfoDetail extends Component {
     render() {
         const {navigation, infoStore} = this.props;
         //'https://m.ringpu.com/ringpu/html_php/advice_and_college/d.php?code=' + navigation.state.params.code;
-        let r = urls.webPath + 'yzb/app/infoview/' + navigation.state.params.code;
+        let url = urls.webPath + 'yzb/app/infoView/' + navigation.state.params.code;
         return (
             <View style={style.main}>
                 <View style={style.vbc}>
-                    <WebView source={{uri:r}}>
-                    </WebView>
+                    <WebView source={{uri: url}}></WebView>
                 </View>
-                {
-                    this.renderBottom()
-                }
+                { this.renderBottom() }
             </View>
         );
     }

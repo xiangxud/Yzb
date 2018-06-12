@@ -1,6 +1,7 @@
 import App from './common/app'
 import userStore from './userStore'
 import homeStore from './homeStore'
+import categoryStore from './categoryStore';
 import infoStore from './infoStore'
 import didiStore from './didiStore'
 import styStore from './styStore'
@@ -19,6 +20,7 @@ export default {
     app: new App(),
     userStore,
     homeStore,
+    categoryStore,
     infoStore,
     didiStore,
     styStore,

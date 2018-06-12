@@ -6,6 +6,7 @@ import {
     Text,
     FlatList,
     View,
+    Image,
     StyleSheet,
     TouchableHighlight,
     TouchableNativeFeedback,
@@ -18,20 +19,7 @@ import MySties from '../components/home/MySties';
 import Reminds from "../components/home/Reminds";
 //import Report from "../components/home/Report";
 import {Loading, MaskLoading, TitleBar} from '../components';
-
-const InfoItem = observer(({info, press}) => {
-    return <TouchableNativeFeedback onPress={() => press(info)}
-                                    background={TouchableNativeFeedback.SelectableBackground()}>
-        <View style={styles.newsItem}>
-            <Text style={styles.newsItemTitle}>
-                {info.title}
-            </Text>
-            <Text style={styles.newsItemDesc}>
-                {info.copy_from} {info.formate}
-            </Text>
-        </View>
-    </TouchableNativeFeedback>
-});
+import {InfoItem, InfoItemPic} from '../components/info/InfoItem';
 
 @inject('homeStore')
 @observer
@@ -125,11 +113,11 @@ export default class HomePage extends Component {
                         </View>
                     </TouchableHighlight>
                     <TouchableHighlight underlayColor={'#f9f3f9'}
-                                        onPress={() => this.props.navigation.navigate('Quotes')}
+                                        onPress={() => this.props.navigation.navigate('InfoTab')}
                                         style={styles.homeBigButton}>
                         <View style={styles.homeBigButtonInner}>
-                            <Icon name='line-chart' color={'#009688'} size={34}/>
-                            <Text>行情</Text>
+                            <Icon name='newspaper-o' color={'#009688'} size={34}/>
+                            <Text>养殖头条</Text>
                         </View>
                     </TouchableHighlight>
                 </View>
@@ -153,7 +141,11 @@ export default class HomePage extends Component {
     }
 
     renderRow = (info) => {
-        return <InfoItem info={info} press={this.newsPress}/>
+        if(info.face_url) {
+            return <InfoItemPic info={info} press={this.newsPress}/>
+        }else{
+            return <InfoItem info={info} press={this.newsPress}/>
+        }
     }
 
     render() {
@@ -187,19 +179,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         height: 80
-    },
-    newsItem: {
-        backgroundColor: '#fff',
-        justifyContent: 'center',
-        padding: 10,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#ccc'
-    },
-    newsItemTitle: {
-        fontSize: 20
-    },
-    newsItemDesc: {
-        fontSize: 12, color: '#ccc'
     },
     loading: {
         margin: 32,

@@ -67,11 +67,11 @@ Date.prototype.InterVal = function (date) {
 }
 
 Date.prototype.GetLabel = function () {
-    d0 = new Date();
-    c = this.InterVal(d0);
+    let _now = new Date();
+    let c = this.InterVal(_now);
 
     let intD0 = parseInt(this.Format("yyyyMMdd"), 10);
-    let intD1 = parseInt(d0.Format("yyyyMMdd"), 10);
+    let intD1 = parseInt(_now.Format("yyyyMMdd"), 10);
 
     if (c >= 0) {
         //1、刚刚
@@ -101,7 +101,7 @@ Date.prototype.GetLabel = function () {
         }
     }
     //5、当年
-    if (d0.Format("yyyy") == this.Format("yyyy")) {
+    if (_now.Format("yyyy") == this.Format("yyyy")) {
         return this.Format("MM-dd");
     }
     //6、其它

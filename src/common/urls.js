@@ -1,10 +1,10 @@
 // 接口服务器地址
-// const apiPath = 'http://120.24.89.243/imm/api/'; // 开发服务器（外网）
+// const apiPath = 'http://192.168.43.71/breed/api/'; // 开发服务器（外网）
 const apiPath = 'http://imm.ringpu.com/breed/api/'; // 生产服务器（外网）
 // const apiPath = 'http://192.168.0.103/RP.Imm.WebUI/api/';
 
 // web服务器地址
-// const webPath = 'http://120.24.89.243/imm/'; // 开发服务器（外网）
+// const webPath = 'http://192.168.43.71/breed/'; // 开发服务器（外网）
 const webPath = 'http://imm.ringpu.com/breed/'; // 生产服务器（外网）
 //
 // 其他
@@ -69,18 +69,26 @@ const urls = {
         SEARCH_INFORMATION: apiPath + 'search/searchInformation',
 
         //文章------------------------------------------------------------------------
-        //回复
-        CMS_POST_COMMENT:apiPath + "info/Publish",
         //获取文章信息
         //CMS_ARTICLE:apiPath + "info/GetArticle",
         //获取文章列表
-        CMS_ARTICLE_LIST:apiPath + "info/fetchInfos",
-        CMS_ARTICLE_QUOTES:apiPath + 'info/getQuotes',
+        CMS_ARTICLE_LIST: apiPath + 'info/getInfoPager',
+        CMS_ARTICLE_QUOTES: apiPath + 'info/getQuotes',
         //获取直播
         CMS_LIVE_LIST: apiPath + 'content/getLives',
         CMS_LIVE_FOCUS: apiPath + 'content/getFocusLive',
+
+        //获得文章分类列表
+        CMS_CATEGORIES: apiPath + 'info/getCategories',
         //获取收藏的文章列表
-        CMS_ARTICLE_COLLECTION:apiPath + 'info/GetCollectionInfos',
+        CMS_ARTICLE_COLLECTION: apiPath + 'info/GetCollectionInfos',
+        //获取文章汇总
+        CMS_ARTICLE_SUMMARY: apiPath + 'info/getArticleSummary',
+        //文章回复
+        CMS_POST_COMMENT: apiPath + 'info/postComment',
+        //点赞文章
+        CMS_POST_COLLECT: apiPath + 'info/postCollect',
+
 
         //用户------------------------------------------------------------------------
         //登录
@@ -158,13 +166,6 @@ const urls = {
         IMM_REMOVE_CAMERA:apiPath + 'sty/removeCamera',
         //设置默认摄像头
         IMM_DEFAULT_CAMERA:apiPath + 'sty/changeCamera',
-        //获取文章汇总
-        Content_Article_GetArticleSummary:apiPath + 'Info/getArticleSummary',
-        //文章回复
-        Content_Article_PostComment:apiPath + 'Info/postArticleComment',
-        //点赞文章
-        Content_Article_CollectArticle:apiPath + 'Info/collectArticle',
-
     },
     // 获取图片完整路径
     getImage(filePath, width, height){

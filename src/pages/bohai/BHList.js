@@ -97,7 +97,7 @@ export default class BHList extends Component {
                     <FlatList
                         data={this.state.data}
                         renderItem={({ item }) => this.renderItem(item)}
-                        keyExtractor={(item,key) => key}
+                        keyExtractor={(item, key) => key.toString()}
                         ItemSeparatorComponent={this.renderSeparator}
                         ListFooterComponent={this.renderFooter}
                         onRefresh={this.handleRefresh}

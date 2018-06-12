@@ -5,7 +5,7 @@ import Welcome from '../pages/Welcome';
 import HomePage from '../pages/HomePage';
 import Live from '../pages/Live';
 import LiveSearch from '../pages/live/LiveSearch';
-import Info from '../pages/Info';
+import Headlines from '../pages/Headlines';
 import InfoDetail from '../pages/info/InfoDetail';
 
 import Login from '../pages/uc/Login';
@@ -66,7 +66,7 @@ const TabNavigation = TabNavigator({
         }
     },
     InfoTab: {
-        screen: Info,
+        screen: Headlines,
         navigationOptions: {
             headerTitle: '养殖头条',
             tabBarLabel: '头条',

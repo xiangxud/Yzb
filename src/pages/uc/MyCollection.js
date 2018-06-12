@@ -8,7 +8,7 @@ import {
 import {observer, inject} from 'mobx-react/native'
 import ScrollableTabView, {ScrollableTabBar,} from 'react-native-scrollable-tab-view';
 import {Container, Content} from '../../components';
-import BreedList from '../../components/info/BreedList';
+import ArticleList from '../../components/info/ArticleList';
 
 @inject('myCollectionStore')
 @observer
@@ -43,10 +43,10 @@ export default class MyCollection extends Component {
                         initialPage={0}
                         tabBarUnderlineStyle={{backgroundColor: '#15856e'}}
                         renderTabBar={() => <ScrollableTabBar/>}>
-                        <BreedList tabLabel={myCollectionStore.labels[0]}
-                                   source={myCollectionStore.data0}
-                                   onItemPress={(c, t) => this.onItemPress(c, t)}>
-                        </BreedList>
+                        <ArticleList tabLabel={myCollectionStore.labels[0]}
+                                     source={myCollectionStore.data0}
+                                     onItemPress={(c, t) => this.onItemPress(c, t)}>
+                        </ArticleList>
                     </ScrollableTabView>
                 </Content>
             </Container>

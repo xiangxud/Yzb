@@ -101,7 +101,7 @@ export default class SheetInfo extends Component {
                 <View style={styles.wrapper}>
                     <FlatList
                         data={data.testingSamplingList.slice()}
-                        keyExtractor={(item, index) => index}
+                        keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item })=> <View>
                             <View style={styles.row}>
                                 <Text style={styles.title}>检测大类</Text>
@@ -259,7 +259,7 @@ export default class SheetInfo extends Component {
                 {reports.length?
                     <View style={{alignSelf:'center', justifyContent:'center', marginTop:10,}}>
                         {reports.map((item, i)=> {
-                            <Button rounded success onPress={()=>{Linking.openURL(item.fileUrl).catch(err => console.error('An error occurred', err));}}>
+                            <Button key={i.toString()} rounded success onPress={()=>{Linking.openURL(item.fileUrl).catch(err => console.error('An error occurred', err));}}>
                                 <Text>{item.fileName}</Text>
                             </Button>
                         })}
