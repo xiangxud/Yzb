@@ -45,7 +45,7 @@ class CategoryStore {
         this.categories.splice(0, this.categories.length);
         //默认添加【推荐】用于做用户喜好分析栏
         let recommend = new CtgModel();
-        recommend.type_id = -1;
+        recommend.type_id = -2;
         recommend.code = '';
         recommend.type_name = '推荐';
         this.categories.push(recommend);

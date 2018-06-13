@@ -81,13 +81,15 @@ const urls = {
         //获得文章分类列表
         CMS_CATEGORIES: apiPath + 'info/getCategories',
         //获取收藏的文章列表
-        CMS_ARTICLE_COLLECTION: apiPath + 'info/GetCollectionInfos',
+        CMS_ARTICLE_COLLECTION: apiPath + 'info/getCollectionInfos',
         //获取文章汇总
         CMS_ARTICLE_SUMMARY: apiPath + 'info/getArticleSummary',
         //文章回复
         CMS_POST_COMMENT: apiPath + 'info/postComment',
         //点赞文章
-        CMS_POST_COLLECT: apiPath + 'info/postCollect',
+        CMS_POST_COLLECT: apiPath + 'info/postOperate',
+        //获得文章详情
+        CMS_GET_ARTICLE: apiPath + 'info/getUserArc',
 
 
         //用户------------------------------------------------------------------------

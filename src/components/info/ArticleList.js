@@ -7,11 +7,12 @@ import {
     Image,
     TouchableNativeFeedback
 } from 'react-native';
-//import {observer, inject} from 'mobx-react/native';
 
 import {InfoItem, InfoItemPic} from '../../components/info/InfoItem';
-//import {Loading, MaskLoading} from '../../components';
 import RefreshListView, {RefreshState} from 'react-native-refresh-list-view';
+
+//import {observer, inject} from 'mobx-react/native';
+//import {Loading, MaskLoading} from '../../components';
 //import infoStore from '../../store/infoStore';
 
 export default class ArticleList extends Component {
@@ -42,9 +43,9 @@ export default class ArticleList extends Component {
     // 获取测试数据
     getArcList = (isReload: boolean) => {
         if(isReload){
-            tools.showToast('new_'+this.state.pageIndex);
+            //tools.showToast('new_'+this.state.pageIndex);
         }else{
-            tools.showToast('next_'+this.state.pageIndex);
+            //tools.showToast('next_'+this.state.pageIndex);
         }
         request.getJson(urls.apis.CMS_ARTICLE_LIST, {page: this.state.pageIndex, ctg: this.props.data.type_id}).then((data) => {
             let list = [];
@@ -54,13 +55,11 @@ export default class ArticleList extends Component {
                 list = [...this.state.dataList, ...data];
             }
 
-            setTimeout(()=>{
-                this.setState({
-                    page: 1,
-                    dataList: list,
-                    refreshState: data.length === 0 ? (isReload? RefreshState.EmptyData: RefreshState.NoMoreData) : RefreshState.Idle,
-                });
-            }, 2000)
+            this.setState({
+                page: 1,
+                dataList: list,
+                refreshState: data.length === 0 ? (isReload? RefreshState.EmptyData: RefreshState.NoMoreData) : RefreshState.Idle,
+            });
         }).catch((err) => {
             this.setState({refreshState: RefreshState.Failure})
             tools.showToast('请求失败了，'+JSON.stringify(err));
