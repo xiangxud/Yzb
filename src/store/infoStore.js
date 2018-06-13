@@ -163,9 +163,9 @@ class InfoStore {
 
     @action
     onChangText(txt){
-        this.data.allow_comment=txt.length> 0;
-        if(txt.length > this.data.comment_text_total_count){
-            txt = txt.substring(0,this.data.comment_text_total_count);
+        this.data.allow_comment = txt.length> 0;
+        if(txt.length > this.data){
+            txt = txt.substring(0,this.data);
         }
         this.data.comment_content = txt;
         this.data.comment_input_count = txt.length;
