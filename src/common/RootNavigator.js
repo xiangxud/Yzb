@@ -48,6 +48,8 @@ import cameraAdd from '../pages/sty/camera/add';
 import cameraEdit from '../pages/sty/camera/edit';
 import CustomTab from '../pages/info/customTab';
 import SettingColumn from '../pages/info/settingColumn';
+import WelcomeRegister from '../pages/uc/Welcome';
+import Join from '../pages/uc/Join';
 
 const TabNavigation = TabNavigator({
     HomeTab: {
@@ -219,6 +221,8 @@ const RootNavigator = StackNavigator({
     MyCollection: {screen: MyCollection},
     MyInfo: {screen: MyInfo},
     Quotes: {screen: Quotes},
+    WelcomeRegister:{screen:WelcomeRegister},
+    Join:{screen:Join},
     EnvironmentalSetting: {screen: EnvironmentalSetting},
 }, {
     initialRouteName: 'Welcome', // 默认显示界面!global.user.loginState?'Login':'Main'

@@ -29,6 +29,8 @@ const urls = {
     },
     apis: {
         // 通用信息 ---------------------------------------------------------
+        JOIN_FARM_GETBYCODE:apiPath + 'farm/GetByCode',
+        JOIN_FARM:apiPath + 'farm/Join',
 
         //获取区县
         REGION_COUNTY_LIST: apiPath + 'common/getCountyList',

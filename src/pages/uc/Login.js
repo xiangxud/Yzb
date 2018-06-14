@@ -44,6 +44,10 @@ export default class Login extends Component {
         }
         this._login();
     }
+    onRegister(){
+        const {userStore, navigation} = this.props;
+        navigation.navigate('WelcomeRegister');
+    }
 
     render() {
         const {userStore, navigation} = this.props;
@@ -78,7 +82,7 @@ export default class Login extends Component {
                         <Text>登录</Text>
                     </Button>
                     <View style={{margin:10, flexDirection:'row'}}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Register')} style={{alignItems:'flex-start', flex:1,}}>
+                        <TouchableOpacity onPress={() => this.onRegister() } style={{alignItems:'flex-start', flex:1,}}>
                             <Text>没有账号？现在注册</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('FindPassword')} style={{alignItems:'flex-end', flex:1,}}>
