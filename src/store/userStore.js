@@ -155,9 +155,6 @@ class UserStore {
     @action
     setCurrentUser() {
         if (!this.currentUser || !this.currentUser.id) {
-            //Object.assign(this.currentUser, this.currentUser, this.loginUser);
-
-            //alert(JSON.stringify(this.currentUser))
             this.currentUser = {
                 id: this.loginUser.id,
                 name: this.loginUser.name,
@@ -246,7 +243,6 @@ class UserStore {
 
     @action login = (callback) => {
         this.loading = true;
-        //alert(`${this.password}-${this.phone}`)
         this._login(this.loginPhone, this.loginPassword, (token) => {
             runInAction(() => {
                 this.token = token;
@@ -323,7 +319,6 @@ class UserStore {
         let user0 = {...this.loginUser};
         user0[property] = value;
         this.loginUser = user0;
-
         request.getJson(urls.apis.USER_UPDATEUSERINFO, {
             fieldName: this.fieldMap[property] || property,
             value
