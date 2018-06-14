@@ -2,141 +2,105 @@ import {action, computed, observable, reaction, runInAction, useStrict} from 'mo
 
 useStrict(true);
 
-class breedItem {
+class ArticleModel {
     code = '';
     title = '';
-    publised = new Date();
     source = '';
     comments = 0;
-    publishFormate = '';
 }
 
-class breedItemCollection {
-    constructor(type) {
-        //this.datatype = type;
-        runInAction(() => {
-            this.datatype = "肉蛋行情";
-        });
+class ArticleCollection {
+    @observable pageIndex = 1;
+    @observable isLoading = true;
+    @observable more = true;
+    @observable list = [];
+
+    constructor() {
     }
 
-    @observable searchTxt = '';
-    @observable source = [];
-    @observable datatype = '';
-    @observable pageIndex = 1;
-    @observable more = true;
-    @observable end = false;
-    @observable isLoading = true;
-    @observable pageSize = 10;
-    @observable go = true;
-
     @action
-    onLoad() {
-        this.source = [];
-        this.end = false;
+    init() {
         this.pageIndex = 1;
-        this.isLoading = true;
-        this.onLoadFromApi(this.pageIndex, (items) => {
-            this.onParse(items);
-            this.onCloseEnd();
-        }, (err) => {
-            this.onCloseEnd();
-        });
+        this.loadArticle();
     };
 
-    @action
-    onFilter(txt) {
-        this.searchTxt = txt;
-        this.onLoad();
-    }
-
-    @action
-    onLoadFromApi(index, callback, falied) {
-        request.getJson(urls.apis.CMS_ARTICLE_COLLECTION, {
-            page: index,
-            size: this.pageSize,
-            type: this.datatype,
-            txt: this.searchTxt
-        }).then((data) => {
+    @action fetchArticle(index, callback, failed) {
+        request.getJson(urls.apis.CMS_MY_COLLECTED_ARTICLES, { page: index }).then((data) => {
             callback(data);
         }).catch((err) => {
-            tools.showToast('没有更多内容了');
-            falied(err);
+            failed(err);
         });
     }
 
     @action
-    onParse(list) {
-        list.forEach((e) => {
-            let item = new breedItem();
+    mapArticle(items) {
+        items.forEach((e) => {
+            let item = new ArticleModel();
             item.code = e.code;
             item.title = e.title;
-            item.publised = e.create_date;
-            item.source = e.copy_from;
-            item.publishFormate = e.formate;
-            this.source.push(item);
+            this.list.push(item);
         });
+        this.pageIndex++;
+        if (items.length < 10) {
+            this.more = false;
+        }
+        this.end();
     }
 
     @action
-    onMore() {
+    loadArticle() {
         if (!this.more) {
             return;
         } else {
-            this.end = false;
-            this.onLoadFromApi(this.pageIndex + 1, (items) => {
-                this.onParse(items);
-                if (items.length < this.pageSize) {
-                    this.more = false;
-                }
-                this.pageIndex++;
-                this.onCloseEnd();
+            this.isLoading = true;
+
+            this.fetchArticle(this.pageIndex, (items) => {
+                this.mapArticle(items);
             }, (err) => {
-                runInAction(() => {
-                    this.onCloseEnd();
-                    this.more = false;
-                });
+                this.end();
+                tools.showToast('系统错误,' + JSON.stringify(err));
             });
         }
     }
 
-    @action
-    onCloseEnd() {
-        this.end = true;
+    @action end() {
         this.isLoading = false;
     }
 }
 
-class myCollectionStore {
-    index = 0
-    //分类
-    labels = ['文章']
-    currentLabel = "";
+class MyCollectionStore {
+
+    typeLabels = ['文章', '兽医'];
+    @observable currentIndex = 0;
+    @observable currentLabel = '文章';
+
+    @observable data_article = new ArticleCollection();
+    @observable data_vet = null;
 
     @action
-    onChanged(label) {
-        this.currentLabel = label;
-        let data = this.onGetCurrentCollection();
-        if (data != null && data.source.length == 0) {
-            data.onLoad();
+    onChanged(index) {
+        if(index > this.typeLabels.length) {
+            tools.showToast('切换失败，分类配置错误');
+            return;
         }
+        this.currentIndex = index;
+        this.currentLabel = this.typeLabels[index];
+        this.processCurrentTabContext();
     }
 
-    @observable
-    data0 = new breedItemCollection(this.labels[0]);
-
     @action
-    onGetCurrentCollection() {
-        if (this.currentLabel == this.labels[0]) {
-            return this.data0;
+    processCurrentTabContext = () : void => {
+        if (this.currentLabel == this.typeLabels[0]) {
+            if(this.data_article.list.length === 0){
+                this.data_article.init();
+            }
         }
-        if (this.currentLabel == this.labels[1]) {
-            return this.data1;
-        }
-        if (this.currentLabel == this.labels[2]) {
-            return this.data2;
+        if (this.currentLabel == this.typeLabels[1]) {
+            tools.showToast('VET IS NOT IN SERVICE');
         }
         return null;
     }
 }
 
-export default new myCollectionStore();
+myCollectionStore = new MyCollectionStore();
+export default myCollectionStore;

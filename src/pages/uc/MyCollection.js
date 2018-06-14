@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {
     View,
+    Text,
     TouchableOpacity,
     StyleSheet,
 } from 'react-native';
@@ -8,7 +9,7 @@ import {
 import {observer, inject} from 'mobx-react/native'
 import ScrollableTabView, {ScrollableTabBar,} from 'react-native-scrollable-tab-view';
 import {Container, Content} from '../../components';
-import ArticleList from '../../components/info/ArticleList';
+import CollectArticleList from '../../components/info/CollectArticleList';
 
 @inject('myCollectionStore')
 @observer
@@ -19,12 +20,11 @@ export default class MyCollection extends Component {
 
     static navigationOptions = {
         headerTitle: "我的收藏",
-        headerRight: <View/>
+        headerRight: <View />
     }
 
     componentDidMount() {
-        let {myCollectionStore} = this.props;
-        myCollectionStore.onChanged(myCollectionStore.labels[0]);
+        myCollectionStore.onChanged(0);
     }
 
     onItemPress(code, title) {
@@ -38,15 +38,21 @@ export default class MyCollection extends Component {
             <Container>
                 <Content gray>
                     <ScrollableTabView
-                        tabStyle={{height: 30}}
-                        tabBarTextStyle={{color: '#15856e',}}
                         initialPage={0}
                         tabBarUnderlineStyle={{backgroundColor: '#15856e'}}
-                        renderTabBar={() => <ScrollableTabBar/>}>
-                        <ArticleList tabLabel={myCollectionStore.labels[0]}
-                                     source={myCollectionStore.data0}
-                                     onItemPress={(c, t) => this.onItemPress(c, t)}>
-                        </ArticleList>
+                        renderTabBar={() => <ScrollableTabBar
+                            underlineColor='#ce3d3a'
+                            activeTextColor='#15856e'
+                            inactiveTextColor='#888'
+                            underlineHeight={2}
+                            underlineStyle={{backgroundColor:'#009d7b', height:2}}
+                            textStyle={{fontSize: 18}}
+                            style={{height:39, borderBottomWidth:1, borderBottomColor:'#ccc'}}
+                            tabStyle={{paddingLeft:5, paddingRight:5, paddingBottom: 0, paddingTop:0, height:38}}
+                            backgroundColor='#fff'/>}>
+                        <CollectArticleList tabLabel={myCollectionStore.typeLabels[0]}
+                                            navigation={this.props.navigation} />
+                        <View tabLabel={myCollectionStore.typeLabels[1]} style={{flex:1,alignItems:'center',justifyContent:'center'}}><Text>暂无收藏</Text></View>
                     </ScrollableTabView>
                 </Content>
             </Container>

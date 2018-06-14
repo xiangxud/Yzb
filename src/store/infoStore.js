@@ -99,8 +99,9 @@ class InfoStore {
     @action
     onCollect(){
         request.postJson(urls.apis.CMS_POST_COLLECT, {cid: this.article.id, contentType: 1, operate: 1}).then((res)=>{
-            runInAction(()=>{
+            runInAction(()=> {
                 this.article.collected = !this.article.collected;
+                tools.showToast(this.article.collected ? '已收藏' : '已取消收藏');
             });
         }).catch((e)=>{
             tools.showToast(JSON.stringify(e));
