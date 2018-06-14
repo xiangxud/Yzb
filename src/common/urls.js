@@ -81,7 +81,9 @@ const urls = {
         //获得文章分类列表
         CMS_CATEGORIES: apiPath + 'info/getCategories',
         //获取收藏的文章列表
-        CMS_ARTICLE_COLLECTION: apiPath + 'info/getCollectionInfos',
+        //CMS_ARTICLE_COLLECTION: apiPath + 'info/getCollectionInfos',
+        //我收藏的文章
+        CMS_MY_COLLECTED_ARTICLES: apiPath +'info/getMyCollectedArticles',
         //获取文章汇总
         CMS_ARTICLE_SUMMARY: apiPath + 'info/getArticleSummary',
         //文章回复
