@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from 'react-native';
 import {NavigationActions} from 'react-navigation';
 import {Container, Content, Body,Badge,Text, Button,Left,ActionSheet,Footer,FooterTab} from 'native-base';
@@ -19,35 +20,23 @@ export default class WelcomeRegister extends Component {
     render(){
         const {navigation} = this.props;
 
-        return (<Container>
-            <Content>
-                <Text style={{margin:5}}>
-                    养殖宝® 是一款专业的智能养殖App，为您提供：
-                </Text>
-                <Badge info style={{margin:5}}>
-                    <Text>栋舍监控</Text>
-                </Badge>
-                <Badge info style={{margin:5}}>
-                    <Text>环控监控</Text>
-                </Badge>
-                <Badge info style={{margin:5}}>
-                    <Text>动物诊疗</Text>
-                </Badge>
-                <Badge info style={{margin:5}}>
-                    <Text>智能报表</Text>
-                </Badge>
-                <Badge info style={{margin:5}}>
-                    <Text>智能报表</Text>
-                </Badge>
-
-                <Button full success onPress={()=> navigation.navigate('Join')} style={{ margin:10, flex:1 }}>
-                    <Text>已有邀请码</Text>
-                </Button>
-                <Button full success onPress={()=> navigation.navigate('Register')} style={{ margin:10, flex:1 }}>
-                    <Text>注册新养殖场</Text>
-                </Button>
-            </Content>
-        </Container>);
+        return (
+                <View style={{flex:1}}>
+                    <View style={{flex:3,justifyContent:'center',alignItems:'center',alignContent:'space-between'}}>
+                        <Image resizeMode="contain" source={require('../../resource/logo_1.png')}></Image>
+                        <View style={{marginTop:3}}>
+                            <Text>您身边的养殖专家</Text>
+                        </View>
+                    </View>
+                    <View style={{ flex : 1 }}>
+                        <Button full success onPress={()=> navigation.navigate('Join')} style={{ margin:10, flex:1 }}>
+                            <Text>已有邀请码</Text>
+                        </Button>
+                        <Button full success onPress={()=> navigation.navigate('Register')} style={{ margin:10, flex:1 }}>
+                            <Text>注册新养殖场</Text>
+                        </Button>
+                    </View>
+                </View>);
     }
 }
 const styles = StyleSheet.create({

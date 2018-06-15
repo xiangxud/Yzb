@@ -61,23 +61,26 @@ export default class Add extends Component{
         const {addStyStore} = this.props;
         let mess = addStyStore.onValidate();
         if(mess.length > 0){
-            Toast.show({
-                type:'warning',
-                text: '数据项存在错误，请更正',
-                position: 'top'
-            });
-            this.autoClose();
+            tools.showToast("数据项存在错误，请更正");
+            // Toast.show({
+            //     type:'warning',
+            //     text: '数据项存在错误，请更正',
+            //     position: 'top'
+            // });
+            //this.autoClose();
             return ;
         }
         addStyStore.onCommit((data)=>{
-            Toast.show({
-                type:'success',
-                text: '保存成功',
-                position: 'top'
-            })
-            this.autoClose(()=>{
-                this.onStyPress(data)
-            });
+            tools.showToast("保存成功");
+            this.onStyPress(data);
+            // Toast.show({
+            //     type:'success',
+            //     text: '保存成功',
+            //     position: 'top'
+            // })
+            // this.autoClose(()=>{
+            //     this.onStyPress(data)
+            // });
         },(err)=>{
             Toast.show({
                 type:'danger',
