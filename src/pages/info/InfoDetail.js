@@ -114,7 +114,7 @@ export default class InfoDetail extends Component {
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => { infoStore.openShare() }}>
-                    <Icon name='ios-repeat' style={style.iconStyle}></Icon>
+                    <Icon name='ios-redo-outline' style={style.iconStyle}></Icon>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={style.label}>
