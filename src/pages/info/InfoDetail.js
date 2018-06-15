@@ -95,13 +95,13 @@ export default class InfoDetail extends Component {
         const {navigation} = this.props;
         return (<View style={style.bottomOperate}>
             <TouchableOpacity onPress={() => infoStore.openComment()} style={style.replyBtn}>
-                <Icon name="ios-create" style={style.iconStyle}></Icon>
+                <Icon name='ios-create' style={style.iconStyle}></Icon>
                 <Text style={{marginLeft: 5,}}>说说你的看法</Text>
             </TouchableOpacity>
             <View style={style.actionsBox}>
                 <TouchableOpacity onPress={() => {
                 }}>
-                    <Icon name="ios-text-outline" style={style.iconStyle}></Icon>
+                    <Icon name='ios-text-outline' style={style.iconStyle}></Icon>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => infoStore.onCollect()}>
@@ -109,10 +109,12 @@ export default class InfoDetail extends Component {
                           style={style.iconStyle}></Icon>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => {
-                    infoStore.openShare()
-                }}>
-                    <Icon name="ios-repeat" style={style.iconStyle}></Icon>
+                <TouchableOpacity onPress={() => { infoStore.onLike() }}>
+                    <Icon name={infoStore.article.upvoted ? 'ios-thumbs-up' : 'ios-thumbs-up-outline'} style={style.iconStyle}></Icon>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => { infoStore.openShare() }}>
+                    <Icon name='ios-repeat' style={style.iconStyle}></Icon>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={style.label}>

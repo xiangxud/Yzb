@@ -24,7 +24,7 @@ export default class MyCollection extends Component {
     }
 
     componentDidMount() {
-        myCollectionStore.onChanged(0);
+        myCollectionStore.tabChanged(0);
     }
 
     onItemPress(code, title) {
@@ -40,6 +40,7 @@ export default class MyCollection extends Component {
                     <ScrollableTabView
                         initialPage={0}
                         tabBarUnderlineStyle={{backgroundColor: '#15856e'}}
+                        onChangeTab={(current, ref, prev) => { myCollectionStore.tabChanged(current.i) }}
                         renderTabBar={() => <ScrollableTabBar
                             underlineColor='#ce3d3a'
                             activeTextColor='#15856e'

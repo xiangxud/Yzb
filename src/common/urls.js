@@ -89,7 +89,7 @@ const urls = {
         //文章回复
         CMS_POST_COMMENT: apiPath + 'info/postComment',
         //点赞文章
-        CMS_POST_COLLECT: apiPath + 'info/postOperate',
+        CMS_POST_OPERATE: apiPath + 'info/postOperate',
         //获得文章详情
         CMS_GET_ARTICLE: apiPath + 'info/getUserArc',
 

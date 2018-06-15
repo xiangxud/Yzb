@@ -78,7 +78,7 @@ class MyCollectionStore {
     @observable data_vet = null;
 
     @action
-    onChanged(index) {
+    tabChanged(index) {
         if(index > this.typeLabels.length) {
             tools.showToast('切换失败，分类配置错误');
             return;
@@ -92,11 +92,11 @@ class MyCollectionStore {
     processCurrentTabContext = () : void => {
         if (this.currentLabel == this.typeLabels[0]) {
             if(this.data_article.list.length === 0){
-                this.data_article.init();
+                //this.data_article.init();
             }
         }
         if (this.currentLabel == this.typeLabels[1]) {
-            tools.showToast('VET IS NOT IN SERVICE');
+            tools.showToast('VET IS OUT OF SERVICE');
         }
         return null;
     }

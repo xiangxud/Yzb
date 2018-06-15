@@ -15,7 +15,7 @@
 		"native-base": "^2.4.5",
 		"react": "^16.4.0",
 		"react-native": "^0.55.4",
-		"react-native-amap3d": "^0.8.2",
+		"react-native-amap3d": "^1.0.0",
 		"react-native-button": "^2.3.0",
 		"react-native-code-push": "^5.3.4",
 		"react-native-datepicker": "^1.7.2",

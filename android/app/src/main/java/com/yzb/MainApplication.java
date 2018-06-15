@@ -3,8 +3,9 @@ package com.yzb;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.microsoft.codepush.react.CodePush;
 import cn.qiuxiang.react.amap3d.AMap3DPackage;
+import com.microsoft.codepush.react.CodePush;
+
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -32,8 +33,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new CodePush(BuildConfig.CODEPUSH_KEY, MainApplication.this, BuildConfig.DEBUG),
             new AMap3DPackage(),
+            new CodePush(BuildConfig.CODEPUSH_KEY, MainApplication.this, BuildConfig.DEBUG),
+
             new WeChatPackage()
       );
     }

@@ -22,7 +22,7 @@ const VetItem = observer(({item, i, navigation}) => {
         <Text note>擅长：{item.skill}</Text>
         </Body>
         <Right>
-            <Text note>3.43km</Text>
+            <Text note>{item.distance}</Text>
         </Right>
     </ListItem>;
 });
@@ -39,7 +39,7 @@ export default class Didi extends Component {
         didiStore.setCurrent(point);
     }
     componentDidMount(){
-        didiStore.setMyPosition(didiStore.position);
+        //didiStore.setMyPosition(didiStore.position);
     }
     renderItem=(item, i)=>{
         return <Marker
@@ -54,16 +54,26 @@ export default class Didi extends Component {
             coordinate={{latitude:item.latitude, longitude:item.longitude}}
         ></Marker>
     }
+    _locate = ({nativeEvent}) => {
+        if (nativeEvent.latitude && nativeEvent.longitude) {
+            tools.showToast('已更新您的位置');
+            didiStore.setMyPosition({
+                latitude: nativeEvent.latitude,
+                longitude: nativeEvent.longitude,
+                accuracy: nativeEvent.accuracy,
+            });
+        }
+    }
     render() {
         const {navigation} = this.props;
         const {vets, refreshState, current, currentType, isFetching, locationInterval, position} = didiStore;
         return(
             <Container>
                 <Segment style={{backgroundColor:'#459d26'}}>
-                    <Button first active={currentType==='list'} onPress={()=>didiStore.switch()}>
+                    <Button first active={currentType==='list'} onPress={()=> didiStore.switch() }>
                         <Text>列表</Text>
                     </Button>
-                    <Button last active={currentType==='map'} onPress={()=>didiStore.switch()}>
+                    <Button last active={currentType==='map'} onPress={()=> didiStore.switch() }>
                         <Text>地图</Text>
                     </Button>
                 </Segment>
@@ -72,18 +82,12 @@ export default class Didi extends Component {
                         <MapView
                                  showsCompass={true}
                                  zoomLevel={8}
+                                 locationEnabled={true}
                                  rotateEnabled={false}
-                                 onLocation={({nativeEvent}) => {
-                                     if (nativeEvent.latitude && nativeEvent.longitude) {
-                                         tools.showToast('已更新您的位置');
-                                         didiStore.setMyPosition({
-                                             latitude: nativeEvent.latitude,
-                                             longitude: nativeEvent.longitude,
-                                             accuracy: nativeEvent.accuracy,
-                                         });
-                                     }
-                                 }
-                                 }
+                                 showsLocationButton={true}
+                                 locationInterval={60*60*1000}
+                                 distanceFilter={100}
+                                 onLocation={this._locate}
                                  coordinate={{
                                      latitude: position.latitude,
                                      longitude: position.longitude,
@@ -91,7 +95,7 @@ export default class Didi extends Component {
                                  style={StyleSheet.absoluteFill}>
 
                             {
-                                vets.map((item, i)=>this.renderItem(item, i)
+                                vets.map((item, i) => this.renderItem(item, i)
                                     //alert(JSON.stringify(item));
                                 )
                             }
@@ -107,9 +111,7 @@ export default class Didi extends Component {
                                     <Text
                                         style={{marginTop: 5}}>专长：{current.major_skill ? current.major_skill : '未知'}</Text>
                                 </View>
-                                <Button bordered info onPress={() => {
-                                    navigation.navigate("VetInfo", {vet: current})
-                                }}>
+                                <Button bordered info onPress={() => { navigation.navigate("VetInfo", {vet: current}) }}>
                                     <Text>详情</Text>
                                 </Button>
                                 {false ? <Icon name={'ios-close-circle-outline'} onPress={() => this._onItemPress({})}
@@ -137,7 +139,7 @@ export default class Didi extends Component {
                         <MaskLoading show={isFetching} text={'正在查找您附近的兽医，请稍后...'}/>
                         <List>
                             <RefreshListView data={vets}
-                                         keyExtractor={(item, i)=> i}
+                                         keyExtractor={(item, i)=> i.toString()}
                                          renderItem={({item, i})=><VetItem item={item} i={i} navigation={navigation}/>}
                                          refreshState={refreshState}
                                          onHeaderRefresh={didiStore.onHeaderRefresh}

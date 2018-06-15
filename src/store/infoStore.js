@@ -1,5 +1,4 @@
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
-import _ from "lodash";
 useStrict(true);
 
 class ArticleModel {
@@ -21,6 +20,12 @@ class InfoStore {
     @observable showShareModal = false;
 
     @observable comment_content = '';
+
+    ENUM_CONTENT_OPERATE = {
+        Collect: 1,
+        Like : 2,
+        UnLike: 3,
+    }
     constructor(){}
 
     @action
@@ -97,14 +102,27 @@ class InfoStore {
     }
 
     @action
-    onCollect(){
-        request.postJson(urls.apis.CMS_POST_COLLECT, {cid: this.article.id, contentType: 1, operate: 1}).then((res)=>{
-            runInAction(()=> {
-                this.article.collected = !this.article.collected;
-                tools.showToast(this.article.collected ? '已收藏' : '已取消收藏');
-            });
+    onOperate(operate, success){
+        request.postJson(urls.apis.CMS_POST_OPERATE, {cid: this.article.id, contentType: 1, operate: operate}).then((res)=>{
+            success(res);
         }).catch((e)=>{
             tools.showToast(JSON.stringify(e));
+        });
+    }
+    @action onCollect = (): void => {
+        this.onOperate(this.ENUM_CONTENT_OPERATE.Collect, (res) => {
+            runInAction(() => {
+                this.article.collected = !this.article.collected;
+                tools.showToast(this.article.collected ? '已收藏' : '已取消收藏');
+            })
+        });
+    }
+    @action onLike = (): void=> {
+        this.onOperate(this.ENUM_CONTENT_OPERATE.Like, (res) => {
+            runInAction(() => {
+                this.article.upvoted = !this.article.upvoted;
+                tools.showToast(this.article.upvoted ? '已赞' : '取消赞');
+            })
         });
     }
 }
