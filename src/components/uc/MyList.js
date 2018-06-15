@@ -1,5 +1,5 @@
 import React, {PureComponent} from "react";
-import {Clipboard} from 'react-native'
+import {Clipboard, Alert} from 'react-native'
 import {SeparatorArea} from "../../components";
 
 import {Body, Icon, Left, ListItem, Right, Text, View} from "native-base";
@@ -35,9 +35,18 @@ export default class MyList extends PureComponent {
         navigation && navigation.navigate(page, params)
     }
 
-    onCopy = txt=>{
-        Clipboard.setString(txt);
-        tools.showToast("复制成功");
+    onCopy = (txt) => {
+        Alert.alert(
+            '注册邀请码说明',
+            '将注册邀请码告知您的朋友，他们在注册养殖宝时填写该邀请码，你们将共享当前养殖场信息。',
+            [
+                {text: '点击复制邀请码', onPress: () => {
+                    Clipboard.setString(`注册养殖宝时请填写邀请码【${txt}】，注册成功后将共享我的智能养殖数据`);
+                    tools.showToast("复制成功");
+                }},
+            ],
+            { cancelable: true }
+        )
     };
 
     renderCollectionItem(){
@@ -51,7 +60,7 @@ export default class MyList extends PureComponent {
     render() {
         const {user} = this.props;
 
-        let t = `邀请码,${user.invitationCode}点击复制`;
+        let t = `邀请码：${user.invitationCode}`;
 
         return (
             <View style={{backgroundColor:'#E3E7F3'}}>
@@ -66,7 +75,7 @@ export default class MyList extends PureComponent {
 
                 <SeparatorArea style={{height:15}}>
                 </SeparatorArea>
-                <Item icon="ios-barcode" iconStyle={{color:'#ADFF2F'}} goToPage={()=>this.onCopy(user.invitationCode)} text={t} bordered/>
+                <Item icon="ios-link" iconStyle={{color:'#cc1e4c'}} goToPage={()=>this.onCopy(user.invitationCode)} text={t} subtext={'复制邀请码'} />
             </View>
         )
     }
