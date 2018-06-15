@@ -1,4 +1,5 @@
 import React, {PureComponent} from "react";
+import {Clipboard} from 'react-native'
 import {SeparatorArea} from "../../components";
 
 import {Body, Icon, Left, ListItem, Right, Text, View} from "native-base";
@@ -33,6 +34,12 @@ export default class MyList extends PureComponent {
         params = params ? params : {};
         navigation && navigation.navigate(page, params)
     }
+
+    onCopy = txt=>{
+        Clipboard.setString(txt);
+        tools.showToast("复制成功");
+    };
+
     renderCollectionItem(){
         let count=1;
         if(count > 0){
@@ -43,6 +50,9 @@ export default class MyList extends PureComponent {
     }
     render() {
         const {user} = this.props;
+
+        let t = `邀请码,${user.invitationCode}点击复制`;
+
         return (
             <View style={{backgroundColor:'#E3E7F3'}}>
                 <Item icon="ios-contact" iconStyle={{color:'red'}} goToPage={()=>this.goToPage('MyInfo')} text="个人资料" bordered/>
@@ -53,6 +63,10 @@ export default class MyList extends PureComponent {
                 }
                 <SeparatorArea style={{height: 15}}/>
                 <Item icon="ios-planet" iconStyle={{color:'#00859c'}} goToPage={()=>this.goToPage('About')} text="关于养殖宝"/>
+
+                <SeparatorArea style={{height:15}}>
+                </SeparatorArea>
+                <Item icon="ios-barcode" iconStyle={{color:'#ADFF2F'}} goToPage={()=>this.onCopy(user.invitationCode)} text={t} bordered/>
             </View>
         )
     }

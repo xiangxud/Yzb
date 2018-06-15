@@ -39,6 +39,9 @@ class UserStore {
     loginPassword = '123456';
 
     @observable
+    invitationCode=''
+
+    @observable
     @validate(/^[\w]{6,16}$/, '请输入至少6位密码')
     registerPassword = '';
 
@@ -83,6 +86,23 @@ class UserStore {
         this.ContentLables = value;
         this.AllLabels=all;
     }
+    onLoadFarm=(code)=>{
+        if(code && code.length != 5){
+            return;
+        }
+        this.setLoading();
+        request.getJson(urls.apis.JOIN_FARM_GETBYCODE,{code:code}).then(r=>{
+            this.setLoading();
+            runInAction(()=>{
+                this.farmName = r.Name;
+            });
+        },e=>{
+            this.setLoading();
+            tools.showToast("网络异常，请稍后重试:" + JSON.stringify(e))
+        });
+    }
+
+
     postContentLables(value,success,error){
         request.postJson(urls.apis.UPDATE_USERLABLES, { PS:value }).then((res) => {
             this.settingContentLables(value,this.AllLabels);
@@ -93,6 +113,12 @@ class UserStore {
     @action setLoginPhone = _.debounce((phone) => {
         this.loginPhone = phone;
     }, 400)
+    @action setInvitationCode = _.debounce((code)=>{
+        this.invitationCode=code;
+        this.onLoadFarm(code);
+    },400);
+
+
     @action setLoginPassword = _.debounce((pwd) => {
         this.loginPassword = pwd;
     }, 400)
@@ -129,9 +155,6 @@ class UserStore {
     @action
     setCurrentUser() {
         if (!this.currentUser || !this.currentUser.id) {
-            //Object.assign(this.currentUser, this.currentUser, this.loginUser);
-
-            //alert(JSON.stringify(this.currentUser))
             this.currentUser = {
                 id: this.loginUser.id,
                 name: this.loginUser.name,
@@ -187,6 +210,22 @@ class UserStore {
             error(err)
         )
     }
+    onJoin=(callback,errCallack)=>{
+        let data = {
+            code:this.invitationCode,
+            phone: this.loginPhone,
+            vcode: this.validateCode,
+            userType: this.userType,
+            password: this.registerPassword,
+            name: this.name,
+            farm_name: this.farmName
+        };
+        request.postJson(urls.apis.JOIN_FARM,data).then(res=>{
+            callback(res);
+        }).catch(ex=>{
+            errCallack(res);
+        });
+    };
 
     @action find = (success, error) => {
         let reg_data = {
@@ -204,7 +243,6 @@ class UserStore {
 
     @action login = (callback) => {
         this.loading = true;
-        //alert(`${this.password}-${this.phone}`)
         this._login(this.loginPhone, this.loginPassword, (token) => {
             runInAction(() => {
                 this.token = token;
@@ -281,7 +319,6 @@ class UserStore {
         let user0 = {...this.loginUser};
         user0[property] = value;
         this.loginUser = user0;
-
         request.getJson(urls.apis.USER_UPDATEUSERINFO, {
             fieldName: this.fieldMap[property] || property,
             value
