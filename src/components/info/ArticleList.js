@@ -19,7 +19,7 @@ export default class ArticleList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            pageIndex: 1,
+            pageIndex: 0,
             dataList: [],
             refreshState: RefreshState.Idle,
         }
@@ -31,12 +31,12 @@ export default class ArticleList extends Component {
     }
 
     onHeaderRefresh = () => {
-        this.setState({pageIndex: 1, refreshState: RefreshState.HeaderRefreshing},()=>{ });
+        this.setState({refreshState: RefreshState.HeaderRefreshing});
         this.getArcList(true);
     }
 
     onFooterRefresh = () => {
-        this.setState({pageIndex: this.state.pageIndex++, refreshState: RefreshState.FooterRefreshing});
+        this.setState({refreshState: RefreshState.FooterRefreshing});
         this.getArcList(false);
     }
 
@@ -47,8 +47,9 @@ export default class ArticleList extends Component {
         }else{
             //tools.showToast('next_'+this.state.pageIndex);
         }
-        request.getJson(urls.apis.CMS_ARTICLE_LIST, {page: this.state.pageIndex, ctg: this.props.data.type_id}).then((data) => {
+        request.getJson(urls.apis.CMS_ARTICLE_LIST, {page: isReload? 1: this.state.pageIndex + 1, ctg: this.props.data.type_id}).then((data) => {
             let list = [];
+
             if(isReload) {
                 list = data;
             }else{
@@ -56,7 +57,7 @@ export default class ArticleList extends Component {
             }
 
             this.setState({
-                page: 1,
+                pageIndex: isReload? 1: this.state.pageIndex + 1,
                 dataList: list,
                 refreshState: data.length === 0 ? (isReload? RefreshState.EmptyData: RefreshState.NoMoreData) : RefreshState.Idle,
             });
