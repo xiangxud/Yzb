@@ -12,6 +12,7 @@ import tools from "../../common/tools";
 export default class SettingColumn extends Component{
     static navigationOptions = ({navigation})=>({
         headerTitle: '栏目设置',
+        gesturesEnabled:false,
         headerRight: <View />
     });
     constructor(props){
