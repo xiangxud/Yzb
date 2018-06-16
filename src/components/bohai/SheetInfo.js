@@ -142,7 +142,7 @@ export default class SheetInfo extends Component {
                         <View style={styles.wrapper}>
                             <FlatList
                                 data={data.pigSerumRecordList.slice()}
-                                keyExtractor={(item, index) => index}
+                                keyExtractor={(item, index) => index.toString()}
                                 renderItem={({item}) => <View>
                                     <View style={styles.row}>
                                         <Text style={styles.title}>编号</Text>

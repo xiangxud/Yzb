@@ -3,14 +3,9 @@
  */
 import React, {Component} from 'react'
 import {
-    ScrollView,
     View,
-    StyleSheet,
-    Image,
-    FlatList,
-    TouchableOpacity,
 } from 'react-native'
-import {Container, Content, List, ListItem, Button, Separator, Text} from 'native-base';
+import {Container, Content} from 'native-base';
 import {MaskLoading} from '../../components';
 import {observer} from 'mobx-react/native';
 import SheetInfo from '../../components/bohai/SheetInfo'

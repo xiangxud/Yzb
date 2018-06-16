@@ -9,7 +9,7 @@ import {
     Alert,
 } from 'react-native'
 import {Container, Content, Footer, FooterTab, Button, List, ListItem, Body,
-    Text, Icon, Right} from 'native-base';
+    Text, Icon, Right, Label} from 'native-base';
 import Modal from 'react-native-modalbox';
 import {observer, inject} from 'mobx-react/native';
 import StepBar from '../../components/bohai/StepBar';
@@ -36,14 +36,14 @@ export default class BHApply extends Component {
 
     componentDidMount () {
         var timer = setTimeout(()=> {
-            this.fetchData((res) => {
+            this.isBHUser((res) => {
                 if (res === true) {
                     bohaiStore.setSales(true);
                     let animalType = this.props.navigation.state.params.type;
                     if (animalType) {
                         bohaiStore.set('animalType', animalType);
                     }
-                    this._fetch();
+                    this.fetchBreeds();
                     bohaiStore.setFetch(false);
                 } else {
                     tools.showToast('您还不是瑞普用户,不能提交申请');
@@ -51,13 +51,12 @@ export default class BHApply extends Component {
                     bohaiStore.setFetch(false);
                 }
             }, (err) => {
-                tools.showToast(err.message);
                 bohaiStore.setSales(false);
                 bohaiStore.setFetch(false);
             });
         }, 200);
     }
-    fetchData(success, failed){
+    isBHUser = (success, failed) => {
         request.getJson(urls.apis.BH_IS_SALES, {phone: userStore.phone}).then((res)=>{
             success(res);
         }).catch((err)=>{
@@ -65,7 +64,7 @@ export default class BHApply extends Component {
         });
     }
 
-    _fetch = () => {
+    fetchBreeds = () => {
         if(bohaiStore.data.animalType==='家禽') {
             request.getJson(urls.apis.BH_BREEDS, null).then((res) => {
                 bohaiStore.setBreeds(res);
@@ -313,14 +312,14 @@ export default class BHApply extends Component {
                                     step>1?
                                         <Col>
                                             <Button full light large onPress={()=>this.onPrev()}>
-                                                <Text>上一步</Text>
+                                                <Label>上一步</Label>
                                             </Button>
                                         </Col>
                                         : null
                                 }
                                 <Col>
                                     <Button full info large onPress={()=>this.onNext()}>
-                                        <Text>下一步</Text>
+                                        <Label>下一步</Label>
                                     </Button>
                                 </Col>
                             </Grid>

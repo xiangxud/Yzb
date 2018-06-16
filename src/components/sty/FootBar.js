@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     Text
 } from 'react-native'
-import {Container, Content, Footer, FooterTab, Button,Label} from 'native-base';
+import {Container, Content, Footer, FooterTab, Button, Label} from 'native-base';
 import {observer} from 'mobx-react/native';
 
 @observer
