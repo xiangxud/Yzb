@@ -30,12 +30,12 @@ export default class CollectArticleList extends Component {
     }
 
     onHeaderRefresh = () => {
-        this.setState({pageIndex: 1, refreshState: RefreshState.HeaderRefreshing},()=>{ });
+        this.setState({refreshState: RefreshState.HeaderRefreshing});
         this.getArcList(true);
     }
 
     onFooterRefresh = () => {
-        this.setState({pageIndex: this.state.pageIndex++, refreshState: RefreshState.FooterRefreshing});
+        this.setState({refreshState: RefreshState.FooterRefreshing});
         this.getArcList(false);
     }
 
@@ -46,7 +46,7 @@ export default class CollectArticleList extends Component {
         }else{
             //tools.showToast('next_'+this.state.pageIndex);
         }
-        request.getJson(urls.apis.CMS_MY_COLLECTED_ARTICLES, {page: this.state.pageIndex}).then((data) => {
+        request.getJson(urls.apis.CMS_MY_COLLECTED_ARTICLES, {page: isReload? 1: this.state.pageIndex + 1}).then((data) => {
             let list = [];
             if(isReload) {
                 list = data;
@@ -55,7 +55,7 @@ export default class CollectArticleList extends Component {
             }
 
             this.setState({
-                page: 1,
+                pageIndex: isReload? 1: this.state.pageIndex + 1,
                 dataList: list,
                 refreshState: data.length === 0 ? (isReload? RefreshState.EmptyData: RefreshState.NoMoreData) : RefreshState.Idle,
             });

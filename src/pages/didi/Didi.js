@@ -1,24 +1,23 @@
 import React, {Component} from 'react'
 import {
     View,
-    Alert,
     StyleSheet,
     Image,
     TouchableOpacity,
 } from 'react-native';
-import {MapView, Marker, MultiPoint} from 'react-native-amap3d';
+import {MapView, Marker} from 'react-native-amap3d';
 import {observer, inject} from 'mobx-react/native';
 import RefreshListView from 'react-native-refresh-list-view';
-import { Text, Icon, Button, List, ListItem, Left, Body, Right, Thumbnail, Segment, Spinner} from 'native-base'
+import {Text, Icon, Button, List, Fab, ListItem, Left, Body, Right, Thumbnail, Segment, Spinner} from 'native-base'
 import {Container, Content, MaskLoading} from "../../components";
 
 const VetItem = observer(({item, i, navigation}) => {
-    return <ListItem avatar onPress={()=>navigation.navigate('VetInfo', {vet: item})}>
+    return <ListItem avatar onPress={() => navigation.navigate('VetInfo', {vet: item})}>
         <Left>
-            <Thumbnail source={{uri: item.head_photo}} />
+            <Thumbnail source={{uri: item.head_photo}}/>
         </Left>
         <Body>
-            <Text>{item.name}</Text>
+        <Text>{item.name}</Text>
         <Text note>擅长：{item.skill}</Text>
         </Body>
         <Right>
@@ -38,67 +37,73 @@ export default class Didi extends Component {
         //alert(JSON.stringify(point))
         didiStore.setCurrent(point);
     }
-    componentDidMount(){
-        //didiStore.setMyPosition(didiStore.position);
+
+    componentDidMount() {
+        didiStore.getMyPosition();
     }
-    renderItem=(item, i)=>{
-        return <Marker
-            key={i}
-            title={item.name}
-            icon={() =>
-                <TouchableOpacity onPress={() => this._onItemPress(item)}>
-                    <Image source={{uri: item.head_photo}} style={styles.avatar}/>
-                </TouchableOpacity>
-            }
-            onInfoWindowPress={()=>this._onItemPress(item)}
-            coordinate={{latitude:item.latitude, longitude:item.longitude}}
-        ></Marker>
+
+    renderItem = (item, i) => {
+        return <MapView.Marker key={i} title={item.name} icon={() =>
+                    <TouchableOpacity onPress={() => this._onItemPress(item)}>
+                        <Text style={{fontSize:10, textAlign:'center', color:'black',
+                            textShadowOffset:{width:2, height:2},
+                            textShadowRadius:2,
+                            textShadowColor:'gray'}}>{item.name}</Text>
+                        <Image source={{uri: item.head_photo}} style={styles.avatar}/>
+                    </TouchableOpacity>
+                    }
+                   onInfoWindowPress={() => this._onItemPress(item)}
+                   coordinate={{latitude: item.latitude, longitude: item.longitude}}
+        ></MapView.Marker>
     }
-    _locate = ({nativeEvent}) => {
-        if (nativeEvent.latitude && nativeEvent.longitude) {
-            tools.showToast('已更新您的位置');
-            didiStore.setMyPosition({
-                latitude: nativeEvent.latitude,
-                longitude: nativeEvent.longitude,
-                accuracy: nativeEvent.accuracy,
-            });
-        }
-    }
+
     render() {
         const {navigation} = this.props;
-        const {vets, refreshState, current, currentType, isFetching, locationInterval, position} = didiStore;
-        return(
+        const {vets, refreshState, current, currentType, isFetching, located, position} = didiStore;
+        return (
             <Container>
-                <Segment style={{backgroundColor:'#459d26'}}>
-                    <Button first active={currentType==='list'} onPress={()=> didiStore.switch() }>
+                <Segment style={{backgroundColor: '#dd3215'}}>
+                    <Button first active={currentType === 'list'} onPress={() => didiStore.switch()}>
                         <Text>列表</Text>
                     </Button>
-                    <Button last active={currentType==='map'} onPress={()=> didiStore.switch() }>
+                    <Button last active={currentType === 'map'} onPress={() => didiStore.switch()}>
                         <Text>地图</Text>
                     </Button>
                 </Segment>
                 {currentType === 'map' ?
                     <Content>
                         <MapView
-                                 showsCompass={true}
-                                 zoomLevel={8}
-                                 locationEnabled={true}
-                                 rotateEnabled={false}
-                                 showsLocationButton={true}
-                                 locationInterval={60*60*1000}
-                                 distanceFilter={100}
-                                 onLocation={this._locate}
-                                 coordinate={{
-                                     latitude: position.latitude,
-                                     longitude: position.longitude,
-                                 }}
-                                 style={StyleSheet.absoluteFill}>
-
+                            showsCompass={true}
+                            zoomLevel={8}
+                            locationEnabled={false}
+                            rotateEnabled={false}
+                            showsZoomControls={false}
+                            distanceFilter={10}
+                            onPress={()=>{didiStore.setCurrent({})}}
+                            coordinate={{
+                                latitude: position.latitude,
+                                longitude: position.longitude,
+                            }}
+                            style={StyleSheet.absoluteFill}>
                             {
-                                vets.map((item, i) => this.renderItem(item, i)
-                                    //alert(JSON.stringify(item));
-                                )
+                                vets.map((item, i) => this.renderItem(item, i))
                             }
+                            <MapView.Marker
+                                color='red'
+                                image='flag'
+                                title="我的位置"
+                                coordinate={{latitude: position.latitude, longitude: position.longitude}}
+                            />
+                            {/*
+                            <MapView.Marker color="green" coordinate={{latitude: position.latitude, longitude: position.longitude}} icon={() => <View><Text>TITLE LIST</Text></View>}>
+                                <TouchableOpacity activeOpacity={0.9} onPress={()=>alert('ok...')}>
+                                    <View style={styles.customInfoWindow}>
+                                        <Image source={{uri: 'http://imm.ringpu.com/breed/upload/carousel/20180615/carousel_20180615142940_7742_1348.jpg'}} style={styles.avatar}/>
+                                        <Text>自定义信息窗口</Text>
+                                        <Text>{JSON.stringify(position)}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </MapView.Marker>*/}
                         </MapView>
                         {didiStore.current.name ?
                             <View style={styles.userProfile}>
@@ -108,28 +113,19 @@ export default class Didi extends Component {
                                         <Text style={{fontSize: 18}}>{current.name}</Text>
                                         <Text style={styles.phone}>手机{current.phone}</Text>
                                     </View>
-                                    <Text
-                                        style={{marginTop: 5}}>专长：{current.major_skill ? current.major_skill : '未知'}</Text>
+                                    <Text style={{marginTop: 5}}>专长：{current.major_skill ? current.major_skill : '未知'}</Text>
                                 </View>
                                 <Button bordered info onPress={() => { navigation.navigate("VetInfo", {vet: current}) }}>
                                     <Text>详情</Text>
                                 </Button>
-                                {false ? <Icon name={'ios-close-circle-outline'} onPress={() => this._onItemPress({})}
-                                               style={{
-                                                   position: 'absolute',
-                                                   left: 0,
-                                                   bottom: -2,
-                                                   color: 'red'
-                                               }}/> : null}
+                                {false ? <Icon name={'ios-close-circle-outline'} onPress={() => this._onItemPress({})} style={styles.closeButton}/> : null}
                             </View> :
                             <View style={styles.noCurrent}>
-                                {isFetching ?
-                                    <View>
-                                        <Spinner color={'red'}/>
-                                        <Text style={styles.loadingText}>正在查找您附近的兽医，请稍后...</Text>
-                                    </View>
+                                {
+                                    isFetching ?
+                                    <Spinner color={'red'}/>
                                     :
-                                    <Text style={styles.loadingText}>请点击地图中的标记选择兽医</Text>
+                                    <Text style={styles.loadingText}>触摸兽医姓名可进行呼叫</Text>
                                 }
                             </View>
                         }
@@ -137,16 +133,37 @@ export default class Didi extends Component {
                     :
                     <Content white>
                         <MaskLoading show={isFetching} text={'正在查找您附近的兽医，请稍后...'}/>
-                        <List>
-                            <RefreshListView data={vets}
-                                         keyExtractor={(item, i)=> i.toString()}
-                                         renderItem={({item, i})=><VetItem item={item} i={i} navigation={navigation}/>}
-                                         refreshState={refreshState}
-                                         onHeaderRefresh={didiStore.onHeaderRefresh}
-                                         onFooterRefresh={didiStore.onFooterRefresh} />
-                        </List>
+                        {
+                            located ?
+                            <List>
+                                <RefreshListView data={vets}
+                                                 keyExtractor={(item, i) => i.toString()}
+                                                 renderItem={({item, i}) => <VetItem item={item} i={i}
+                                                                                     navigation={navigation}/>}
+                                                 refreshState={refreshState}
+                                                 onHeaderRefresh={didiStore.onHeaderRefresh}
+                                                 onFooterRefresh={didiStore.onFooterRefresh}/>
+                            </List>
+                            :
+                            <Button bordered warning rounded block style={{margin:15,}} onPress={()=>didiStore.getMyPosition()}><Text>尚未获取您的位置，现在定位？</Text></Button>
+                        }
                     </Content>
                 }
+                <Fab
+                    active={didiStore.active}
+                    direction="up"
+                    containerStyle={{ }}
+                    style={{ backgroundColor: '#5067FF' }}
+                    position="bottomRight"
+                    onPress={() => didiStore.changeActive()}>
+                    <Icon name="md-list" />
+                    <Button style={{ backgroundColor: '#34A34F' }} onPress={()=>didiStore.getMyPosition()}>
+                        <Icon name="ios-pin" />
+                    </Button>
+                    <Button style={{ backgroundColor: '#DD5144' }} onPress={()=>didiStore.onFooterRefresh()}>
+                        <Icon name="ios-shuffle" />
+                    </Button>
+                </Fab>
             </Container>
         )
     }
@@ -176,50 +193,56 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
 
-    loadingText:{
-        padding:10,
+    loadingText: {
+        padding: 10,
         fontSize: 16,
         color: 'white',
-        backgroundColor:'#000',
-        borderRadius:3,
-        opacity:0.5
+        backgroundColor: '#000',
+        borderRadius: 3,
+        opacity: 0.5
     },
     userProfile: {
-        flexDirection:'row',
-        padding:10,
-        height:80,
-        backgroundColor:'#fff',
-        borderTopColor:'#ccc',
-        alignItems:'center',
+        flexDirection: 'row',
+        padding: 10,
+        height: 80,
+        backgroundColor: '#fff',
+        borderTopColor: '#ccc',
+        alignItems: 'center',
     },
-    head:{
-        width:60,
-        height:60,
+    head: {
+        width: 60,
+        height: 60,
     },
-    avatar:{
-        width:30,
-        height:30,
-        borderWidth:1,
-        borderColor:'white',
-        borderRadius:1,
+    avatar: {
+        width: 40,
+        height: 40,
+        borderWidth: 1,
+        borderColor: 'white',
+        borderRadius: 5,
     },
-    profile:{
-        flex:1,
-        marginLeft:10,
+    profile: {
+        flex: 1,
+        marginLeft: 10,
     },
-    phone:{
+    phone: {
         fontSize: 14,
         color: '#909090',
         marginLeft: 5
     },
-    noCurrent:{
-        height:80,
-        justifyContent:'center',
-        alignSelf:'center'
+    noCurrent: {
+        height: 80,
+        justifyContent: 'center',
+        alignSelf: 'center'
     },
-    row:{
-        backgroundColor:'#fff',
-        padding:10,
-        marginBottom:1,
+    row: {
+        backgroundColor: '#fff',
+        padding: 10,
+        marginBottom: 1,
+    },
+    closeButton: {
+        position: 'absolute',
+        left: 0,
+        bottom: -2,
+        color: 'red'
     }
 })
