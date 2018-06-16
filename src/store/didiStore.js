@@ -91,8 +91,8 @@ class DidiStore {
         this.fetchVets(false);
     }
 
-    @action getMyPosition() {
-        this.getLongitudeAndLatitude().then((po) => {
+    @action getMyPosition(po) {
+        /*this.getLongitudeAndLatitude().then((po) => {
             tools.showToast('已完成定位');
             runInAction(() => {
                 this.position = po;
@@ -105,8 +105,14 @@ class DidiStore {
         }).catch((err) => {
             tools.showToast('定位失败，请稍后重试，'+err.message);
         });
+        */
+        this.position = po;
+        this.located = true;
+        this.vets.splice(0, this.vets.length);
+        this.onHeaderRefresh();
     }
 
+    /*
     @action
     getLongitudeAndLatitude = () => {
         //获取位置再得到城市先后顺序，通过Promise完成
@@ -136,7 +142,7 @@ class DidiStore {
                 }
             );
         })
-    }
+    }*/
 }
 
 didiStore = new DidiStore();

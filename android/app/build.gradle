@@ -170,6 +170,8 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.react:react-native:+'
+    compile project(':react-native-amap-geolocation')
+
     // From node_modules
     compile project(':RCTWeChat')
     // 如果你需要支持Android4.0(API level 14)之前的版本

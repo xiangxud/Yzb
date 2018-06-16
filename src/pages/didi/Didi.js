@@ -10,6 +10,7 @@ import {observer, inject} from 'mobx-react/native';
 import RefreshListView from 'react-native-refresh-list-view';
 import {Text, Icon, Button, List, Fab, ListItem, Left, Body, Right, Thumbnail, Segment, Spinner} from 'native-base'
 import {Container, Content, MaskLoading} from "../../components";
+import {Geolocation} from "react-native-amap-geolocation";
 
 const VetItem = observer(({item, i, navigation}) => {
     return <ListItem avatar onPress={() => navigation.navigate('VetInfo', {vet: item})}>
@@ -38,8 +39,51 @@ export default class Didi extends Component {
         didiStore.setCurrent(point);
     }
 
-    componentDidMount() {
-        didiStore.getMyPosition();
+    //componentDidMount() {
+        //didiStore.getMyPosition();
+    //}
+    componentWillMount() {
+        Geolocation.init({
+            //TODO ios的要改
+            ios: "9bd6c82e77583020a73ef1af59d0c759",
+            android: "441ca727f44230561fd486a2139e4213"
+        })
+    }
+    async componentDidMount() {
+        Geolocation.setOptions({
+            interval: 10 * 60 * 1000,
+            distanceFilter: 10,
+            reGeocode: true
+        });
+        Geolocation.addLocationListener(location => {
+             this.updateLocationState(location);
+            }
+        );
+        this.startLocation();
+    }
+
+    componentWillUnmount() {
+        this.stopLocation();
+    }
+
+    getLastLocationTStart = () => {
+        this.stopLocation();
+        this.startLocation();
+    }
+
+    //开始定位
+    startLocation = () => Geolocation.start();
+    //结束定位
+    stopLocation = () => Geolocation.stop();
+    //获取最新定位
+    getLastLocation = async () => this.updateLocationState(await Geolocation.getLastLocation())
+
+    updateLocationState(location) {
+        if (location) {
+            tools.showToast('已成功获得您的位置');
+            location.timestamp = new Date(location.timestamp).toLocaleString()
+            didiStore.getMyPosition(location);
+        }
     }
 
     renderItem = (item, i) => {
@@ -57,6 +101,18 @@ export default class Didi extends Component {
         ></MapView.Marker>
     }
 
+    /*
+    renderListHeader = () => {
+        let {position} = didiStore;
+            return <View>
+                {Object.keys(position).map(key => (
+                    <View key={key}>
+                        <Text>{key}</Text>
+                        <Text>{position[key]}</Text>
+                    </View>
+                ))}
+            </View>
+    }*/
     render() {
         const {navigation} = this.props;
         const {vets, refreshState, current, currentType, isFetching, located, position} = didiStore;
@@ -132,7 +188,7 @@ export default class Didi extends Component {
                     </Content>
                     :
                     <Content white>
-                        <MaskLoading show={isFetching} text={'正在查找您附近的兽医，请稍后...'}/>
+                        <MaskLoading show={false} text={'正在查找您附近的兽医，请稍后...'}/>
                         {
                             located ?
                             <List>
@@ -145,7 +201,7 @@ export default class Didi extends Component {
                                                  onFooterRefresh={didiStore.onFooterRefresh}/>
                             </List>
                             :
-                            <Button bordered warning rounded block style={{margin:15,}} onPress={()=>didiStore.getMyPosition()}><Text>尚未获取您的位置，现在定位？</Text></Button>
+                            <Button bordered danger iconLeft rounded block style={{margin:15}} onPress={this.getLastLocation}><Icon name='ios-pin' /><Text>正在获取您的位置...点击直接使用上次定位</Text></Button>
                         }
                     </Content>
                 }
@@ -157,7 +213,7 @@ export default class Didi extends Component {
                     position="bottomRight"
                     onPress={() => didiStore.changeActive()}>
                     <Icon name="md-list" />
-                    <Button style={{ backgroundColor: '#34A34F' }} onPress={()=>didiStore.getMyPosition()}>
+                    <Button style={{ backgroundColor: '#34A34F' }} onPress={this.getLastLocationTStart }>
                         <Icon name="ios-pin" />
                     </Button>
                     <Button style={{ backgroundColor: '#DD5144' }} onPress={()=>didiStore.onFooterRefresh()}>
