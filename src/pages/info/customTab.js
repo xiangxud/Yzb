@@ -31,11 +31,7 @@ YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTIm
 export default class CustomTab extends Component {
     constructor(props) {
         super(props);
-
         let {items,sourceItems} = this.props;
-
-
-
         this._width = width / 4;
         this.topIndex = 0;
         this.leftIndex = 0;
@@ -58,6 +54,8 @@ export default class CustomTab extends Component {
         this.sourceItems=sourceItems;
         this.state = {};
     }
+    componentWillReceiveProps(nextProps){
+    }
 
     componentWillMount() {
         this._panResponder = PanResponder.create({
@@ -72,6 +70,7 @@ export default class CustomTab extends Component {
                 this.index = this.topIndex * 4 + this.leftIndex;
                 this.prev_left = this._width * this.leftIndex;
                 this.prev_top = this._width / 2 * this.topIndex;
+
             },
             onPanResponderMove: (evt, gestureState) => {
                 if (this.index >= 0 && this.index < this.items.length ) {
@@ -89,15 +88,12 @@ export default class CustomTab extends Component {
                     this.forceUpdate();
                     return;
                 }
-                if (this.index >= 0) {
                     const { pageX, pageY } = evt.nativeEvent;
                     this.finalTopIndex = Math.floor((pageY - this.offset) / (this._width / 2)) -1;
                     this.finalLeftIndex = Math.floor(pageX / this._width);
                     let index = this.finalTopIndex * 4 + this.finalLeftIndex;
                     this.prev_left = this._width * this.finalTopIndex;
                     this.prev_top = this._width / 2 * this.finalTopIndex;
-
-                    tools.showToast(JSON.stringify({ index : index , my : this.index }));
 
                     if (index >= 0 && index < this.items.length && this.items[index]) {
                         if (index > this.index) {
@@ -113,15 +109,16 @@ export default class CustomTab extends Component {
                         let top1 = Math.floor(this.index / 4) * (this._width / 2);
                         let left1 = (this.index % 4) * this._width;
                         LayoutAnimation.linear();
+
                         box1.setNativeProps({
                             style: {
                                 top: top1,
-                                left: left1
+                                left: left1,
+                                zIndex:9999
                             }
                         });
                         LayoutAnimation.configureNext(LayoutAnimation.Presets.spring); //系统自带
                     }
-                }
             },
             onShouldBlockNativeResponder: (event, gestureState) => true
         });
@@ -252,13 +249,9 @@ export default class CustomTab extends Component {
         });
     }
     renderBoxs=function(){
-        //alert(JSON.stringify(this.items));
-
-
         return this.items.map((item, index) => {
             let top = Math.floor(index / 4) * (this._width / 2);
             let left = (index % 4) * this._width;
-
             return (
                 <View
                     ref={'' + item.id}
