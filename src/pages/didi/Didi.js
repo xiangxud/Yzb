@@ -56,9 +56,8 @@ export default class Didi extends Component {
             reGeocode: true
         });
         Geolocation.addLocationListener(location => {
-             this.updateLocationState(location);
-            }
-        );
+            this.updateLocationState(location);
+        });
         this.startLocation();
     }
 
@@ -76,7 +75,13 @@ export default class Didi extends Component {
     //结束定位
     stopLocation = () => Geolocation.stop();
     //获取最新定位
-    getLastLocation = async () => this.updateLocationState(await Geolocation.getLastLocation())
+    getLastLocation = async () => {
+        try{
+            this.updateLocationState(await Geolocation.getLastLocation());
+        }catch (e){
+            //alert(e)
+        }
+    }
 
     updateLocationState(location) {
         if (location) {
