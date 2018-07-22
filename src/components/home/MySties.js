@@ -21,7 +21,7 @@ const Sty = observer(({sty, getSty, isCurrent}) =>{
     return (
         <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={()=>{getSty(sty)}}>
             <View style={[styles.styBox, isCurrent? styles.currentSty: {}]}>
-                <Image source={require('../../resource/sty_livestock.png')} style={{width:50, height:42}}/>
+                <Image source={require(`../../resource/sty_${sty.animal_type}.png`)} style={{width:50, height:42}}/>
                 <Text style={isCurrent?styles.currentText:{}}>{sty.name.substr(0, 5)}</Text>
             </View>
         </TouchableNativeFeedback>
