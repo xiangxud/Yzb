@@ -1,7 +1,7 @@
 /**
  * Created by TomChow on 17/11/12.
  */
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import {
     View,
     StyleSheet,
@@ -17,12 +17,19 @@ import Chart from '../sty/Charts'
 
 var {height, width} = Dimensions.get('window');
 
-const Sty = observer(({sty, getSty, isCurrent}) =>{
+const Sty = observer(({sty, getSty, isCurrent}) => {
     return (
-        <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={()=>{getSty(sty)}}>
-            <View style={[styles.styBox, isCurrent? styles.currentSty: {}]}>
-                <Image source={require(`../../resource/sty_${sty.animal_type}.png`)} style={{width:50, height:42}}/>
-                <Text style={isCurrent?styles.currentText:{}}>{sty.name.substr(0, 5)}</Text>
+        <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={() => {
+            getSty(sty)
+        }}>
+            <View style={[styles.styBox, isCurrent ? styles.currentSty : {}]}>
+                {
+                    sty.animal_type == 'livestock'?
+                    <Image source={require('../../resource/sty_livestock.png')} style={styles.ico}/>
+                    :
+                    <Image source={require('../../resource/sty_poultry.png')} style={styles.ico}/>
+                }
+                <Text style={isCurrent ? styles.currentText : {}}>{sty.name.substr(0, 5)}</Text>
             </View>
         </TouchableNativeFeedback>
     );
@@ -30,34 +37,39 @@ const Sty = observer(({sty, getSty, isCurrent}) =>{
 
 @observer
 export default class MySties extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
     }
-    getSty = (sty) =>{
+
+    getSty = (sty) => {
         const {store} = this.props;
         //alert(JSON.stringify(sty))
         store.setCurrentSty(sty);
     }
+
     render() {
         const {store} = this.props;
         let rd = new Date();
         return (
             <View style={styles.container}>
-                <TitleBar icon={'bank'} iconColor={'red'} title={'我的栋舍'} morePress={this.props.onAddSty} rightTitle={'添加'} />
+                <TitleBar icon={'bank'} iconColor={'red'} title={'我的栋舍'} morePress={this.props.onAddSty}
+                          rightTitle={'添加'}/>
                 <ScrollView horizontal={true} style={styles.stiesContainer}>
                     {/*<TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={this.props.onAddSty}>*/}
-                        {/*<View style={[styles.styBox, styles.addSty]}>*/}
-                            {/*<Icon name={'ios-add-circle-outline'} style={{fontSize:40, color:'#15856e'}}/>*/}
-                        {/*</View>*/}
+                    {/*<View style={[styles.styBox, styles.addSty]}>*/}
+                    {/*<Icon name={'ios-add-circle-outline'} style={{fontSize:40, color:'#15856e'}}/>*/}
+                    {/*</View>*/}
                     {/*</TouchableNativeFeedback>*/}
                     {store.sties.map((val, key) => (
-                        <Sty key={key} sty={val} getSty={this.getSty} isCurrent={store.currentSty.id===val.id}/>
+                        <Sty key={key} sty={val} getSty={this.getSty} isCurrent={store.currentSty.id === val.id}/>
                     ))}
                 </ScrollView>
-                {store.currentSty && store.currentSty.id?
+                {store.currentSty && store.currentSty.id ?
                     <View>
                         {
-                            store.currentSty.camera_url ? <WebView uri={`${urls.webPath}yzb/monitor/live?url=${store.currentSty.camera_url}`} canBack={false} style={{ height:200, }} />:null
+                            store.currentSty.camera_url ?
+                                <WebView uri={`${urls.webPath}yzb/monitor/live?url=${store.currentSty.camera_url}`}
+                                         canBack={false} style={{height: 200,}}/> : null
                         }
                         {
                             store && store.currentSty && store.currentSty.Env ?
@@ -69,21 +81,21 @@ export default class MySties extends Component {
                                     javaScriptEnabled={true}
                                     domStorageEnabled={true}
                                     scalesPageToFit={false}
-                                    scrollEnabled={true} />:null
+                                    scrollEnabled={true}/> : null
                         }
                         <View style={styles.reportItems}>
                             <Text style={styles.sTitle}>栋舍湿度</Text>
                             <Text style={styles.sTitle}>栋舍温度</Text>
                             <Text style={styles.sTitle}>二氧化碳浓度</Text>
                         </View>
-                        <View style={{justifyContent:'center'}}>
-                            <Button block light onPress={()=>this.props.onStyPress(store.currentSty)}>
+                        <View style={{justifyContent: 'center'}}>
+                            <Button block light onPress={() => this.props.onStyPress(store.currentSty)}>
                                 <Text>查看{store.currentSty.name}的详情</Text>
                             </Button>
                         </View>
-                    </View>:
+                    </View> :
                     <Button block light onPress={this.props.onAddSty}>
-                        <Text style={{color:'gray'}}>您当前还没有任何栋舍，赶快添加一个吧.</Text>
+                        <Text style={{color: 'gray'}}>您当前还没有任何栋舍，赶快添加一个吧.</Text>
                     </Button>
                 }
             </View>
@@ -93,53 +105,54 @@ export default class MySties extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor:'#fff',
-        marginBottom:10,
+        backgroundColor: '#fff',
+        marginBottom: 10,
     },
-    stiesContainer:{
+    stiesContainer: {
         width: width,
-        height:90,
-        paddingLeft:5,
-        paddingRight:5,
-        backgroundColor:'#fff'
+        height: 90,
+        paddingLeft: 5,
+        paddingRight: 5,
+        backgroundColor: '#fff'
     },
-    addSty:{
-        backgroundColor:'#f9f3f9',
-        justifyContent:'center',
-        marginLeft:5,
+    addSty: {
+        backgroundColor: '#f9f3f9',
+        justifyContent: 'center',
+        marginLeft: 5,
     },
-    styBox:{
-        width:80,
-        height:80,
-        borderWidth:1,
-        borderColor:'#e2e2e2',
-        borderRadius:5,
-        justifyContent:'center',
-        alignItems:'center',
-        padding:10,
-        marginRight:5,
-        marginTop:5,
+    styBox: {
+        width: 80,
+        height: 80,
+        borderWidth: 1,
+        borderColor: '#e2e2e2',
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
+        marginRight: 5,
+        marginTop: 5,
     },
-    currentSty:{
-        borderColor:'#15856e',
-        backgroundColor:'#15856e'
+    currentSty: {
+        borderColor: '#15856e',
+        backgroundColor: '#15856e'
     },
-    currentText:{
-        color:'#fff'
+    currentText: {
+        color: '#fff'
     },
-    tips:{
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center',
-        height:80,
-        backgroundColor:'#fff'
+    tips: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 80,
+        backgroundColor: '#fff'
     },
-    reportItems:{
-        flexDirection:'row',
-        height:30,
+    reportItems: {
+        flexDirection: 'row',
+        height: 30,
     },
-    sTitle:{
-        flex:1,
-        textAlign:'center'
-    }
+    sTitle: {
+        flex: 1,
+        textAlign: 'center'
+    },
+    ico: {width: 50, height: 42}
 });
