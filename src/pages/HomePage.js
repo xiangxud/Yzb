@@ -34,10 +34,10 @@ export default class HomePage extends Component {
 
     onBannerPress = (item) => {
         const {navigation} = this.props;
-        if(item.type === 1){
+        if (item.type === 1) {
             //文章
             navigation.navigate("InfoDetail", {code: item.link, title: item.title});
-        }else if(item.type === 2){
+        } else if (item.type === 2) {
             //链接
             navigation.navigate("Web", {url: item.link, title: item.title});
         }//alert(item.link);
@@ -78,6 +78,10 @@ export default class HomePage extends Component {
 
     onAddSty() {
         this.props.navigation.navigate("AddSty", {farm: homeStore.farm});
+    }
+
+    onPlay = (uri) => {
+        this.props.navigation.navigate("VodPlay", {url: uri});
     }
 
     renderListHeader() {
@@ -123,6 +127,8 @@ export default class HomePage extends Component {
                 </View>
                 <MySties store={homeStore} onStyPress={(sty) => {
                     this.onStyPress(sty)
+                }} onPlay={(uri) => {
+                    this.onPlay(uri)
                 }} onAddSty={this.onAddSty.bind(this)}/>
                 <Reminds reminds={reminds}
                          morePress={this.remindMore}
@@ -141,9 +147,9 @@ export default class HomePage extends Component {
     }
 
     renderRow = (info) => {
-        if(info.face_url) {
+        if (info.face_url) {
             return <InfoItemPic info={info} press={this.newsPress}/>
-        }else{
+        } else {
             return <InfoItem info={info} press={this.newsPress}/>
         }
     }

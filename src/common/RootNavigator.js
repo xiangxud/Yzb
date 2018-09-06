@@ -51,6 +51,9 @@ import SettingColumn from '../pages/info/settingColumn';
 import WelcomeRegister from '../pages/uc/Welcome';
 import Join from '../pages/uc/Join';
 
+import Play from '../pages/live/Play';
+import VodPlay from "../pages/live/VodPlay";
+
 const TabNavigation = TabNavigator({
     HomeTab: {
         screen: HomePage,
@@ -224,6 +227,9 @@ const RootNavigator = StackNavigator({
     WelcomeRegister:{screen:WelcomeRegister},
     Join:{screen:Join},
     EnvironmentalSetting: {screen: EnvironmentalSetting},
+
+    Play: {screen: Play},
+    VodPlay: {screen: VodPlay},
 }, {
     initialRouteName: 'Welcome', // 默认显示界面!global.user.loginState?'Login':'Main'
     navigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)

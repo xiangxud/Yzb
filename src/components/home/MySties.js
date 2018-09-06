@@ -6,6 +6,7 @@ import {
     View,
     StyleSheet,
     TouchableNativeFeedback,
+    TouchableOpacity,
     Image,
     ScrollView,
     Dimensions,
@@ -13,7 +14,8 @@ import {
 import {Icon, Text, Button} from 'native-base';
 import {observer} from 'mobx-react/native';
 import {WebView, TitleBar} from '../';
-import Chart from '../sty/Charts'
+import Chart from '../sty/Charts';
+import RtmpView from '../../components/common/RtmpView';
 
 var {height, width} = Dimensions.get('window');
 
@@ -25,7 +27,7 @@ const Sty = observer(({sty, getSty, isCurrent}) => {
             <View style={[styles.styBox, isCurrent ? styles.currentSty : {}]}>
                 {
                     sty.animal_type == 'livestock'?
-                    <Image source={require('../../resource/sty_livestock.png')} style={styles.ico}/>
+                    <Image source={require('../../resource/sty_livestock_.png')} style={styles.ico}/>
                     :
                     <Image source={require('../../resource/sty_poultry.png')} style={styles.ico}/>
                 }
@@ -67,9 +69,8 @@ export default class MySties extends Component {
                 {store.currentSty && store.currentSty.id ?
                     <View>
                         {
-                            store.currentSty.camera_url ?
-                                <WebView uri={`${urls.webPath}yzb/monitor/live?url=${store.currentSty.camera_url}`}
-                                         canBack={false} style={{height: 200,}}/> : null
+                            store.currentSty.camera_url && store.currentSty.camera_url.startsWith('rtmp') ?
+                                <TouchableOpacity style={styles.play} onPress={()=>this.props.onPlay(store.currentSty.camera_url)}><Icon name={'logo-youtube'} style={styles.play_btn} /></TouchableOpacity> : null
                         }
                         {
                             store && store.currentSty && store.currentSty.Env ?
@@ -154,5 +155,15 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center'
     },
-    ico: {width: 50, height: 42}
+    ico: {width: 50, height: 42},
+    play:{
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center',
+        height:100,
+        backgroundColor:'#ccc'
+    },
+    play_btn:{
+        fontSize:40, color:'#fff'
+    }
 });

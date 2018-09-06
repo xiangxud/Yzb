@@ -3,6 +3,8 @@ package com.yzb;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.github.yamill.orientation.OrientationPackage;
+import com.ksyun.media.reactnative.ReactKSYVideoPackage;
 import cn.qiuxiang.react.geolocation.AMapGeolocationPackage;
 import cn.qiuxiang.react.amap3d.AMap3DPackage;
 import com.microsoft.codepush.react.CodePush;
@@ -34,11 +36,14 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new OrientationPackage(),
+            new ReactKSYVideoPackage(),
             new AMapGeolocationPackage(),
             new AMap3DPackage(),
             new CodePush(BuildConfig.CODEPUSH_KEY, MainApplication.this, BuildConfig.DEBUG),
 
-            new WeChatPackage()
+            new WeChatPackage(),
+            new DownloadApkPackage()
       );
     }
 

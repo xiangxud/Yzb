@@ -50,6 +50,10 @@ export default class Live extends Component {
                           iconColor={'gray'}
                           title={'往期回顾'}
                           showMore={false}/>
+
+                <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate('VodPlay', {url: 'rtmp://49.4.93.97/live/video2'})}>
+                   <Text>开始播放</Text>
+                </TouchableWithoutFeedback>
             </View>
         )
     }

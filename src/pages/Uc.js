@@ -39,6 +39,7 @@ export default class Uc extends Component {
             { cancelable: true }
         )
     }
+
     render() {
         const {loginUser} = this.props.userStore;
         return (
@@ -92,5 +93,8 @@ const styles = StyleSheet.create({
         marginRight:50,
         marginTop: 10,
         marginBottom: 10,
-    }
+    },
+    backgroundVideo: {
+        height:200,
+    },
 })
