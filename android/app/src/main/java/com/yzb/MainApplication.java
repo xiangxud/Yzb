@@ -3,6 +3,7 @@ package com.yzb;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.github.yamill.orientation.OrientationPackage;
 import com.ksyun.media.reactnative.ReactKSYVideoPackage;
 import cn.qiuxiang.react.geolocation.AMapGeolocationPackage;
@@ -36,6 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNDeviceInfo(),
             new OrientationPackage(),
             new ReactKSYVideoPackage(),
             new AMapGeolocationPackage(),

@@ -29,6 +29,7 @@ const urls = {
     },
     apis: {
         // 通用信息 ---------------------------------------------------------
+        APP_VERSION: apiPath + 'public/getApkVersion',
         JOIN_FARM_GETBYCODE:apiPath + 'farm/GetByCode',
         JOIN_FARM:apiPath + 'farm/Join',
 

@@ -70,7 +70,9 @@ export default class MySties extends Component {
                     <View>
                         {
                             store.currentSty.camera_url && store.currentSty.camera_url.startsWith('rtmp') ?
-                                <TouchableOpacity style={styles.play} onPress={()=>this.props.onPlay(store.currentSty.camera_url)}><Icon name={'logo-youtube'} style={styles.play_btn} /></TouchableOpacity> : null
+                                <TouchableOpacity style={styles.play} onPress={()=>this.props.onPlay(store.currentSty.camera_url)}>
+                                    <Image source={require('../../resource/sty_video_screen_default.jpg')} style={{width: width, height: 220}}/>
+                                </TouchableOpacity> : null
                         }
                         {
                             store && store.currentSty && store.currentSty.Env ?
@@ -160,7 +162,7 @@ const styles = StyleSheet.create({
         flex:1,
         justifyContent:'center',
         alignItems:'center',
-        height:100,
+        height:220,
         backgroundColor:'#ccc'
     },
     play_btn:{

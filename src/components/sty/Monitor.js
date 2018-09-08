@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {
     View,
+    Image,
     StyleSheet,
+    Dimensions,
     TouchableOpacity,
 } from 'react-native';
 import {observer} from 'mobx-react/native';
@@ -26,7 +28,7 @@ const Monitor = observer(({monitor, switchVideo, onPlay}) => {
                 </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.play} onPress={() => onPlay(monitor.current.Url)}>
-                <Text>{monitor.current.Name}</Text>
+                <Image source={require('../../resource/sty_video_screen_default.jpg')} style={{width: Dimensions.get('window').width, height: 120}}/>
             </TouchableOpacity>
         </View>
     )
@@ -53,7 +55,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        height: 100,
+        height: 120,
         backgroundColor: '#ccc'
     },
 });
