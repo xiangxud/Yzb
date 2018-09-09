@@ -106,18 +106,20 @@ export default class Didi extends Component {
         ></MapView.Marker>
     }
 
-    /*
+
     renderListHeader = () => {
         let {position} = didiStore;
             return <View>
-                {Object.keys(position).map(key => (
+                {/*Object.keys(position).map(key => (
                     <View key={key}>
                         <Text>{key}</Text>
                         <Text>{position[key]}</Text>
                     </View>
-                ))}
+                ))*/}
+                <Button bordered success iconLeft rounded block style={{margin:15}}><Icon name='ios-pin' /><Text>{position.address}</Text></Button>
             </View>
-    }*/
+
+    }
     render() {
         const {navigation} = this.props;
         const {vets, refreshState, current, currentType, isFetching, located, position} = didiStore;
@@ -145,16 +147,11 @@ export default class Didi extends Component {
                                 latitude: position.latitude,
                                 longitude: position.longitude,
                             }}
+                            onLocation={({ nativeEvent }) => alert(JSON.stringify(nativeEvent))}
                             style={StyleSheet.absoluteFill}>
                             {
                                 vets.map((item, i) => this.renderItem(item, i))
                             }
-                            <MapView.Marker
-                                color='red'
-                                image='flag'
-                                title="我的位置"
-                                coordinate={{latitude: position.latitude, longitude: position.longitude}}
-                            />
                             {/*
                             <MapView.Marker color="green" coordinate={{latitude: position.latitude, longitude: position.longitude}} icon={() => <View><Text>TITLE LIST</Text></View>}>
                                 <TouchableOpacity activeOpacity={0.9} onPress={()=>alert('ok...')}>
@@ -199,14 +196,14 @@ export default class Didi extends Component {
                             <List>
                                 <RefreshListView data={vets}
                                                  keyExtractor={(item, i) => i.toString()}
-                                                 renderItem={({item, i}) => <VetItem item={item} i={i}
-                                                                                     navigation={navigation}/>}
+                                                 renderItem={({item, i}) => <VetItem item={item} i={i} navigation={navigation}/>}
+                                                 ListHeaderComponent={this.renderListHeader}
                                                  refreshState={refreshState}
                                                  onHeaderRefresh={didiStore.onHeaderRefresh}
                                                  onFooterRefresh={didiStore.onFooterRefresh}/>
                             </List>
                             :
-                            <Button bordered danger iconLeft rounded block style={{margin:15}} onPress={this.getLastLocation}><Icon name='ios-pin' /><Text>正在获取您的位置...点击直接使用上次定位</Text></Button>
+                            <Button bordered danger iconLeft rounded block style={{margin:15}}><Icon name='ios-pin' /><Text>正在获取您的位置...</Text></Button>
                         }
                     </Content>
                 }

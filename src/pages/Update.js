@@ -31,7 +31,6 @@ class HomeScreen extends React.PureComponent {
         super(props);
         this.state = {
             sourceData: [],
-            sourceData: []
             isLoading: false,
             animating: false,
             //网络请求状态

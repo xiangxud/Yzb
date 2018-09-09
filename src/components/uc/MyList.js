@@ -2,7 +2,7 @@ import React, {PureComponent} from "react";
 import {Clipboard, Alert} from 'react-native'
 import {SeparatorArea} from "../../components";
 
-import {Body, Icon, Left, ListItem, Right, Text, View} from "native-base";
+import {Body,List, Icon, Left, ListItem, Right, Text, View} from "native-base";
 
 const Item = props => {
     return (
@@ -63,7 +63,7 @@ export default class MyList extends PureComponent {
         let t = `邀请码：${user.invitationCode}`;
 
         return (
-            <View style={{backgroundColor:'#E3E7F3'}}>
+            <List style={{backgroundColor:'#E3E7F3'}}>
                 <Item icon="ios-contact" iconStyle={{color:'red'}} goToPage={()=>this.goToPage('MyInfo')} text="个人资料" bordered/>
                 <Item icon="ios-ribbon" iconStyle={{color:'#ccb500'}} goToPage={()=>this.goToPage('ScoreRecord')} text="我的积分" subtext={user.score && user.score !== 0 ? user.score : '0'}/>
                 <SeparatorArea style={{height: 15}}/>
@@ -76,7 +76,7 @@ export default class MyList extends PureComponent {
                 <SeparatorArea style={{height:15}}>
                 </SeparatorArea>
                 <Item icon="ios-link" iconStyle={{color:'#cc1e4c'}} goToPage={()=>this.onCopy(user.invitationCode)} text={t} subtext={'复制邀请码'} />
-            </View>
+            </List>
         )
     }
 }

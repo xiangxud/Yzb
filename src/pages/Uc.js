@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import {NavigationActions} from 'react-navigation';
 import {observer, inject} from 'mobx-react/native'
-import {View,ScrollView,TouchableOpacity} from "react-native";
+
 import {Container, Content, Button, Text} from 'native-base';
 import UserHead from '../components/uc/UserHead';
 import MyList from '../components/uc/MyList';
@@ -48,12 +48,9 @@ export default class Uc extends Component {
                     <UserHead navigation={this.props.navigation} />
                     <MyList navigation={this.props.navigation} user={loginUser} />
                     {__DEV__?
-                        <TouchableOpacity
-                            activeOpacity={0.75}
-                            style={styles.registerBtn}
-                            onPress = {()=>this.error()}>
-                            <Text style={{fontSize: 16, color: 'red'}}>SYSTEM ERROR...</Text>
-                        </TouchableOpacity>
+                        <Button rounded danger bordered block onPress = {()=>this.error()}>
+                            <Text style={{color: 'red'}}>SYSTEM ERROR...</Text>
+                        </Button>
                         : null}
                     <Button rounded danger block style={styles.logoutBtn} onPress={()=>this.logout()}>
                         <Text style={{color: '#fff'}}>退出登录</Text>
@@ -77,16 +74,6 @@ const styles = StyleSheet.create({
     },
     accountItem: {
         alignItems: 'center'
-    },
-    registerBtn: {
-        width: 200,
-        marginTop: 20,
-        height: 40,
-        borderRadius: 20,
-        backgroundColor: '#fff',
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'center'
     },
     logoutBtn:{
         marginLeft:50,
