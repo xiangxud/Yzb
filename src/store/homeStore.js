@@ -5,6 +5,7 @@ import {observable, computed, action, runInAction, useStrict} from 'mobx'
 import userStore from './userStore'
 
 useStrict(true);
+
 class HomeStore {
     @observable banners = [];
     @observable fields = {
@@ -16,7 +17,7 @@ class HomeStore {
     };
     @observable sties = [];
     @observable currentSty = {};
-    @observable remindsCount=0;
+    @observable remindsCount = 0;
     @observable reminds = [];
     @observable news = [];
 
@@ -30,21 +31,21 @@ class HomeStore {
         this.pageIndex = 1
         this.isFetching = true;
         request.getJson(urls.apis.HOME_ALL, {}).then((res) => {
-            const {banners, fields, sties, reminds, news, farm,ContentLabels,AllLabels} = res;
+            const {banners, fields, sties, reminds, news, farm, ContentLabels, AllLabels} = res;
             runInAction(() => {
                 this.isFetching = false;
                 this.banners = banners;
                 this.fields = fields;
                 this.sties = sties;
                 this.farm = farm;
-                userStore.settingContentLables(ContentLabels,AllLabels);
+                userStore.settingContentLables(ContentLabels, AllLabels);
                 this.reminds.replace(reminds);
                 this.news.replace(news);
-                if(sties && sties.length){
+                if (sties && sties.length) {
                     this.setCurrentSty(sties[0]);
                 }
             });
-        }, (err)=>{
+        }, (err) => {
             tools.showToast(err.message);
             runInAction(() => {
                 this.isFetching = false;
@@ -53,7 +54,7 @@ class HomeStore {
     }
 
     @action fetchMore = async () => {
-        if(this.isNoMore) {
+        if (this.isNoMore) {
             this.loadingMore = true;
             this.pageIndex = this.pageIndex + 1;
             request.getJson(urls.apis.INFORMATION_LIST, {page: this.pageIndex}).then((res) => {
@@ -70,24 +71,30 @@ class HomeStore {
             });
         }
     }
+
     //设置当前选中的栋舍
-    @action setCurrentSty(sty){
+    @action
+    setCurrentSty(sty) {
         this.currentSty = sty;
     }
 
-    onChangedState(id,state,callback,falied){
-        let item = this.reminds.fristOne(o=>o.id==id);
-        if( item==null && falied ){
+    onChangedState(id, state, callback, falied) {
+        let item = this.reminds.fristOne(o => o.id == id);
+        if (item == null && falied) {
             falied("操作失败");
             return;
         }
-        request.postJson(urls.apis.IMM_POST_IMPLEMENT,{PlanId:item.id,StyId:item.styId,State:state}).then(data=>{
-            runInAction(()=>{
-                this.remindsCount = this.reminds.removeItem(o=>o.id == id).length;
-                if(callback) callback(data);
+        request.postJson(urls.apis.IMM_POST_IMPLEMENT, {
+            PlanId: item.id,
+            StyId: item.styId,
+            State: state
+        }).then(data => {
+            runInAction(() => {
+                this.remindsCount = this.reminds.removeItem(o => o.id == id).length;
+                if (callback) callback(data);
             });
-        }).catch(err=>{
-            if(falied)falied(err);
+        }).catch(err => {
+            if (falied) falied(err);
         });
     }
 }
