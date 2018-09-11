@@ -31,9 +31,13 @@ class CameraEditStore extends storeBase {
         Object.assign(this.data, this.data, o);
     }
 
+    //新增
     @action
     onCommit(callback, failed) {
         request.postJson(urls.apis.IMM_POST_CAMERA, this.data).then(data => {
+            runInAction(() => {
+                this.data = {Id: '', StyId: '', Name: '', Url: ''};
+            });
             if (callback) {
                 callback(data);
             }
@@ -44,6 +48,7 @@ class CameraEditStore extends storeBase {
         });
     }
 
+    //更新
     @action
     onCommitUpdate(callback, failed) {
         request.postJson(urls.apis.IMM_UPDATE_CAMERA, this.data).then(data => {

@@ -4,108 +4,141 @@ import {
     StyleSheet,
     View
 } from 'react-native';
-import { Container, Header, Content, List, ListItem, Text, Icon, Left, Body, Right, Switch ,Toast,Drawer } from 'native-base';
-import {observer,inject} from 'mobx-react/native';
+import {
+    Container,
+    Header,
+    Content,
+    List,
+    ListItem,
+    Text,
+    Icon,
+    Left,
+    Body,
+    Right,
+    Switch,
+    Toast,
+    Drawer
+} from 'native-base';
+import {observer, inject} from 'mobx-react/native';
 import AlarmClock from '../../components/sty/AlarmClock'
 import Filter from '../../components/sty/Filter'
 
 @inject('styStore')
 @observer
-export default class imm extends Component{
-    static navigationOptions = ({navigation})=>({
-        headerRight: <View />
+export default class imm extends Component {
+    static navigationOptions = ({navigation}) => ({
+        headerRight: <View/>
     });
-    componentDidMount(){
+
+    componentDidMount() {
         const {navigation} = this.props;
-        this.onLoadList({ StyName : navigation.state.params.title });
+        this.onLoadList({StyName: navigation.state.params.title});
     }
-    constructor(props){
+
+    constructor(props) {
         super(props);
     }
+
     onLoadList(config) {
         const {styStore} = this.props;
-        const immStore=styStore.immCollection;
-        immStore.onLoad(config, (mess) => {},(mess)=> {})
+        const immStore = styStore.immCollection;
+        immStore.onLoad(config, (mess) => {
+        }, (mess) => {
+        })
     }
-    onMoreList(){
+
+    onMoreList() {
         const {styStore} = this.props;
-        const immStore=styStore.immCollection;
+        const immStore = styStore.immCollection;
 
 
-        immStore.onMore(()=>{}, (mess) => {
+        immStore.onMore(() => {
+        }, (mess) => {
             Toast.show({
-                type:'warning',
+                type: 'warning',
                 text: mess,
                 position: 'top'
             });
             this.autoClose();
         })
     }
-    autoClose( callback ){
-        setTimeout(()=>{
+
+    autoClose(callback) {
+        setTimeout(() => {
             Toast.toastInstance._root.closeToast();
-            if(callback){
+            if (callback) {
                 callback();
             }
-        },800);
+        }, 800);
     }
+
     closeDrawer = () => {
         this.drawer._root.close()
     };
     openDrawer = () => {
         this.drawer._root.open()
     };
-    onQuery(config){
+
+    onQuery(config) {
         this.onLoadList(config);
         this.closeDrawer();
     }
+
     onImplement(data) {
         const {styStore} = this.props;
-        const immStore=styStore.immCollection;
+        const immStore = styStore.immCollection;
 
-        immStore.onChangedState(data,PlanState.Finished.Value,(data)=>{
+        immStore.onChangedState(data, PlanState.Finished.Value, (data) => {
             Toast.show({
-                type:'success',
+                type: 'success',
                 text: "执行成功",
                 position: 'top'
             });
             this.autoClose();
-        },(err)=>{
+        }, (err) => {
             Toast.show({
-                type:'warning',
+                type: 'warning',
                 text: "执行失败",
                 position: 'top'
             });
             this.autoClose();
         });
     }
+
     onIgnore(data) {
         const {styStore} = this.props;
-        const immStore=styStore.immCollection;
+        const immStore = styStore.immCollection;
 
-        immStore.onChangedState(data,PlanState.Ignore.Value,(data)=>{
+        immStore.onChangedState(data, PlanState.Ignore.Value, (data) => {
             Toast.show({
-                type:'success',
+                type: 'success',
                 text: "忽略成功",
                 position: 'top'
             });
             this.autoClose();
-        },(err)=>{
+        }, (err) => {
             Toast.show({
-                type:'warning',
+                type: 'warning',
                 text: "忽略失败",
                 position: 'top'
             });
             this.autoClose();
         });
     }
-    render(){
+
+    render() {
         const {styStore} = this.props;
-        const immStore=styStore.immCollection;
+        const immStore = styStore.immCollection;
         return (
             <Drawer
-                ref={(ref) => { this.drawer = ref; }}
-                content={<Filter source={immStore.FilterConfig} options={immStore.EnumPlanState} onUpdateData={(e)=>{ immStore.OnUpdateConfig(e) }} onApply={(e)=>this.onQuery(e)} onCancel={()=>{this.closeDrawer()}} />}
+                ref={(ref) => {
+                    this.drawer = ref;
+                }}
+                content={<Filter source={immStore.FilterConfig} options={immStore.EnumPlanState} onUpdateData={(e) => {
+                    immStore.OnUpdateConfig(e)
+                }} onApply={(e) => this.onQuery(e)} onCancel={() => {
+                    this.closeDrawer()
+                }}/>}
                 openDrawerOffset={0.4}
                 panOpenMask={0.80}
                 onClose={this.closeDrawer.bind(this)}
@@ -120,7 +153,9 @@ export default class imm extends Component{
                                 <Text>今天需要执行的免疫</Text>
                                 </Body>
                                 <Right>
-                                    <TouchableOpacity style={style.right} onPress={()=>{this.openDrawer()}}>
+                                    <TouchableOpacity style={style.right} onPress={() => {
+                                        this.openDrawer()
+                                    }}>
                                         <Text style={style.txt}>筛选</Text>
                                         <Icon name="ios-funnel"></Icon>
                                     </TouchableOpacity>
@@ -145,12 +180,12 @@ export default class imm extends Component{
 }
 
 const style = StyleSheet.create({
-    right:{
-        flexDirection:'row'
+    right: {
+        flexDirection: 'row'
     },
-    txt:{
-        color:'#ff9800',
-        fontSize:14,
-        marginRight:2
+    txt: {
+        color: '#ff9800',
+        fontSize: 14,
+        marginRight: 2
     }
 });

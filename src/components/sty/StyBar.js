@@ -24,8 +24,8 @@ export default class StyBar extends Component {
         },{
             name: "StySetting",
             text: "栋舍监视器",
-            icon: "ios-create",
-            iconColor: "#15856e",
+            icon: "ios-camera",
+            iconColor: "#dd3215",
             action: () => {
                 this.props.onSetting();
             }

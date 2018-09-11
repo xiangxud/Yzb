@@ -30,10 +30,10 @@ const CameraList = observer(function CameraList({list, defaultId, onChanged, onM
                         <Label style={styles.opTxt}>删除</Label>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.action} onPress={() => onModify(item)}>
+                    {/*<TouchableOpacity style={styles.action} onPress={() => onModify(item)}>
                         <Icon name="ios-create-outline"/>
                         <Label style={styles.opTxt}>修改</Label>
-                    </TouchableOpacity>
+                    </TouchableOpacity>*/}
                 </View>
             </View>
         </View>

@@ -325,8 +325,11 @@ class StyStore {
     @observable
     monitor = new MonitorStore();
 
+    @observable refreshState = RefreshState.Idle;
+
     @action
-    onIni(id) {
+    onInit(id) {
+        this.refreshState = RefreshState.HeaderRefreshing;
         this.onLoadFromApi(id).then(data => {
             runInAction(() => {
                 //1、基础数据
@@ -337,15 +340,18 @@ class StyStore {
                 this.day = data.Day;
                 this.unit = data.Unit;
                 this.defaultCamera = data.DefaultCamera;
+
                 //2、环控数据
                 if (data.sensors) {
                     this.environmental.setRecent(data.sensors);//环控数据
                     // this.waring.onParse(data.Env, this);
                 }
+
                 //3、预警信息
                 if (data.Imm) {
                     this.immCollection.fillList(data.Imm);
                 }
+
                 //4、摄像头数据
                 this.monitor.cameras = data.Cameras;
                 if (this.monitor.cameras.length) {
@@ -353,9 +359,14 @@ class StyStore {
                 } else {
                     this.monitor.current = null;
                 }
+
+                this.refreshState = RefreshState.Idle;
             });
-        }, err => {
-            tools.showToast("无法获取该栋舍信息，请稍后再试");
+        }, (err) => {
+            runInAction(()=>{
+                this.refreshState = RefreshState.Failure;
+            })
+            tools.showToast("获取栋舍出现错误，请稍后再试");
         });
     }
 

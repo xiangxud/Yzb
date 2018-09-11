@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-    View,
+    Alert,
     StyleSheet,
     DeviceEventEmitter
 } from 'react-native';
@@ -19,12 +19,12 @@ export default class setting extends Component {
         headerTitle: "栋舍监视器",
         headerRight: <Button transparent
                              light
-                             onPress={()=>navigation.navigate('CameraAdd', {
+                             onPress={() => navigation.navigate('CameraAdd', {
                                  styId: navigation.state.params.styId,
                                  styName: navigation.state.params.styName
                              })}>
-                            <Text>添加</Text>
-                    </Button>
+            <Text>添加</Text>
+        </Button>
     });
 
     componentDidMount() {
@@ -45,6 +45,25 @@ export default class setting extends Component {
         this.subscription && this.subscription.remove();
     }
 
+    remove = (id) => {
+        let {cameraStore} = this.props;
+        Alert.alert('确认要删除吗？', '删除后将不可恢复，请确认。',
+            [
+                {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {
+                    text: '确认删除', onPress: () => {
+                    cameraStore.onRemove(id, (ok) => {
+                        //从styStore中移除
+                        DeviceEventEmitter.emit('noticeChangedCamera', {key: 'eventRemoveCamera'});
+                    }, (err) => {
+                        alert(JSON.stringify(err))
+                    });
+                }
+                },
+            ],
+            {cancelable: false})
+    }
+
     render() {
         const {cameraStore, styStore, navigation} = this.props;
         return (
@@ -57,7 +76,7 @@ export default class setting extends Component {
                                     styName: styStore.title,
                                     camera: item
                                 })}
-                                onRemove={(id) => cameraStore.onRemove(id)}/>
+                                onRemove={this.remove}/>
                 </Content>
             </Container>
         );
