@@ -7,60 +7,66 @@ import {
 import {Container, Content, Form, ListItem, Text, Icon} from 'native-base';
 import {observer, inject} from 'mobx-react/native';
 import FootBar from '../../components/sty/FootBar'
-import {camera} from '../../store/cameraSettingStore'
 import {ValidateInput, ReadOnlyInput} from '../../components/common/native-base-validate'
-import noticeArgs from "../../common/noticeArgs";
 
+@inject('cameraEditStore')
 @observer
 export default class CameraEdit extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     static navigationOptions = ({navigation}) => ({
-        headerTitle: "添加摄像头",
+        headerTitle: "修改摄像头",
         headerRight: <View/>
     });
 
     componentDidMount() {
-    }
+        const {navigation, cameraEditStore} = this.props;
 
-    camera = null;
-
-    constructor(props) {
-        super(props);
-        const {navigation} = this.props;
-        this.styName = navigation.state.params.styName;
-        this.camera = navigation.state.params.camera;
+        //alert(navigation.state.params.styName + '//' + JSON.stringify(navigation.state.params.camera))
+        let camera = navigation.state.params.camera;
+        cameraEditStore.onUpdate(camera);
     }
 
     onCommit() {
-        const {navigation} = this.props;
-        let mess = this.camera.onValidate();
+        const {navigation, cameraEditStore} = this.props;
+        let mess = cameraEditStore.onValidate();
         if (mess.length > 0) {
             tools.showToast("输入项存在错误");
             return;
         }
-        this.camera.onCommitUpdate(() => {
-            //DeviceEventEmitter.emit('eventEditCamera',this.camera);
-            DeviceEventEmitter.emit('noticeChangedCamera', new noticeArgs(this, "eventEditCamera", this.camera));
+        cameraEditStore.onCommitUpdate((data) => {
+            DeviceEventEmitter.emit('noticeChangedCamera', {key: "eventEditCamera", source: store});
             tools.showToast("编辑成功");
             navigation.goBack();
+        }, (err) => {
+            alert(JSON.stringify(err))
         });
     }
 
     onUpdateData(data) {
-        this.camera.onUpdate(data);
+        const {cameraEditStore} = this.props;
+        cameraEditStore.onUpdate(data);
     }
 
     buttons = [{
-        title: '取消', default: false, onPress: () => {
+        title: '取消',
+        default: false,
+        onPress: () => {
             const {navigation} = this.props;
             navigation.goBack();
         }
     }, {
-        title: '提交', default: true, onPress: () => {
+        title: '提交',
+        default: true,
+        onPress: () => {
             this.onCommit()
         }
     }];
 
     render() {
+        let {cameraEditStore, navigation} = this.props;
         return (
             <Container style={{backgroundColor: '#ffffff'}}>
                 <Content>
@@ -68,14 +74,25 @@ export default class CameraEdit extends Component {
                         <ListItem itemDivider>
                             <Icon style={style.titleIco} name="ios-book" active></Icon><Text>摄像头信息</Text>
                         </ListItem>
-                        <ReadOnlyInput label="养殖场" value={this.styName}/>
-                        <ValidateInput label="摄像头名称" data={this.camera.data} name="Name" placeholder="请录入摄像头名称"
-                                       IsValidate={this.camera.IsValidate} onChange={(e) => {
-                            this.onUpdateData({Name: e})
-                        }}/>
-                        <ValidateInput label="视频地址" data={this.camera.data} name="Url" placeholder="请录入视频地址"
-                                       onChange={(e) => { this.onUpdateData({Url: e}) }}/>
+                        <ReadOnlyInput label="栋舍"
+                                       value={navigation.state.params.styName}/>
+                        <ValidateInput label="摄像头名称"
+                                       data={cameraEditStore.data}
+                                       name="Name"
+                                       placeholder="请录入摄像头名称"
+                                       IsValidate={cameraEditStore.IsValidate}
+                                       onChange={(e) => {
+                                           this.onUpdateData({Name: e})
+                                       }}/>
+                        <ValidateInput label="视频地址"
+                                       data={cameraEditStore.data}
+                                       name="Url"
+                                       placeholder="请录入视频地址"
+                                       onChange={(e) => {
+                                           this.onUpdateData({Url: e})
+                                       }}/>
                     </Form>
+                    <Text>{JSON.stringify(cameraEditStore.data)}</Text>
                 </Content>
                 <FootBar buttons={this.buttons}></FootBar>
             </Container>

@@ -30,6 +30,12 @@ export default class Sty extends Component {
                     farm: navigation.state.params.farm
                 })
             }}
+            onSetting={()=>{
+                navigation.navigate("StySetting", {
+                    styId: navigation.state.params.id,
+                    styName: navigation.state.params.title
+                })
+            }}
             onOutPetPress={() => {
                 navigation.navigate("OutPet", {
                     code: navigation.state.params.id,
@@ -37,10 +43,9 @@ export default class Sty extends Component {
                     farm: navigation.state.params.farm
                 })
             }}
-
             onEditPress={() => {
                 navigation.navigate("EditSty", {
-                    code: navigation.state.params.id,
+                    id: navigation.state.params.id,
                     title: navigation.state.params.title,
                     farm: navigation.state.params.farm
                 })

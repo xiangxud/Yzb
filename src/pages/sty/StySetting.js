@@ -1,61 +1,63 @@
 import React, {Component} from 'react';
-import
-{
+import {
     View,
-    Text,
-    TextInput,
-    WebView,
-    TouchableOpacity,
     StyleSheet,
-    ScrollView,
-    Alert,
     DeviceEventEmitter
 } from 'react-native';
-import {Container, Content, Root, List, ListItem, Right, Left, Button, Icon, Body, Toast} from 'native-base';
+import {Container, Content, Button, Text} from 'native-base';
 import {observer, inject} from 'mobx-react/native';
-import cameraSettingStore from '../../store/cameraSettingStore';
-import FootBar from '../../components/sty/FootBar'
-import CList from '../../components/sty/CameraList';
-import {observable} from "mobx";
-import cameraEdit from "./CameraEdit";
-import noticeArgs from "../../common/noticeArgs";
+import CameraList from '../../components/sty/CameraList';
 
-@inject('styStore')
+@inject('styStore', 'cameraStore')
 @observer
 export default class setting extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     static navigationOptions = ({navigation}) => ({
-        headerTitle: "设置",
-        headerRight: <View/>
+        headerTitle: "栋舍监视器",
+        headerRight: <Button transparent
+                             light
+                             onPress={()=>navigation.navigate('CameraAdd', {
+                                 styId: navigation.state.params.styId,
+                                 styName: navigation.state.params.styName
+                             })}>
+                            <Text>添加</Text>
+                    </Button>
     });
 
     componentDidMount() {
-        // this.eventHandler.addListener("noticeChangedCamera",(o)=>{
-        //     if(o.name=="eventAddCamera"){
-        //         this.store.onPush(o);//摄像头增加
-        //     }else if(o.name == "eventEditCamera"){
-        //         this.store.onUpdate(o);//摄像头编辑
-        //     }
-        // });
+        let {cameraStore, styStore} = this.props;
+
+        cameraStore.onInit(styStore.monitor.cameras, styStore.defaultCamera, styStore.code);
+
+        this.subscription = DeviceEventEmitter.addListener("noticeChangedCamera", (events) => {
+            if (events.key === "eventAddCamera") {
+                cameraStore.onPush(events.source); //摄像头增加
+            } else if (events.key === "eventEditCamera") {
+                cameraStore.onUpdate(events.source); //摄像头编辑
+            }
+        });
     }
 
     componentWillUnmount() {
-        //this.eventHandler.remove();
+        this.subscription && this.subscription.remove();
     }
-
-    constructor(props) {
-        super(props);
-        let {styStore} = this.props;
-        this.store.onIni(styStore.monitor.cameras, styStore.defaultCamera, styStore.code);
-    }
-
-    @observable
-    store = new cameraSettingStore();
 
     render() {
+        const {cameraStore, styStore, navigation} = this.props;
         return (
             <Container>
-                <Content>
-
+                <Content gray>
+                    <CameraList list={cameraStore.list}
+                                defaultId={cameraStore.defaultId}
+                                onChanged={(id) => cameraStore.onChangDefault(id, styStore.code)}
+                                onModify={(item) => navigation.navigate('CameraEdit', {
+                                    styName: styStore.title,
+                                    camera: item
+                                })}
+                                onRemove={(id) => cameraStore.onRemove(id)}/>
                 </Content>
             </Container>
         );

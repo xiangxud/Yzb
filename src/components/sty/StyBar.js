@@ -3,48 +3,56 @@ import {
     View,
     Alert
 } from 'react-native';
-import { Icon,Button,ActionSheet} from 'native-base';
+import {Icon, Button, ActionSheet} from 'native-base';
 import {observer} from 'mobx-react/native';
 
 @observer
-export default class StyBar extends Component{
-    constructor(props){
+export default class StyBar extends Component {
+    constructor(props) {
         super(props);
     };
 
-    onMenu(){
+    onMenu() {
         let formList = [{
-            name:"EditSty",
+            name: "EditSty",
             text: "修改栋舍",
             icon: "ios-create",
             iconColor: "#15856e",
-            action:()=>{
+            action: () => {
                 this.props.onEditPress();
             }
         },{
-            name:"OutPet",
-            text:"入栏",
-            icon:"ios-log-in",
-            iconColor:"#cc1e4c",
-            action:()=>{
+            name: "StySetting",
+            text: "栋舍监视器",
+            icon: "ios-create",
+            iconColor: "#15856e",
+            action: () => {
+                this.props.onSetting();
+            }
+        }, {
+            name: "OutPet",
+            text: "入栏",
+            icon: "ios-log-in",
+            iconColor: "#cc1e4c",
+            action: () => {
                 this.props.onInPetPress();
             }
-        },{
-            name:"OutPet",
-            text:"出栏",
-            icon:"ios-log-out",
-            iconColor:"#cc1e4c",
-            action:()=>{
+        }, {
+            name: "OutPet",
+            text: "出栏",
+            icon: "ios-log-out",
+            iconColor: "#cc1e4c",
+            action: () => {
                 this.props.onOutPetPress();
             }
         }];
         ActionSheet.show({
-            title:'栋舍操作',
+            title: '栋舍操作',
             options: formList,
-            destructiveButtonIndex:0,
-            cancelButtonIndex:-1
+            destructiveButtonIndex: 0,
+            cancelButtonIndex: -1
         }, (index) => {
-            if( index < 0 || index >= formList.length ){
+            if (index < 0 || index >= formList.length) {
                 return;
             }
             let action = formList[index].action.bind(this);
@@ -52,10 +60,10 @@ export default class StyBar extends Component{
         });
     }
 
-    render(){
+    render() {
         return (
             <Button transparent light onPress={this.onMenu.bind(this)}>
-                <Icon name="md-more" style={{color:'white'}} />
-            </Button >)
+                <Icon name="md-more" style={{color: 'white'}}/>
+            </Button>)
     }
 };

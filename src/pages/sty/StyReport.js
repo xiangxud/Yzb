@@ -59,7 +59,7 @@ export default class StyReport extends Component {
                 <ActionTitleBar
                     icon={'ios-stats'}
                     iconColor={'red'}
-                    title={'环境监测记录'}
+                    title={'传感数据趋势'}
                     actions={this.reports}
                     actionLabel={styReportStore.reportData[styReportStore.currReport].label}
                     showMore={false}/>
