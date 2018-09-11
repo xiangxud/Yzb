@@ -4,7 +4,7 @@ import {
     FlatList,
     StyleSheet,
 } from 'react-native';
-import {Container, Content, SwipeRow, Button, Text, Spinner, Icon } from 'native-base';
+import {Container, Content, SwipeRow, Button, Text, Spinner } from 'native-base';
 import {observer} from 'mobx-react/native';
 import {TitleBar, Separator} from '../../components';
 

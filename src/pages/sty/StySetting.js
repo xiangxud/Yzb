@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import
 {
     View,
-    Text ,
+    Text,
     TextInput,
     WebView,
     TouchableOpacity,
@@ -11,24 +11,24 @@ import
     Alert,
     DeviceEventEmitter
 } from 'react-native';
-import { Container,Content,Root,List,ListItem,Right,Left,Button,Icon,Body,Toast } from 'native-base';
-import {observer,inject} from 'mobx-react/native';
+import {Container, Content, Root, List, ListItem, Right, Left, Button, Icon, Body, Toast} from 'native-base';
+import {observer, inject} from 'mobx-react/native';
 import cameraSettingStore from '../../store/cameraSettingStore';
 import FootBar from '../../components/sty/FootBar'
 import CList from '../../components/sty/CameraList';
 import {observable} from "mobx";
-import cameraEdit from "./camera/edit";
+import cameraEdit from "./CameraEdit";
 import noticeArgs from "../../common/noticeArgs";
 
 @inject('styStore')
 @observer
-export default class setting extends Component{
-    static navigationOptions = ({navigation})=>({
+export default class setting extends Component {
+    static navigationOptions = ({navigation}) => ({
         headerTitle: "设置",
-        headerRight: <View />
+        headerRight: <View/>
     });
 
-    componentDidMount(){
+    componentDidMount() {
         // this.eventHandler.addListener("noticeChangedCamera",(o)=>{
         //     if(o.name=="eventAddCamera"){
         //         this.store.onPush(o);//摄像头增加
@@ -37,39 +37,42 @@ export default class setting extends Component{
         //     }
         // });
     }
-    componentWillUnmount(){
+
+    componentWillUnmount() {
         //this.eventHandler.remove();
     }
-    constructor(props){
+
+    constructor(props) {
         super(props);
         let {styStore} = this.props;
-        this.store.onIni(styStore.monitor.cameras,styStore.defaultCamera,styStore.code);
+        this.store.onIni(styStore.monitor.cameras, styStore.defaultCamera, styStore.code);
     }
+
     @observable
-    store=new cameraSettingStore();
+    store = new cameraSettingStore();
 
-    render(){
+    render() {
         return (
-                <Container>
-                    <Content>
+            <Container>
+                <Content>
 
-                    </Content>
-                </Container>
+                </Content>
+            </Container>
         );
     }
 }
 
 const style = StyleSheet.create({
-    label:{
-        textAlignVertical:'center',
-        marginLeft:5,
-        fontSize:18
+    label: {
+        textAlignVertical: 'center',
+        marginLeft: 5,
+        fontSize: 18
     },
-    headIco:{
-        fontSize:18,
-        color:'#27364e'
+    headIco: {
+        fontSize: 18,
+        color: '#27364e'
     },
-    headAction:{
-        flexDirection:'row'
+    headAction: {
+        flexDirection: 'row'
     }
 });

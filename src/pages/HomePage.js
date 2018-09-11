@@ -73,7 +73,7 @@ export default class HomePage extends Component {
                 title: item.name
             });
         });
-        this.props.navigation.navigate("Sty", {code: sty.id, title: sty.name, list: list, farm: homeStore.farm});
+        this.props.navigation.navigate("Sty", {id: sty.id, title: sty.name, list: list, farm: homeStore.farm});
     }
 
     onAddSty() {

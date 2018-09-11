@@ -7,7 +7,7 @@ import {ValidateInput,ValidateInputInt,ValidateInputDate,ValidateChooseItem,Read
 
 @inject('editStyStore')
 @observer
-export default class Edit extends Component{
+export default class StyEdit extends Component{
     static navigationOptions = ({navigation})=>({
         headerTitle: '编辑栋舍',
     });

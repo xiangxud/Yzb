@@ -11,7 +11,6 @@ import {
     StyleSheet,
     Text,
     Alert,
-    Platform,
     YellowBox
 } from 'react-native';
 import {Provider} from 'mobx-react/native';
@@ -21,7 +20,7 @@ import DeviceInfo from 'react-native-device-info';
 import NetInfoDecorator from './src/common/NetInfoDecorator';
 import YzbApp from './src';
 import {Root} from 'native-base';
-import *as wechat from 'react-native-wechat'
+import * as wechat from 'react-native-wechat'
 import {NativeModules} from 'react-native';
 
 if (!__DEV__) {

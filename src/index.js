@@ -4,10 +4,10 @@ import {
     StatusBar,
     BackHandler
 } from 'react-native'
-import { observable, action } from "mobx";
+//import { observable, action } from "mobx";
 import { observer } from "mobx-react/native";
 //import { addNavigationHelpers } from 'react-navigation';
-import RootNavigator from './common/RootNavigator';
+import RootNavigator from './pages/RootNavigator';
 
 let routes = [];
 let lastBackPressed = null;

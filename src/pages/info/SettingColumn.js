@@ -5,7 +5,7 @@ import {observer,inject} from 'mobx-react/native';
 import FootBar from '../../components/sty/FootBar'
 import TransferStyInput from '../../components/sty/TransferStyInput'
 import {ValidateInput,ValidateInputInt,ValidateInputDate,ValidateChooseItem,ReadOnlyInput} from '../../components/common/native-base-validate'
-import CustomTab from './customTab'
+import CustomTab from './CustomTab'
 import tools from "../../common/tools";
 
 @inject('userStore')

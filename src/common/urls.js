@@ -13,7 +13,6 @@ const webPath = 'http://imm.ringpu.com/breed/'; // 生产服务器（外网）
 // const bohaiApi = 'http://120.24.89.243:8092/api/'
 
 
-
 const urls = {
     apiPath,
     webPath,
@@ -30,8 +29,8 @@ const urls = {
     apis: {
         // 通用信息 ---------------------------------------------------------
         APP_VERSION: apiPath + 'public/getApkVersion',
-        JOIN_FARM_GETBYCODE:apiPath + 'farm/GetByCode',
-        JOIN_FARM:apiPath + 'farm/Join',
+        JOIN_FARM_GETBYCODE: apiPath + 'farm/GetByCode',
+        JOIN_FARM: apiPath + 'farm/Join',
 
         //获取区县
         REGION_COUNTY_LIST: apiPath + 'common/getCountyList',
@@ -86,7 +85,7 @@ const urls = {
         //获取收藏的文章列表
         //CMS_ARTICLE_COLLECTION: apiPath + 'info/getCollectionInfos',
         //我收藏的文章
-        CMS_MY_COLLECTED_ARTICLES: apiPath +'info/getMyCollectedArticles',
+        CMS_MY_COLLECTED_ARTICLES: apiPath + 'info/getMyCollectedArticles',
         //获取文章汇总
         CMS_ARTICLE_SUMMARY: apiPath + 'info/getArticleSummary',
         //文章回复
@@ -104,7 +103,7 @@ const urls = {
         USER_GET_PHONE_CODE: apiPath + 'auth/getValidateCode',
         USER_GET_REBIND_CODE: apiPath + 'uc/getVcode',
         USER_REBIND: apiPath + 'uc/bind',
-        UPDATE_USERLABLES:apiPath + 'uc/PostUserLables',
+        UPDATE_USERLABLES: apiPath + 'uc/PostUserLables',
         //注册
         USER_REGISTER: apiPath + "auth/register",
         //获取用户信息
@@ -143,39 +142,42 @@ const urls = {
         //栋舍信息
         IMM_STY_BASIC: apiPath + 'sty/getStyHome',
         //字典列表
-        IMM_DICTIONARY:apiPath + 'dictionary/get',
+        IMM_DICTIONARY: apiPath + 'dictionary/get',
         //栋舍创建
-        IMM_STY_ADD:apiPath + 'sty/post',
+        IMM_STY_ADD: apiPath + 'sty/post',
         //获取栋舍详情
-        IMM_GET_STY_BASE:apiPath + 'sty/get',
+        IMM_GET_STY_BASE: apiPath + 'sty/get',
         //栋舍提交
-        IMM_POST_STY:apiPath + 'sty/modify',
+        IMM_POST_STY: apiPath + 'sty/modify',
 
-        IMM_STY_DAYREPORT:apiPath + 'sty/getDayRecords',
+        IMM_GET_STY_DAILY_REPORT: apiPath + 'sty/getDailyReport',
 
         //获取免疫提醒
-        IMM_GET_DETAIL:apiPath + 'immPlan/postQuery',
+        IMM_GET_DETAIL: apiPath + 'immPlan/postQuery',
         //获取出栏配置
-        IMM_GET_OUT_PET_CONFIG:apiPath + 'sty/getOutPetConfig',
+        IMM_GET_OUT_PET_CONFIG: apiPath + 'sty/getOutPetConfig',
+
+        //当前
+        IMM_GET_STY_SENSOR_RECENT: apiPath + 'sty/getStyRecentSensorData',
         //获取栋舍的历史环控数据
-        IMM_GET_GetSensorHistory:apiPath + 'sty/getStySensorDataPager',
+        IMM_GET_STY_SENSOR_HISTORY: apiPath + 'sty/getStySensorHistoryPager',
         //出栏
-        IMM_POST_REMOVE_PET:apiPath + 'sty/postRoutine',
+        IMM_POST_REMOVE_PET: apiPath + 'sty/postRoutine',
         //出栏
-        IMM_POST_ADD_PET:apiPath + 'sty/postAddPet',
+        IMM_POST_ADD_PET: apiPath + 'sty/postAddPet',
         //执行
-        IMM_POST_IMPLEMENT:apiPath + 'immPlan/postImplement',
+        IMM_POST_IMPLEMENT: apiPath + 'immPlan/postImplement',
         //增加摄像头
-        IMM_POST_CAMERA:apiPath + 'sty/postCamera',
+        IMM_POST_CAMERA: apiPath + 'sty/postCamera',
         //修改摄像头
-        IMM_UPDATE_CAMERA:apiPath + 'sty/updateCamera',
+        IMM_UPDATE_CAMERA: apiPath + 'sty/updateCamera',
         //删除摄像头
-        IMM_REMOVE_CAMERA:apiPath + 'sty/removeCamera',
+        IMM_REMOVE_CAMERA: apiPath + 'sty/removeCamera',
         //设置默认摄像头
-        IMM_DEFAULT_CAMERA:apiPath + 'sty/changeCamera',
+        IMM_DEFAULT_CAMERA: apiPath + 'sty/changeCamera',
     },
     // 获取图片完整路径
-    getImage(filePath, width, height){
+    getImage(filePath, width, height) {
         let url = this.apis.IMAGE + '?filePath=' + filePath;
         if (width)
             url += '&w=' + width;

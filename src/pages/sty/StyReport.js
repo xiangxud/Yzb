@@ -1,24 +1,21 @@
 import React, {Component} from 'react';
 import {
     View,
-    TextInput,
-    WebView,
     FlatList,
-    TouchableOpacity,
-    ScrollView,
     StyleSheet
 } from 'react-native';
 import {observer, inject} from 'mobx-react/native';
-import {Container, Content, Button, Spinner, Text, Icon} from 'native-base';
+import {Button, Spinner, Text, Icon} from 'native-base';
 import {TitleBar, ActionTitleBar, EChart, SeparatorArea} from '../../components';
+import RefreshListView from 'react-native-refresh-list-view'
 
 @inject('styReportStore')
 @observer
-export default class report extends Component {
+export default class StyReport extends Component {
     static navigationOptions = ({navigation}) => ({
-        headerTitle: '报表分析',
+        headerTitle: '栋舍报表',
         headerRight: <Button transparent light
-                             onPress={navigation.state.params ? navigation.state.params.inputPress : null}><Text>筛选</Text></Button>
+                             onPress={navigation.state.params ? navigation.state.params.inputPress : null}><Text></Text></Button>
     })
 
     constructor(props) {
@@ -27,7 +24,7 @@ export default class report extends Component {
 
     componentDidMount() {
         const {styReportStore, navigation} = this.props;
-        styReportStore.onIni(navigation.state.params.code);
+        styReportStore.onInit(navigation.state.params.id);
         this.props.navigation.setParams({
             inputPress: this.inputPress
         });
@@ -36,6 +33,7 @@ export default class report extends Component {
     inputPress = () => {
         alert('填写报告');
     }
+
     reports = [{
         name: 'tem',
         text: '温度',
@@ -55,7 +53,6 @@ export default class report extends Component {
     }];
     renderListHeader = () => {
         const {styReportStore} = this.props;
-
 
         return (
             <View>
@@ -77,6 +74,7 @@ export default class report extends Component {
             </View>
         )
     }
+
     renderRow = (item) => {
         return (
             <View style={styles.row}>
@@ -91,45 +89,28 @@ export default class report extends Component {
             </View>
         );
     }
-    renderSep = () => {
-        return <View style={{borderBottomColor: 'gray', borderBottomWidth: StyleSheet.hairlineWidth}}/>;
-    }
-    renderListFooter = () => {
-        const {styReportStore, navigation} = this.props;
-        if (styReportStore.end) {
-            return <View></View>
-        }
-        return <TouchableOpacity style={styles.footer} onPress={() => {
-            styReportStore.onLoad(navigation.state.params.code);
-        }}>
-            <Text>点击查看更多</Text>
-        </TouchableOpacity>
-    }
 
     render() {
         const {styReportStore, navigation} = this.props;
         return (
-            <View style={{flex: 1}}>
-                <FlatList
-                    style={styles.his}
-                    data={styReportStore.data.Records}
+            <View style={styles.container}>
+                <RefreshListView
+                    data={styReportStore.list}
+                    keyExtractor={(item, index) => index.toString()}
                     renderItem={({item}) => this.renderRow(item)}
-                    ListHeaderComponent={this.renderListHeader()}
-                    ListFooterComponent={
-                        this.renderListFooter()
-                    }
-                    ItemSeparatorComponent={this.renderSep}
-                    keyExtractor={(item, index) => index}
-                    scrollEventThrottle={1}
-                    refreshing={styReportStore.loading}
-                    onRefresh={() => {
-                        styReportStore.onIni(navigation.state.params.code);
-                    }}
-                    onEndReachedThreshold={0}
-                    onEndReached={() => {
-                        styReportStore.onLoad(navigation.state.params.code);
-                    }}
-                    ListEmptyComponent={() => <View style={styles.emptyTips}><Text style={{color: 'gray'}}>暂无日报记录</Text></View>}
+
+                    onHeaderRefresh={styReportStore.onHeaderRefresh}
+                    onFooterRefresh={styReportStore.onFooterRefresh}
+
+                    ItemSeparatorComponent={() => <SeparatorArea style={{backgroundColor: '#f7f7f7'}}/>}
+                    ListHeaderComponent={this.renderListHeader}
+
+                    refreshState={styReportStore.refreshState}
+                    // 可选
+                    footerRefreshingText='玩命加载中 >.<'
+                    footerFailureText='我擦嘞，居然失败了 =.=!'
+                    footerNoMoreDataText='-我是有底线的-'
+                    footerEmptyDataText='-好像什么东西都没有-'
                 />
             </View>
         );
@@ -142,7 +123,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'stretch'
     },
-    his: {
+    container: {
         flex: 1,
     },
     row: {

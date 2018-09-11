@@ -13,7 +13,6 @@ import {Icon, Button, Text} from 'native-base';
 import {observer, inject} from 'mobx-react/native';
 import {action, observable} from 'mobx';
 //import *as wechat from 'react-native-wechat'
-import tools from "../../common/tools";
 
 @inject('infoStore')
 @observer

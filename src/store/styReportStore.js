@@ -1,30 +1,28 @@
-import {AsyncStorage} from 'react-native'
 import {action, computed, extendObservable, observable, reaction, runInAction, useStrict} from 'mobx'
-import tools from "../common/tools";
+import {RefreshState} from 'react-native-refresh-list-view';
+
 useStrict(true);
 
 class styReportStore {
-    @observable
-    data={
-    }
-    queryObj={
-        pageIndex:0,
-        pageSize:25,
-        id:''
-    }
+    @observable list = {};
 
-    reportData={
-        tem:{
-            label:'温度',
-            data:{
-                title: {
-                },
+    @observable page = 0;
+    @observable size = 10;
+    @observable refreshState: RefreshState.Idle;
+
+    @observable query_id = '';
+
+    reportData = {
+        tem: {
+            label: '温度',
+            data: {
+                title: {},
                 tooltip: {
                     trigger: 'axis'
                 },
                 legend: {
-                    data:['室内','中区','室外'],
-                    height:300
+                    data: ['室内', '中区', '室外'],
+                    height: 300
                 },
                 grid: {
                     left: '1%',
@@ -33,50 +31,48 @@ class styReportStore {
                     containLabel: true
                 },
                 toolbox: {
-                    feature: {
-                    }
+                    feature: {}
                 },
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data: ['23:00','00:00','01:00','02:00','03:00','04:00','07:00']
+                    data: ['23:00', '00:00', '01:00', '02:00', '03:00', '04:00', '07:00']
                 },
                 yAxis: {
                     type: 'value'
                 },
                 series: [
                     {
-                        name:'室内',
-                        type:'line',
+                        name: '室内',
+                        type: 'line',
                         stack: '室内',
-                        data:[20.5, 21.2,22.5, 20.3, 20.1, 22.6, 25.0]
+                        data: [20.5, 21.2, 22.5, 20.3, 20.1, 22.6, 25.0]
                     },
                     {
-                        name:'中区',
-                        type:'line',
+                        name: '中区',
+                        type: 'line',
                         stack: '中区',
-                        data:[22.5, 22.2,25.5, 21.3, 19.1, 18.6, 19.0]
+                        data: [22.5, 22.2, 25.5, 21.3, 19.1, 18.6, 19.0]
                     },
                     {
-                        name:'室外',
-                        type:'line',
+                        name: '室外',
+                        type: 'line',
                         stack: '室外',
-                        data:[10, 11.2,12.5, 8.3, 10.1, 15.6, 7.0]
+                        data: [10, 11.2, 12.5, 8.3, 10.1, 15.6, 7.0]
                     }
                 ]
             }
         },
-        hum:{
-            label:'湿度',
-            data:{
-                title: {
-                },
+        hum: {
+            label: '湿度',
+            data: {
+                title: {},
                 tooltip: {
                     trigger: 'axis'
                 },
                 legend: {
-                    data:['室内','中区','室外'],
-                    height:300
+                    data: ['室内', '中区', '室外'],
+                    height: 300
                 },
                 grid: {
                     left: '1%',
@@ -85,101 +81,87 @@ class styReportStore {
                     containLabel: true
                 },
                 toolbox: {
-                    feature: {
-                    }
+                    feature: {}
                 },
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data: ['23:00','00:00','01:00','02:00','03:00','04:00','07:00']
+                    data: ['23:00', '00:00', '01:00', '02:00', '03:00', '04:00', '07:00']
                 },
                 yAxis: {
                     type: 'value'
                 },
                 series: [
                     {
-                        name:'室内',
-                        type:'line',
+                        name: '室内',
+                        type: 'line',
                         stack: '室内',
-                        data:[20.5, 21.2,22.5, 20.3, 20.1, 22.6, 25.0]
+                        data: [20.5, 21.2, 22.5, 20.3, 20.1, 22.6, 25.0]
                     },
                     {
-                        name:'中区',
-                        type:'line',
+                        name: '中区',
+                        type: 'line',
                         stack: '中区',
-                        data:[22.5, 22.2,25.5, 21.3, 19.1, 18.6, 19.0]
+                        data: [22.5, 22.2, 25.5, 21.3, 19.1, 18.6, 19.0]
                     },
                     {
-                        name:'室外',
-                        type:'line',
+                        name: '室外',
+                        type: 'line',
                         stack: '室外',
-                        data:[10, 11.2,12.5, 8.3, 10.1, 15.6, 7.0]
+                        data: [10, 11.2, 12.5, 8.3, 10.1, 15.6, 7.0]
                     }
                 ]
             }
         }
     }
-    @observable
-    currReport='tem'
-
-    @action onChangedReport=(r)=>{
-        this.currReport=r;
-    }
 
     @observable
-    loading=false;
+    currReport = 'tem'
 
-    @observable
-     end=false;
 
-    @observable
-    loadFinished=false;//加载完成
+    @action
+    onInit(id) {
+        this.page = 1;
+        this.query_id = id;
+        this.loadReport(true);
+    }
 
-    requestApi=()=>{
-        return request.getJson(urls.apis.IMM_STY_DAYREPORT,this.queryObj)
+    @action onChangedReport = (r) => {
+        this.currReport = r;
     }
-    @action onIni=(id)=>{
-        this.queryObj.id=id;
-        this.queryObj.pageIndex=0;
-        this.end=false;
-        this.getData().then(this.sucess.bind(this),this.failed.bind(this));
+
+    @action
+    onHeaderRefresh = () => {
+        this.refreshState = RefreshState.HeaderRefreshing;
+        this.loadReport(true);
     }
-    @action onLoad=id=>{
-        if( this.loading || this.end) {
-            return;
-        }
-        this.queryObj.pageIndex++;
-        this.getData().then(this.sucess.bind(this),this.failed.bind(this));
+
+    @action
+    onFooterRefresh = () => {
+        this.refreshState = RefreshState.FooterRefreshing;
+        this.loadReport(false);
     }
-    @action sucess=r=>{
-        this.loading=false;//加载完成
-        this.loadFinished=true;//加载完成
-        this.data={};
-        this.onShallCopy(this.data,r);
-        if(this.data.Records.length < this.queryObj.pageSize){
-            this.end=true;
-        }
-    }
-    @action failed=e=>{
-        this.loading=false;
-        this.loadFinished=true;//加载完成
-        tools.showToast("请求数据异常");
-    }
-    @action getData=()=>{
-        this.queryObj.pageIndex++;
-        this.loading=true;
-        return this.requestApi();
-    }
-    @action onShallCopy(t,s){
-        for(let key in s){
-            if( t[key] == undefined ){
-                let o={};
-                o[key] = s[key];
-                extendObservable(t,o);
-            }else{
-                t[key]=s[key];
-            }
-        }
+
+    @action
+    loadReport = (isReload: boolean) => {
+        return request.getJson(urls.apis.IMM_GET_STY_DAILY_REPORT,
+            {page: this.page, size: this.size, id: this.query_id}).then((data) => {
+
+            let list = isReload ? data.Rows : [...this.list, ...data.Rows];
+
+            runInAction(() => {
+                this.page++;
+                this.list = list;
+                this.refreshState = data.Rows.length === 0 ? (isReload ? RefreshState.EmptyData : RefreshState.NoMoreData) : RefreshState.Idle;
+            });
+
+        }).catch((err) => {
+            runInAction(() => {
+                this.refreshState = RefreshState.Failure;
+                tools.showToast('请求数据失败，原因：' + JSON.stringify(err));
+            });
+        });
     }
 }
+
 export default new styReportStore();

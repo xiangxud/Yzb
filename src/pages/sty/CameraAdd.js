@@ -8,13 +8,13 @@ import
 } from 'react-native';
 import { Container,Content,Form,ListItem,Text,Icon,Toast } from 'native-base';
 import {observer,inject} from 'mobx-react/native';
-import FootBar from '../../../components/sty/FootBar'
-import {camera} from '../../../store/cameraSettingStore'
-import {ValidateInput,ReadOnlyInput} from '../../../components/common/native-base-validate'
-import noticeArgs from "../../../common/noticeArgs";
+import FootBar from '../../components/sty/FootBar'
+import {camera} from '../../store/cameraSettingStore'
+import noticeArgs from '../../common/noticeArgs'
+import {ValidateInput,ReadOnlyInput} from '../../components/common/native-base-validate'
 
 @observer
-export default class edit extends Component{
+export default class CameraAdd extends Component{
     static navigationOptions = ({navigation})=>({
         headerTitle: "添加摄像头",
         headerRight: <View />
@@ -22,12 +22,15 @@ export default class edit extends Component{
     componentDidMount(){
     }
 
-    camera = null;
+    camera = new camera();
+    styName="";
+    styId="";
     constructor(props){
         super(props);
         const {navigation} = this.props;
         this.styName=navigation.state.params.styName;
-        this.camera=navigation.state.params.camera;
+        this.styId=navigation.state.params.styId;
+        this.camera.onUpdate({StyId:this.styId});
     }
     onCommit(){
         const {navigation} = this.props;
@@ -36,20 +39,25 @@ export default class edit extends Component{
             tools.showToast("输入项存在错误");
             return ;
         }
-        this.camera.onCommitUpdate(()=>{
-            //DeviceEventEmitter.emit('eventEditCamera',this.camera);
-            DeviceEventEmitter.emit('noticeChangedCamera',new noticeArgs(this,"eventEditCamera",this.camera));
-            tools.showToast("编辑成功");
+        this.camera.onCommit((data)=>{
+            this.camera.onUpdate(data);//刷新，比如;id
+            //DeviceEventEmitter.emit('eventAddCamera',this.camera);
+            DeviceEventEmitter.emit('noticeChangedCamera',new noticeArgs(this,"eventAddCamera",this.camera));
+
+            tools.showToast("增加成功");
             navigation.goBack();
         });
     }
+
     onUpdateData(data){
         this.camera.onUpdate(data);
     }
+
     buttons=[{title:'取消' , default:false, onPress:()=>{
             const {navigation} = this.props;
             navigation.goBack();
         }},{title:'提交' , default:true, onPress:()=>{ this.onCommit()}}];
+
     render(){
         return (
             <Container style={{backgroundColor:'#ffffff'}}>

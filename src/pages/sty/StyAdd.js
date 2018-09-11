@@ -7,7 +7,7 @@ import {ValidateInput,ValidateInputInt,ValidateInputDate,ValidateChooseItem,Read
 
 @inject('addStyStore')
 @observer
-export default class Add extends Component{
+export default class StyAdd extends Component{
     static navigationOptions = ({navigation})=>({
         headerTitle: '添加栋舍',
         headerRight: <View/>

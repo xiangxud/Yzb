@@ -12,7 +12,7 @@ import StyBar from '../../components/sty/StyBar';
 import Waring from '../../components/sty/Waring';
 import ImmList from '../../components/sty/ImmList';
 import Monitor from '../../components/sty/Monitor';
-import EnvironmentMonitor from '../../components/sty/EnvironmentMonitor';
+import SensorView from '../../components/sty/SensorView';
 
 @inject('styStore')
 @observer
@@ -25,14 +25,14 @@ export default class Sty extends Component {
         headerRight: <StyBar
             onInPetPress={() => {
                 navigation.navigate("InPet", {
-                    code: navigation.state.params.code,
+                    code: navigation.state.params.id,
                     title: navigation.state.params.title,
                     farm: navigation.state.params.farm
                 })
             }}
             onOutPetPress={() => {
                 navigation.navigate("OutPet", {
-                    code: navigation.state.params.code,
+                    code: navigation.state.params.id,
                     title: navigation.state.params.title,
                     farm: navigation.state.params.farm
                 })
@@ -40,7 +40,7 @@ export default class Sty extends Component {
 
             onEditPress={() => {
                 navigation.navigate("EditSty", {
-                    code: navigation.state.params.code,
+                    code: navigation.state.params.id,
                     title: navigation.state.params.title,
                     farm: navigation.state.params.farm
                 })
@@ -62,7 +62,7 @@ export default class Sty extends Component {
     componentDidMount() {
         (async () => {
             const {styStore, navigation} = this.props;
-            styStore.onIni(navigation.state.params.code);
+            styStore.onIni(navigation.state.params.id);
         })();
     }
 
@@ -76,7 +76,7 @@ export default class Sty extends Component {
                 <Content>
                     <Waring waring={waring}/>
                     <Monitor monitor={monitor} switchVideo={this.openSwitch} onPlay={this.onPlay}/>
-                    <EnvironmentMonitor data={environmental.data.now}/>
+                    <SensorView data={environmental.data.recent} onItemPress={() => {}}/>
                     <ImmList title="免疫提醒" collection={immCollection} top={5}
                              onMore={() => this.props.navigation.navigate("ImmTab", {})}/>
                 </Content>

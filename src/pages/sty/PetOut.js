@@ -8,7 +8,7 @@ import {ValidateInput,ValidateInputInt,ValidateInputDate,ValidateChooseItem,Read
 
 @inject('outPetStore')
 @observer
-export default class OutPet extends Component{
+export default class PetOut extends Component{
     static navigationOptions = ({navigation})=>({
         headerTitle: '出栏',
         headerRight: <View />

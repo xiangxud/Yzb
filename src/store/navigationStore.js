@@ -1,5 +1,5 @@
 import {observable, action, computed, toJS} from 'mobx'
-import RootNavigator from '../common/RootNavigator'
+import RootNavigator from '../pages/RootNavigator'
 import { NavigationActions } from 'react-navigation'
 
 class NavigationStore {

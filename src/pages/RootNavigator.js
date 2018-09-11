@@ -1,58 +1,61 @@
 import React, {Component} from 'react'
+
 import {TabNavigator, StackNavigator} from 'react-navigation'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Welcome from '../pages/Welcome';
-import HomePage from '../pages/HomePage';
-import Live from '../pages/Live';
-import LiveSearch from '../pages/live/LiveSearch';
-import Headlines from '../pages/Headlines';
-import InfoDetail from '../pages/info/InfoDetail';
 
-import Login from '../pages/uc/Login';
-import Register from '../pages/uc/Register';
-import FindPassword from '../pages/uc/FindPassword';
-import Uc from '../pages/Uc';
-import MyCollection from '../pages/uc/MyCollection'
+import Welcome from './Welcome';
+import HomePage from './HomePage';
+import Live from './Live';
+import LiveSearch from './live/LiveSearch';
+import Headlines from './Headlines';
+import Quotes from './Quotes';
+import InfoDetail from './info/InfoDetail';
 
-import BHStart from '../pages/bohai/BHStart';
-import BHList from '../pages/bohai/BHList';
-import BHApply from '../pages/bohai/BHApply';
-import BHDetail from '../pages/bohai/BHDetail';
-import ChooseFarm from '../pages/bohai/modal/ChooseFarm';
-import AddFarm from '../pages/bohai/modal/AddFarm';
+import Login from './uc/Login';
+import Register from './uc/Register';
+import FindPassword from './uc/FindPassword';
+import Uc from './Uc';
+import MyCollection from './uc/MyCollection'
 
-import Didi from '../pages/didi/Didi';
-import VetInfo from '../pages/didi/VetInfo';
-import ConnVideocam from '../pages/didi/ConnVideocam';
+import BHStart from './bohai/BHStart';
+import BHList from './bohai/BHList';
+import BHApply from './bohai/BHApply';
+import BHDetail from './bohai/BHDetail';
+import ChooseFarm from './bohai/modal/ChooseFarm';
+import AddFarm from './bohai/modal/AddFarm';
 
-import Web from '../pages/Web';
-import About from '../pages/uc/About';
-import MyInfo from '../pages/uc/MyInfo';
-import ScoreRecord from '../pages/uc/ScoreRecord';
-import ChangePhone from '../pages/uc/ChangePhone';
-import Sty from '../pages/sty';
-import Imm from '../pages/sty/Imm';
+import Didi from './didi/Didi';
+import VetInfo from './didi/VetInfo';
+import ConnectCamera from './didi/ConnectCamera';
 
-import MonitorPlay from '../pages/sty/MonitorPlay';
-import Environmental from '../pages/sty/Environmental';
-import EnvironmentalSetting from '../pages/sty/EnvironmentalSetting';
-import Report from '../pages/sty/Report';
-import Quotes from '../pages/Quotes';
+import Web from './Web';
+import About from './uc/About';
+import MyInfo from './uc/MyInfo';
+import ScoreRecord from './uc/ScoreRecord';
+import ChangePhone from './uc/ChangePhone';
+import Sty from './sty/index';
+import Imm from './sty/Imm';
 
-import addSty from '../pages/sty/add';
-import editSty from '../pages/sty/edit';
-import outPet from '../pages/sty/outPet'
-import inPet from '../pages/sty/inPet'
-import stySetting from '../pages/sty/setting';
-import cameraAdd from '../pages/sty/camera/add';
-import cameraEdit from '../pages/sty/camera/edit';
-import CustomTab from '../pages/info/customTab';
-import SettingColumn from '../pages/info/settingColumn';
-import WelcomeRegister from '../pages/uc/Welcome';
-import Join from '../pages/uc/Join';
+import MonitorPlay from './sty/MonitorPlay';
+import Environmental from './sty/Environmental';
+import EnvironmentalSetting from './sty/EnvironmentalSetting';
+import StyReport from './sty/StyReport';
 
-import Play from '../pages/live/Play';
-import VodPlay from "../pages/live/VodPlay";
+
+import StyAdd from './sty/StyAdd';
+import StyEdit from './sty/StyEdit';
+import PetOut from './sty/PetOut'
+import PetIn from './sty/PetIn'
+import StySetting from './sty/StySetting';
+import CameraAdd from './sty/CameraAdd';
+import CameraEdit from './sty/CameraEdit';
+import CustomTab from './info/CustomTab';
+import SettingColumn from './info/SettingColumn';
+import WelcomeRegister from './uc/Welcome';
+import Join from './uc/Join';
+
+import Play from './live/Play';
+import VodPlay from "./live/VodPlay";
 
 const TabNavigation = TabNavigator({
     HomeTab: {
@@ -133,14 +136,6 @@ const StyTabNavigation = TabNavigator({
             tabBarIcon: ({tintColor}) => (<Icon name='calendar-check-o' color={tintColor} size={24}/>)
         }
     },
-    /*MonitorTab:{
-        screen:Monitor,
-        navigationOptions:{
-            headerTitle: '监控',
-            tabBarLabel:'监控',
-            tabBarIcon: ({tintColor}) => (<Icon name='video-camera' color={tintColor} size={24}/>)
-        }
-    },*/
     EnvironmentalTab: {
         screen: Environmental,
         navigationOptions: {
@@ -150,7 +145,7 @@ const StyTabNavigation = TabNavigator({
         }
     },
     ReportTab: {
-        screen: Report,
+        screen: StyReport,
         navigationOptions: {
             headerTitle: '报表',
             tabBarLabel: '报表',
@@ -193,17 +188,17 @@ const RootNavigator = StackNavigator({
     Welcome: {screen: Welcome},
     Main: {screen: TabNavigation},
     InfoDetail: {screen: InfoDetail},
-    CustomTab:{screen:CustomTab},
-    SettingColumn:{screen:SettingColumn},
+    CustomTab: {screen: CustomTab},
+    SettingColumn: {screen: SettingColumn},
     Login: {screen: Login},
     Register: {screen: Register},
     FindPassword: {screen: FindPassword},
     Sty: {screen: StyTabNavigation},
-    AddSty: {screen: addSty},
-    EditSty: {screen: editSty},
-    StySetting: {screen: stySetting},
-    OutPet: {screen: outPet},
-    InPet: {screen: inPet},
+    AddSty: {screen: StyAdd},
+    EditSty: {screen: StyEdit},
+    StySetting: {screen: StySetting},
+    OutPet: {screen: PetOut},
+    InPet: {screen: PetIn},
     BHStart: {screen: BHStart},
     BHApply: {screen: BHApply},
     BHList: {screen: BHList},
@@ -212,11 +207,11 @@ const RootNavigator = StackNavigator({
     BHDetail: {screen: BHDetail},
     MonitorPlay: {screen: MonitorPlay},
     Web: {screen: Web},
-    CameraAdd: {screen: cameraAdd},
-    CameraEdit: {screen: cameraEdit},
+    CameraAdd: {screen: CameraAdd},
+    CameraEdit: {screen: CameraEdit},
     Didi: {screen: Didi},
     VetInfo: {screen: VetInfo},
-    ConnVideocam:{ screen:ConnVideocam },
+    ConnectCamera: {screen: ConnectCamera},
     LiveSearch: {screen: LiveSearch},
     About: {screen: About},
     ChangePhone: {screen: ChangePhone},
@@ -224,8 +219,8 @@ const RootNavigator = StackNavigator({
     MyCollection: {screen: MyCollection},
     MyInfo: {screen: MyInfo},
     Quotes: {screen: Quotes},
-    WelcomeRegister:{screen:WelcomeRegister},
-    Join:{screen:Join},
+    WelcomeRegister: {screen: WelcomeRegister},
+    Join: {screen: Join},
     EnvironmentalSetting: {screen: EnvironmentalSetting},
 
     Play: {screen: Play},
@@ -234,7 +229,7 @@ const RootNavigator = StackNavigator({
     initialRouteName: 'Welcome', // 默认显示界面!global.user.loginState?'Login':'Main'
     navigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
         headerStyle: {elevation: 0, shadowOpacity: 0, height: 48, backgroundColor: "#009688"},
-        headerTitleStyle: {color: '#fff', fontSize: 18, alignSelf: 'center', flex:1, textAlign: 'center'}, //alignSelf:'center'  文字居中
+        headerTitleStyle: {color: '#fff', fontSize: 18, alignSelf: 'center', flex: 1, textAlign: 'center'}, //alignSelf:'center'  文字居中
         headerBackTitleStyle: {color: '#fff', fontSize: 12},
         headerTintColor: '#fff',
         gesturesEnabled: true,//是否支持滑动返回收拾，iOS默认支持，安卓默认关闭

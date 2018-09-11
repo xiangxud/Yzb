@@ -75,11 +75,11 @@ export default class MySties extends Component {
                                 </TouchableOpacity> : null
                         }
                         {
-                            store && store.currentSty && store.currentSty.Env ?
+                            store && store.currentSty && store.currentSty.sensors ?
                                 <Chart
-                                    temperature={store.currentSty.Env.Temperature}
-                                    humidity={store.currentSty.Env.Humidity}
-                                    co2={store.currentSty.Env.O2c}
+                                    temperature={store.currentSty.sensors.temperature}
+                                    humidity={store.currentSty.sensors.humidity}
+                                    co2={store.currentSty.sensors.co2}
                                     startInLoadingState={true}
                                     javaScriptEnabled={true}
                                     domStorageEnabled={true}
