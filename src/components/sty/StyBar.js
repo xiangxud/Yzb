@@ -22,12 +22,12 @@ export default class StyBar extends Component {
                 this.props.onEditPress();
             }
         },{
-            name: "StySetting",
+            name: "Cameras",
             text: "栋舍监视器",
             icon: "ios-camera",
             iconColor: "#dd3215",
             action: () => {
-                this.props.onSetting();
+                this.props.onCameras();
             }
         }, {
             name: "OutPet",

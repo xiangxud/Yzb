@@ -6,19 +6,18 @@ import {
     Text,
     FlatList,
     View,
-    Image,
+    DeviceEventEmitter,
     StyleSheet,
-    TouchableHighlight,
-    TouchableNativeFeedback,
+    TouchableHighlight
 } from 'react-native';
 import {observer, inject} from 'mobx-react/native';
-import {Container, Content, Toast, Button} from 'native-base';
+import {Button} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SwiperBanner from '../components/home/SwiperBanner';
 import MySties from '../components/home/MySties';
 import Reminds from "../components/home/Reminds";
 //import Report from "../components/home/Report";
-import {Loading, MaskLoading, TitleBar} from '../components';
+import {MaskLoading, TitleBar} from '../components';
 import {InfoItem, InfoItemPic} from '../components/info/InfoItem';
 
 @inject('homeStore')
@@ -29,7 +28,17 @@ export default class HomePage extends Component {
     });
 
     componentDidMount() {
-        homeStore.fetchHomeData()
+        homeStore.fetchHomeData();
+        this.subscription = DeviceEventEmitter.addListener("noticeChangedCamera", (events) => {
+            //添加完栋舍操作后，更新首页数据
+            if(events.key==='styAdded') {
+                homeStore.fetchHomeData();
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        this.subscription && this.subscription.remove();
     }
 
     onBannerPress = (item) => {

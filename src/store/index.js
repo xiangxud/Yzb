@@ -4,9 +4,11 @@ import homeStore from './homeStore';
 import categoryStore from './categoryStore';
 import infoStore from './infoStore';
 import didiStore from './didiStore';
+
 import styStore from './styStore';
-import addStyStore from './addStyStore';
-import editStyStore from './editStyStore';
+import styAddStore from './styAddStore';
+import styEditStore from './styEditStore';
+
 import {CameraEditStore, CameraStore} from './cameraStore';
 import bohaiStore from './bohaiStore';
 import addFarmStore from './addFarmStore';
@@ -24,9 +26,11 @@ export default {
     categoryStore,
     infoStore,
     didiStore,
+
     styStore,
-    addStyStore,
-    editStyStore,
+    styAddStore,
+    styEditStore,
+
     cameraStore: new CameraStore(),
     cameraEditStore: new CameraEditStore(),
     bohaiStore,

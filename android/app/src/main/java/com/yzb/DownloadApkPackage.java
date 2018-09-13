@@ -26,7 +26,7 @@ public class DownloadApkPackage implements ReactPackage
   }
 
   @Override
-  public List createViewManagers(ReactApplicationContext	reactContext)
+  public List createViewManagers(ReactApplicationContext reactContext)
   {
     return	Collections.emptyList();
   }

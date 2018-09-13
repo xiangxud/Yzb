@@ -5,16 +5,13 @@
  */
 import React, {Component} from 'react';
 import {
-    AppRegistry,
     StyleSheet,
     Text,
     View,
-    TextInput,
-    NativeModules,
-    processColor,
-    TouchableOpacity,
-    Image,
-    StatusBar, TouchableWithoutFeedback, Dimensions
+    BackHandler,
+    StatusBar,
+    TouchableWithoutFeedback,
+    Dimensions
 } from 'react-native';
 import KSYVideo from 'react-native-ksyvideo';
 import ProgressController from '../../components/video/ProgressController';
@@ -38,7 +35,7 @@ export default class VodPlay extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showbar: true,
+            showBar: true,
             paused: false,
             windowWidth: 0,
             windowHeight: 0,
@@ -48,8 +45,18 @@ export default class VodPlay extends Component {
         };
     }
 
+    static navigationOptions = ({navigation}) => ({
+        header: null
+    });
+
+
     componentWillMount() {
-        //Orientation.lockToLandscape()
+        //转换屏幕
+        Orientation.lockToLandscape();
+    }
+
+    componentWillUnmount() {
+        Orientation.lockToPortrait();
     }
 
     _onLayout(event) {
@@ -58,11 +65,11 @@ export default class VodPlay extends Component {
     }
 
     _onLoad(data) {
-        this.setState({duration: data.duration, isLoading: true, showbar: !this.state.showbar});
+        this.setState({duration: data.duration, isLoading: true, showBar: !this.state.showBar});
     };
 
     _onProgress(data) {
-        if (this.state.showbar) {
+        if (this.state.showBar) {
             this.setState({currentTime: data.currentTime});
         }
     }
@@ -92,22 +99,27 @@ export default class VodPlay extends Component {
     render() {
         const {params} = this.props.navigation.state;
         let {currentTime, duration, paused, windowHeight} = this.state;
-        const completedPercentage = this.getCurrentTimePercentage(currentTime, duration) * 100;
+        //const completedPercentage = this.getCurrentTimePercentage(currentTime, duration) * 100;
+
+        const initial = Orientation.getInitialOrientation();
+
         return (
             <View style={styles.container} onLayout={this._onLayout.bind(this)}>
 
-                <StatusBar hidden={!this.state.showbar} />
+                <StatusBar hidden={!this.state.showBar}/>
 
                 <KSYVideo
-                    ref={(video) => { this.video = video }}
+                    ref={(video) => {
+                        this.video = video
+                    }}
                     source={{uri: params.url}}
                     timeout={{prepareTimeout: 60, readTimeout: 60}}
                     paused={this.state.paused}
                     playInBackground={true}
                     controls={true}
                     onTouch={() => {
-                        this.setState({showbar: !this.state.showbar})
-                        }
+                        this.setState({showBar: !this.state.showBar})
+                    }
                     }
 
                     onLoad={this._onLoad.bind(this)}
@@ -132,9 +144,9 @@ export default class VodPlay extends Component {
                             <BarIndicator color='white' count={4} size={30}/>
                         </View>
                     </View>) : (null)}
-                {this.state.showbar ? (
-                    <View style={{height: 10, marginLeft: 10}}>
-                        <View style={{height: windowHeight}}>
+                {this.state.showBar ? (
+                    <View style={{height: 10, flexDirection: 'row', marginLeft: 10, marginRight: 10,}}>
+                        <View style={{flex: 1, height: windowHeight}}>
                             <TouchableWithoutFeedback onPress={() => {
                                 Orientation.lockToPortrait(),
                                     this.props.navigation.goBack()
@@ -142,12 +154,23 @@ export default class VodPlay extends Component {
                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                     <Ionicons name='ios-arrow-back-outline'
                                               style={{fontSize: height / 15, color: 'white'}}/>
-                                    <Text style={{marginLeft: 5, color: 'white', fontSize: height / 25}}>{'返回'}</Text>
+                                    <Text style={{marginLeft: 5, color: 'white', fontSize: height / 25}}>返回</Text>
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>
+                        {initial !== 'PORTRAIT' ?
+                            (<View style={{height: windowHeight}}>
+                                <TouchableWithoutFeedback onPress={() => {
+                                    Orientation.lockToPortrait()
+                                }}>
+                                    <View>
+                                        <Text style={{color: 'white', fontSize: height / 25}}>退出全屏</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View>)
+                            : (null)}
                     </View>) : (null)}
-                {/* {this.state.showbar?(
+                {/* {this.state.showBar?(
             <View style={styles.controller}>
               <View style={styles.progressBar}>
                 <ProgressController duration={duration}

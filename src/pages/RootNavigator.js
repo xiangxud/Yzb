@@ -46,7 +46,7 @@ import StyAdd from './sty/StyAdd';
 import StyEdit from './sty/StyEdit';
 import PetOut from './sty/PetOut'
 import PetIn from './sty/PetIn'
-import StySetting from './sty/StySetting';
+import Cameras from './sty/Cameras';
 import CameraAdd from './sty/CameraAdd';
 import CameraEdit from './sty/CameraEdit';
 import CustomTab from './info/CustomTab';
@@ -123,7 +123,7 @@ const StyTabNavigation = TabNavigator({
     StyTab: {
         screen: Sty,
         navigationOptions: {
-            headerTitle: '概况',
+            headerTitle: '栋舍概况',
             tabBarLabel: '概况',
             tabBarIcon: ({tintColor}) => (<Icon name='building' color={tintColor} size={24}/>)
         }
@@ -196,7 +196,7 @@ const RootNavigator = StackNavigator({
     Sty: {screen: StyTabNavigation},
     AddSty: {screen: StyAdd},
     EditSty: {screen: StyEdit},
-    StySetting: {screen: StySetting},
+    Cameras: {screen: Cameras},
     OutPet: {screen: PetOut},
     InPet: {screen: PetIn},
     BHStart: {screen: BHStart},

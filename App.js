@@ -75,7 +75,7 @@ export default class App extends Component<{}> {
                     '需要您先下载并安装更新后才能继续使用。更新内容：\n' + v.description,
                     [
                         {text: '开始下载', onPress: () => {
-                            NativeModules.DownloadApk.downloading(v.downloadUrl, "yzbUpdate.apk");
+                            NativeModules.DownloadApk.downloading(v.downloadUrl, "正在下载养殖宝更新");
                         }},
                     ],
                     {cancelable: false}

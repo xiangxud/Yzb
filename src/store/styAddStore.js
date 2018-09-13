@@ -2,11 +2,12 @@ import {AsyncStorage} from 'react-native'
 import {action, computed, observable, reaction, runInAction, useStrict} from 'mobx'
 import validate from 'mobx-form-validate';
 
+import _ from "lodash";
 import storeBase from "./common/storeBase";
 
 useStrict(true);
 
-class editStyStore extends storeBase {
+class StyAddStore extends storeBase {
     @observable
     farm = {};
 
@@ -43,12 +44,22 @@ class editStyStore extends storeBase {
     }
 
     @action
-    onEditInit(styId, farm) {
+    onIni(farm) {
         this.farm = farm;
-        this.getStyFromApi(styId, data => {
+        this.getDictionaryFromApi((data) => {
+            this.genus = data;
+        }, (err) => {
+            alert(err);
+        })
+    }
+
+    @action
+    onEditIni(code, farm) {
+        this.farm = farm;
+        this.getStyFromApi(code, data => {
             this.onFillSty(data);
         }, err => {
-            alert(JSON.stringify(err));
+            alert(err);
         });
     }
 
@@ -60,23 +71,16 @@ class editStyStore extends storeBase {
         this.data.day = data.Day.toString();
         this.data.number = data.Total.toString();
         this.data.addDate = data.IniDate;
-        this.data.equNum = data.EquNum;
         this.genus = data.SourceGenus;
     }
 
     @action
-    getStyFromApi(styId, callback, failed) {
-        request.getJson(urls.apis.IMM_GET_STY_BASE, {id: styId}).then(data => {
+    getStyFromApi(code, callback, failed) {
+        request.getJson(urls.apis.IMM_GET_STY_BASE, {id: code}).then(data => {
             callback(data);
         }).catch(err => {
             failed(err);
         });
-    }
-
-    @action
-    onInvalid() {
-        if (!this.data.isValid) {
-        }
     }
 
     @action
@@ -97,7 +101,35 @@ class editStyStore extends storeBase {
             failed(err);
         });
     }
+
+    @action
+    getDictionaryFromApi(callback, failed) {
+        request.getJson(urls.apis.IMM_DICTIONARY, {classification: this.farm.Breed}).then((data) => {
+            callback(data);
+        }).catch((err) => {
+            failed(err);
+        });
+    }
+
+    @action
+    onCommit(callback, failed) {
+        request.postJson(urls.apis.IMM_STY_ADD, {
+            FarmName: this.farm.Name,
+            Id: '00000000-0000-0000-0000-000000000000',
+            Name: this.data.name,
+            Genus: this.data.genus,
+            IniPetDay: this.data.day,
+            IniPetCount: this.data.number,
+            IniPetDate: this.data.addDate,
+            BatchNumber: this.data.batchNumber,
+            EquNum: this.data.equNum
+        }).then((data) => {
+            callback(data);
+        }).catch((err) => {
+            failed(err);
+        });
+    }
 }
 
-editStyStore = new editStyStore();
-export default editStyStore;
+styAddStore = new StyAddStore();
+export default styAddStore;

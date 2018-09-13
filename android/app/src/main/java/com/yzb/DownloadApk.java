@@ -1,87 +1,63 @@
 package com.yzb;
-
 import android.app.DownloadManager;
-
 import android.app.DownloadManager.Request;
-
 import android.content.Context;
-
 import android.app.Activity;
-
 import android.content.SharedPreferences;
-
 import android.net.Uri;
-
 import android.os.Environment;
-
 import	com.facebook.react.bridge.ReactApplicationContext;
-
 import	com.facebook.react.bridge.ReactContextBaseJavaModule;
-
 import com.facebook.react.bridge.ReactMethod;
-
 public	class	DownloadApk	extends ReactContextBaseJavaModule{
 
-DownloadManager downManager ;
+    DownloadManager downManager ;
+    Activity myActivity;
 
-Activity myActivity;
+    public DownloadApk(ReactApplicationContext	reactContext)	{
+        super(reactContext);
+    }
 
-public	DownloadApk(ReactApplicationContext	reactContext)	{
+    @Override
 
-super(reactContext);
+    public String getName(){
+        return	"DownloadApk";
+    }
 
-}
+    @ReactMethod
 
-@Override
+    public void downloading(String url, String description){
 
-public	String	getName(){
+        myActivity =getCurrentActivity();
+        downManager = (DownloadManager)myActivity.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(url);
 
-return	"DownloadApk";
+        DownloadManager.Request request = new Request(uri);
 
-}
+        //仅WIFI环境下载
+        //request.setAllowedNetworkTypes(Request.NETWORK_WIFI);
 
-@ReactMethod
+        //设置通知栏标题
 
-public void downloading(String	url,String description){
+        request.setNotificationVisibility(Request.VISIBILITY_VISIBLE);
 
-myActivity =getCurrentActivity();
+        request.setMimeType("application/vnd.android.package-archive");
 
-downManager = (DownloadManager)myActivity.getSystemService(Context.DOWNLOAD_SERVICE);
+        request.setTitle("下载养殖宝更新");
 
-Uri uri = Uri.parse(url);
+        if(description == null || "".equals(description)) {
+            description = "目标apk正在下载";
+        }
 
-DownloadManager.Request request = new Request(uri);
+        request.setDescription(description);
+        request.setAllowedOverRoaming(false);
 
-request.setAllowedNetworkTypes(Request.NETWORK_WIFI);
+        //设置文件存放目录
+        request.setDestinationInExternalFilesDir(myActivity, Environment.DIRECTORY_DOWNLOADS, description);
 
-//设置通知栏标题
+        long download_id = downManager.enqueue(request);
 
-request.setNotificationVisibility(Request.VISIBILITY_VISIBLE);
-
-request.setMimeType("application/vnd.android.package-archive");
-
-request.setTitle("下载");
-
-if(description==null||"".equals(description)){
-
-description="目标apk正在下载";
-
-}
-
-request.setDescription(description);
-
-request.setAllowedOverRoaming(false);
-
-//设置文件存放目录
-
-request.setDestinationInExternalFilesDir(myActivity, Environment.DIRECTORY_DOWNLOADS, description);
-
-long downloadid=downManager.enqueue(request);
-
-SharedPreferences sPreferences = myActivity.getSharedPreferences("ggfw_download", 0);
-
-sPreferences.edit().putLong("ggfw_download_apk", downloadid).commit();
-
-}
-
+        SharedPreferences sPreferences = myActivity.getSharedPreferences("yzb_download", 0);
+        sPreferences.edit().putLong("yzb_download_apk", download_id).commit();
+    }
 }

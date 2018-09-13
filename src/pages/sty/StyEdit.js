@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
+import {
+    StyleSheet,
+    DeviceEventEmitter
+} from 'react-native';
 import {Container, Header, Content, Form, Separator, Icon, View, ListItem, Text, Toast} from 'native-base';
 import {observer, inject} from 'mobx-react/native';
 import FootBar from '../../components/sty/FootBar'
@@ -11,7 +14,7 @@ import {
     ReadOnlyInput
 } from '../../components/common/native-base-validate'
 
-@inject('editStyStore')
+@inject('styEditStore')
 @observer
 export default class StyEdit extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -24,9 +27,9 @@ export default class StyEdit extends Component {
     }
 
     getGenus() {
-        const {editStyStore} = this.props;
+        const {styEditStore} = this.props;
         let options = [];
-        editStyStore.genus.forEach((o) => {
+        styEditStore.genus.forEach((o) => {
             options.push(o.Code);
         });
         return options;
@@ -35,9 +38,9 @@ export default class StyEdit extends Component {
     buttons = [];
 
     componentWillMount() {
-        const {editStyStore, navigation} = this.props;
+        const {styEditStore, navigation} = this.props;
         //1、初始化数据
-        editStyStore.onEditInit(navigation.state.params.id, navigation.state.params.farm);
+        styEditStore.onEditInit(navigation.state.params.id, navigation.state.params.farm);
         //2、底部菜单
         this.buttons.push({
             title: '下一步',
@@ -51,11 +54,12 @@ export default class StyEdit extends Component {
             if (callback) {
                 callback();
             }
-        }, 800);
+        }, 1800);
     }
 
     onStyPress(data) {
         const {navigation} = this.props;
+        /*
         let {Stys, Id} = data;
         let list = [];
         Stys.forEach((item) => {
@@ -63,13 +67,15 @@ export default class StyEdit extends Component {
                 code: item.value,
                 title: item.title
             });
-        });
-        navigation.navigate("Sty", {id: Id, list: list, farm: navigation.state.params.farm});
+        });*/
+        DeviceEventEmitter.emit('noticeChangedCamera', {key: 'styEdit'});
+        navigation.goBack();
+        //navigation.navigate("Sty", {id: Id, list: list, farm: navigation.state.params.farm});
     }
 
     next() {
-        const {editStyStore} = this.props;
-        let mess = editStyStore.onValidate();
+        const {styEditStore} = this.props;
+        let mess = styEditStore.onValidate();
         if (mess.length > 0) {
             Toast.show({
                 type: 'warning',
@@ -79,7 +85,7 @@ export default class StyEdit extends Component {
             this.autoClose();
             return;
         }
-        editStyStore.onUpdateSty((data) => {
+        styEditStore.onUpdateSty((data) => {
             Toast.show({
                 type: 'success',
                 text: '保存成功',
@@ -99,14 +105,14 @@ export default class StyEdit extends Component {
     }
 
     onUpdateData(u) {
-        const {editStyStore} = this.props;
-        editStyStore.onChangedSty(u, data => {
+        const {styEditStore} = this.props;
+        styEditStore.onChangedSty(u, data => {
         }, err => {
         });
     }
 
     render() {
-        const {editStyStore} = this.props;
+        const {styEditStore} = this.props;
         return (
             <Container style={{backgroundColor: '#ffffff'}}>
                 <Content>
@@ -114,30 +120,34 @@ export default class StyEdit extends Component {
                         <ListItem itemDivider>
                             <Icon style={style.titleIco} name="ios-book" active></Icon><Text>编辑栋舍</Text>
                         </ListItem>
-                        <ReadOnlyInput label="养殖场" value={editStyStore.farm.Name}/>
-                        <ValidateInput label="栋舍栏位" data={editStyStore.data} name="name"
-                                       IsValidate={editStyStore.IsValidate} placeholder="请输入栋舍栏位" onChange={(e) => {
+                        <ReadOnlyInput label="养殖场" value={styEditStore.farm.Name}/>
+                        <ValidateInput label="栋舍栏位" data={styEditStore.data} name="name"
+                                       IsValidate={styEditStore.IsValidate} placeholder="请输入栋舍栏位" onChange={(e) => {
                             this.onUpdateData({name: e})
                         }}/>
-                        <ValidateChooseItem label="种属" data={editStyStore.data} name="genus"
-                                            IsValidate={editStyStore.IsValidate} getOptions={this.getGenus.bind(this)}
+                        <ValidateChooseItem label="种属" data={styEditStore.data} name="genus"
+                                            IsValidate={styEditStore.IsValidate} getOptions={this.getGenus.bind(this)}
                                             optionslabel="请选择种属" placeholder="请选择" onChange={(e) => {
                             this.onUpdateData({genus: e})
                         }}/>
-                        <ValidateInputInt label="日龄" data={editStyStore.data} name="day"
-                                          IsValidate={editStyStore.IsValidate} placeholder="如 20" onChange={(e) => {
+                        <ValidateInputInt label="日龄" data={styEditStore.data} name="day"
+                                          IsValidate={styEditStore.IsValidate} placeholder="如 20" onChange={(e) => {
                             this.onUpdateData({day: e})
                         }}/>
-                        <ValidateInputInt label="数量" data={editStyStore.data} name="number"
-                                          IsValidate={editStyStore.IsValidate} placeholder="进栏数量" onChange={(e) => {
+                        <ValidateInput label="入栏批次" data={styEditStore.data} name="batchNumber" placeholder="动物批次"
+                                       onChange={(e) => {
+                                           this.onUpdateData({batchNumber: e})
+                                       }}/>
+                        <ValidateInputInt label="数量" data={styEditStore.data} name="number"
+                                          IsValidate={styEditStore.IsValidate} placeholder="进栏数量" onChange={(e) => {
                             this.onUpdateData({number: e})
                         }}/>
-                        <ValidateInputDate label="进栏日期" data={editStyStore.data} name="addDate"
-                                           IsValidate={editStyStore.IsValidate} placeholder="进雏" onChange={(e) => {
+                        <ValidateInputDate label="进栏日期" data={styEditStore.data} name="addDate"
+                                           IsValidate={styEditStore.IsValidate} placeholder="进雏" onChange={(e) => {
                             this.onUpdateData({addDate: e})
                         }}/>
-                        <ValidateInput label="设备号" data={editStyStore.data} name="equNum"
-                                       IsValidate={editStyStore.IsValidate} placeholder="请输入物联网设备号" onChange={(e) => {
+                        <ValidateInput label="设备号" data={styEditStore.data} name="equNum"
+                                       IsValidate={styEditStore.IsValidate} placeholder="请输入物联网设备号" onChange={(e) => {
                             this.onUpdateData({equNum: e})
                         }}/>
                     </Form>

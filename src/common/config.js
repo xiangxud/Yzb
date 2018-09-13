@@ -3,7 +3,7 @@ const config = {
 
     // 版本信息
     versionCode: 1,
-    versionName: "180909",
+    versionName: "180912-2100",
 
     // 页面加载延迟时间
     loadingDelayTime: 500,

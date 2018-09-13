@@ -5,13 +5,8 @@
  */
 import React, { Component } from 'react';
 import {
-    AppRegistry,
     StyleSheet,
-    Text,
     View,
-    TextInput,
-    NativeModules,
-    processColor,
     TouchableOpacity,
     Image,
     StatusBar
@@ -22,7 +17,7 @@ import AudioController from '../../components/video/AudioController';
 export default class LiveScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = {showbar: true, degree: 0 , mirror: false, volume: 0.5};
+        this.state = {showBar: true, degree: 0 , mirror: false, volume: 0.5};
     }
 
     onPressRotate(){
@@ -44,7 +39,7 @@ export default class LiveScreen extends Component {
             <View style={styles.container}>
 
                 <StatusBar
-                    hidden={!this.state.showbar}
+                    hidden={!this.state.showBar}
                 />
 
                 <KSYVideo
@@ -58,7 +53,7 @@ export default class LiveScreen extends Component {
                     resizeMode={'contain'}
                     volume={volume}
                     onTouch={()=>{
-                        this.setState({showbar: !this.state.showbar})
+                        this.setState({showBar: !this.state.showBar})
                     }
                     }
                     onLoad={(data)=>{console.log("JS onPrepared, video size = " + data.naturalSize.width + "x" +  data.naturalSize.height);}}
@@ -67,7 +62,7 @@ export default class LiveScreen extends Component {
                     style={styles.fullScreen}
                 />
 
-                {this.state.showbar?(
+                {this.state.showBar?(
                     <View style={{justifyContent:'flex-end', width:40, marginBottom:10}}>
                         <View style={[styles.controller]}>
                             <View style={[styles.progressBar]}>
@@ -76,7 +71,7 @@ export default class LiveScreen extends Component {
                         </View>
                     </View>):(null)}
 
-                {this.state.showbar?(
+                {this.state.showBar?(
                     <View style={{marginRight:10, justifyContent: 'center'}}>
                         <TouchableOpacity style={{marginTop:40}} onPress={()=>{this.setState({mirror: !this.state.mirror});}}>
                             <Image style={{width:40,height:40}} source={require("../../resource/images/mirror.png")}/>

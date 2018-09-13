@@ -1,107 +1,73 @@
 package com.yzb;
 
 import android.app.DownloadManager;
-
 import android.content.BroadcastReceiver;
-
 import android.content.Context;
-
 import android.content.Intent;
-
 import android.content.SharedPreferences;
-
 import android.database.Cursor;
-
 import android.net.Uri;
-
 import android.os.Environment;
-
 import android.util.Log;
-
 import android.widget.Toast;
-
 import java.io.File;
-
-/**
-
-* Created by audaque on 2016/9/6.
-
-*/
 
 public class DownLoadBroadcastReceiver extends BroadcastReceiver {
 
-@Override
+    @Override
+    public void onReceive(Context context, Intent intent) {
 
-public void onReceive(Context context, Intent intent) {
+        long myDownloadID = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
 
-long myDwonloadID = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+        SharedPreferences sPreferences = context.getSharedPreferences("yzb_download", 0);
 
-SharedPreferences sPreferences = context.getSharedPreferences("ggfw_download", 0);
+        long reference_ = sPreferences.getLong("yzb_download_apk", 0);
 
-long refernece = sPreferences.getLong("ggfw_download_apk", 0);
+        if (reference_ == myDownloadID) {
 
-if (refernece == myDwonloadID) {
+            DownloadManager dManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 
-DownloadManager dManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+            Intent install = new Intent(Intent.ACTION_VIEW);
 
-Intent install = new Intent(Intent.ACTION_VIEW);
+            //Uri downloadFileUri = dManager.getUriForDownloadedFile(myDownloadID);
 
-//            Uri downloadFileUri = dManager.getUriForDownloadedFile(myDwonloadID);
+            DownloadManager.Query queryById = new DownloadManager.Query();
 
-DownloadManager.Query querybyId = new DownloadManager.Query();
+            queryById.setFilterById(myDownloadID);
 
-querybyId.setFilterById(myDwonloadID);
+            Cursor myDownload = dManager.query(queryById);
 
-Cursor myDownload = dManager.query(querybyId);
+            String download_name = null;
 
-String dolownname=null;
+            if (myDownload.moveToFirst()) {
 
-if(myDownload.moveToFirst()){
+                int status = myDownload.getInt(myDownload.getColumnIndex(DownloadManager.COLUMN_STATUS));
 
-int status = myDownload.getInt(myDownload.getColumnIndex(DownloadManager.COLUMN_STATUS));
+                if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                    // process download
+                    int fileNameIdx = myDownload.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME);
+                    //此处取得的是完整路径+文件名称
+                    download_name = myDownload.getString(fileNameIdx);
+                } else {
+                    Toast.makeText(context,"下载失败，已删除残留文件", Toast.LENGTH_LONG).show();
+                    dManager.remove(myDownloadID);
+                    myDownload.close();
+                    return;
+                }
 
-if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                myDownload.close();
+            }
 
-// process download
+            if(download_name == null){
+                return;
+            }
 
-int fileNameIdx = myDownload.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME);
+            File file = new File(download_name);
 
-//此处取得的是完整路径+文件名称
+            install.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+            install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-dolownname=myDownload.getString(fileNameIdx);
-
-}else{
-
-Toast.makeText(context,"下载失败，删除残留文件",Toast.LENGTH_LONG).show();
-
-dManager.remove(myDwonloadID);
-
-myDownload.close();
-
-return;
-
-}
-
-myDownload.close();
-
-}
-
-if(dolownname==null){
-
-return;
-
-}
-
-File file = new File(dolownname);
-
-install.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-
-install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-context.getApplicationContext().startActivity(install);
-
-}
-
-}
-
+            context.getApplicationContext().startActivity(install);
+        }
+    }
 }

@@ -10,7 +10,7 @@ import CameraList from '../../components/sty/CameraList';
 
 @inject('styStore', 'cameraStore')
 @observer
-export default class setting extends Component {
+export default class Cameras extends Component {
     constructor(props) {
         super(props);
     }

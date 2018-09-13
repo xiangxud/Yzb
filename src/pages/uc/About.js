@@ -6,6 +6,7 @@ import {
 import {Body, Icon, Left, ListItem, Right, Text, View} from "native-base";
 import {SeparatorArea} from "../../components";
 import codePush from "react-native-code-push";
+import DeviceInfo from 'react-native-device-info'
 
 const Item = props => {
     return (
@@ -136,7 +137,9 @@ export default class About extends Component {
                 <Item bordered icon="ios-compass" iconStyle={{color:'#00d487'}} goToPage={()=>this.goToPage('Web', {url: urls.pages.CONTACT, title:'联系养殖宝'})} text="联系我们"/>
                 <Item icon="ios-checkmark-circle" iconStyle={{color:'orange'}} goToPage={()=>this.goToPage('Web', {url: urls.pages.PROTOCOL, title:'用户协议'})} text="用户协议"/>
                 <SeparatorArea style={{height: 15}}/>
-                <Item icon="ios-cloud-download" iconStyle={{color:'#777'}} goToPage={()=>this.syncImmediate()} text="检查更新" subtext={config.versionName} bordered/>
+
+                <Item bordered icon="ios-construct" iconStyle={{color:'#dd3215'}} text="内核版本" subtext={DeviceInfo.getReadableVersion()}/>
+                <Item icon="ios-cloud-download" iconStyle={{color:'#777'}} goToPage={()=>this.syncImmediate()} text="检查更新" subtext={config.versionName}/>
             </View>
         )
     }

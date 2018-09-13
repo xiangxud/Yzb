@@ -32,8 +32,8 @@ export default class Sty extends Component {
                     farm: navigation.state.params.farm
                 })
             }}
-            onSetting={() => {
-                navigation.navigate("StySetting", {
+            onCameras={() => {
+                navigation.navigate("Cameras", {
                     styId: navigation.state.params.id,
                     styName: navigation.state.params.title
                 })
