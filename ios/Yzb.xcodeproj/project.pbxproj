@@ -41,6 +41,7 @@
 		19687C5387F145F28B2B31FB /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58F9D77E297B4C549B1FC69C /* libRCTOrientation.a */; };
 		32C2675E000541BA9F33E3E3 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7589F6B007504A1EA4A06FB6 /* libRNDeviceInfo.a */; };
 		051AEDD8A6BC4856BF34EC7B /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18990B27490A4189B8419B3C /* libRNDeviceInfo-tvOS.a */; };
+		1ACF344CB80847C18AD339DD /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A928BD18E9D4B52A2122F99 /* libSplashScreen.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -353,6 +354,8 @@
 		D76F5A5A43794945A752444F /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; name = "RNDeviceInfo.xcodeproj"; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		7589F6B007504A1EA4A06FB6 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; name = "libRNDeviceInfo.a"; path = "libRNDeviceInfo.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		18990B27490A4189B8419B3C /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; name = "libRNDeviceInfo-tvOS.a"; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		ABFF4D9AE1D14954B308D498 /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; name = "SplashScreen.xcodeproj"; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		7A928BD18E9D4B52A2122F99 /* libSplashScreen.a */ = {isa = PBXFileReference; name = "libSplashScreen.a"; path = "libSplashScreen.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -384,6 +387,7 @@
 				14E2E46F02224F99B35264D3 /* libRCTKSYVideo.a in Frameworks */,
 				19687C5387F145F28B2B31FB /* libRCTOrientation.a in Frameworks */,
 				32C2675E000541BA9F33E3E3 /* libRNDeviceInfo.a in Frameworks */,
+				1ACF344CB80847C18AD339DD /* libSplashScreen.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -574,6 +578,7 @@
 				22720FD8CD074BC58D2146CA /* RCTKSYVideo.xcodeproj */,
 				B3E4939EE78649349B1346EA /* RCTOrientation.xcodeproj */,
 				D76F5A5A43794945A752444F /* RNDeviceInfo.xcodeproj */,
+				ABFF4D9AE1D14954B308D498 /* SplashScreen.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1204,12 +1209,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-ksyvideo\ios\RCTKSYVideo/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
 				);
 			};
 			name = Debug;
@@ -1234,12 +1241,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-ksyvideo\ios\RCTKSYVideo/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
 				);
 			};
 			name = Release;
@@ -1264,6 +1273,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-ksyvideo\ios\RCTKSYVideo/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
 				);
 			};
 			name = Debug;
@@ -1287,6 +1297,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-ksyvideo\ios\RCTKSYVideo/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
 				);
 			};
 			name = Release;
@@ -1320,12 +1331,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-ksyvideo\ios\RCTKSYVideo/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
 				);
 			};
 			name = Debug;
@@ -1359,12 +1372,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-ksyvideo\ios\RCTKSYVideo/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
 				);
 			};
 			name = Release;
@@ -1397,12 +1412,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-ksyvideo\ios\RCTKSYVideo/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
 				);
 			};
 			name = Debug;
@@ -1435,12 +1452,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-ksyvideo\ios\RCTKSYVideo/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
 				);
 			};
 			name = Release;

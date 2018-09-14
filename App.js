@@ -21,6 +21,7 @@ import NetInfoDecorator from './src/common/NetInfoDecorator';
 import YzbApp from './src';
 import {Root} from 'native-base';
 import * as wechat from 'react-native-wechat'
+import SplashScreen from 'react-native-splash-screen'
 import {NativeModules} from 'react-native';
 
 if (!__DEV__) {
@@ -89,6 +90,8 @@ export default class App extends Component<{}> {
     }
 
     componentDidMount() {
+        SplashScreen.hide();
+
         codePush.allowRestart();//在加载完了可以允许重启
         //建议在应用启动时初始化，初始化之前无法使用此模块的其他方法。WeChat模块只需要初始化一次。
         //release版本为养殖宝公众号的app id
