@@ -8,8 +8,9 @@ import {
 } from 'react-native';
 import {observer} from 'mobx-react/native';
 import {Button, Icon, Text} from 'native-base';
-import {WebView} from '../'
+var width = Dimensions.get('window').width;
 
+const default_face = require('../../resource/sty_video_screen_default.jpg');
 const Monitor = observer(({monitor, switchVideo, onPlay}) => {
     if (!monitor.current) {
         return null;
@@ -28,7 +29,7 @@ const Monitor = observer(({monitor, switchVideo, onPlay}) => {
                 </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.play} onPress={() => onPlay(monitor.current.Url)}>
-                <Image source={require('../../resource/sty_video_screen_default.jpg')} style={{width: Dimensions.get('window').width, height: 120}}/>
+                <Image resizeMode={'cover'} source={monitor.current.FaceUrl? {uri: urls.webPath + monitor.current.FaceUrl}: default_face} style={{width: width, height: width*3/4}}/>
             </TouchableOpacity>
         </View>
     )

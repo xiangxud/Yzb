@@ -18,6 +18,7 @@ import Chart from '../sty/Charts';
 import RtmpView from '../../components/common/RtmpView';
 
 var {height, width} = Dimensions.get('window');
+const default_face = require('../../resource/sty_video_screen_default.jpg');
 
 const Sty = observer(({sty, getSty, isCurrent}) => {
     return (
@@ -71,7 +72,7 @@ export default class MySties extends Component {
                         {
                             store.currentSty.camera_url && store.currentSty.camera_url.startsWith('rtmp') ?
                                 <TouchableOpacity style={styles.play} onPress={()=>this.props.onPlay(store.currentSty.camera_url)}>
-                                    <Image source={require('../../resource/sty_video_screen_default.jpg')} style={{width: width, height: 220}}/>
+                                    <Image resizeMode='stretch' source={store.currentSty.camera_face_url? {uri: urls.webPath + store.currentSty.camera_face_url}: default_face} style={{width: width, height: width*3/4}}/>
                                 </TouchableOpacity> : null
                         }
                         {

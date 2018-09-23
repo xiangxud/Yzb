@@ -30,7 +30,6 @@ export default class HomePage extends Component {
     componentDidMount() {
         homeStore.fetchHomeData();
         this.subscription = DeviceEventEmitter.addListener("noticeChangedCamera", (events) => {
-            //添加完栋舍操作后，更新首页数据
             if(events.key==='styAdded') {
                 homeStore.fetchHomeData();
             }
