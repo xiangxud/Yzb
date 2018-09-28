@@ -1,11 +1,11 @@
 // 接口服务器地址
 // const apiPath = 'http://192.168.43.71/breed/api/'; // 开发服务器（外网）
-const apiPath = 'http://imm.ringpu.com/breed/api/'; // 生产服务器（外网）
+const apiPath = 'http://imm.ringpu.com/imm/api/'; // 生产服务器（外网）
 // const apiPath = 'http://192.168.0.103/RP.Imm.WebUI/api/';
 
 // web服务器地址
 // const webPath = 'http://192.168.43.71/breed/'; // 开发服务器（外网）
-const webPath = 'http://imm.ringpu.com/breed/'; // 生产服务器（外网）
+const webPath = 'http://imm.ringpu.com/imm/'; // 生产服务器（外网）
 //
 // 其他
 // const apiPath = 'http://192.168.0.103:2000/'; // 周明刚
