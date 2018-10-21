@@ -294,6 +294,7 @@ class UserStore {
         });
     };
 
+    /*
     @action
     updateUserPhoto(uri, fileName) {
         let formData = new FormData();
@@ -329,7 +330,7 @@ class UserStore {
                 tools.showToast("修改失败");
             }
         })
-    }
+    }*/
 
     @action
     getposition() {

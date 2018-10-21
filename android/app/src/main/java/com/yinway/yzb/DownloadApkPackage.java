@@ -1,4 +1,4 @@
-package com.yzb;
+package com.yinway.yzb;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;

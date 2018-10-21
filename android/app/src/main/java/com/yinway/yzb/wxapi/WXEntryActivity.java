@@ -1,6 +1,6 @@
 /**
 //暂时封闭*/
-package com.yzb.wxapi;
+package com.yinway.yzb.wxapi;
 
 import android.app.Activity;
 import android.os.Bundle;

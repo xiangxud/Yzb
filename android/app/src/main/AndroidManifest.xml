@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yzb">
+    package="com.yinway.yzb">
 
     <!-- 这个权限用于进行网络定位-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
@@ -43,7 +43,7 @@
             android:label="@string/app_name"
             android:exported="true"
       />
-      <receiver android:name="com.yzb.DownLoadBroadcastReceiver">
+      <receiver android:name="com.yinway.yzb.DownLoadBroadcastReceiver">
         <intent-filter>
             <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
         </intent-filter>

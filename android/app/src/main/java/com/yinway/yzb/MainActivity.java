@@ -1,4 +1,4 @@
-package com.yzb;
+package com.yinway.yzb;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;

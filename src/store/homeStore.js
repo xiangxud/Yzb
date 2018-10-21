@@ -1,7 +1,7 @@
 /**
  * Created by TomChow on 2017/11/13.
  */
-import {observable, computed, action, runInAction, useStrict} from 'mobx'
+import {observable, action, runInAction, useStrict} from 'mobx'
 import userStore from './userStore'
 
 useStrict(true);
@@ -78,10 +78,10 @@ class HomeStore {
         this.currentSty = sty;
     }
 
-    onChangedState(id, state, callback, falied) {
+    onChangedState(id, state, callback, failed) {
         let item = this.reminds.fristOne(o => o.id == id);
-        if (item == null && falied) {
-            falied("操作失败");
+        if (item == null && failed) {
+            failed("操作失败");
             return;
         }
         request.postJson(urls.apis.IMM_POST_IMPLEMENT, {
@@ -94,7 +94,7 @@ class HomeStore {
                 if (callback) callback(data);
             });
         }).catch(err => {
-            if (falied) falied(err);
+            if (failed) failed(err);
         });
     }
 }

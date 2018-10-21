@@ -1,4 +1,4 @@
-package com.yzb;
+package com.yinway.yzb;
 import android.app.DownloadManager;
 import android.app.DownloadManager.Request;
 import android.content.Context;
