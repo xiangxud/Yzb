@@ -1,6 +1,6 @@
 // 接口服务器地址
 // const apiPath = 'http://192.168.43.71/breed/api/'; // 开发服务器（外网）
-const apiPath = 'http://imm.ringpu.com/imm/api/'; // 生产服务器（外网）
+const apiPath = __DEV__ ? 'http://imm.ringpu.com/breed1/api/' : 'http://imm.ringpu.com/imm/api/'; // 生产服务器（外网）
 // const apiPath = 'http://192.168.0.103/RP.Imm.WebUI/api/';
 
 // web服务器地址

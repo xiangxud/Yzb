@@ -146,10 +146,6 @@ export default class StyEdit extends Component {
                                            IsValidate={styEditStore.IsValidate} placeholder="进雏" onChange={(e) => {
                             this.onUpdateData({addDate: e})
                         }}/>
-                        <ValidateInput label="设备号" data={styEditStore.data} name="equNum"
-                                       IsValidate={styEditStore.IsValidate} placeholder="请输入物联网设备号" onChange={(e) => {
-                            this.onUpdateData({equNum: e})
-                        }}/>
                     </Form>
                 </Content>
                 <FootBar buttons={this.buttons}></FootBar>

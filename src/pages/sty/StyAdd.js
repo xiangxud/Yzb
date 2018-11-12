@@ -145,10 +145,6 @@ export default class StyAdd extends Component {
                                            IsValidate={styAddStore.IsValidate} onChange={(e) => {
                             this.onUpdateData({addDate: e})
                         }}/>
-                        <ValidateInput label="设备号" data={styAddStore.data} name="equNum"
-                                       IsValidate={styAddStore.IsValidate} placeholder="请输入物联网设备号" onChange={(e) => {
-                            this.onUpdateData({equNum: e})
-                        }}/>
                     </Form>
                 </Content>
                 <FootBar buttons={this.buttons}></FootBar>
