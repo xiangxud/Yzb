@@ -108,8 +108,8 @@ android {
         applicationId "com.yinway.yzb"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 18
-        versionName "1.1.8"
+        versionCode 21
+        versionName "1.2.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }

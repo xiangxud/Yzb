@@ -73,7 +73,7 @@ export default class Login extends Component {
                             <Input placeholder="请输入登陆密码"
                                    maxLength={20}
                                    secureTextEntry={true}
-                                   onTextChange={(text)=> userStore.setLoginPassword(text)}
+                                   onChangeText={(text)=> userStore.setLoginPassword(text)}
 
                             />
                         </Item>

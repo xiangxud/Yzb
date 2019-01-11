@@ -97,6 +97,10 @@ class HomeStore {
             if (failed) failed(err);
         });
     }
+
+    @action clearDefaultRtmpFace(){
+        this.currentSty && (this.currentSty.camera_face_url = null);
+    }
 }
 
 homeStore = new HomeStore()

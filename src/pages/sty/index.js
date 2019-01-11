@@ -11,7 +11,7 @@ import moment from 'moment';
 import {observer, inject} from 'mobx-react/native';
 import {TitleBar, SeparatorArea} from '../../components';
 import StyBar from '../../components/sty/StyBar';
-import Waring from '../../components/sty/Waring';
+// import Waring from '../../components/sty/Waring';
 import Monitor from '../../components/sty/Monitor';
 import SensorView from '../../components/sty/SensorView';
 import RefreshListView from 'react-native-refresh-list-view'
@@ -86,7 +86,9 @@ export default class Sty extends Component {
         const {waring, monitor, immCollection, environmental} = styStore;
         return (
             <View>
-                <Waring waring={waring}/>
+                <View>
+                    <Text style={{ flexDirection:'row', alignItems:'center', marginLeft:5, }}>{waring}</Text>
+                </View>
                 <Monitor monitor={monitor} switchVideo={this.openSwitch} onPlay={this.onPlay}/>
                 <SensorView data={environmental.data.recent} onItemPress={() => {
                 }}/>

@@ -24,8 +24,8 @@ const SensorView = observer(({data, currentId, onItemPress}) => {
                     data.map((item, i) => (
                         <TouchableOpacity key={i} onPress={() => onItemPress(item)}>
                             <View
-                                style={[styles.reportItems, currentId === item.SensorId ? {backgroundColor: '#cc7800'} : {}]}>
-                                <Text style={styles.headLine}>{item.RecentData}</Text>
+                                style={styles.reportItems}>
+                                <Text style={[styles.headLine, item.Warning ? {color: '#cc0007'} : {}]}>{item.RecentData}</Text>
                                 <Text>{item.SensorName}</Text>
                             </View>
                         </TouchableOpacity>

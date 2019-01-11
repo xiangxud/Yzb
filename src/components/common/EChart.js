@@ -17,7 +17,11 @@ export default class EChart extends PureComponent {
 
     onMessage(e) {
         let {data} = this.props;
-        this.webView.postMessage(JSON.stringify(data));
+        try {
+            this.webView.postMessage(JSON.stringify(data));
+        }catch (e){
+            alert('加载失败，请重试');
+        }
     }
 
     render() {
@@ -35,7 +39,7 @@ export default class EChart extends PureComponent {
             baseUrl: '../../resource/web/'
         };
         const sourceAndroid = {
-            uri: `file:///android_asset/web/main.html`,
+            uri: `file:///android_asset/web/main.html?dt=`+Math.random(),
             baseUrl: 'file:///android_asset/web/'
         };
         const source = Platform.OS === 'ios' ? sourceIOS : sourceAndroid;

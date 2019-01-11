@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {
     View,
-    FlatList,
+    TouchableOpacity,
     StyleSheet
 } from 'react-native';
 import {observer, inject} from 'mobx-react/native';
-import {Button, Spinner, Text, Icon} from 'native-base';
+import {Button, ActionSheet, Text, Icon} from 'native-base';
 import {TitleBar, ActionTitleBar, EChart, SeparatorArea} from '../../components';
 import RefreshListView from 'react-native-refresh-list-view'
 
@@ -33,38 +33,62 @@ export default class StyReport extends Component {
     inputPress = () => {
         alert('填写报告');
     }
+    onTPress = () => {
+        const {styReportStore} = this.props;
+        let actions = [{
+            name: 'TEMPERATURE',
+            text: '温度',
+            icon: 'ios-thermometer',
+            onPress: () => {
+                styReportStore.onSwitch("TEMPERATURE");
+                //alert(styReportStore.currReport)
+            }
+        }, {
+            name: 'HUMIDITY',
+            text: '湿度',
+            icon: 'ios-water',
+            onPress: () => {
+                styReportStore.onSwitch("HUMIDITY");
+                //alert(styReportStore.currReport)
+            }
+        }, {
+            name: 'CO2',
+            text: '二氧化碳',
+            icon: 'ios-speedometer',
+            onPress: () => {
+                styReportStore.onSwitch("CO2");
+                //alert(styReportStore.currReport)
+            }
+        }];
 
-    reports = [{
-        name: 'tem',
-        text: '温度',
-        icon: 'ios-thermometer',
-        onPress: () => {
-            const {styReportStore} = this.props;
-            styReportStore.onChangedReport("tem");
-        }
-    }, {
-        name: 'hum',
-        text: '湿度',
-        icon: 'ios-water',
-        onPress: () => {
-            const {styReportStore} = this.props;
-            styReportStore.onChangedReport("hum");
-        }
-    }];
+        ActionSheet.show({
+            title: '栋舍操作',
+            options: actions,
+            destructiveButtonIndex: 0,
+            cancelButtonIndex: -1
+        }, (index) => {
+            if (index < 0 || index >= actions.length) {
+                return;
+            }
+            actions[index].onPress();
+        });
+    };
+
     renderListHeader = () => {
         const {styReportStore} = this.props;
 
         return (
             <View>
-                <ActionTitleBar
-                    icon={'ios-stats'}
-                    iconColor={'red'}
-                    title={'传感数据趋势'}
-                    actions={this.reports}
-                    actionLabel={styReportStore.reportData[styReportStore.currReport].label}
-                    showMore={false}/>
+                <View style={styles.titleWrap}>
+                    <Icon name={'ios-stats'} style={{color: 'red'}}/>
+                    <Text style={styles.titleText}>传感器最近24小时数据</Text>
+                    <TouchableOpacity style={styles.more} onPress={()=>this.onTPress()}>
+                        <Icon name="ios-arrow-down-outline" style={{fontSize: 16}}/>
+                        <Text style={{marginRight: 5}}>{styReportStore.currReport.label}</Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.canvas}>
-                    <EChart data={styReportStore.reportData[styReportStore.currReport].data} style={{flex: 1}}></EChart>
+                    {styReportStore.chart_loaded?<EChart data={styReportStore.currReport.data} style={{flex: 1}}></EChart>:<View/>}
                 </View>
                 <SeparatorArea/>
                 <TitleBar icon={'file-text'}
@@ -148,4 +172,25 @@ const styles = StyleSheet.create({
         height: 35, justifyContent: 'center', alignItems: 'center'
     },
     emptyTips: {height: 100, justifyContent: 'center', alignItems: 'center'},
+
+    titleWrap: {
+        height: 40,
+        paddingLeft: 10,
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        alignItems: 'center',
+        borderBottomColor: '#ccc',
+    },
+    titleText: {
+        fontSize: 18,
+        color: '#000',
+        marginLeft: 3,
+        flex: 1
+    },
+    more: {
+        padding: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+    }
 })

@@ -41,10 +41,12 @@ code-push deployment history yzbAndroid Production
 code-push deployment clear YzbAndroid Staging
 code-push deployment clear YzbAndroid Production
 发布新版本
-code-push release-react YzbAndroid android --t 1.1.4 --dev false --d Staging --des "更新地理位置显示" --m true
+code-push release-react YzbAndroid android --t 1.2.1 --dev false --d Staging --des "更新地理位置显示" --m true
 推送到正式版
 code-push promote YzbAndroid Staging Production
 
 
 ---------------------编译Staging版本脚本---------------------
 react-native run-android --variant releaseStaging
+---------------------生成生产包------------------------------
+cd android & gradlew assembleRelease

@@ -29,7 +29,9 @@ const Monitor = observer(({monitor, switchVideo, onPlay}) => {
                 </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.play} onPress={() => onPlay(monitor.current.Url)}>
-                <Image resizeMode={'cover'} source={monitor.current.FaceUrl? {uri: urls.webPath + monitor.current.FaceUrl}: default_face} style={{width: width, height: width*3/4}}/>
+                <Image
+                    onError={()=>monitor.clearFace()}
+                    resizeMode={'cover'} source={monitor.current.FaceUrl? {uri: urls.webPath + monitor.current.FaceUrl}: default_face} style={{width: width, height: width*3/4}}/>
             </TouchableOpacity>
         </View>
     )

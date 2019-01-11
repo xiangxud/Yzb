@@ -32,11 +32,11 @@ class UserStore {
     //loginForm
     @observable
     @validate(/^1(3|4|5|7|8)\d{9}$/, '请输入正确的手机号')
-    loginPhone = '18307722503';
+    loginPhone = '';
 
     @observable
-    @validate(/^[\w]{6,16}$/, '请输入至少6位密码')
-    loginPassword = '123456';
+    @validate(/^[\w]{1,16}$/, '请输入1-16位密码')
+    loginPassword = '';
 
     @observable
     invitationCode=''

@@ -160,30 +160,7 @@ class _immStore {
 }
 
 //2、预警
-class WaringStore {
-    constructor() {
-    }
 
-    @observable
-    genus = "";//种属
-    @observable
-    count = "";//数量
-    @observable
-    temperature = "";//温度
-    @observable
-    humidity = "";//湿度
-    @observable
-    co2 = "";//二氧化碳
-
-    @action
-    onParse(data, parent) {
-        this.genus = parent.genus;
-        this.count = parent.count;
-        this.temperature = data.TemWar;
-        this.humidity = data.HumWar;
-        this.co2 = data.O2cWar;
-    }
-}
 
 //3、监控
 class MonitorStore {
@@ -200,6 +177,13 @@ class MonitorStore {
         // }
         // this.cameras = cams;
         // this.current = cams[0];
+    }
+
+    @action
+    clearFace(){
+        if(this.current){
+            this.current.FaceUrl = null;
+        }
     }
 }
 
@@ -320,7 +304,7 @@ class StyStore {
     immCollection = new _immStore();
 
     @observable
-    waring = new WaringStore();
+    waring = '';
 
     @observable
     monitor = new MonitorStore();
@@ -344,7 +328,14 @@ class StyStore {
                 //2、环控数据
                 if (data.sensors) {
                     this.environmental.setRecent(data.sensors);//环控数据
-                    // this.waring.onParse(data.Env, this);
+                    this.waring = '';
+                    data.sensors.forEach((item, i) => {
+                        if(item.warning_text)
+                            this.waring += item.warning_text + ',';
+                    });
+                    if(this.waring.length>0){
+                        this.waring = this.waring.substr(0, this.waring.length - 1);
+                    }
                 }
 
                 //3、预警信息

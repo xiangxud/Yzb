@@ -58,11 +58,6 @@ export default class MySties extends Component {
                 <TitleBar icon={'bank'} iconColor={'red'} title={'我的栋舍'} morePress={this.props.onAddSty}
                           rightTitle={'添加'}/>
                 <ScrollView horizontal={true} style={styles.stiesContainer}>
-                    {/*<TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={this.props.onAddSty}>*/}
-                    {/*<View style={[styles.styBox, styles.addSty]}>*/}
-                    {/*<Icon name={'ios-add-circle-outline'} style={{fontSize:40, color:'#15856e'}}/>*/}
-                    {/*</View>*/}
-                    {/*</TouchableNativeFeedback>*/}
                     {store.sties.map((val, key) => (
                         <Sty key={key} sty={val} getSty={this.getSty} isCurrent={store.currentSty.id === val.id}/>
                     ))}
@@ -72,7 +67,11 @@ export default class MySties extends Component {
                         {
                             store.currentSty.camera_url && store.currentSty.camera_url.startsWith('rtmp') ?
                                 <TouchableOpacity style={styles.play} onPress={()=>this.props.onPlay(store.currentSty.camera_url)}>
-                                    <Image resizeMode='stretch' source={store.currentSty.camera_face_url? {uri: urls.webPath + store.currentSty.camera_face_url}: default_face} style={{width: width, height: width*3/4}}/>
+                                    <Image resizeMode='stretch'
+                                           /*defaultSource={require('../../resource/live_no_face.jpg')}*/
+                                            onError={()=>store.clearDefaultRtmpFace()}
+                                           source={store.currentSty.camera_face_url? {uri: urls.webPath + store.currentSty.camera_face_url}: default_face}
+                                           style={{width: width, height: width*3/4}}/>
                                 </TouchableOpacity> : null
                         }
                         {

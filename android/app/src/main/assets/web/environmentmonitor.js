@@ -111,13 +111,13 @@
             },
             type: 'gauge',
             splitNumber: 4,
-            min: 0.05,
-            max: 0.15,
+            min: 2000,
+            max: 6000,
             radius: '90%',  // 半径
             startAngle: 215,  //起始位置
             endAngle: -35,   //终点位置
             detail: {
-                formatter: '{value}%',
+                formatter: '{value}',
                 offsetCenter: [0, 40],
                 textStyle: {
                     fontSize: 16,

@@ -1,6 +1,6 @@
 // 接口服务器地址
 // const apiPath = 'http://192.168.43.71/breed/api/'; // 开发服务器（外网）
-const apiPath = __DEV__ ? 'http://imm.ringpu.com/breed1/api/' : 'http://imm.ringpu.com/imm/api/'; // 生产服务器（外网）
+const apiPath = __DEV__ ? 'http://imm.ringpu.com/imm/api/' : 'http://imm.ringpu.com/imm/api/'; // 生产服务器（外网）
 // const apiPath = 'http://192.168.0.103/RP.Imm.WebUI/api/';
 
 // web服务器地址
@@ -161,6 +161,9 @@ const urls = {
         IMM_GET_STY_SENSOR_RECENT: apiPath + 'sty/getStyRecentSensorData',
         //获取栋舍的历史环控数据
         IMM_GET_STY_SENSOR_HISTORY: apiPath + 'sty/getStySensorHistoryPager',
+        //获取栋舍历史图表数据
+        //http://imm.ringpu.com/imm/api/sty/GetStySensorHistory?styId=80ddbb14-ec60-42c7-b50e-541ae3d7a3b6
+        IMM_GET_STY_SENSOR_REPORT: apiPath + 'sty/GetStySensorHistory',
         //出栏
         IMM_POST_REMOVE_PET: apiPath + 'sty/postRoutine',
         //出栏
